@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint --cache --max-warnings 0  \"{src}/**/*.{vue,ts,tsx}\" --fix"
   },
   "dependencies": {
     "vue": "^3.2.25"
@@ -12,10 +13,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.0",
     "eslint": "^8.6.0",
-    "eslint-config-prettier": "^8.3.0",
     "eslint-define-config": "^1.2.2",
-    "eslint-plugin-jest": "^25.3.4",
-    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.3.0",
     "typescript": "^4.4.4",
     "vite": "^2.7.2",
