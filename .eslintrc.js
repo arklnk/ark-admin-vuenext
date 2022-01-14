@@ -1,5 +1,5 @@
 // @ts-check
-const { defineConfig } = require('eslint-define-config');
+const { defineConfig } = require('eslint-define-config')
 
 module.exports = defineConfig({
   root: true,
@@ -18,14 +18,11 @@ module.exports = defineConfig({
       jsx: true,
     },
   },
-  extends: [
-    'plugin:vue/vue3-recommended',
-    'plugin:@typescript-eslint/recommended'
-  ],
+  extends: ['plugin:vue/vue3-recommended', 'plugin:@typescript-eslint/recommended'],
   rules: {
     // style
-    semi: ["error", "never"],
-    quotes: ["error", "single"],
+    semi: ['error', 'never'],
+    quotes: ['error', 'single'],
 
     // ts
     'vue/script-setup-uses-vars': 'error',
@@ -81,4 +78,4 @@ module.exports = defineConfig({
       },
     ],
   },
-});
+})
