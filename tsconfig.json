@@ -15,7 +15,8 @@
       "dom"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
+      "element-plus/global"
     ],
     "removeComments": true,
     "paths": {
