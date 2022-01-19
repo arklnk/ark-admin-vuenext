@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import windicss from 'vite-plugin-windicss'
 
 function pathResolve(dir: string) {
@@ -9,7 +10,7 @@ function pathResolve(dir: string) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), windicss()],
+  plugins: [vue(), windicss(), vueJsx()],
   resolve: {
     alias: [
       // /@/xxxx => src/xxxx
