@@ -23,7 +23,7 @@ const __APP_INFO__ = {
 const port = parseInt(process.env.port || process.env.npm_config_port || '9528')
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => {
+export default defineConfig(({ mode }) => {
   return {
     plugins: [vue(), windicss(), vueJsx()],
     base: '/',
@@ -69,7 +69,7 @@ export default defineConfig(({ command }) => {
         compress: {
           keep_infinity: true,
           // Used to delete console in production environment
-          drop_console: command === 'build',
+          drop_console: mode === 'production',
         },
       },
       // Turning off brotliSize display can slightly reduce packaging time
