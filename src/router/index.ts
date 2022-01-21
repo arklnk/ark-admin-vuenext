@@ -1,9 +1,17 @@
 import type { App } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+
+import Layout from '/@/layout/index.vue'
 
 export const router = createRouter({
-  history: createWebHashHistory(),
-  routes: [],
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      name: 'Layout',
+      component: Layout
+    }
+  ],
   strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 })
 })
