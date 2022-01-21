@@ -11,7 +11,7 @@ function pathResolve(dir: string) {
 
 // inject info
 const __APP_INFO__ = {
-  pkg: { dependencies, devDependencies, version, name },
+  pkg: { dependencies, devDependencies, version },
   // lastBuildTime: formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss')
 }
 
