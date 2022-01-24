@@ -1,4 +1,4 @@
-import { ProjectConfig } from '/#/config'
+import type { ProjectConfig } from '/#/config'
 
 const setting: ProjectConfig = {
   grayMode: false,

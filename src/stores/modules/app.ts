@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { MenuSetting, ProjectConfig } from '/#/config'
+import type { MenuSetting, ProjectConfig } from '/#/config'
 import { DeviceEnum, KEY_PROJ_CFG } from '/@/enums/appEnum'
 import { merge } from 'lodash-es'
 
