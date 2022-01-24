@@ -11,14 +11,15 @@ export function useResize() {
   }
 
   function resize() {
-    const _isMobile = isMobile()
-    appStore.device = _isMobile ? DeviceEnum.MOBILE : DeviceEnum.DESKTOP
-    console.log(appStore.device)
+    if (!document.hidden) {
+      const _isMobile = isMobile()
+      appStore.device = _isMobile ? DeviceEnum.MOBILE : DeviceEnum.DESKTOP
+    }
   }
 
   onMounted(() => {
     if (isMobile()) {
-      // close sidebar
+      appStore.device = DeviceEnum.MOBILE
     }
   })
 
