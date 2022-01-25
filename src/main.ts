@@ -4,7 +4,7 @@ import 'virtual:windi.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import { registerPlugin } from '/@/core/use'
+import { registerGlobalComp } from '/@/components/registerGlobalComp'
 import { setupStore } from './stores'
 import { setupRouter } from '/@/router'
 
@@ -14,8 +14,8 @@ async function bootstrap() {
   // store
   setupStore(app)
 
-  // register plugin
-  registerPlugin(app)
+  // register global component and lib
+  registerGlobalComp(app)
 
   // setup router
   setupRouter(app)
