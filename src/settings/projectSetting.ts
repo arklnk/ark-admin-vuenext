@@ -13,6 +13,9 @@ const setting: ProjectConfig = {
     autoInsertSpace: true,
     maxMessage: 5,
   },
+  headerSetting: {
+    fullscreen: false
+  }
 }
 
 export default setting

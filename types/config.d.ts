@@ -10,9 +10,14 @@ export interface MenuSetting {
   collapse: boolean
 }
 
+export interface HeaderSetting {
+  fullscreen: boolean
+}
+
 export interface ProjectConfig {
   grayMode: boolean
   showBreadCrumb: boolean
   menuSetting: MenuSetting
   elementUISetting: ElementUISetting
+  headerSetting: HeaderSetting
 }
