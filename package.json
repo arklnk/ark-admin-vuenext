@@ -8,6 +8,7 @@
     "lint": "eslint --cache --max-warnings 0  \"src/**/*.{vue,ts,tsx}\" --fix"
   },
   "dependencies": {
+    "@vueuse/core": "^7.6.1",
     "axios": "^0.24.0",
     "element-plus": "^2.0.1",
     "lodash-es": "^4.17.21",
