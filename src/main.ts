@@ -2,6 +2,8 @@ import 'normalize.css/normalize.css'
 import 'element-plus/dist/index.css'
 import 'virtual:windi.css'
 
+import '/@/styles/index.scss'
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import { registerGlobalComp } from '/@/components/registerGlobalComp'
