@@ -1,10 +1,8 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import Icons from 'unplugin-icons/vite'
-import windicss from 'vite-plugin-windicss'
+import { createViteProxy } from './build/proxy'
+import { createVitePlugins } from './build/plugin'
 
 import { dependencies, devDependencies, version } from './package.json'
 
@@ -18,17 +16,11 @@ const __APP_INFO__ = {
   // lastBuildTime: formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss')
 }
 
-// If your port is set to 80,
-// use administrator privileges to execute the command line.
-// For example, Mac: sudo npm run
-// You can change the port by the following methods:
-// port = 9528 npm run dev OR npm run dev --port = 9528
-const port = parseInt(process.env.port || process.env.npm_config_port || '9528')
-
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ command, mode }) => {
+  const isBuild = command === 'build'
   return {
-    plugins: [vue(), windicss(), vueJsx(), Icons({ compiler: 'vue3' })],
+    plugins: createVitePlugins(isBuild),
     base: '/',
     root: process.cwd(),
     resolve: {
@@ -46,23 +38,7 @@ export default defineConfig(({ mode }) => {
       ],
     },
 
-    server: {
-      host: true,
-      open: true,
-      port,
-      proxy: {
-        '/api': {
-          target: 'http://127.0.0.1:7001',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-        ws: {
-          target: 'http://127.0.0.1:7002',
-          changeOrigin: true,
-          ws: true,
-        },
-      },
-    },
+    server: createViteProxy(),
 
     build: {
       target: 'es2015',
