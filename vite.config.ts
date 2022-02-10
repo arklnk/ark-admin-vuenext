@@ -28,7 +28,7 @@ const port = parseInt(process.env.port || process.env.npm_config_port || '9528')
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   return {
-    plugins: [vue(), windicss(), vueJsx(), Icons({ autoInstall: true, compiler: 'vue3' })],
+    plugins: [vue(), windicss(), vueJsx(), Icons({ compiler: 'vue3' })],
     base: '/',
     root: process.cwd(),
     resolve: {
