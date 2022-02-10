@@ -1,8 +1,11 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
+
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import Icons from 'unplugin-icons/vite'
 import windicss from 'vite-plugin-windicss'
+
 import { dependencies, devDependencies, version } from './package.json'
 
 function pathResolve(dir: string) {
@@ -25,7 +28,7 @@ const port = parseInt(process.env.port || process.env.npm_config_port || '9528')
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   return {
-    plugins: [vue(), windicss(), vueJsx()],
+    plugins: [vue(), windicss(), vueJsx(), Icons({ autoInstall: true, compiler: 'vue3' })],
     base: '/',
     root: process.cwd(),
     resolve: {

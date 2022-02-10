@@ -17,7 +17,8 @@
     ],
     "types": [
       "vite/client",
-      "element-plus/global"
+      "element-plus/global",
+      "unplugin-icons/types/vue"
     ],
     "removeComments": true,
     "paths": {
