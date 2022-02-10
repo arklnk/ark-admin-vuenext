@@ -14,8 +14,8 @@ const setting: ProjectConfig = {
     maxMessage: 5,
   },
   headerSetting: {
-    fullscreen: false
-  }
+    fullscreen: false,
+  },
 }
 
 export default setting
