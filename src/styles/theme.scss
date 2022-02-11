@@ -1,0 +1,8 @@
+:root {
+  // system theme
+  --primary-color: #409EFF;
+
+  // overwrite element-ui theme
+  // https://element-plus.gitee.io/zh-CN/guide/theming.html
+  --el-color-primary: var(--primary-color);
+}
