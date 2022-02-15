@@ -27,7 +27,6 @@ function jumpToHome() {
 
 <style lang="scss" scoped>
 @use '/@/styles/mixins.scss' as *;
-@use 'sass:math';
 
 $anims: float, floatReverse, float2, floatReverse2;
 $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
