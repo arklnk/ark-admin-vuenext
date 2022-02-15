@@ -1,4 +1,5 @@
 export enum PageEnum {
   Login = '/login',
-  Dashboard = '/dashboard'
+  Dashboard = '/dashboard',
+  NotFound = '/404',
 }

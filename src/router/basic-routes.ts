@@ -18,13 +18,22 @@ export const LoginRoute: RouteRecordRaw = {
 /**
  * @description 404 page route
  */
-export const PageNotFoundRoute: RouteRecordRaw = {
+export const Error404Route: RouteRecordRaw = {
+  path: PageEnum.NotFound,
+  name: 'Error404',
+  component: () => import('/@/views/error/Error404.vue'),
+}
+
+/**
+ * @description notfound route
+ */
+export const NotFoundRoute: RouteRecordRaw = {
   path: '/:path(.*)*',
-  name: 'PageNotFound',
-  component: () => import('/@/views/error/PageNotFound.vue'),
+  name: 'NotFound',
+  redirect: PageEnum.NotFound,
 }
 
 /**
  * @description basic routing without permission
  */
-export const basicRoutes = [PageNotFoundRoute, LoginRoute]
+export const basicRoutes = [NotFoundRoute, LoginRoute, Error404Route]
