@@ -13,7 +13,28 @@ function pathResolve(dir: string) {
 // inject info
 const __APP_INFO__ = {
   pkg: { dependencies, devDependencies, version },
-  // lastBuildTime: formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss')
+  lastBuildTime: new Date(),
+}
+
+/**
+ * package env type
+ */
+function packageEnv(mode: string, root: string): ViteEnv {
+  const ret: any = {}
+  const envConf = loadEnv(mode, root)
+
+  Object.keys(envConf).forEach((envName) => {
+    let conf: unknown = envConf[envName]
+
+    // format port to number
+    if (envName === 'VITE_PORT') {
+      conf = Number(conf)
+    }
+
+    ret[envName] = conf
+  })
+
+  return ret
 }
 
 // https://vitejs.dev/config/
@@ -21,7 +42,7 @@ export default defineConfig(({ command, mode }) => {
   const root = process.cwd()
   const isBuild = command === 'build'
 
-  const env = loadEnv(mode, root) as unknown as ViteEnv
+  const env = packageEnv(mode, root)
   return {
     plugins: createVitePlugins(env, isBuild),
     base: '/',
@@ -41,7 +62,7 @@ export default defineConfig(({ command, mode }) => {
       ],
     },
 
-    server: createViteProxy(),
+    server: createViteProxy(env),
 
     build: {
       target: 'es2015',
