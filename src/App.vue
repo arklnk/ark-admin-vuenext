@@ -1,5 +1,5 @@
 <template>
-  <ElConfigProvider size="small" :locale="locale">
+  <ElConfigProvider size="default" :locale="locale">
     <RouterView />
   </ElConfigProvider>
 </template>

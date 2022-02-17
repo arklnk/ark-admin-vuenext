@@ -8,7 +8,7 @@ const setting: ProjectConfig = {
     collapse: false,
   },
   elementUISetting: {
-    size: 'small',
+    size: 'default',
     zIndex: 2000,
     autoInsertSpace: true,
     maxMessage: 5,
