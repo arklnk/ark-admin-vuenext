@@ -7,7 +7,6 @@ import windicss from 'vite-plugin-windicss'
 import { configHtmlPlugin } from './html'
 import { configIconsPlugin } from './icons'
 
-
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const vitePlugins: (Plugin | Plugin[])[] = [vue(), vueJsx()]
 
