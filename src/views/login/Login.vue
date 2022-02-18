@@ -5,6 +5,7 @@
     </header>
     <main class="max-w-[800px] m-auto pt-12 pb-6">
       <div class="relative w-[380px] bg-white rounded-lg mt-20 mx-auto p-10">
+        <div class="pb-7 pt-2 text-center text-2xl font-semibold">账号登录</div>
         <AccountLoginForm />
       </div>
     </main>
@@ -20,6 +21,6 @@ import AccountLoginForm from './AccountLoginForm.vue'
 @use '/@/styles/mixins.scss' as *;
 
 @include b(login) {
-  background-image: url("/@/assets/svg/login-bg.svg");
+  background-image: url('/@/assets/svg/login-bg.svg');
 }
 </style>
