@@ -4,13 +4,13 @@
 export enum ResultEnum {
   SUCCESS = 200,
   TIMEOUT = 401,
-  UNKNOWN = -1
+  TYPE = 'success',
 }
 
 /**
  * @description: request method
  */
- export enum RequestEnum {
+export enum RequestEnum {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',

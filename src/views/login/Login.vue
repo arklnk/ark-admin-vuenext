@@ -1,5 +1,5 @@
 <template>
-  <div class="sf-login relative h-full w-full bg-no-repeat bg-cover bg-gray-100">
+  <div class="sf-login relative h-full w-full bg-no-repeat bg-cover bg-gray-100 overflow-y-auto">
     <header class="max-w-[800px] h-20 px-5 m-auto flex justify-end items-center">
       <ElLink :underline="false" :href="GITHUB_URL" type="info" target="_blank">开源地址</ElLink>
     </header>

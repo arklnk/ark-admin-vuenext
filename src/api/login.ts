@@ -1,20 +1,23 @@
+import type { BaseResultPromise } from '/#/request'
 import request from '/@/utils/request'
 
 export enum Api {
   login = 'login',
-  captcha = 'captcha/img'
+  captcha = 'captcha/img',
 }
 
-export const login = () => {
-  return request({
-    url: Api.login,
-    method: 'POST',
-  })
+interface CaptchaImgParams {
+  width?: number
+  height?: number
 }
-
-export const getImageCaptcha = () => {
+interface CaptchaImgResult {
+  img: string
+  id: string
+}
+export function getImageCaptcha(params?: CaptchaImgParams): BaseResultPromise<CaptchaImgResult> {
   return request({
     url: Api.captcha,
-    method: 'GET'
+    method: 'GET',
+    params,
   })
 }
