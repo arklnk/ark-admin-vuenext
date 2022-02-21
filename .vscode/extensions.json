@@ -1,3 +1,11 @@
 {
-  "recommendations": ["johnsoncodehk.volar"]
+  "recommendations": [
+    "johnsoncodehk.volar",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "mrmlnc.vscode-scss",
+    "antfu.iconify",
+    "voorjaar.windicss-intellisense",
+    "mikestead.dotenv"
+  ]
 }
