@@ -1,6 +1,6 @@
 <template>
   <main class="sf-error404 relative flex items-center justify-center h-full w-full overflow-hidden bg-white text-black">
-    <span class="sf-error404__particle absolute block" v-for="i in MAX_RANDOM_SIZE" :key="i">&nbsp;0&nbsp;</span>
+    <span class="sf-error404__particle absolute block" v-for="i in MAX_RANDOM_SIZE" :key="i">0</span>
     <span class="sf-error404__particle absolute block" v-for="i in MAX_RANDOM_SIZE" :key="i">4</span>
     <article
       class="sf-error404__content relative w-[500px] max-w-full m-5 bg-white text-center py-[60px] px-[40px] rounded-sm"
