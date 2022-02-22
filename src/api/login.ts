@@ -21,3 +21,20 @@ export function getImageCaptcha(params?: CaptchaImgParams): BaseResultPromise<Ca
     params,
   })
 }
+
+interface UserLoginParams {
+  username: string
+  password: string
+  captchaId: string
+  verifyCode: string
+}
+interface UserLoginResult {
+  token: string
+}
+export function userLogin(data: UserLoginParams): BaseResultPromise<null | UserLoginResult> {
+  return request({
+    url: Api.login,
+    method: 'POST',
+    data,
+  })
+}

@@ -1,41 +1,86 @@
 <template>
-  <ElForm ref="formRef" label-width="0px" :model="formData" :rules="formRules">
+  <ElForm
+    ref="formRef"
+    label-width="0px"
+    :model="formData"
+    :rules="formRules"
+    :disabled="isLogging"
+  >
     <ElFormItem prop="username">
-      <ElInput v-model="formData.username" placeholder="用户名" />
+      <ElInput size="default" v-model="formData.username" placeholder="用户名" />
     </ElFormItem>
-    <ElFormItem prop="passwrod">
-      <ElInput v-model="formData.passwrod" placeholder="密码" />
+    <ElFormItem prop="password">
+      <ElInput size="default" v-model="formData.password" placeholder="密码" />
     </ElFormItem>
     <ElFormItem prop="verifyCode">
       <div class="w-full relative flex">
-        <ElInput class="flex-1" v-model="formData.verifyCode" placeholder="验证码" />
-        <ElImage class="h-8 w-20 ml-2 cursor-pointer bg-gray-200" :src="captchaData" fit="fill" @click="handleGetImageCaptcha" />
+        <ElInput
+          size="default"
+          class="flex-1"
+          v-model="formData.verifyCode"
+          placeholder="验证码"
+          @keyup.enter="handleLogin"
+        />
+        <ElImage
+          class="h-8 w-20 ml-2 cursor-pointer bg-gray-200"
+          :src="captchaData"
+          fit="fill"
+          @click="handleGetImageCaptcha"
+        />
       </div>
     </ElFormItem>
     <ElFormItem>
-      <ElButton :loading="loading" class="w-full mt-2" type="primary" @click="handleLogin">登录</ElButton>
+      <ElButton
+        size="default"
+        :loading="isLogging"
+        class="w-full mt-3"
+        type="primary"
+        @click="handleLogin"
+      >登录</ElButton>
     </ElFormItem>
   </ElForm>
 </template>
 
 <script setup lang="ts">
 import type { FormItemRule } from 'element-plus/lib/components/form/src/form.type'
+import type { ElForm } from 'element-plus'
 import { reactive, ref } from 'vue'
-import { getImageCaptcha } from '/@/api/login'
+import { getImageCaptcha, userLogin } from '/@/api/login'
+import { isEmpty, throttle } from 'lodash-es'
 
 const formData = reactive({
   username: '',
-  passwrod: '',
+  password: '',
   verifyCode: '',
-  captchaId: '',
+  captchaId: ''
 })
 
 /**
  * login
  */
-const loading = ref(false)
-const formRef = ref(null)
-async function handleLogin() {}
+const isLogging = ref(false)
+type FormInstance = InstanceType<typeof ElForm>
+const formRef = ref<FormInstance>()
+const handleLogin = throttle(() => {
+  if (!formRef.value) return
+
+  formRef.value.validate(async (valid) => {
+    if (valid) {
+      try {
+        isLogging.value = true
+        const { data } = await userLogin(formData)
+        if (data && isEmpty(data?.token)) {
+          // logging
+          console.log(data.token)
+        }
+      } finally {
+        isLogging.value = false
+      }
+    } else {
+      return false
+    }
+  })
+}, 2000)
 
 /**
  * get image captcha
@@ -59,17 +104,29 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       trigger: 'blur',
       type: 'string',
       min: 4,
-      message: '请输入用户名',
-    },
+      message: () => {
+        if (isEmpty(formData.username)) {
+          return '请输入用户名'
+        } else {
+          return '输入的用户名不合法'
+        }
+      }
+    }
   ],
-  passwrod: [
+  password: [
     {
       required: true,
       trigger: 'blur',
       type: 'string',
       min: 6,
-      message: '请输入密码',
-    },
+      message: () => {
+        if (isEmpty(formData.password)) {
+          return '请输入密码'
+        } else {
+          return '输入的密码不合法'
+        }
+      }
+    }
   ],
   verifyCode: [
     {
@@ -78,8 +135,14 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       type: 'string',
       min: 4,
       max: 4,
-      message: '请输入验证码',
-    },
-  ],
+      message: () => {
+        if (isEmpty(formData.verifyCode)) {
+          return '请输入验证码'
+        } else {
+          return '输入的验证码不合法'
+        }
+      }
+    }
+  ]
 })
 </script>
