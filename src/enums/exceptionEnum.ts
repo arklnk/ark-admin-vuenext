@@ -16,5 +16,5 @@ export enum ExceptionEnum {
   /**
    * @description permission error related
    */
-  PERMISSION_FORBIDDEN = 11003
+  PERMISSION_FORBIDDEN = 11003,
 }
