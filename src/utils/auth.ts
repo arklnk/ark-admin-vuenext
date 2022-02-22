@@ -1,7 +1,7 @@
 import { KEY_TOKEN } from '/@/enums/cacheEnum'
 
-export function getToken(): string | null {
-  return localStorage.getItem(KEY_TOKEN)
+export function getToken(): string {
+  return localStorage.getItem(KEY_TOKEN) || ''
 }
 
 export function setToken(token: string) {
