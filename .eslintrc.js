@@ -23,6 +23,7 @@ module.exports = defineConfig({
     // style
     semi: ['error', 'never'],
     quotes: ['error', 'single'],
+    'eol-last': ['error', 'always'],
 
     // ts
     'vue/script-setup-uses-vars': 'error',
