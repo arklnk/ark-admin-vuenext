@@ -5,10 +5,6 @@ interface UserState {
   token: string
   name: string
   avatar: string
-  /**
-   * @description like this [ 'sys:user:add', 'sys:user:update' ]
-   */
-  ownPermssion: string[]
 }
 
 export const useUserStore = defineStore({
@@ -18,7 +14,6 @@ export const useUserStore = defineStore({
       token: '',
       name: '',
       avatar: '',
-      ownPermssion: [],
     }
   },
   getters: {
@@ -30,9 +25,6 @@ export const useUserStore = defineStore({
         name: this.name,
         avatar: this.avatar,
       }
-    },
-    getOwnPermission(): string[] {
-      return this.ownPermssion
     },
   },
   actions: {
