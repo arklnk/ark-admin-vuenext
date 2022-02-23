@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { basicRoutes } from './basic-routes'
+import { basicRoutes } from '/@/router/basicRoutes'
 
 export const router = createRouter({
   history: createWebHistory(),

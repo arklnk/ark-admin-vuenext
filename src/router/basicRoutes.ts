@@ -4,7 +4,12 @@ import { PageEnum } from '../enums/pageEnum'
 /**
  * @description default layout
  */
-export const LAYOUT = () => import('/@/layout/index.vue')
+export const ParentLayout = () => import('/@/layout/index.vue')
+
+/**
+ * @description empty layout
+ */
+export const EmptyLayout = () => import('/@/layout/EmptyLayout.vue')
 
 /**
  * @description login page route
