@@ -86,11 +86,12 @@ const handleLogin = throttle(() => {
  * get image captcha
  */
 const captchaData = ref('')
-async function handleGetImageCaptcha() {
+const handleGetImageCaptcha = throttle(async () => {
   const { data } = await getImageCaptcha()
   formData.captchaId = data!.id
   captchaData.value = data!.img
-}
+}, 1000)
+
 // init
 handleGetImageCaptcha()
 
