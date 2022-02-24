@@ -5,7 +5,7 @@ import { ResultEnum } from '/@/enums/httpEnum'
 import { ExceptionEnum } from '/@/enums/exceptionEnum'
 import { Api } from '/@/api/login'
 
-import type { SFAxiosInstance, BaseResult } from '/#/request'
+import type { BaseResult } from '/#/request'
 import { useUserStore } from '/@/stores/modules/user'
 
 /**
@@ -14,7 +14,7 @@ import { useUserStore } from '/@/stores/modules/user'
 const instance = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 10000,
-}) as unknown as SFAxiosInstance
+})
 
 /**
  * request interceptor (token)

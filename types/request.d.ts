@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig, Axios } from 'axios'
+// import type { AxiosRequestConfig, Axios } from 'axios'
 
 /**
  * base result
@@ -15,9 +15,11 @@ export interface BaseResult<T = any> {
 export type BaseResultPromise<T = any> = Promise<BaseResult<T>>
 
 /**
- * @description custom axios instance
+ * overwite default return type
  */
-export interface SFAxiosInstance extends Axios {
-  (config: AxiosRequestConfig): BaseResultPromise
-  (url: string, config?: AxiosRequestConfig): BaseResultPromise
+declare module 'axios' {
+  export interface AxiosInstance extends Axios {
+    (config: AxiosRequestConfig): BaseResultPromise
+    (url: string, config?: AxiosRequestConfig): BaseResultPromise
+  }
 }
