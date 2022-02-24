@@ -27,10 +27,12 @@ instance.interceptors.request.use(
     if (userStore.getToken) {
       config.headers!['Authorization'] = userStore.getToken
     }
+
+    return config
   },
   (error) => {
     return Promise.reject(error)
-  }
+  },
 )
 
 /**
@@ -62,7 +64,7 @@ instance.interceptors.response.use(
       }
     }
     return res
-  }
+  },
 )
 
 export default instance
