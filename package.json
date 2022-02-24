@@ -23,6 +23,7 @@
     "@iconify/json": "^2.0.35",
     "@types/lodash-es": "^4.17.5",
     "@types/node": "^17.0.9",
+    "@types/nprogress": "^0.2.0",
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
     "@vitejs/plugin-vue": "^2.0.0",
