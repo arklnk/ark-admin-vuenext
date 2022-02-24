@@ -1,0 +1,13 @@
+{
+  "request-snippet": {
+    "scope": "typescript",
+    "prefix": "sfreq",
+    "body": [
+      "import type { BaseResultPromise } from '/#/request'",
+      "import request from '/@/utils/request'",
+      "",
+      "enum Api {}"
+    ],
+    "description": "base api request template"
+  }
+}
