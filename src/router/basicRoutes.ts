@@ -9,7 +9,7 @@ export const ParentLayout = () => import('/@/layout/index.vue')
 /**
  * @description empty layout
  */
-export const EmptyLayout = () => import('/@/layout/EmptyLayout.vue')
+export const EmptyLayout = () => import('/@/layout/components/EmptyLayout.vue')
 
 /**
  * @description login page route
@@ -18,6 +18,9 @@ export const LoginRoute: RouteRecordRaw = {
   path: PageEnum.Login,
   name: 'Login',
   component: () => import('/@/views/login/Login.vue'),
+  meta: {
+    title: '登录',
+  },
 }
 
 /**
@@ -27,6 +30,9 @@ export const Error404Route: RouteRecordRaw = {
   path: PageEnum.NotFound,
   name: 'Error404',
   component: () => import('/@/views/error/Error404.vue'),
+  meta: {
+    title: '页面走丢了',
+  },
 }
 
 /**

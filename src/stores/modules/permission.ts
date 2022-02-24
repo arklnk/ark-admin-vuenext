@@ -34,5 +34,8 @@ export const usePermissionStore = defineStore({
     setPermissionList(perms: string[]) {
       this.permissionList = perms
     },
+    async generateRoutes(): Promise<RouteRecordRaw[]> {
+      return []
+    },
   },
 })
