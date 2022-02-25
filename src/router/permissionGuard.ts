@@ -51,7 +51,9 @@ export function setupPermissionGuard(router: Router) {
         return true
       } else {
         // other pages that do not have permission to access are redirected to the login page.
-        return `/login?redirect=${to.path}`
+        return to.path === PageEnum.NotFound
+          ? PageEnum.Login
+          : `${PageEnum.Login}?redirect=${to.path}`
       }
     }
   })
