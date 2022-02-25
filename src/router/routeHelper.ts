@@ -3,12 +3,13 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import { ParentLayout, EmptyLayout } from '/@/router/basicRoutes'
 import { isUrl } from '/@/utils/is'
+import { toHump } from '/@/utils'
 import { routeModuleMap } from './routeModule'
 
 /**
  * Filter asynchronous routing tables by recursion
  */
-export function filterAsyncRoutes(routes: Menu[], parentRoute: Menu): RouteRecordRaw[] {
+export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): RouteRecordRaw[] {
   const asyncRoutes: RouteRecordRaw[] = []
 
   routes.forEach((routeItem) => {
@@ -54,9 +55,12 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Menu): RouteRecor
  * create real route raw obj
  */
 export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | null {
+  // route name
+  const name = toHump(menu.router)
   // dir
   if (menu.type === 0) {
     return {
+      name,
       path: menu.router,
       component: isRoot ? ParentLayout : EmptyLayout,
       meta: {
@@ -68,6 +72,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
   // external link
   if (isUrl(menu.router)) {
     return {
+      name,
       path: `external-link${menu.id}`,
       component: ParentLayout,
       children: [
@@ -88,6 +93,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
 
   if (isRoot) {
     return {
+      name,
       path: menu.router,
       redirect: `${menu.router}/index`,
       component: ParentLayout,
@@ -107,6 +113,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
 
   // 2级、3级以上嵌套菜单
   return {
+    name,
     path: menu.router,
     component: comp,
     meta: {

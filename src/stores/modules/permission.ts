@@ -1,6 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 import { defineStore } from 'pinia'
+import { getPermAndMenu } from '/@/api/account'
+import { filterAsyncRoutes } from '/@/router/routeHelper'
 
 interface PermissionState {
   /**
@@ -31,11 +33,19 @@ export const usePermissionStore = defineStore({
     },
   },
   actions: {
-    setPermissionList(perms: string[]) {
-      this.permissionList = perms
+    resetPermAndMenu() {
+      this.menuList = []
+      this.permissionList = []
     },
-    async generateRoutes(): Promise<RouteRecordRaw[]> {
-      return []
+    /**
+     * @description 获取登录管理员权限和菜单配置
+     */
+    async getPermAndMenu(): Promise<RouteRecordRaw[]> {
+      const { data } = await getPermAndMenu()
+      this.permissionList = data!.perms
+      // 过滤菜单数据
+      const menus = filterAsyncRoutes(data!.menus, null)
+      return menus
     },
   },
 })

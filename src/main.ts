@@ -17,14 +17,14 @@ async function bootstrap() {
   // store
   setupStore(app)
 
-  // init appconfig
-  initAppConfigStore()
-
   // register global component and lib
   registerGlobalComp(app)
 
   // setup router
   setupRouter(app)
+
+  // init appconfig
+  initAppConfigStore()
 
   // mount
   app.mount('#app')

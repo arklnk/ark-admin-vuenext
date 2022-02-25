@@ -13,6 +13,10 @@ import { usePermissionStore } from '/@/stores/modules/permission'
  */
 export const whitePathList: (PageEnum | string)[] = [PageEnum.Login]
 
+function generateLoginPath(toPath: string): string {
+  return toPath === PageEnum.NotFound ? PageEnum.Login : `${PageEnum.Login}?redirect=${toPath}`
+}
+
 /**
  * setup router guard
  */
@@ -20,7 +24,7 @@ export function setupPermissionGuard(router: Router) {
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
 
-  router.beforeEach(async (to) => {
+  router.beforeEach(async (to, _from) => {
     // start progress bar
     NProgress.start()
 
@@ -42,6 +46,28 @@ export function setupPermissionGuard(router: Router) {
         // access
         if (hasRoutes) {
           return true
+        } else {
+          // config permission and menu
+          try {
+            const [menus, _] = await Promise.all([
+              permissionStore.getPermAndMenu(),
+              userStore.initUserInfo(),
+            ])
+            // dynamic add route
+            menus.forEach(router.addRoute)
+            // hack method to ensure that addRoutes is complete
+            // set the replace: true, so the navigation will not leave a history record
+            return {
+              ...to,
+              replace: true,
+            }
+          } catch (e) {
+            // remove token
+            userStore.resetToken()
+            permissionStore.resetPermAndMenu()
+
+            return generateLoginPath(to.path)
+          }
         }
       }
     } else {
@@ -51,9 +77,7 @@ export function setupPermissionGuard(router: Router) {
         return true
       } else {
         // other pages that do not have permission to access are redirected to the login page.
-        return to.path === PageEnum.NotFound
-          ? PageEnum.Login
-          : `${PageEnum.Login}?redirect=${to.path}`
+        return generateLoginPath(to.path)
       }
     }
   })

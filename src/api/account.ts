@@ -1,4 +1,6 @@
 import type { BaseResultPromise } from '/#/request'
+import type { Menu } from '/#/vue-router'
+
 import request from '/@/utils/request'
 
 enum Api {
@@ -6,14 +8,26 @@ enum Api {
   permmenu = 'account/permmenu',
 }
 
-export function getAccountInfo(): BaseResultPromise {
+interface AccountInfoResult {
+  name: string
+  nickName: string
+  email: string
+  phone: string
+  remark: string
+  headImg: string
+}
+export function getAccountInfo(): BaseResultPromise<AccountInfoResult> {
   return request({
     url: Api.info,
     method: 'GET',
   })
 }
 
-export function getPermAndMenu(): BaseResultPromise {
+interface PermMenuResult {
+  perms: string[]
+  menus: Menu[]
+}
+export function getPermAndMenu(): BaseResultPromise<PermMenuResult> {
   return request({
     url: Api.permmenu,
     method: 'GET',

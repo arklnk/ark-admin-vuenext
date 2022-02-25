@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { setToken as setLocalToken, getToken as getLocalToken } from '/@/utils/auth'
+import { getAccountInfo } from '/@/api/account'
+import { setToken as setLocalToken, removeToken } from '/@/utils/auth'
 
 interface UserState {
   token: string
@@ -10,9 +11,8 @@ interface UserState {
 export const useUserStore = defineStore({
   id: 'app-user',
   state: (): UserState => {
-    const localToken = getLocalToken()
     return {
-      token: localToken,
+      token: '',
       name: '',
       avatar: '',
     }
@@ -30,8 +30,23 @@ export const useUserStore = defineStore({
   },
   actions: {
     setToken(token: string) {
+      // storage token
       setLocalToken(token)
+      // store token
+      this.token = token
     },
-    fetchUserInfo() {},
+    resetToken() {
+      // remove storage token
+      removeToken()
+      // store
+      this.token = ''
+      this.name = ''
+      this.avatar = ''
+    },
+    async initUserInfo(): Promise<void> {
+      const { data } = await getAccountInfo()
+      this.name = data!.name
+      this.avatar = data!.headImg
+    },
   },
 })

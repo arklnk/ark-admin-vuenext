@@ -18,5 +18,5 @@ declare global {
     VITE_APP_TITLE: string
   }
 
-  type Nullable<T> = T | null
+  type Nullable<T> = T | null | undefined
 }

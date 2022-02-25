@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-screen relative flex flex-row">Layout</div>
+  <div class="h-full w-full relative flex flex-row">Layout</div>
 </template>
 
 <script setup lang="ts">

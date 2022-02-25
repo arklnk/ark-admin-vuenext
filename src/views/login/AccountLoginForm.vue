@@ -10,7 +10,13 @@
       <ElInput size="default" v-model="formData.username" placeholder="用户名" />
     </ElFormItem>
     <ElFormItem prop="password">
-      <ElInput size="default" v-model="formData.password" placeholder="密码" />
+      <ElInput
+        size="default"
+        v-model="formData.password"
+        placeholder="密码"
+        show-password
+        type="password"
+      />
     </ElFormItem>
     <ElFormItem prop="verifyCode">
       <div class="w-full relative flex">
@@ -44,9 +50,13 @@
 <script setup lang="ts">
 import type { FormItemRule } from 'element-plus/lib/components/form/src/form.type'
 import type { ElForm } from 'element-plus'
+
 import { reactive, ref } from 'vue'
-import { getImageCaptcha, userLogin } from '/@/api/login'
+import { useRouter } from 'vue-router'
 import { isEmpty, throttle } from 'lodash-es'
+import { getImageCaptcha, userLogin } from '/@/api/login'
+import { useUserStore } from '/@/stores/modules/user'
+import { PageEnum } from '/@/enums/pageEnum'
 
 const formData = reactive({
   username: '',
@@ -61,6 +71,8 @@ const formData = reactive({
 const isLogging = ref(false)
 type FormInstance = InstanceType<typeof ElForm>
 const formRef = ref<FormInstance>()
+const userStore = useUserStore()
+const router = useRouter()
 const handleLogin = throttle(() => {
   if (!formRef.value) return
 
@@ -69,9 +81,10 @@ const handleLogin = throttle(() => {
       try {
         isLogging.value = true
         const { data } = await userLogin(formData)
-        if (data && isEmpty(data?.token)) {
+        if (data && !isEmpty(data.token)) {
           // logging
-          console.log(data.token)
+          userStore.setToken(data.token)
+          await router.replace(PageEnum.Root)
         }
       } finally {
         isLogging.value = false
