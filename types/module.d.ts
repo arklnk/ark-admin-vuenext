@@ -12,6 +12,8 @@ interface ImportMetaEnv {
   readonly VITE_APP_BASE_SOCKET_PATH: string
   readonly VITE_APP_BASE_SOCKET_NSP: string
   readonly VITE_APP_TITLE: string
+  readonly VITE_PROXY_API_TARGET: string
+  readonly VITE_PROXY_WS_TARGET: string
 }
 
 interface ImportMeta {
