@@ -35,18 +35,18 @@ export const useUserStore = defineStore({
       // store token
       this.token = token
     },
-    resetToken() {
+    async initUserInfo(): Promise<void> {
+      const { data } = await getAccountInfo()
+      this.name = data!.name
+      this.avatar = data!.headImg
+    },
+    resetState(): void {
       // remove storage token
       removeToken()
       // store
       this.token = ''
       this.name = ''
       this.avatar = ''
-    },
-    async initUserInfo(): Promise<void> {
-      const { data } = await getAccountInfo()
-      this.name = data!.name
-      this.avatar = data!.headImg
     },
   },
 })

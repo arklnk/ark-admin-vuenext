@@ -14,12 +14,18 @@ interface PermissionState {
    * @description like this [ 'sys:user:add', 'sys:user:update' ]
    */
   permissionList: string[]
+
+  /**
+   * Whether the route has been dynamically added
+   */
+  isDynamicAddedRoute: boolean
 }
 
 export const usePermissionStore = defineStore({
   id: 'app-permission',
   state: (): PermissionState => {
     return {
+      isDynamicAddedRoute: false,
       menuList: [],
       permissionList: [],
     }
@@ -31,16 +37,23 @@ export const usePermissionStore = defineStore({
     getPermissionList(): string[] {
       return this.permissionList
     },
+    getIsDynamicAddedRoute(): boolean {
+      return this.isDynamicAddedRoute
+    },
   },
   actions: {
-    resetPermAndMenu() {
+    resetState(): void {
       this.menuList = []
       this.permissionList = []
+      this.isDynamicAddedRoute = false
+    },
+    setDynamicAddedRoute(added: boolean) {
+      this.isDynamicAddedRoute = added
     },
     /**
      * @description 获取登录管理员权限和菜单配置
      */
-    async getPermAndMenu(): Promise<RouteRecordRaw[]> {
+    async buildPermAndMenu(): Promise<RouteRecordRaw[]> {
       const { data } = await getPermAndMenu()
       this.permissionList = data!.perms
       // 过滤菜单数据

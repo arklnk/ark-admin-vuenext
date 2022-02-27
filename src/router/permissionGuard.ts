@@ -47,24 +47,23 @@ export function setupPermissionGuard(router: Router) {
         if (hasRoutes) {
           return true
         } else {
+          if (permissionStore.getIsDynamicAddedRoute) {
+            // if added, but not permission menu
+            return PageEnum.NotFound
+          }
           // config permission and menu
           try {
-            const [menus, _] = await Promise.all([
-              permissionStore.getPermAndMenu(),
-              userStore.initUserInfo(),
-            ])
+            const [menus, _] = await Promise.all([permissionStore.buildPermAndMenu(), userStore.initUserInfo()])
             // dynamic add route
             menus.forEach(router.addRoute)
+            permissionStore.setDynamicAddedRoute(true)
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record
-            return {
-              ...to,
-              replace: true,
-            }
+            return true
           } catch (e) {
             // remove token
-            userStore.resetToken()
-            permissionStore.resetPermAndMenu()
+            userStore.resetState()
+            permissionStore.resetState()
 
             return generateLoginPath(to.path)
           }
