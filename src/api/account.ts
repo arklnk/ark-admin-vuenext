@@ -6,6 +6,7 @@ import request from '/@/utils/request'
 enum Api {
   info = 'account/info',
   permmenu = 'account/permmenu',
+  logout = '/account/logout',
 }
 
 interface AccountInfoResult {
@@ -31,5 +32,12 @@ export function getPermAndMenu(): BaseResultPromise<PermMenuResult> {
   return request({
     url: Api.permmenu,
     method: 'GET',
+  })
+}
+
+export function logout(): BaseResultPromise {
+  return request({
+    url: Api.logout,
+    method: 'POST',
   })
 }

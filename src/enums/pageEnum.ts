@@ -3,4 +3,5 @@ export enum PageEnum {
   Login = '/login',
   Dashboard = '/dashboard',
   NotFound = '/404',
+  Forbidden = '/403',
 }

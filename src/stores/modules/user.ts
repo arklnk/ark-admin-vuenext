@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAccountInfo } from '/@/api/account'
+import { getAccountInfo, logout as logoutRequest } from '/@/api/account'
 import { setToken as setLocalToken, removeToken } from '/@/utils/auth'
 
 interface UserState {
@@ -39,6 +39,13 @@ export const useUserStore = defineStore({
       const { data } = await getAccountInfo()
       this.name = data!.name
       this.avatar = data!.headImg
+    },
+    async logout(): Promise<void> {
+      try {
+        await logoutRequest()
+      } finally {
+        this.resetState()
+      }
     },
     resetState(): void {
       // remove storage token

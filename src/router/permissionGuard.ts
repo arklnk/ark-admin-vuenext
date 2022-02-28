@@ -1,4 +1,4 @@
-import type { Router } from 'vue-router'
+import type { Router, RouteLocationRaw } from 'vue-router'
 
 import NProgress from 'nprogress'
 import { isEmpty } from 'lodash-es'
@@ -13,8 +13,11 @@ import { usePermissionStore } from '/@/stores/modules/permission'
  */
 export const whitePathList: (PageEnum | string)[] = [PageEnum.Login]
 
-function generateLoginPath(toPath: string): string {
-  return toPath === PageEnum.NotFound ? PageEnum.Login : `${PageEnum.Login}?redirect=${toPath}`
+function generateLoginPath(toPath: string): RouteLocationRaw {
+  return {
+    path: toPath === PageEnum.NotFound ? PageEnum.Login : `${PageEnum.Login}?redirect=${toPath}`,
+    replace: true,
+  }
 }
 
 /**
@@ -46,20 +49,23 @@ export function setupPermissionGuard(router: Router) {
         // access
         if (hasRoutes) {
           return true
+        } else if (!hasRoutes && permissionStore.getIsDynamicAddedRoute) {
+          // 如果该用户没有权限路由，则重定向至 403
+          // fixed Detected an infinite redirection in a navigation guard
+          return to.path === PageEnum.Forbidden ? true : PageEnum.Forbidden
         } else {
-          if (permissionStore.getIsDynamicAddedRoute) {
-            // if added, but not permission menu
-            return PageEnum.NotFound
-          }
           // config permission and menu
           try {
-            const [menus, _] = await Promise.all([permissionStore.buildPermAndMenu(), userStore.initUserInfo()])
+            const [menus, _] = await Promise.all([
+              permissionStore.buildPermAndMenu(),
+              userStore.initUserInfo(),
+            ])
             // dynamic add route
             menus.forEach(router.addRoute)
             permissionStore.setDynamicAddedRoute(true)
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record
-            return true
+            return { path: to.path, replace: true }
           } catch (e) {
             // remove token
             userStore.resetState()

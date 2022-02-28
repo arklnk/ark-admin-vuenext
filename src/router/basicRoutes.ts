@@ -36,6 +36,18 @@ export const Error404Route: RouteRecordRaw = {
 }
 
 /**
+ * @description 404 page route
+ */
+export const Error403Route: RouteRecordRaw = {
+  path: PageEnum.Forbidden,
+  name: 'Error403',
+  component: () => import('/@/views/error/Error403.vue'),
+  meta: {
+    title: '拒绝访问',
+  },
+}
+
+/**
  * @description notfound route
  */
 export const NotFoundRoute: RouteRecordRaw = {
@@ -47,4 +59,4 @@ export const NotFoundRoute: RouteRecordRaw = {
 /**
  * @description basic routing without permission
  */
-export const basicRoutes = [NotFoundRoute, LoginRoute, Error404Route]
+export const basicRoutes = [NotFoundRoute, LoginRoute, Error404Route, Error403Route]

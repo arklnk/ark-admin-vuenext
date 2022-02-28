@@ -1,5 +1,7 @@
 <template>
-  <main class="sf-error404 relative flex items-center justify-center h-full w-full overflow-hidden bg-white text-black">
+  <main
+    class="sf-error404 relative flex items-center justify-center h-full w-full overflow-hidden bg-white text-black"
+  >
     <span class="sf-error404__particle absolute block" v-for="i in MAX_RANDOM_SIZE" :key="i">0</span>
     <span class="sf-error404__particle absolute block" v-for="i in MAX_RANDOM_SIZE" :key="i">4</span>
     <article
@@ -13,13 +15,16 @@
 </template>
 
 <script setup lang="ts">
-const MAX_RANDOM_SIZE = Object.freeze(40)
+import { useRouter } from 'vue-router'
+import { PageEnum } from '/@/enums/pageEnum'
 
+const MAX_RANDOM_SIZE = Object.freeze(40)
+const router = useRouter()
 /**
  * @description 返回首页
  */
 function jumpToHome() {
-  window.location.href = '/'
+  router.push(PageEnum.Root)
 }
 </script>
 
@@ -28,6 +33,14 @@ function jumpToHome() {
 
 $anims: float, floatReverse, float2, floatReverse2;
 $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
+
+@mixin animation($delay, $duration, $animation) {
+  animation-delay: $delay;
+  animation-duration: $duration;
+  animation-name: $animation;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+}
 
 @include b(error404) {
   @include e(particle) {
@@ -55,65 +68,57 @@ $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
     animation: apparition 0.8s $easeSmooth forwards;
     opacity: 0;
   }
-}
 
-@keyframes apparition {
-  from {
-    opacity: 0;
-    transform: translateY(100px);
+  @keyframes apparition {
+    from {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(180px);
+    }
   }
-}
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
+  @keyframes floatReverse {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-180px);
+    }
   }
-  50% {
-    transform: translateY(180px);
-  }
-}
 
-@keyframes floatReverse {
-  0%,
-  100% {
-    transform: translateY(0);
+  @keyframes float2 {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(28px);
+    }
   }
-  50% {
-    transform: translateY(-180px);
-  }
-}
 
-@keyframes float2 {
-  0%,
-  100% {
-    transform: translateY(0);
+  @keyframes floatReverse2 {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-28px);
+    }
   }
-  50% {
-    transform: translateY(28px);
-  }
-}
-
-@keyframes floatReverse2 {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-28px);
-  }
-}
-
-@mixin animation($delay, $duration, $animation) {
-  animation-delay: $delay;
-  animation-duration: $duration;
-  animation-name: $animation;
-  animation-iteration-count: infinite;
-  animation-fill-mode: forwards;
 }
 </style>
