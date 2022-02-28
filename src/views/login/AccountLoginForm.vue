@@ -103,6 +103,8 @@ const handleGetImageCaptcha = throttle(async () => {
   const { data } = await getImageCaptcha()
   formData.captchaId = data!.id
   captchaData.value = data!.img
+  // 清空文本
+  formData.verifyCode = ''
 }, 1000)
 
 // init
