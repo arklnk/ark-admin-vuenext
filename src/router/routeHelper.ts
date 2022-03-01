@@ -1,4 +1,4 @@
-import type { Menu } from '/#/vue-router'
+import type { Menu, Component } from '/#/vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 import { ParentLayout, EmptyLayout } from '/@/router/basicRoutes'
@@ -122,4 +122,11 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
       noCache: !menu.keepalive,
     },
   }
+}
+
+/**
+ * ts
+ */
+export function defineRouteModule(module: Record<string, Component>) {
+  return module
 }
