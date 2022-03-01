@@ -19,8 +19,8 @@ import { useUserStore } from '/@/stores/modules/user'
 const userStore = useUserStore()
 const router = useRouter()
 
-async function reSign() {
-  await userStore.logout()
+function reSign() {
+  userStore.logout()
   router.replace(PageEnum.Login)
 }
 </script>
