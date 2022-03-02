@@ -62,7 +62,7 @@ export const RootRoute: RouteRecordRaw = {
     {
       path: PageEnum.Dashboard,
       name: toHump(PageEnum.Dashboard),
-      component: () => import('/@/views/dashboard/index.vue'),
+      component: () => import('/@/views/dashboard/Dashboard.vue'),
       meta: {
         title: PageTitleEnum.Dashboard,
       },
