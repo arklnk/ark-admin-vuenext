@@ -14,7 +14,7 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   vitePlugins.push(windicss())
 
   // icons
-  vitePlugins.push(configIconsPlugin())
+  vitePlugins.push(configIconsPlugin(isBuild))
 
   // html
   vitePlugins.push(configHtmlPlugin(env, isBuild))

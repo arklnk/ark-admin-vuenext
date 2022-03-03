@@ -1,6 +1,7 @@
 import 'normalize.css/normalize.css'
 import 'element-plus/dist/index.css'
 import 'virtual:windi.css'
+import 'virtual:svg-icons-register'
 
 import '/@/styles/index.scss'
 
