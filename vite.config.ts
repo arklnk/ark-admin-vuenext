@@ -64,10 +64,29 @@ export default defineConfig(({ command, mode }) => {
 
     server: createViteProxy(env),
 
+    // fixed: https://github.com/vitejs/vite/issues/5833
+    css: {
+      postcss: {
+        plugins: [
+          {
+            postcssPlugin: 'internal:charset-removal',
+            AtRule: {
+              charset: (atRule) => {
+                if (atRule.name === 'charset') {
+                  atRule.remove()
+                }
+              },
+            },
+          },
+        ],
+      },
+    },
+
     build: {
       target: 'es2015',
       outDir: 'dist',
       assetsDir: 'static',
+      minify: 'terser',
       terserOptions: {
         compress: {
           keep_infinity: true,
