@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { useResize } from './hooks/useResize'
+import { useResize } from '/@/hooks/web/useResize'
 
 useResize()
 </script>
