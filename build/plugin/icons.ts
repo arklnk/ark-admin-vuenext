@@ -24,7 +24,7 @@ export function configIconsPlugin(isBuild: boolean) {
      * custom insert position
      * @default body-last
      */
-    inject: 'body-first',
+    inject: 'body-last',
 
     /**
      * Specify symbolId format
