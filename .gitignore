@@ -6,6 +6,11 @@ dist-ssr
 .cache
 .local
 
+# testing css
+*.test.scss
+*.test.less
+*.test.css
+
 # local env files
 .env.local
 .env.*.local
