@@ -7,10 +7,11 @@ import '/@/styles/index.scss'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import { registerGlobalComp } from '/@/components/registerGlobalComp'
+
+import { registerGlobalComp } from '/@/core/registerGlobalComp'
+import { initAppConfigStore } from '/@/core/initAppConfig'
 import { setupStore } from './stores'
 import { setupRouter } from '/@/router'
-import { initAppConfigStore } from '/@/core/initAppConfig'
 
 async function bootstrap() {
   const app = createApp(App)

@@ -1,12 +1,14 @@
 <template>
-  <svg
-    :class="['sf-svgicon', $attrs.class, spin && 'svgicon--spin']"
-    :style="style"
-    aria-hidden="true"
-  >
+  <svg :class="['sf-svgicon', $attrs.class, spin && 'is-spin']" :style="style" aria-hidden="true">
     <use :xlink:href="symbolId" />
   </svg>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'SvgIcon'
+}
+</script>
 
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
@@ -48,8 +50,22 @@ const style = computed((): CSSProperties => {
 @use '/@/styles/mixins.scss' as *;
 
 @include b(svgicon) {
-  @include m(spin) {
-    animation: loadingCircle 1s infinite linear;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: -0.15em;
+  fill: currentColor;
+
+  @keyframes spin-animation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @include when(spin) {
+    animation: spin-animation 1s infinite linear;
   }
 }
 </style>
