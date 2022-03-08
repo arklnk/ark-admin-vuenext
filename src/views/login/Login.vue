@@ -21,6 +21,6 @@ import AccountLoginForm from './AccountLoginForm.vue'
 @use '/@/styles/mixins.scss' as *;
 
 @include b(login) {
-  background-image: url('/@/assets/svg/login-bg.svg');
+  background-image: url("/@/assets/svg/login-bg.svg");
 }
 </style>
