@@ -1,11 +1,13 @@
 <template>
   <main
-    class="sf-error404 relative flex items-center justify-center h-full w-full overflow-hidden bg-white text-black"
+    class="relative flex items-center justify-center h-full w-full overflow-hidden bg-white text-black"
+    :class="d.b()"
   >
-    <span class="sf-error404__particle absolute block" v-for="i in MAX_RANDOM_SIZE" :key="i">0</span>
-    <span class="sf-error404__particle absolute block" v-for="i in MAX_RANDOM_SIZE" :key="i">4</span>
+    <span class="absolute block" :class="d.e('particle')" v-for="i in MAX_RANDOM_SIZE" :key="i">0</span>
+    <span class="absolute block" :class="d.e('particle')" v-for="i in MAX_RANDOM_SIZE" :key="i">4</span>
     <article
-      class="sf-error404__content relative w-[500px] max-w-full m-5 bg-white text-center py-[60px] px-[40px] rounded-sm"
+      :class="d.e('content')"
+      class="relative w-[500px] max-w-full m-5 bg-white text-center py-[60px] px-[40px] rounded-sm"
     >
       <p class="mb-4 text-base text-gray-600">该页面无法正常打开...</p>
       <p class="mb-4 text-xs text-gray-400">请检查链接是否输入正确, 或点击按钮返回首页</p>
@@ -17,9 +19,11 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { PageEnum } from '/@/enums/pageEnum'
+import { useDesign } from '/@/hooks/core/useDesign'
 
 const MAX_RANDOM_SIZE = Object.freeze(40)
 const router = useRouter()
+const d = useDesign('error404')
 /**
  * @description 返回首页
  */

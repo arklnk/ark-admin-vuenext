@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-center w-full h-full bg-gray-200">
-    <div class="sf-error403">
-      <div class="sf-error403__icon"></div>
+    <div :class="d.b()">
+      <div :class="d.e('icon')"></div>
       <h1>访问被拒绝</h1>
       <p>
         请联系管理员进行申请必要权限, 或
@@ -14,10 +14,12 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { PageEnum } from '/@/enums/pageEnum'
+import { useDesign } from '/@/hooks/core/useDesign'
 import { useUserStore } from '/@/stores/modules/user'
 
 const userStore = useUserStore()
 const router = useRouter()
+const d = useDesign('error403')
 
 function reSign() {
   userStore.logout()
