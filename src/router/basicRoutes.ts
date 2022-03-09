@@ -5,12 +5,12 @@ import { toHump } from '/@/utils'
 /**
  * @description default layout
  */
-export const ParentLayout = import('/@/layouts/index.vue')
+export const ParentLayout = () => import('/@/layouts/index.vue')
 
 /**
  * @description empty layout
  */
-export const EmptyLayout = import('/@/layouts/EmptyLayout.vue')
+export const EmptyLayout = () => import('/@/layouts/EmptyLayout.vue')
 
 /**
  * @description login page route
@@ -57,6 +57,7 @@ export const Error403Route: RouteRecordRaw = {
 export const RootRoute: RouteRecordRaw = {
   path: PageEnum.Root,
   name: 'RootPage',
+  component: ParentLayout,
   redirect: PageEnum.Dashboard,
   children: [
     {
@@ -65,6 +66,7 @@ export const RootRoute: RouteRecordRaw = {
       component: () => import('/@/views/dashboard/Dashboard.vue'),
       meta: {
         title: PageTitleEnum.Dashboard,
+        icon: 'dashboard',
       },
     },
   ],

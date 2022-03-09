@@ -4,6 +4,8 @@ import type { RouteRecordRaw } from 'vue-router'
 import { ParentLayout, EmptyLayout } from '/@/router/basicRoutes'
 import { isUrl } from '/@/utils/is'
 import { toHump } from '/@/utils'
+import { MenuTypeEnum } from '/@/enums/menuEnum'
+
 import { routeModuleMap } from './routeModule'
 
 /**
@@ -13,16 +15,16 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
   const asyncRoutes: RouteRecordRaw[] = []
 
   routes.forEach((routeItem) => {
-    if (routeItem.type === 2 || routeItem.isShow) {
+    if (routeItem.type === MenuTypeEnum.Permission || !routeItem.isShow) {
       // 权限 或者 隐藏则直接pass
       return
     }
 
     let realRoute: RouteRecordRaw | null = null
-    if (!parentRoute && !routeItem.parentId && routeItem.type === 1) {
+    if (!parentRoute && !routeItem.parentId && routeItem.type === MenuTypeEnum.Menu) {
       // 根菜单
       realRoute = createRouteItem(routeItem, true)
-    } else if (!parentRoute && !routeItem.parentId && routeItem.type === 0) {
+    } else if (!parentRoute && !routeItem.parentId && routeItem.type === MenuTypeEnum.Catalogue) {
       // 目录
       const childRoutes = filterAsyncRoutes(routes, routeItem)
       realRoute = createRouteItem(routeItem, true)
@@ -30,10 +32,18 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
         realRoute!.redirect = childRoutes[0].path
         realRoute!.children = childRoutes
       }
-    } else if (parentRoute && parentRoute.id === routeItem.parentId && routeItem.type === 1) {
+    } else if (
+      parentRoute &&
+      parentRoute.id === routeItem.parentId &&
+      routeItem.type === MenuTypeEnum.Menu
+    ) {
       // 子菜单
       realRoute = createRouteItem(routeItem, false)
-    } else if (parentRoute && parentRoute.id === routeItem.parentId && routeItem.type === 0) {
+    } else if (
+      parentRoute &&
+      parentRoute.id === routeItem.parentId &&
+      routeItem.type === MenuTypeEnum.Catalogue
+    ) {
       // 如果还是目录，继续递归
       const childRoute = filterAsyncRoutes(routes, routeItem)
       realRoute = createRouteItem(routeItem, false)
@@ -48,6 +58,7 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
       asyncRoutes.push(realRoute)
     }
   })
+
   return asyncRoutes
 }
 
