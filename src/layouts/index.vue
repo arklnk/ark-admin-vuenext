@@ -1,11 +1,11 @@
 <template>
   <div class="h-full w-full relative flex flex-row">
     <RouterView />
-    <MenuItem icon="dashboard" />
-    <SvgIcon icon="a" />
+    <SvgIcon icon="dashboard" spin />
+    <BasicMenuItem icon="dashboard" />
   </div>
 </template>
 
 <script setup lang="ts">
-import MenuItem from './sidebar/MenuItem.vue'
+import BasicMenuItem from './sidebar/BasicMenuItem.vue'
 </script>

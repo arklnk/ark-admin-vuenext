@@ -10,7 +10,7 @@ export const ParentLayout = () => import('/@/layouts/index.vue')
 /**
  * @description empty layout
  */
-export const EmptyLayout = () => import('/@/layouts/EmptyLayout.vue')
+export const EmptyLayout = () => import('/@/layouts/content/EmptyLayout.vue')
 
 /**
  * @description login page route
