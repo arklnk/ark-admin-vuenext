@@ -1,5 +1,5 @@
 <template>
-  <svg :class="['sf-svgicon', $attrs.class, spin && 'is-spin']" :style="style" aria-hidden="true">
+  <svg :class="[d.b(), $attrs.class, d.is('spin', spin)]" :style="style" aria-hidden="true">
     <use :xlink:href="symbolId" />
   </svg>
 </template>
@@ -14,6 +14,7 @@ export default {
 import type { CSSProperties } from 'vue'
 
 import { computed } from 'vue'
+import { useDesign } from '/@/hooks/core/useDesign'
 
 const props = defineProps({
   prefix: {
@@ -34,6 +35,7 @@ const props = defineProps({
   }
 })
 
+const d = useDesign('svg-icon')
 const symbolId = computed(() => `#${props.prefix}-${props.icon}`)
 const style = computed((): CSSProperties => {
   const { size } = props
@@ -49,7 +51,7 @@ const style = computed((): CSSProperties => {
 <style lang="scss" scoped>
 @use '/@/styles/mixins.scss' as *;
 
-@include b(svgicon) {
+@include b(svg-icon) {
   display: inline-block;
   overflow: hidden;
   vertical-align: -0.15em;
