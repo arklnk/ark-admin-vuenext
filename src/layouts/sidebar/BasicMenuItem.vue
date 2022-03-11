@@ -1,12 +1,10 @@
 <script lang="tsx">
 import type { VNode } from 'vue'
 
-interface BasicMenuItemProps {
+const BasicMenuItem = (props: {
   icon?: string
   title?: string
-}
-
-const BasicMenuItem = (props: BasicMenuItemProps) => {
+}) => {
   const vnodes: VNode[] = []
   if (props.icon) {
     vnodes.push(<svg-icon icon={props.icon} />)
