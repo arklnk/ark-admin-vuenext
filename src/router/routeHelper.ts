@@ -1,8 +1,8 @@
 import type { Menu, Component } from '/#/vue-router'
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw, RouteMeta } from 'vue-router'
 
 import { ParentLayout, EmptyLayout } from '/@/router/basicRoutes'
-import { isUrl } from '/@/utils/is'
+import { isUrl as isExtUrl } from '/@/utils/is'
 import { toHump } from '/@/utils'
 import { MenuTypeEnum } from '/@/enums/menuEnum'
 
@@ -68,20 +68,23 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
 export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | null {
   // route name
   const name = toHump(menu.router)
+  const meta: RouteMeta = {
+    title: menu.name,
+    icon: menu.icon,
+    hidden: !menu.isShow,
+    noCache: !menu.keepalive,
+  }
   // dir
   if (menu.type === 0) {
     return {
       name,
       path: menu.router,
       component: isRoot ? ParentLayout : EmptyLayout,
-      meta: {
-        title: menu.name,
-        icon: menu.icon,
-      },
+      meta,
     }
   }
   // external link
-  if (isUrl(menu.router)) {
+  if (isExtUrl(menu.router)) {
     return {
       name,
       path: `external-link${menu.id}`,
@@ -90,10 +93,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
         {
           path: menu.router,
           component: EmptyLayout,
-          meta: {
-            title: menu.name,
-            icon: menu.icon,
-          },
+          meta,
         },
       ],
     }
@@ -112,11 +112,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
         {
           path: 'index',
           component: comp,
-          meta: {
-            title: menu.name,
-            icon: menu.icon,
-            noCache: !menu.keepalive,
-          },
+          meta,
         },
       ],
     }
@@ -127,11 +123,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
     name,
     path: menu.router,
     component: comp,
-    meta: {
-      title: menu.name,
-      icon: menu.icon,
-      noCache: !menu.keepalive,
-    },
+    meta,
   }
 }
 

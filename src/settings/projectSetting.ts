@@ -6,6 +6,7 @@ const setting: ProjectConfig = {
   menuSetting: {
     hidden: false,
     collapse: false,
+    uniqueOpened: true,
   },
   elementUISetting: {
     size: 'default',

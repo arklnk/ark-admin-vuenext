@@ -8,6 +8,7 @@ export interface ElementUISetting {
 export interface MenuSetting {
   hidden: boolean
   collapse: boolean
+  uniqueOpened: boolean
 }
 
 export interface HeaderSetting {
