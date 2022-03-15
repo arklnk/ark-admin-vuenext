@@ -1,6 +1,6 @@
 <template>
   <template v-if="!route.meta?.hidden">
-    <template v-if="hasOneShowingChild(route.children, route)">
+    <template v-if="hasOneShowingChild(route.children)">
       <ElMenuItem :index="route.path">
         <BasicMenuItem :icon="route.meta?.icon" :title="route.meta?.title" />
       </ElMenuItem>
@@ -35,16 +35,11 @@ defineProps({
   }
 })
 
-function hasOneShowingChild(children: RouteRecordRaw[] = [], parent: RouteRecordRaw): boolean {
+/**
+ * 是否为菜单级别，否则渲染成目录结构
+ */
+function hasOneShowingChild(children: RouteRecordRaw[] = []): boolean {
   const showingChildren = children.filter(item => !item.meta?.hidden)
-  // When there is only one child router, the child router is displayed by default
-  if (showingChildren.length === 1) {
-    return true
-  }
-  // Show parent if there are no child router to display
-  if (showingChildren.length === 0) {
-    return true
-  }
-  return false
+  return showingChildren.length <= 1
 }
 </script>
