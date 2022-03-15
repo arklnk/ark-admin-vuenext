@@ -5,6 +5,7 @@ import { ParentLayout, EmptyLayout } from '/@/router/basicRoutes'
 import { isUrl as isExtUrl } from '/@/utils/is'
 import { toHump } from '/@/utils'
 import { MenuTypeEnum } from '/@/enums/menuEnum'
+import { warn } from '/@/utils/log'
 
 import { routeModuleMap } from './routeModule'
 
@@ -15,7 +16,7 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
   const asyncRoutes: RouteRecordRaw[] = []
 
   routes.forEach((routeItem) => {
-    if (routeItem.type === MenuTypeEnum.Permission || !routeItem.isShow) {
+    if (routeItem.type === MenuTypeEnum.Permission) {
       // 权限 或者 隐藏则直接pass
       return
     }
@@ -100,7 +101,10 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
   }
   // menu
   const comp = routeModuleMap[menu.viewPath]
-  if (!comp) return null
+  if (!comp) {
+    warn('未定义的视图 ' + menu.viewPath + ', 请自行创建并在router/modules文件夹中建立关联!')
+    return null
+  }
 
   if (isRoot) {
     return {

@@ -61,5 +61,15 @@ declare module 'vue-router' {
      * @default false
      */
     affix?: boolean
+
+    /**
+     * @description menu sorting, the larger the number, the higher the front
+     */
+    order?: number
+
+    /**
+     * @description iframe src
+     */
+    iframeSrc?: string
   }
 }

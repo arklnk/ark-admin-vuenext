@@ -7,7 +7,7 @@ const BasicMenuItem = (props: {
 }) => {
   const vnodes: VNode[] = []
   if (props.icon) {
-    vnodes.push(<svg-icon icon={props.icon} />)
+    vnodes.push(<svg-icon class="mr-2" icon={props.icon} />)
   }
   if (props.title) {
     vnodes.push(<span v-slots:title>{props.title}</span>)

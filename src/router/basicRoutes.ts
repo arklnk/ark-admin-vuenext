@@ -56,7 +56,7 @@ export const Error403Route: RouteRecordRaw = {
  */
 export const RootRoute: RouteRecordRaw = {
   path: PageEnum.Root,
-  name: 'RootPage',
+  name: PageEnum.Root,
   component: ParentLayout,
   redirect: PageEnum.Dashboard,
   children: [
@@ -67,6 +67,7 @@ export const RootRoute: RouteRecordRaw = {
       meta: {
         title: PageTitleEnum.Dashboard,
         icon: 'dashboard',
+        order: Number.MAX_SAFE_INTEGER,
       },
     },
   ],
