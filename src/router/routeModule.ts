@@ -18,6 +18,6 @@ Object.keys(modules).forEach((key) => {
       routeModuleMap[viewpath] = mod[viewpath]
     })
   } else {
-    warn(`route module ${key} export empty`)
+    warn(`模块${key}必须以export default导出`)
   }
 })

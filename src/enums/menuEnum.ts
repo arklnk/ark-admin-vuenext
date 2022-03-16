@@ -17,3 +17,5 @@ export enum MenuTypeEnum {
    */
   Permission = 2,
 }
+
+export const IframePrefix = 'iframeSrc:'

@@ -69,13 +69,16 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
 export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | null {
   // route name
   const name = toHump(menu.router)
+
+  // route meta
   const meta: RouteMeta = {
     title: menu.name,
     icon: menu.icon,
     hidden: !menu.isShow,
     noCache: !menu.keepalive,
   }
-  // dir
+
+  // 目录级别
   if (menu.type === 0) {
     return {
       name,
@@ -84,28 +87,25 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
       meta,
     }
   }
-  // external link
+
+  // 外链菜单
   if (isExtUrl(menu.router)) {
     return {
-      name,
-      path: `external-link${menu.id}`,
-      component: ParentLayout,
-      children: [
-        {
-          path: menu.router,
-          component: EmptyLayout,
-          meta,
-        },
-      ],
+      name: `ExternalLink${menu.id}`,
+      path: menu.router,
+      redirect: menu.router,
+      meta,
     }
   }
-  // menu
+
+  // 内嵌视图菜单
   const comp = routeModuleMap[menu.viewPath]
   if (!comp) {
     warn('未定义的视图 ' + menu.viewPath + ', 请自行创建并在router/modules文件夹中建立关联!')
     return null
   }
 
+  // 根级别节点需要嵌套ParentLayout
   if (isRoot) {
     return {
       name,

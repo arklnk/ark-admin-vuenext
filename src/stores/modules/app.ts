@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { MenuSetting, ProjectConfig } from '/#/config'
+import type { HeaderSetting, MenuSetting, ProjectConfig } from '/#/config'
 import { merge } from 'lodash-es'
 
 interface AppState {
@@ -17,6 +17,9 @@ export const useAppStore = defineStore({
     },
     getMenuSetting(): MenuSetting {
       return this.getProjectConfig.menuSetting
+    },
+    getHeaderSetting(): HeaderSetting {
+      return this.getProjectConfig.headerSetting
     },
   },
   actions: {

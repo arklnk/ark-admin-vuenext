@@ -64,13 +64,13 @@ export const RootRoute: RouteRecordRaw = {
       path: PageEnum.Dashboard,
       name: toHump(PageEnum.Dashboard),
       component: () => import('/@/views/dashboard/Dashboard.vue'),
+      meta: {
+        title: PageTitleEnum.Dashboard,
+        icon: 'dashboard',
+        order: Number.MAX_SAFE_INTEGER,
+      },
     },
   ],
-  meta: {
-    title: PageTitleEnum.Dashboard,
-    icon: 'dashboard',
-    order: Number.MAX_SAFE_INTEGER,
-  },
 }
 
 /**
@@ -88,4 +88,10 @@ export const NotFoundRoute: RouteRecordRaw = {
 /**
  * @description basic routing without permission
  */
-export const basicRoutes = [NotFoundRoute, LoginRoute, Error404Route, Error403Route, RootRoute]
+export const basicRoutes: RouteRecordRaw[] = [
+  NotFoundRoute,
+  LoginRoute,
+  Error404Route,
+  Error403Route,
+  RootRoute,
+]

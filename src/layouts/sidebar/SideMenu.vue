@@ -1,8 +1,8 @@
 <template>
   <template v-if="!route.meta?.hidden">
-    <template v-if="hasOneShowingChild(route.children)">
-      <ElMenuItem :index="route.path">
-        <BasicMenuItem :icon="route.meta?.icon" :title="route.meta?.title" />
+    <template v-if="showRoute">
+      <ElMenuItem :index="showRoute.path">
+        <BasicMenuItem :icon="showRoute.meta?.icon" :title="showRoute.meta?.title" />
       </ElMenuItem>
     </template>
     <template v-else>
@@ -24,11 +24,14 @@ export default {
 
 <script setup lang="ts">
 import type { RouteRecordRaw } from 'vue-router'
-import type { PropType } from 'vue'
+import type { ComputedRef } from 'vue'
+
+import { computed, PropType } from 'vue'
 
 import BasicMenuItem from './BasicMenuItem.vue'
+import { EmptyLayout, ParentLayout } from '/@/router/basicRoutes'
 
-defineProps({
+const props = defineProps({
   route: {
     type: Object as PropType<RouteRecordRaw>,
     required: true
@@ -36,10 +39,21 @@ defineProps({
 })
 
 /**
- * 是否为菜单级别，否则渲染成目录结构
+ * 渲染菜单或者目录
  */
-function hasOneShowingChild(children: RouteRecordRaw[] = []): boolean {
-  const showingChildren = children.filter(item => !item.meta?.hidden)
-  return showingChildren.length <= 1
-}
+const showRoute: ComputedRef<RouteRecordRaw | null> = computed(() => {
+  const showingChildren = props.route.children?.filter(item => !item.meta?.hidden) || []
+  // 菜单
+  if (showingChildren.length === 1) {
+    return props.route.meta ? null : showingChildren[0]
+  }
+
+  // 判断是否需要渲染成目录
+  if (showingChildren.length === 0) {
+    return (props.route.component?.name === ParentLayout.name || props.route.component?.name === EmptyLayout.name)
+      ? null : props.route
+  }
+
+  return null
+})
 </script>

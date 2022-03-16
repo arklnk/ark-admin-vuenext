@@ -1,9 +1,11 @@
 <template>
-  <ElScrollbar height="100%" :wrap-class="d.b()">
-    <ElMenu mode="vertical" :default-active="activeMenu">
-      <SideMenu v-for="route in routes" :key="route.path" :route="route" />
-    </ElMenu>
-  </ElScrollbar>
+  <aside :class="d.b()" class="border-gray-100 border-r">
+    <ElScrollbar height="100%">
+      <ElMenu class="border-none" mode="vertical" :default-active="activeMenu">
+        <SideMenu v-for="route in routes" :key="route.path" :route="route" />
+      </ElMenu>
+    </ElScrollbar>
+  </aside>
 </template>
 
 <script setup lang="ts">
@@ -20,7 +22,7 @@ const d = useDesign('sidebar')
 
 const permissionStore = usePermissionStore()
 const routes = computed(() => {
-  return permissionStore.getMenuList.concat(basicRoutes).sort((a, b) => (b.meta?.order || 0) - (a.meta?.order || 0))
+  return basicRoutes.concat(permissionStore.getMenuList)
 })
 
 const $route = useRoute()
