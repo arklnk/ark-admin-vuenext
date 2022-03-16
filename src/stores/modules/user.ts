@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { usePermissionStore } from './permission'
 import { getAccountInfo, logout as logoutRequest } from '/@/api/account'
+import { resetRouter } from '/@/router'
 import { setToken as setLocalToken, removeToken } from '/@/utils/auth'
 
 interface UserState {
@@ -42,10 +43,14 @@ export const useUserStore = defineStore({
       this.avatar = data!.headImg
     },
     logout(): void {
-      const permissionStore = usePermissionStore()
+      // can fail
       logoutRequest().catch(() => {})
+
+      const permissionStore = usePermissionStore()
       this.resetState()
       permissionStore.resetState()
+
+      resetRouter()
     },
     resetState(): void {
       // remove storage token

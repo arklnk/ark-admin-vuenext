@@ -20,7 +20,14 @@ export const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
 })
 
-export function resetRouter() {}
+export function resetRouter() {
+  router.getRoutes().forEach((route) => {
+    const { name } = route
+    if (name && !WHITE_NAME_LIST.includes(name as string)) {
+      if (router.hasRoute(name)) router.removeRoute(name)
+    }
+  })
+}
 
 export function setupRouter(app: App<Element>) {
   app.use(router)
