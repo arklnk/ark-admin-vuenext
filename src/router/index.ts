@@ -11,7 +11,7 @@ const getRouteNames = (array: any[]) =>
     WHITE_NAME_LIST.push(item.name)
     getRouteNames(item.children || [])
   })
-getRouteNames(basicRoutes)
+getRouteNames([...basicRoutes])
 
 export const router = createRouter({
   history: createWebHistory(),

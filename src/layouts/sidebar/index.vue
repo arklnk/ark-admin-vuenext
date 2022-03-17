@@ -29,7 +29,6 @@ const $route = useRoute()
 const activeMenu = computed(() => {
   return $route.path
 })
-
 </script>
 
 <style lang="scss" scoped>

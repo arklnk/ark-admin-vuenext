@@ -15,7 +15,7 @@ export const EmptyLayout = () => import('/@/layouts/content/EmptyLayout.vue')
 /**
  * @description login page route
  */
-export const LoginRoute: RouteRecordRaw = {
+const LoginRoute: RouteRecordRaw = {
   path: PageEnum.Login,
   name: toHump(PageEnum.Login),
   component: () => import('/@/views/login/Login.vue'),
@@ -28,7 +28,7 @@ export const LoginRoute: RouteRecordRaw = {
 /**
  * @description 404 page route
  */
-export const Error404Route: RouteRecordRaw = {
+const Error404Route: RouteRecordRaw = {
   path: PageEnum.NotFound,
   name: toHump(PageEnum.NotFound),
   component: () => import('/@/views/error/Error404.vue'),
@@ -41,7 +41,7 @@ export const Error404Route: RouteRecordRaw = {
 /**
  * @description 404 page route
  */
-export const Error403Route: RouteRecordRaw = {
+const Error403Route: RouteRecordRaw = {
   path: PageEnum.Forbidden,
   name: toHump(PageEnum.Forbidden),
   component: () => import('/@/views/error/Error403.vue'),
@@ -54,7 +54,7 @@ export const Error403Route: RouteRecordRaw = {
 /**
  * @description root route
  */
-export const RootRoute: RouteRecordRaw = {
+const RootRoute: RouteRecordRaw = {
   path: PageEnum.Root,
   name: PageEnum.Root,
   component: ParentLayout,
@@ -88,10 +88,4 @@ export const NotFoundRoute: RouteRecordRaw = {
 /**
  * @description basic routing without permission
  */
-export const basicRoutes: RouteRecordRaw[] = [
-  NotFoundRoute,
-  LoginRoute,
-  Error404Route,
-  Error403Route,
-  RootRoute,
-]
+export const basicRoutes: RouteRecordRaw[] = [LoginRoute, Error404Route, Error403Route, RootRoute]

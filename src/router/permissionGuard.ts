@@ -65,7 +65,7 @@ export function setupPermissionGuard(router: Router) {
             permissionStore.setDynamicAddedRoute(true)
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record
-            return { path: to.path, replace: true }
+            return { ...to, replace: true }
           } catch (e) {
             // remove token
             userStore.resetState()

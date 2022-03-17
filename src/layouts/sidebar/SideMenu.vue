@@ -2,7 +2,9 @@
   <template v-if="!route.meta?.hidden">
     <template v-if="showRoute">
       <ElMenuItem :index="showRoute.path">
-        <BasicMenuItem :icon="showRoute.meta?.icon" :title="showRoute.meta?.title" />
+        <AppLink :to="showRoute.path">
+          <BasicMenuItem :icon="showRoute.meta?.icon" :title="showRoute.meta?.title" />
+        </AppLink>
       </ElMenuItem>
     </template>
     <template v-else>
@@ -30,6 +32,7 @@ import { computed, PropType } from 'vue'
 
 import BasicMenuItem from './BasicMenuItem.vue'
 import { EmptyLayout, ParentLayout } from '/@/router/basicRoutes'
+import { AppLink } from '/@/components/Application'
 
 const props = defineProps({
   route: {
