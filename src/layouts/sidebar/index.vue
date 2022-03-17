@@ -18,7 +18,7 @@ import { usePermissionStore } from '/@/stores/modules/permission'
 
 import SideMenu from './SideMenu.vue'
 
-const d = useDesign('sidebar')
+const d = useDesign('app-sidebar')
 
 const permissionStore = usePermissionStore()
 const routes = computed(() => {
@@ -32,11 +32,11 @@ const activeMenu = computed(() => {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '/@/styles/var.scss';
 @use '/@/styles/mixins.scss' as *;
 
-@include b(sidebar) {
+@include b(app-sidebar) {
   width: var.$sideBarWidth;
 }
 </style>

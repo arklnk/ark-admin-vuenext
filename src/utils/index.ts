@@ -35,6 +35,15 @@ export const withInstall = <T>(component: T, alias?: string) => {
 }
 
 /**
+ * 1px -> 1
+ * @param unit px rem
+ * @returns
+ */
+export function numberUnit(unit: string) {
+  return Number(unit.replace(/[^\d]/g, ''))
+}
+
+/**
  * print ansi
  */
 export function printANSI() {
