@@ -1,20 +1,16 @@
 <template>
   <template v-if="!route.meta?.hidden">
-    <template v-if="showRoute">
+    <AppLink v-if="showRoute" :to="showRoute.path">
       <ElMenuItem :index="showRoute.path">
-        <AppLink :to="showRoute.path">
-          <BasicMenuItem :icon="showRoute.meta?.icon" :title="showRoute.meta?.title" />
-        </AppLink>
+        <BasicMenuItem :icon="showRoute.meta?.icon" :title="showRoute.meta?.title" />
       </ElMenuItem>
-    </template>
-    <template v-else>
-      <ElSubMenu :index="route.path">
-        <template #title>
-          <BasicMenuItem :icon="route.meta?.icon" :title="route.meta?.title" />
-        </template>
-        <SideMenu v-for="child in route.children" :key="child.path" :route="child" />
-      </ElSubMenu>
-    </template>
+    </AppLink>
+    <ElSubMenu v-else :index="route.path">
+      <template #title>
+        <BasicMenuItem :icon="route.meta?.icon" :title="route.meta?.title" />
+      </template>
+      <SideMenu v-for="child in route.children" :key="child.path" :route="child" />
+    </ElSubMenu>
   </template>
 </template>
 
@@ -31,8 +27,8 @@ import type { ComputedRef } from 'vue'
 import { computed, PropType } from 'vue'
 
 import BasicMenuItem from './BasicMenuItem.vue'
-import { EmptyLayout, ParentLayout } from '/@/router/basicRoutes'
 import { AppLink } from '/@/components/Application'
+import { EmptyLayout, ParentLayout } from '/@/router/basicRoutes'
 
 const props = defineProps({
   route: {

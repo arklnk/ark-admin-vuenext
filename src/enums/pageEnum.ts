@@ -1,3 +1,5 @@
+export const NotFoundRouteName = 'NotFound'
+
 export enum PageEnum {
   Root = '/',
   Login = '/login',

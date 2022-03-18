@@ -30,12 +30,20 @@ body {
 }
 
 a:focus,
-a:active,
-button,
-div,
-svg,
-span {
-  outline: none !important;
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
 }
 
 #app {

@@ -1,4 +1,4 @@
-import { defineRouteModule } from '/@/router/routeHelper'
+import { defineRouteModule } from '/@/router/helper/routeHelper'
 
 /**
  * 系统模块

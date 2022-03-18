@@ -1,10 +1,12 @@
 import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { basicRoutes } from '/@/router/basicRoutes'
-import { setupPermissionGuard } from '/@/router/permissionGuard'
+import { basicRoutes } from './basicRoutes'
+import { setupPermissionGuard } from './guard/permissionGuard'
 
-// 白名单应该包含基本静态路由
+/**
+ * 白名单应该包含基本静态路由
+ */
 const WHITE_NAME_LIST: string[] = []
 const getRouteNames = (array: any[]) =>
   array.forEach((item) => {

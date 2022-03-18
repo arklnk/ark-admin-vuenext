@@ -3,10 +3,11 @@ import type { Router, RouteLocationRaw } from 'vue-router'
 import NProgress from 'nprogress'
 import { isEmpty } from 'lodash-es'
 
-import { PageEnum } from '/@/enums/pageEnum'
+import { NotFoundRouteName, PageEnum } from '/@/enums/pageEnum'
 import { getPageTitle } from '/@/utils'
 import { useUserStore } from '/@/stores/modules/user'
 import { usePermissionStore } from '/@/stores/modules/permission'
+import { NotFoundRoute } from '../basicRoutes'
 
 /**
  * @description 白名单路由
@@ -62,6 +63,9 @@ export function setupPermissionGuard(router: Router) {
             ])
             // dynamic add route
             menus.forEach(router.addRoute)
+            // add notfound
+            router.addRoute(NotFoundRouteName, NotFoundRoute)
+            // is added
             permissionStore.setDynamicAddedRoute(true)
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { PageEnum, PageTitleEnum } from '/@/enums/pageEnum'
+import { NotFoundRouteName, PageEnum, PageTitleEnum } from '/@/enums/pageEnum'
 import { toHump } from '/@/utils'
 
 /**
@@ -11,6 +11,18 @@ export const ParentLayout = () => import('/@/layouts/index.vue')
  * @description empty layout
  */
 export const EmptyLayout = () => import('/@/layouts/content/EmptyLayout.vue')
+
+/**
+ * @description notfound route
+ */
+export const NotFoundRoute: RouteRecordRaw = {
+  path: '/:path(.*)*',
+  name: NotFoundRouteName,
+  redirect: PageEnum.NotFound,
+  meta: {
+    hidden: true,
+  },
+}
 
 /**
  * @description login page route
@@ -71,18 +83,6 @@ const RootRoute: RouteRecordRaw = {
       },
     },
   ],
-}
-
-/**
- * @description notfound route
- */
-export const NotFoundRoute: RouteRecordRaw = {
-  path: '/:path(.*)*',
-  name: 'NotFound',
-  redirect: PageEnum.NotFound,
-  meta: {
-    hidden: true,
-  },
 }
 
 /**
