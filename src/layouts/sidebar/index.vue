@@ -1,8 +1,8 @@
 <template>
-  <aside :class="d.b()" class="border-gray-100 border-r">
+  <aside :class="[d.b(), d.is('stand', true)]" class="relative border-gray-100 border-r">
     <ElScrollbar height="100%">
       <ElMenu class="border-none" mode="vertical" :default-active="activeMenu">
-        <SideMenu v-for="route in routes" :key="route.path" :route="route" />
+        <SideMenuItem v-for="route in routes" :key="route.path" :route="route" />
       </ElMenu>
     </ElScrollbar>
   </aside>
@@ -16,7 +16,7 @@ import { useDesign } from '/@/hooks/core/useDesign'
 import { basicRoutes } from '/@/router/basicRoutes'
 import { usePermissionStore } from '/@/stores/modules/permission'
 
-import SideMenu from './SideMenu.vue'
+import SideMenuItem from './SideMenuItem.vue'
 
 const d = useDesign('app-sidebar')
 
@@ -24,6 +24,7 @@ const permissionStore = usePermissionStore()
 const routes = computed(() => {
   return basicRoutes.concat(permissionStore.getMenuList)
 })
+
 
 const $route = useRoute()
 const activeMenu = computed(() => {
@@ -36,6 +37,8 @@ const activeMenu = computed(() => {
 @use '/@/styles/mixins.scss' as *;
 
 @include b(app-sidebar) {
-  width: var.$sideBarWidth;
+  @include when(stand) {
+    width: var.$sideBarWidth;
+  }
 }
 </style>

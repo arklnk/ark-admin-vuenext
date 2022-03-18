@@ -29,21 +29,16 @@ body {
   }
 }
 
-a:focus,
-a:active {
-  outline: none;
-}
-
 a,
+a:active,
 a:focus,
-a:hover {
-  cursor: pointer;
-  color: inherit;
-  text-decoration: none;
-}
-
-div:focus {
-  outline: none;
+div:focus,
+button,
+div,
+svg,
+span {
+  outline: none !important;
+  text-decoration: none !important;
 }
 
 #app {

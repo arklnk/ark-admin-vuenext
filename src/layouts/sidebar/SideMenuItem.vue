@@ -2,21 +2,29 @@
   <template v-if="!route.meta?.hidden">
     <AppLink v-if="showRoute" :to="showRoute.path">
       <ElMenuItem :index="showRoute.path">
-        <BasicMenuItem :icon="showRoute.meta?.icon" :title="showRoute.meta?.title" />
+        <ElIcon>
+          <SvgIcon v-if="showRoute.meta?.icon" :icon="showRoute.meta.icon" />
+        </ElIcon>
+        <template #title>
+          <span class="ml-2">{{ showRoute.meta?.title }}</span>
+        </template>
       </ElMenuItem>
     </AppLink>
     <ElSubMenu v-else :index="route.path">
       <template #title>
-        <BasicMenuItem :icon="route.meta?.icon" :title="route.meta?.title" />
+        <ElIcon>
+          <SvgIcon v-if="route.meta?.icon" :icon="route.meta.icon" />
+        </ElIcon>
+        <span class="ml-2">{{ route.meta?.title }}</span>
       </template>
-      <SideMenu v-for="child in route.children" :key="child.path" :route="child" />
+      <SideMenuItem v-for="child in route.children" :key="child.path" :route="child" />
     </ElSubMenu>
   </template>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'SideMenu'
+  name: 'SideMenuItem'
 }
 </script>
 
@@ -26,7 +34,6 @@ import type { ComputedRef } from 'vue'
 
 import { computed, PropType } from 'vue'
 
-import BasicMenuItem from './BasicMenuItem.vue'
 import { AppLink } from '/@/components/Application'
 import { EmptyLayout, ParentLayout } from '/@/router/basicRoutes'
 
