@@ -1,5 +1,5 @@
 <template>
-  <svg :class="[d.b(), $attrs.class, d.is('spin', spin)]" :style="style" aria-hidden="true">
+  <svg :class="[d.b(), $attrs.class, d.is('spin', spin)]" aria-hidden="true">
     <use :xlink:href="symbolId" />
   </svg>
 </template>
@@ -11,8 +11,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-import type { CSSProperties } from 'vue'
-
 import { computed } from 'vue'
 import { useDesign } from '/@/hooks/core/useDesign'
 
@@ -20,10 +18,6 @@ const props = defineProps({
   prefix: {
     type: String,
     default: 'icon',
-  },
-  size: {
-    type: [Number, String],
-    default: 16,
   },
   icon: {
     type: String,
@@ -37,15 +31,6 @@ const props = defineProps({
 
 const d = useDesign('svg-icon')
 const symbolId = computed(() => `#${props.prefix}-${props.icon}`)
-const style = computed((): CSSProperties => {
-  const { size } = props
-  let s = `${size}`
-  s = `${s.replace('px', '')}px`
-  return {
-    width: s,
-    height: s,
-  }
-})
 </script>
 
 <style lang="scss" scoped>
@@ -56,6 +41,8 @@ const style = computed((): CSSProperties => {
   overflow: hidden;
   vertical-align: -0.15em;
   fill: currentColor;
+  width: 1em;
+  height: 1em;
 
   @keyframes spin-animation {
     0% {
