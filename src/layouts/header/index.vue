@@ -2,14 +2,21 @@
   <header
     ref="appHeaderRef"
     :class="d.b()"
-    class="w-full border-gray-100 border-b flex flex-row px-2"
-  >header</header>
+    class="w-full border-gray-100 border-b flex flex-row px-2 items-center justify-between"
+  >
+    <nav :class="d.e('breadcrumb')">breadcrumb</nav>
+    <nav :class="d.e('right-menu')" class="text-gray-700">
+      <AppScreenfull />
+    </nav>
+  </header>
 </template>
 
 <script setup lang="ts">
 import { onMounted, Ref } from 'vue'
 
 import { ref } from 'vue'
+import { AppScreenfull } from '/@/components/Application'
+
 import { useLayoutHeight } from '../content/useAppMainHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { numberUnit } from '/@/utils'
@@ -32,5 +39,13 @@ onMounted(() => {
 @include b(app-header) {
   height: var.$navBarHeight;
   line-height: var.$navBarHeight;
+
+  @include e(right-menu) {
+    font-size: 20px;
+
+    svg {
+      margin: 0 5px;
+    }
+  }
 }
 </style>
