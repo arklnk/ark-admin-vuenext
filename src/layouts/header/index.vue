@@ -2,7 +2,7 @@
   <header
     ref="appHeaderRef"
     :class="[d.b(), d.is('fixed', getFixed)]"
-    class="w-full border-gray-100 border-b flex flex-row px-2 items-center justify-between bg-white"
+    class="w-full border-gray-100 border-b flex flex-row px-2 items-center justify-between bg-white box-border"
   >
     <nav :class="d.e('breadcrumb')">breadcrumb</nav>
     <nav :class="d.e('right-menu')" class="text-gray-700">
@@ -41,7 +41,6 @@ const { getFixed } = useHeaderSetting()
 @include b(app-header) {
   height: var.$navBarHeight;
   line-height: var.$navBarHeight;
-  box-sizing: border-box;
 
   @include when(fixed) {
     position: fixed;

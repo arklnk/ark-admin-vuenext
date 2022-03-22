@@ -1,7 +1,7 @@
 <template>
   <aside
     :class="[d.b(), d.is('stand', true)]"
-    class="relative border-gray-100 border-r h-full bg-white"
+    class="relative border-gray-100 border-r h-full bg-white box-border"
   >
     <ElScrollbar height="100%">
       <ElMenu class="border-none" mode="vertical" :default-active="activeMenu">
