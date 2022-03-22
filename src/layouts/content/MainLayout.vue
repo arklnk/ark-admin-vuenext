@@ -26,7 +26,6 @@ const { getFixed } = useHeaderSetting()
 @include b(app-main) {
   @include when(fixed) {
     padding-top: var.$navBarHeight;
-    z-index: 99;
   }
 }
 </style>

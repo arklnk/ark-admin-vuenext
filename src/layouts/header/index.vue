@@ -45,7 +45,11 @@ const { getFixed } = useHeaderSetting()
 
   @include when(fixed) {
     position: fixed;
-    z-index: 100;
+    top: 0;
+    right: 0;
+    width: calc(100% - var.$sideBarWidth);
+    z-index: 9;
+    transition: width 0.8s;
   }
 
   @include e(right-menu) {
