@@ -12,12 +12,13 @@ export interface MenuSetting {
 }
 
 export interface HeaderSetting {
-  fullscreen: boolean
+  fixed: boolean
 }
 
 export interface ProjectConfig {
   grayMode: boolean
   showBreadCrumb: boolean
+  showFooter: boolean
   menuSetting: MenuSetting
   elementUISetting: ElementUISetting
   headerSetting: HeaderSetting

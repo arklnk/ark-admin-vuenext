@@ -21,4 +21,15 @@ declare global {
   }
 
   type Nullable<T> = T | null | undefined
+  type Recordable<T = any> = Record<string, T>
+  type ReadonlyRecordable<T = any> = {
+    readonly [key: string]: T
+  }
+
+  /**
+   * Recursive `Partial<T>`.
+   */
+  type DeepPartial<T> = {
+    [P in keyof T]?: DeepPartial<T[P]>
+  }
 }

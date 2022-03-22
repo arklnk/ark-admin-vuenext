@@ -3,6 +3,7 @@ import type { ProjectConfig } from '/#/config'
 const setting: ProjectConfig = {
   grayMode: false,
   showBreadCrumb: true,
+  showFooter: false,
   menuSetting: {
     hidden: false,
     collapse: false,
@@ -15,7 +16,7 @@ const setting: ProjectConfig = {
     maxMessage: 5,
   },
   headerSetting: {
-    fullscreen: false,
+    fixed: true,
   },
 }
 

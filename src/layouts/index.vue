@@ -1,7 +1,7 @@
 <template>
-  <div class="h-full w-full relative flex flex-row">
+  <div class="h-full w-full relative flex flex-row overflow-hidden">
     <AppSidebar />
-    <section class="flex-1">
+    <section class="flex-1 relative overflow-auto">
       <AppHeader />
       <AppMain />
     </section>

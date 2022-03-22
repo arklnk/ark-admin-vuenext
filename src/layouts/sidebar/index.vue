@@ -1,5 +1,8 @@
 <template>
-  <aside :class="[d.b(), d.is('stand', true)]" class="relative border-gray-100 border-r">
+  <aside
+    :class="[d.b(), d.is('stand', true)]"
+    class="relative border-gray-100 border-r h-full bg-white"
+  >
     <ElScrollbar height="100%">
       <ElMenu class="border-none" mode="vertical" :default-active="activeMenu">
         <SideMenuItem v-for="route in routes" :key="route.path" :route="route" />

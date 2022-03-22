@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, _DeepPartial } from 'pinia'
 import type { ElementUISetting, HeaderSetting, MenuSetting, ProjectConfig } from '/#/config'
 import { merge } from 'lodash-es'
 
@@ -26,8 +26,8 @@ export const useAppStore = defineStore({
     },
   },
   actions: {
-    setProjectConfig(config: ProjectConfig): void {
-      this.projectConfig = merge(this.projectConfig || {}, config)
+    setProjectConfig(config: DeepPartial<ProjectConfig>): void {
+      this.projectConfig = merge(this.projectConfig || {}, config) as ProjectConfig
     },
   },
 })

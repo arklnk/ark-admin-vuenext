@@ -1,8 +1,8 @@
 <template>
   <header
     ref="appHeaderRef"
-    :class="d.b()"
-    class="w-full border-gray-100 border-b flex flex-row px-2 items-center justify-between"
+    :class="[d.b(), d.is('fixed', getFixed)]"
+    class="w-full border-gray-100 border-b flex flex-row px-2 items-center justify-between bg-white"
   >
     <nav :class="d.e('breadcrumb')">breadcrumb</nav>
     <nav :class="d.e('right-menu')" class="text-gray-700">
@@ -20,6 +20,7 @@ import { AppScreenfull } from '/@/components/Application'
 import { useLayoutHeight } from '../content/useAppMainHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { numberUnit } from '/@/utils'
+import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 
 const d = useDesign('app-header')
 const { setAppHeaderHeight } = useLayoutHeight()
@@ -27,9 +28,10 @@ const { setAppHeaderHeight } = useLayoutHeight()
 const appHeaderRef: Ref<HTMLElement | null> = ref(null)
 onMounted(() => {
   const appHeaderStyle = getComputedStyle(appHeaderRef.value!)
-  const appHeaderHeight = numberUnit(appHeaderStyle.borderBottomWidth) + numberUnit(appHeaderStyle.height)
-  setAppHeaderHeight(appHeaderHeight)
+  setAppHeaderHeight(numberUnit(appHeaderStyle.height))
 })
+
+const { getFixed } = useHeaderSetting()
 </script>
 
 <style lang="scss" scoped>
@@ -39,6 +41,12 @@ onMounted(() => {
 @include b(app-header) {
   height: var.$navBarHeight;
   line-height: var.$navBarHeight;
+  box-sizing: border-box;
+
+  @include when(fixed) {
+    position: fixed;
+    z-index: 100;
+  }
 
   @include e(right-menu) {
     font-size: 20px;
