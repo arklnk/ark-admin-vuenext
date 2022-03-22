@@ -6,8 +6,7 @@ export interface ElementUISetting {
 }
 
 export interface MenuSetting {
-  hidden: boolean
-  collapse: boolean
+  collapsed: boolean
   uniqueOpened: boolean
 }
 
