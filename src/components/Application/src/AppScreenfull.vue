@@ -1,18 +1,18 @@
 <template>
-  <SvgIcon
-    :class="isSupported ? 'cursor-pointer' : 'cursor-not-allowed'"
-    :icon="icon"
+  <span
     @click="handleToggleFullScreen"
-  />
+    :class="isSupported ? 'cursor-pointer' : 'cursor-not-allowed'"
+  >
+    <IconFullScreenExit v-if="isFullscreen" />
+    <IconFullScreen v-else />
+  </span>
 </template>
 
 <script setup lang="ts">
+import IconFullScreen from '~icons/mdi/fullscreen'
+import IconFullScreenExit from '~icons/mdi/fullscreen-exit'
+
 import { useFullscreen } from '@vueuse/core'
-import { computed, unref } from 'vue'
 
 const { isFullscreen, toggle: handleToggleFullScreen, isSupported } = useFullscreen()
-
-const icon = computed(() => {
-  return unref(isFullscreen) ? 'fullscreen-exit' : 'fullscreen'
-})
 </script>
