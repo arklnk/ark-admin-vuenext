@@ -7,7 +7,7 @@
     <nav :class="d.e('breadcrumb')">
       <AppHamburger />
     </nav>
-    <nav :class="d.e('right-menu')">
+    <nav :class="d.e('right-menu')" class="mr-2">
       <AppScreenfull />
     </nav>
   </header>
