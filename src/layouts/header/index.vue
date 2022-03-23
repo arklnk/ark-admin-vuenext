@@ -2,7 +2,7 @@
   <header
     ref="appHeaderRef"
     :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed)]"
-    class="border-gray-100 border-b flex flex-row px-2 items-center justify-between bg-white box-border text-gray-700"
+    class="border-gray-100 border-b flex flex-row items-center justify-between bg-white box-border text-gray-700 relative"
   >
     <nav :class="d.e('breadcrumb')">
       <AppHamburger />

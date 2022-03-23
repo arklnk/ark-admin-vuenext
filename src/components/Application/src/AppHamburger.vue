@@ -1,6 +1,6 @@
 <template>
   <IconHamburger
-    class="inline-block text-base cursor-pointer mx-1.5"
+    class="text-base cursor-pointer mx-4"
     :class="[d.b(), d.is('collapsed', getCollapsed)]"
     @click="toggleCollapse"
   />
