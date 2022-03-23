@@ -1,7 +1,7 @@
 <template>
   <header
     ref="appHeaderRef"
-    :class="[d.b(), d.is('fixed', getFixed)]"
+    :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed)]"
     class="border-gray-100 border-b flex flex-row px-2 items-center justify-between bg-white box-border"
   >
     <nav :class="d.e('breadcrumb')">breadcrumb</nav>
@@ -21,6 +21,7 @@ import { useLayoutHeight } from '../content/useAppMainHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { numberUnit } from '/@/utils'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
+import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 
 const d = useDesign('app-header')
 const { setAppHeaderHeight } = useLayoutHeight()
@@ -32,6 +33,7 @@ onMounted(() => {
 })
 
 const { getFixed } = useHeaderSetting()
+const { getCollapsed } = useMenuSetting()
 </script>
 
 <style lang="scss" scoped>
@@ -49,6 +51,9 @@ const { getFixed } = useHeaderSetting()
     right: 0;
     z-index: 9;
     transition: width 0.8s;
+  }
+
+  @include when(collapsed) {
     width: calc(100% - var.$sideBarCollapsedWidth);
   }
 
