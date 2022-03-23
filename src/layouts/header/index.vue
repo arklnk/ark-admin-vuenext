@@ -49,6 +49,7 @@ const { getFixed } = useHeaderSetting()
     right: 0;
     z-index: 9;
     transition: width 0.8s;
+    width: calc(100% - var.$sideBarCollapsedWidth);
   }
 
   @include e(right-menu) {

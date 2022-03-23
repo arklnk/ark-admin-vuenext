@@ -1,6 +1,6 @@
 <template>
   <aside
-    :class="[d.b(), d.is('stand', !getCollapsed)]"
+    :class="[d.b(), d.is('collapsed', getCollapsed)]"
     class="relative border-gray-100 border-r h-full bg-white box-border"
   >
     <ElScrollbar height="100%">
@@ -48,9 +48,14 @@ const { getUniqueOpened, getCollapsed } = useMenuSetting()
 
 @include b(app-sidebar) {
   transition: width 0.8s;
+  width: var.$sideBarWidth;
 
-  @include when(stand) {
-    width: var.$sideBarWidth;
+  @include when(collapsed) {
+    width: var.$sideBarCollapsedWidth;
+
+    :deep(.el-menu--collapse) {
+      width: var.$sideBarCollapsedWidth;
+    }
   }
 }
 </style>
