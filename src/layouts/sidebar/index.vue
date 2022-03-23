@@ -47,7 +47,7 @@ const { getUniqueOpened, getCollapsed } = useMenuSetting()
 @use '/@/styles/mixins.scss' as *;
 
 @include b(app-sidebar) {
-  transition: width 0.8s;
+  transition: width 0.3s;
   width: var.$sideBarWidth;
 
   @include when(collapsed) {

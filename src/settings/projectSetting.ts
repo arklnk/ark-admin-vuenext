@@ -5,7 +5,7 @@ const setting: ProjectConfig = {
   showBreadCrumb: true,
   showFooter: false,
   menuSetting: {
-    collapsed: true,
+    collapsed: false,
     uniqueOpened: true,
   },
   elementUISetting: {

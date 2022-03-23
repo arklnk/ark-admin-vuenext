@@ -2,10 +2,12 @@
   <header
     ref="appHeaderRef"
     :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed)]"
-    class="border-gray-100 border-b flex flex-row px-2 items-center justify-between bg-white box-border"
+    class="border-gray-100 border-b flex flex-row px-2 items-center justify-between bg-white box-border text-gray-700"
   >
-    <nav :class="d.e('breadcrumb')">breadcrumb</nav>
-    <nav :class="d.e('right-menu')" class="text-gray-700">
+    <nav :class="d.e('breadcrumb')">
+      <AppHamburger />
+    </nav>
+    <nav :class="d.e('right-menu')">
       <AppScreenfull />
     </nav>
   </header>
@@ -15,7 +17,7 @@
 import { onMounted, Ref } from 'vue'
 
 import { ref } from 'vue'
-import { AppScreenfull } from '/@/components/Application'
+import { AppScreenfull, AppHamburger } from '/@/components/Application'
 
 import { useLayoutHeight } from '../content/useAppMainHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
@@ -50,7 +52,7 @@ const { getCollapsed } = useMenuSetting()
     top: 0;
     right: 0;
     z-index: 9;
-    transition: width 0.8s;
+    transition: width 0.3s;
   }
 
   @include when(collapsed) {
