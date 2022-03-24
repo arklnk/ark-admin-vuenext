@@ -1,6 +1,8 @@
 import type { Router, RouteLocationRaw } from 'vue-router'
 
 import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 import { isEmpty } from 'lodash-es'
 
 import { NotFoundRouteName, PageEnum, ParentRouteName } from '/@/enums/pageEnum'
