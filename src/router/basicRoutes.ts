@@ -1,11 +1,16 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { NotFoundRouteName, PageEnum, PageTitleEnum } from '/@/enums/pageEnum'
+import { NotFoundRouteName, PageEnum, PageTitleEnum, ParentRouteName } from '/@/enums/pageEnum'
 import { toHump } from '/@/utils'
 
 /**
  * @description default layout
  */
 export const ParentLayout = () => import('/@/layouts/index.vue')
+
+/**
+ * @description iframe layout
+ */
+export const IFrameLayout = () => import('/@/layouts/iframe/index.vue')
 
 /**
  * @description empty layout
@@ -68,21 +73,24 @@ const Error403Route: RouteRecordRaw = {
  */
 const RootRoute: RouteRecordRaw = {
   path: PageEnum.Root,
-  name: PageEnum.Root,
+  name: ParentRouteName,
   component: ParentLayout,
   redirect: PageEnum.Dashboard,
-  children: [
-    {
-      path: PageEnum.Dashboard,
-      name: toHump(PageEnum.Dashboard),
-      component: () => import('/@/views/dashboard/Dashboard.vue'),
-      meta: {
-        title: PageTitleEnum.Dashboard,
-        icon: 'dashboard',
-        order: Number.MAX_SAFE_INTEGER,
-      },
-    },
-  ],
+  children: [],
+  meta: {
+    hidden: true,
+  },
+}
+
+export const DashboardRoute: RouteRecordRaw = {
+  path: PageEnum.Dashboard,
+  name: toHump(PageEnum.Dashboard),
+  component: () => import('/@/views/dashboard/Dashboard.vue'),
+  meta: {
+    title: PageTitleEnum.Dashboard,
+    icon: 'dashboard',
+    order: Number.MAX_SAFE_INTEGER,
+  },
 }
 
 /**

@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, Ref } from 'vue'
+import { onMounted } from 'vue'
 
 import { ref } from 'vue'
 import { AppScreenfull, AppHamburger } from '/@/components/Application'
@@ -28,7 +28,7 @@ import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 const d = useDesign('app-header')
 const { setAppHeaderHeight } = useLayoutHeight()
 
-const appHeaderRef: Ref<HTMLElement | null> = ref(null)
+const appHeaderRef = ref<HTMLElement>()
 onMounted(() => {
   const appHeaderStyle = getComputedStyle(appHeaderRef.value!)
   setAppHeaderHeight(numberUnit(appHeaderStyle.height))

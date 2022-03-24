@@ -6,7 +6,7 @@ const setting: ProjectConfig = {
   showFooter: false,
   menuSetting: {
     collapsed: false,
-    uniqueOpened: true,
+    uniqueOpened: false,
   },
   elementUISetting: {
     size: 'default',

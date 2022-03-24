@@ -1,10 +1,10 @@
 import type { Menu, Component } from '/#/vue-router'
 import type { RouteRecordRaw, RouteMeta } from 'vue-router'
 
-import { ParentLayout, EmptyLayout } from '/@/router/basicRoutes'
+import { EmptyLayout, IFrameLayout } from '/@/router/basicRoutes'
 import { isUrl as isExtUrl } from '/@/utils/is'
 import { toHump } from '/@/utils'
-import { MenuTypeEnum } from '/@/enums/menuEnum'
+import { IframePrefix, MenuTypeEnum } from '/@/enums/menuEnum'
 import { warn } from '/@/utils/log'
 
 import { routeModuleMap } from './routeModule'
@@ -66,7 +66,7 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
 /**
  * create real route raw obj
  */
-export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | null {
+export function createRouteItem(menu: Menu, _isRoot: boolean): RouteRecordRaw | null {
   // route name
   const name = toHump(menu.router)
 
@@ -83,12 +83,24 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
     return {
       name,
       path: menu.router,
-      component: isRoot ? ParentLayout : EmptyLayout,
+      component: EmptyLayout,
       meta,
     }
   }
 
-  // 外链菜单
+  // 内嵌iframe
+  if (menu.router.startsWith(IframePrefix)) {
+    meta.iframeSrc = menu.router.replace(IframePrefix, '')
+    const path = `/iframe/${menu.id}`
+    return {
+      name,
+      path,
+      component: IFrameLayout,
+      meta,
+    }
+  }
+
+  // 外链
   if (isExtUrl(menu.router)) {
     return {
       name: `ExternalLink${menu.id}`,
@@ -106,23 +118,6 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
   }
 
   // 根级别节点需要嵌套ParentLayout
-  if (isRoot) {
-    return {
-      name,
-      path: menu.router,
-      redirect: `${menu.router}/index`,
-      component: ParentLayout,
-      children: [
-        {
-          path: 'index',
-          component: comp,
-          meta,
-        },
-      ],
-    }
-  }
-
-  // 2级、3级以上嵌套菜单
   return {
     name,
     path: menu.router,

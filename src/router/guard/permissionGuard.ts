@@ -3,11 +3,12 @@ import type { Router, RouteLocationRaw } from 'vue-router'
 import NProgress from 'nprogress'
 import { isEmpty } from 'lodash-es'
 
-import { NotFoundRouteName, PageEnum } from '/@/enums/pageEnum'
+import { NotFoundRouteName, PageEnum, ParentRouteName } from '/@/enums/pageEnum'
 import { getPageTitle } from '/@/utils'
 import { useUserStore } from '/@/stores/modules/user'
 import { usePermissionStore } from '/@/stores/modules/permission'
 import { NotFoundRoute } from '../basicRoutes'
+import { error } from '/@/utils/log'
 
 /**
  * @description 白名单路由
@@ -62,7 +63,7 @@ export function setupPermissionGuard(router: Router) {
               userStore.initUserInfo(),
             ])
             // dynamic add route
-            menus.forEach(router.addRoute)
+            menus.forEach((m) => router.addRoute(ParentRouteName, m))
             // add notfound
             router.addRoute(NotFoundRouteName, NotFoundRoute)
             // is added
@@ -71,6 +72,7 @@ export function setupPermissionGuard(router: Router) {
             // set the replace: true, so the navigation will not leave a history record
             return { ...to, replace: true }
           } catch (e) {
+            error(`${e}`)
             // remove token
             userStore.resetState()
             permissionStore.resetState()
