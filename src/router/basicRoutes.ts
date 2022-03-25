@@ -26,6 +26,7 @@ export const NotFoundRoute: RouteRecordRaw = {
   redirect: PageEnum.NotFound,
   meta: {
     hidden: true,
+    order: Number.MIN_SAFE_INTEGER,
   },
 }
 

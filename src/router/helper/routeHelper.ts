@@ -90,7 +90,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
   // 内嵌iframe
   if (menu.router.startsWith(IframePrefix)) {
     meta.iframeSrc = menu.router.substring(IframePrefix.length, menu.router.length)
-    const path = `/iframe/${menu.id}`
+    const path = `/iframe/${encodeURIComponent(meta.title || menu.id)}`
     return isRoot
       ? {
           name,
