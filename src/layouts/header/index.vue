@@ -7,8 +7,9 @@
     <nav :class="d.e('breadcrumb')">
       <Hamburger />
     </nav>
-    <nav :class="d.e('right-menu')" class="mr-2">
+    <nav :class="d.e('right-menu')" class="mr-2 flex flex-row">
       <FullScreen />
+      <UserDropdown />
     </nav>
   </header>
 </template>
@@ -17,7 +18,7 @@
 import { onMounted } from 'vue'
 
 import { ref } from 'vue'
-import { FullScreen, Hamburger } from './components'
+import { FullScreen, Hamburger, UserDropdown } from './components'
 
 import { useLayoutHeight } from '../content/useAppMainHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
