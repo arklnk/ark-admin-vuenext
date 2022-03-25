@@ -1,8 +1,8 @@
 <template>
   <main class="relative w-full" :class="[d.b(), d.is('fixed', getFixed)]">
-    <RouterView v-if="reloadFlag" v-slot="{ Component }">
+    <RouterView v-if="reloadFlag" v-slot="{ Component, route }">
       <Transition name="fade-bottom" mode="out-in">
-        <component :is="Component" />
+        <component :is="Component" :key="route.fullPath" />
       </Transition>
     </RouterView>
   </main>
