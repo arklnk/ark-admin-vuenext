@@ -48,7 +48,17 @@ const props = defineProps({
  * 渲染菜单或者目录
  */
 const showRoute: ComputedRef<RouteRecordRaw | null> = computed(() => {
-  return (props.route.component?.name === ParentLayout.name || props.route.component?.name === EmptyLayout.name)
-    ? null : props.route
+
+  const showingChildren = props.route.children?.filter(item => !item.meta?.hidden) || []
+  // 菜单
+  if (showingChildren.length === 1) {
+    return props.route.meta ? null : showingChildren[0]
+  }
+  // 判断是否需要渲染成目录
+  if (showingChildren.length === 0) {
+    return (props.route.component?.name === ParentLayout.name || props.route.component?.name === EmptyLayout.name)
+      ? null : props.route
+  }
+  return null
 })
 </script>

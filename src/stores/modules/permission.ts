@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { defineStore } from 'pinia'
 import { getPermAndMenu } from '/@/api/account'
 import { filterAsyncRoutes } from '/@/router/helper/routeHelper'
-import { DashboardRoute } from '/@/router/basicRoutes'
+import { NotFoundRoute } from '/@/router/basicRoutes'
 
 interface PermissionState {
   /**
@@ -60,9 +60,8 @@ export const usePermissionStore = defineStore({
       const menus = filterAsyncRoutes(data!.menus, null)
       // setter
       this.permissionList = data!.perms
-      menus.push(DashboardRoute)
-      // sort
-      menus.sort((a, b) => (b.meta?.order || 0) - (a.meta?.order || 0))
+      // notfound route add end
+      menus.push(NotFoundRoute)
       this.menuList = menus
       return menus
     },

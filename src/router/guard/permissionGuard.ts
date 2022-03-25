@@ -5,11 +5,10 @@ import 'nprogress/nprogress.css'
 
 import { isEmpty } from 'lodash-es'
 
-import { NotFoundRouteName, PageEnum, ParentRouteName } from '/@/enums/pageEnum'
+import { PageEnum } from '/@/enums/pageEnum'
 import { getPageTitle } from '/@/utils'
 import { useUserStore } from '/@/stores/modules/user'
 import { usePermissionStore } from '/@/stores/modules/permission'
-import { NotFoundRoute } from '../basicRoutes'
 import { error } from '/@/utils/log'
 
 /**
@@ -34,9 +33,6 @@ export function setupPermissionGuard(router: Router) {
   router.beforeEach(async (to, _from) => {
     // start progress bar
     NProgress.start()
-
-    // set page title
-    document.title = getPageTitle(to.meta.title)
 
     // determine whether the user has logged in
     const curToken = userStore.getToken
@@ -65,9 +61,7 @@ export function setupPermissionGuard(router: Router) {
               userStore.initUserInfo(),
             ])
             // dynamic add route
-            menus.forEach((m) => router.addRoute(ParentRouteName, m))
-            // add notfound
-            router.addRoute(NotFoundRouteName, NotFoundRoute)
+            menus.forEach(router.addRoute)
             // is added
             permissionStore.setDynamicAddedRoute(true)
             // hack method to ensure that addRoutes is complete
@@ -95,7 +89,10 @@ export function setupPermissionGuard(router: Router) {
     }
   })
 
-  router.afterEach(() => {
+  router.afterEach((to) => {
+    // set page title
+    document.title = getPageTitle(to.meta.title)
+
     // finish progress bar
     NProgress.done()
   })

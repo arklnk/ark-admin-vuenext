@@ -31,7 +31,7 @@ export function resetRouter() {
   })
 }
 
-export function setupRouter(app: App<Element>) {
+export async function setupRouter(app: App<Element>) {
   app.use(router)
 
   // router guard

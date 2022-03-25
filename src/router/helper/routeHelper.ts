@@ -1,9 +1,8 @@
 import type { Menu, Component } from '/#/vue-router'
 import type { RouteRecordRaw, RouteMeta } from 'vue-router'
 
-import { EmptyLayout, IFrameLayout } from '/@/router/basicRoutes'
+import { EmptyLayout, IFrameLayout, ParentLayout } from '/@/router/basicRoutes'
 import { isUrl as isExtUrl } from '/@/utils/is'
-import { toHump } from '/@/utils'
 import { IframePrefix, MenuTypeEnum } from '/@/enums/menuEnum'
 import { warn } from '/@/utils/log'
 
@@ -66,9 +65,9 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
 /**
  * create real route raw obj
  */
-export function createRouteItem(menu: Menu, _isRoot: boolean): RouteRecordRaw | null {
+export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | null {
   // route name
-  const name = toHump(menu.router)
+  const name = `Route${menu.id}`
 
   // route meta
   const meta: RouteMeta = {
@@ -83,27 +82,41 @@ export function createRouteItem(menu: Menu, _isRoot: boolean): RouteRecordRaw | 
     return {
       name,
       path: menu.router,
-      component: EmptyLayout,
+      component: isRoot ? ParentLayout : EmptyLayout,
       meta,
     }
   }
 
   // 内嵌iframe
   if (menu.router.startsWith(IframePrefix)) {
-    meta.iframeSrc = menu.router.replace(IframePrefix, '')
+    meta.iframeSrc = menu.router.substring(IframePrefix.length, menu.router.length)
     const path = `/iframe/${menu.id}`
-    return {
-      name,
-      path,
-      component: IFrameLayout,
-      meta,
-    }
+    return isRoot
+      ? {
+          name,
+          path,
+          component: ParentLayout,
+          redirect: `${path}/index`,
+          children: [
+            {
+              path: `${path}/index`,
+              component: IFrameLayout,
+              meta,
+            },
+          ],
+        }
+      : {
+          name,
+          path,
+          component: IFrameLayout,
+          meta,
+        }
   }
 
   // 外链
   if (isExtUrl(menu.router)) {
     return {
-      name: `ExternalLink${menu.id}`,
+      name,
       path: menu.router,
       redirect: menu.router,
       meta,
@@ -118,12 +131,26 @@ export function createRouteItem(menu: Menu, _isRoot: boolean): RouteRecordRaw | 
   }
 
   // 根级别节点需要嵌套ParentLayout
-  return {
-    name,
-    path: menu.router,
-    component: comp,
-    meta,
-  }
+  return isRoot
+    ? {
+        name,
+        path: menu.router,
+        component: ParentLayout,
+        redirect: `${menu.router}/index`,
+        children: [
+          {
+            path: `${menu.router}/index`,
+            component: comp,
+            meta,
+          },
+        ],
+      }
+    : {
+        name,
+        path: menu.router,
+        component: comp,
+        meta,
+      }
 }
 
 /**

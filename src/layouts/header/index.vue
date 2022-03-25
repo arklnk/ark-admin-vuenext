@@ -45,13 +45,13 @@ const { getCollapsed } = useMenuSetting()
 @include b(app-header) {
   height: var.$navBarHeight;
   line-height: var.$navBarHeight;
+  transition: width var.$transitionDuration;
 
   @include when(fixed) {
     position: fixed;
     top: 0;
     right: 0;
     z-index: 9;
-    transition: width 0.3s;
     width: calc(100% - var.$sideBarWidth);
 
     @include when(collapsed) {

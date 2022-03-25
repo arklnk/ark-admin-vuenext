@@ -10,6 +10,7 @@
         :default-active="activeMenu"
         :unique-opened="getUniqueOpened"
         :collapse="getCollapsed"
+        :collapse-transition="false"
       >
         <SideMenuItem v-for="route in routes" :key="route.path" :route="route" />
       </ElMenu>
@@ -47,15 +48,15 @@ const { getUniqueOpened, getCollapsed } = useMenuSetting()
 @use '/@/styles/mixins.scss' as *;
 
 @include b(app-sidebar) {
-  transition: width 0.3s;
+  transition: width var.$transitionDuration;
   width: var.$sideBarWidth;
+
+  :deep(.el-menu--collapse) {
+    width: var.$sideBarCollapsedWidth;
+  }
 
   @include when(collapsed) {
     width: var.$sideBarCollapsedWidth;
-
-    :deep(.el-menu--collapse) {
-      width: var.$sideBarCollapsedWidth;
-    }
   }
 }
 </style>

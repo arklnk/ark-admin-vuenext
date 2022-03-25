@@ -1,5 +1,5 @@
 export const NotFoundRouteName = Symbol('NotFound')
-export const ParentRouteName = Symbol('ParentLayoutRoute')
+export const RouteRouteName = Symbol('Root')
 
 export enum PageEnum {
   Root = '/',

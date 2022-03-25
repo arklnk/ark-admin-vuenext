@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { NotFoundRouteName, PageEnum, PageTitleEnum, ParentRouteName } from '/@/enums/pageEnum'
+import { NotFoundRouteName, PageEnum, PageTitleEnum, RouteRouteName } from '/@/enums/pageEnum'
 import { toHump } from '/@/utils'
 
 /**
@@ -71,29 +71,31 @@ const Error403Route: RouteRecordRaw = {
 /**
  * @description root route
  */
-const RootRoute: RouteRecordRaw = {
+const DashboardRoute: RouteRecordRaw = {
   path: PageEnum.Root,
-  name: ParentRouteName,
+  name: RouteRouteName,
   component: ParentLayout,
   redirect: PageEnum.Dashboard,
-  children: [],
-  meta: {
-    hidden: true,
-  },
-}
-
-export const DashboardRoute: RouteRecordRaw = {
-  path: PageEnum.Dashboard,
-  name: toHump(PageEnum.Dashboard),
-  component: () => import('/@/views/dashboard/Dashboard.vue'),
-  meta: {
-    title: PageTitleEnum.Dashboard,
-    icon: 'dashboard',
-    order: Number.MAX_SAFE_INTEGER,
-  },
+  children: [
+    {
+      path: PageEnum.Dashboard,
+      name: toHump(PageEnum.Dashboard),
+      component: () => import('/@/views/dashboard/Dashboard.vue'),
+      meta: {
+        title: PageTitleEnum.Dashboard,
+        icon: 'dashboard',
+        order: Number.MAX_SAFE_INTEGER,
+      },
+    },
+  ],
 }
 
 /**
  * @description basic routing without permission
  */
-export const basicRoutes: RouteRecordRaw[] = [LoginRoute, Error404Route, Error403Route, RootRoute]
+export const basicRoutes: RouteRecordRaw[] = [
+  LoginRoute,
+  Error404Route,
+  Error403Route,
+  DashboardRoute,
+]
