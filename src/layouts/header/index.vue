@@ -5,10 +5,10 @@
     class="border-gray-100 border-b flex flex-row items-center justify-between bg-white box-border text-gray-700 relative"
   >
     <nav :class="d.e('breadcrumb')">
-      <AppHamburger />
+      <Hamburger />
     </nav>
     <nav :class="d.e('right-menu')" class="mr-2">
-      <AppScreenfull />
+      <FullScreen />
     </nav>
   </header>
 </template>
@@ -17,7 +17,7 @@
 import { onMounted } from 'vue'
 
 import { ref } from 'vue'
-import { AppScreenfull, AppHamburger } from '/@/components/Application'
+import { FullScreen, Hamburger } from './components'
 
 import { useLayoutHeight } from '../content/useAppMainHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
