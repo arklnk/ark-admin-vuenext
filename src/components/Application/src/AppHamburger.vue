@@ -17,9 +17,10 @@ const { getCollapsed, toggleCollapse } = useMenuSetting()
 
 <style lang="scss" scoped>
 @use '/@/styles/mixins.scss' as *;
+@use '/@/styles/var.scss';
 
 @include b(app-hamburger) {
-  transition: transform 0.3s;
+  transition: transform var.$transitionDuration;
   @include when(collapsed) {
     transform: rotate(180deg);
   }
