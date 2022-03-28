@@ -2,12 +2,17 @@
   <header
     ref="appHeaderRef"
     :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed)]"
-    class="border-gray-100 border-b flex flex-row items-center justify-between bg-white box-border text-gray-700 relative"
+    class="border-gray-100 border-b flex flex-row justify-between bg-white box-border text-gray-700 relative"
   >
     <nav :class="d.e('breadcrumb')">
-      <Hamburger />
+      <span
+        class="inline-block h-full px-4 cursor-pointer hover:bg-gray-50 flex items-center"
+        @click="toggleCollapse"
+      >
+        <Hamburger :collapsed="getCollapsed" />
+      </span>
     </nav>
-    <nav :class="d.e('right-menu')" class="mr-2 flex flex-row">
+    <nav :class="d.e('right-menu')" class="mr-2 flex flex-row h-full items-center text-lg">
       <FullScreen />
       <UserDropdown />
     </nav>
@@ -36,7 +41,7 @@ onMounted(() => {
 })
 
 const { getFixed } = useHeaderSetting()
-const { getCollapsed } = useMenuSetting()
+const { getCollapsed, toggleCollapse } = useMenuSetting()
 </script>
 
 <style lang="scss" scoped>
@@ -61,10 +66,8 @@ const { getCollapsed } = useMenuSetting()
   }
 
   @include e(right-menu) {
-    font-size: 20px;
-
-    svg {
-      margin: 0 5px;
+    & > :not(:last-child) {
+      margin: 0 6px;
     }
   }
 }

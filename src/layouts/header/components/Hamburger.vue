@@ -1,18 +1,19 @@
 <template>
-  <IconHamburger
-    class="text-base cursor-pointer mx-4"
-    :class="[d.b(), d.is('collapsed', getCollapsed)]"
-    @click="toggleCollapse"
-  />
+  <IconHamburger class="text-base" :class="[d.b(), d.is('collapsed', collapsed)]" />
 </template>
 
 <script setup lang="ts">
 import IconHamburger from '~icons/ic/sharp-format-indent-increase'
 import { useDesign } from '/@/hooks/core/useDesign'
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
+
+defineProps({
+  collapsed: {
+    type: Boolean,
+    required: true
+  }
+})
 
 const d = useDesign('app-hamburger')
-const { getCollapsed, toggleCollapse } = useMenuSetting()
 </script>
 
 <style lang="scss" scoped>
