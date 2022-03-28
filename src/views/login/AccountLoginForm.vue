@@ -48,8 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FormItemRule } from 'element-plus/lib/components/form/src/form.type'
-import type { ElForm } from 'element-plus'
+import type { ElForm, FormItemRule } from 'element-plus'
 
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
