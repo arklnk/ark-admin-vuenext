@@ -42,9 +42,9 @@ export const useUserStore = defineStore({
       this.name = data!.name
       this.avatar = data!.headImg
     },
-    logout(): void {
+    async logout(): Promise<void> {
       // can fail
-      logoutRequest().catch(() => {})
+      await logoutRequest()
 
       const permissionStore = usePermissionStore()
       this.resetState()

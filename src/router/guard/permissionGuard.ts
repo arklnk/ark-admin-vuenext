@@ -1,4 +1,4 @@
-import type { Router, RouteLocationRaw } from 'vue-router'
+import type { Router } from 'vue-router'
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -15,13 +15,6 @@ import { error } from '/@/utils/log'
  * @description 白名单路由
  */
 export const whitePathList: (PageEnum | string)[] = [PageEnum.Login]
-
-function generateLoginPath(toPath: string): RouteLocationRaw {
-  return {
-    path: toPath === PageEnum.NotFound ? PageEnum.Login : `${PageEnum.Login}?redirect=${toPath}`,
-    replace: true,
-  }
-}
 
 /**
  * setup router guard
@@ -75,7 +68,7 @@ export function setupPermissionGuard(router: Router) {
             userStore.resetState()
             permissionStore.resetState()
 
-            return generateLoginPath(to.path)
+            return `${PageEnum.Login}?redirect=${to.fullPath}`
           }
         }
       }
@@ -86,7 +79,7 @@ export function setupPermissionGuard(router: Router) {
         return true
       } else {
         // other pages that do not have permission to access are redirected to the login page.
-        return generateLoginPath(to.path)
+        return `${PageEnum.Login}?redirect=${to.fullPath}`
       }
     }
   })
