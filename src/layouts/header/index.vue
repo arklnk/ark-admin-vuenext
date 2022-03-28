@@ -15,6 +15,7 @@
     <nav :class="d.e('right-menu')" class="mr-2 flex flex-row h-full items-center text-lg">
       <FullScreen />
       <UserDropdown />
+      <ProjectConfig />
     </nav>
   </header>
 </template>
@@ -23,7 +24,7 @@
 import { onMounted } from 'vue'
 
 import { ref } from 'vue'
-import { FullScreen, Hamburger, UserDropdown } from './components'
+import { FullScreen, Hamburger, UserDropdown, ProjectConfig } from './components'
 
 import { useLayoutHeight } from '../content/useAppMainHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
