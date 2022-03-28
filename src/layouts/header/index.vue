@@ -66,8 +66,8 @@ const { getCollapsed, toggleCollapse } = useMenuSetting()
   }
 
   @include e(right-menu) {
-    & > :not(:last-child) {
-      margin: 0 6px;
+    & > *:not(:last-child) {
+      margin: 0 8px;
     }
   }
 }
