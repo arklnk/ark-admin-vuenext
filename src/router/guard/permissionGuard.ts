@@ -68,7 +68,7 @@ export function setupPermissionGuard(router: Router) {
             userStore.resetState()
             permissionStore.resetState()
 
-            return `${PageEnum.Login}?redirect=${to.fullPath}`
+            return `${PageEnum.Login}?redirect=${encodeURIComponent(to.fullPath)}`
           }
         }
       }
@@ -79,7 +79,7 @@ export function setupPermissionGuard(router: Router) {
         return true
       } else {
         // other pages that do not have permission to access are redirected to the login page.
-        return `${PageEnum.Login}?redirect=${to.fullPath}`
+        return `${PageEnum.Login}?redirect=${encodeURIComponent(to.fullPath)}`
       }
     }
   })

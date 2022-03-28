@@ -51,7 +51,7 @@
 import type { ElForm, FormItemRule } from 'element-plus'
 
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { isEmpty, throttle } from 'lodash-es'
 import { getImageCaptcha, userLogin } from '/@/api/login'
 import { useUserStore } from '/@/stores/modules/user'
@@ -72,6 +72,7 @@ type FormInstance = InstanceType<typeof ElForm>
 const formRef = ref<FormInstance>()
 const userStore = useUserStore()
 const router = useRouter()
+const $route = useRoute()
 const handleLogin = throttle(() => {
   if (!formRef.value) return
 
@@ -83,7 +84,12 @@ const handleLogin = throttle(() => {
         if (data && !isEmpty(data.token)) {
           // logging
           userStore.setToken(data.token)
-          await router.replace(PageEnum.Root)
+
+          if ($route.query.redirect) {
+            router.replace($route.query.redirect as string)
+          } else {
+            router.replace(PageEnum.Root)
+          }
         }
       } finally {
         isLogging.value = false
