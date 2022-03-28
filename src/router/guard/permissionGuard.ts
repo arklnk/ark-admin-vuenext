@@ -27,6 +27,8 @@ function generateLoginPath(toPath: string): RouteLocationRaw {
  * setup router guard
  */
 export function setupPermissionGuard(router: Router) {
+  NProgress.configure({ showSpinner: false })
+
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
 
