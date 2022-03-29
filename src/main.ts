@@ -9,7 +9,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 import { registerGlobalComp } from '/@/core/registerGlobalComp'
-import { initAppConfigStore } from '/@/core/initAppConfig'
+import { initAppConfig } from '/@/core/initAppConfig'
 import { setupStore } from './stores'
 import { setupRouter } from '/@/router'
 
@@ -20,7 +20,7 @@ async function bootstrap() {
   setupStore(app)
 
   // init appconfig
-  initAppConfigStore()
+  initAppConfig()
 
   // register global component and lib
   registerGlobalComp(app)

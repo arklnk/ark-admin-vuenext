@@ -7,7 +7,7 @@ import { getToken } from '/@/utils/auth'
 /**
  * Initial project configuration
  */
-export function initAppConfigStore() {
+export function initAppConfig() {
   const appStore = useAppStore()
   const userStore = useUserStore()
 
