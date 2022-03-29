@@ -12,7 +12,7 @@
         <Hamburger :collapsed="getCollapsed" />
       </span>
     </nav>
-    <nav :class="d.e('right-menu')" class="mr-2 flex flex-row h-full items-center text-lg">
+    <nav :class="d.e('right-menu')" class="flex flex-row h-full items-center text-lg">
       <FullScreen />
       <UserDropdown />
       <ProjectConfig />
@@ -67,8 +67,8 @@ const { getCollapsed, toggleCollapse } = useMenuSetting()
   }
 
   @include e(right-menu) {
-    & > *:not(:last-child) {
-      margin: 0 8px;
+    & > * {
+      margin: 0 6px;
     }
   }
 }
