@@ -13,9 +13,15 @@
       </span>
     </nav>
     <nav :class="d.e('right-menu')" class="flex flex-row h-full items-center text-lg">
-      <FullScreen />
-      <UserDropdown />
-      <ProjectConfig />
+      <span>
+        <FullScreen />
+      </span>
+      <span>
+        <UserDropdown />
+      </span>
+      <span>
+        <ProjectConfig />
+      </span>
     </nav>
   </header>
 </template>
@@ -67,7 +73,7 @@ const { getCollapsed, toggleCollapse } = useMenuSetting()
   }
 
   @include e(right-menu) {
-    & > * {
+    & > span {
       margin: 0 6px;
     }
   }

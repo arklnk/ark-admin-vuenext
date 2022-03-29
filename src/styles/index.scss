@@ -1,7 +1,7 @@
 @use './var.scss';
 @use './config.scss';
 @use './transition.scss';
-@use './theme.scss';
+@use './element-ui.scss';
 @use './mixins.scss';
 
 input:-webkit-autofill {
@@ -27,6 +27,10 @@ body {
   &.gray-mode {
     filter: grayscale(100%);
     filter: progid:dximagetransform.microsoft.basicimage(grayscale=1);
+  }
+
+  &.color-weak {
+    filter: invert(80%);
   }
 }
 
