@@ -1,9 +1,9 @@
 <template>
-  <IconHamburger class="text-base" :class="[d.b(), d.is('collapsed', collapsed)]" />
+  <IconHamburger :class="[d.b(), d.is('collapsed', collapsed)]" />
 </template>
 
 <script setup lang="ts">
-import IconHamburger from '~icons/ic/sharp-format-indent-increase'
+import IconHamburger from '~icons/icon-park-outline/indent-right'
 import { useDesign } from '/@/hooks/core/useDesign'
 
 defineProps({

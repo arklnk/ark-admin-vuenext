@@ -33,7 +33,7 @@ const d = useDesign('svg-icon')
 const symbolId = computed(() => `#${props.prefix}-${props.icon}`)
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/mixins.scss' as *;
 
 @include b(svg-icon) {

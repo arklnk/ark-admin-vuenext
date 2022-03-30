@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import IconFullScreen from '~icons/mdi/fullscreen'
-import IconFullScreenExit from '~icons/mdi/fullscreen-exit'
+import IconFullScreen from '~icons/dashicons/fullscreen-alt'
+import IconFullScreenExit from '~icons/dashicons/fullscreen-exit-alt'
 
 import { useFullscreen } from '@vueuse/core'
 

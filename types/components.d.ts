@@ -1,4 +1,4 @@
-import { SvgIcon } from '/@/components/Icon'
+import SvgIcon from '/@/components/Icon'
 
 /**
  * @see https://github.com/johnsoncodehk/volar/tree/master/extensions/vscode-vue-language-features#usage

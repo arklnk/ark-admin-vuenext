@@ -2,10 +2,14 @@ import type { Plugin } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
+import { prefixCls } from '../../src/settings/designSetting'
 
 export function configIconsPlugin(isBuild: boolean) {
   // iconfy
-  const iconsPlugin: Plugin = Icons({ compiler: 'vue3' })
+  const iconsPlugin: Plugin = Icons({
+    compiler: 'vue3',
+    defaultClass: `${prefixCls}-svg-icon`,
+  })
 
   /**
    * https://github.com/vbenjs/vite-plugin-svg-icons

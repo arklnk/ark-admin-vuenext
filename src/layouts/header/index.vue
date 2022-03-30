@@ -5,7 +5,7 @@
     class="border-gray-100 border-b flex flex-row justify-between bg-white box-border text-gray-700 relative"
   >
     <nav
-      class="inline-block h-full px-4 cursor-pointer hover:bg-gray-50 flex items-center"
+      class="inline-block h-full px-4 cursor-pointer hover:bg-gray-50 flex items-center text-lg"
       @click="toggleCollapse"
     >
       <Hamburger :collapsed="getCollapsed" />
