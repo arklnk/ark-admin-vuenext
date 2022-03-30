@@ -14,6 +14,8 @@ export function useRootSetting() {
 
   const getShowFooter = computed(() => appStore.getProjectConfig.showFooter)
 
+  const getThemeColor = computed(() => appStore.getProjectConfig.themeColor)
+
   function setRootSetting(setting: Partial<RootSetting>) {
     appStore.setProjectConfig(setting)
   }
@@ -21,6 +23,7 @@ export function useRootSetting() {
   return {
     setRootSetting,
 
+    getThemeColor,
     getGrayMode,
     getShowBreadCrumb,
     getShowFooter,

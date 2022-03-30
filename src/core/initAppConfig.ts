@@ -3,6 +3,7 @@ import { useUserStore } from '/@/stores/modules/user'
 
 import defaultSetting from '/@/settings/projectSetting'
 import { getToken } from '/@/utils/auth'
+import { updateTheme } from './theme/updateTheme'
 
 /**
  * Initial project configuration
@@ -16,4 +17,7 @@ export function initAppConfig() {
 
   // setup user config
   userStore.setToken(getToken())
+
+  // update primary theme color
+  updateTheme(appStore.getProjectConfig.themeColor)
 }

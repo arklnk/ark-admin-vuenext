@@ -18,6 +18,7 @@ export interface ProjectConfig {
   grayMode: boolean
   showBreadCrumb: boolean
   showFooter: boolean
+  themeColor: string
   menuSetting: MenuSetting
   elementUISetting: ElementUISetting
   headerSetting: HeaderSetting

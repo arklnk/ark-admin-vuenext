@@ -1,33 +1,8 @@
-/**
- * https://juejin.cn/post/7024025899813044232
- * sass mix函数的js版本，mix(color1 = rgb(r1,g1,b1),color2 = rgb(r2,g2,b2),weight)
- *
- * 计算公式
- * r = (r1 * (1 - weight) + r2 * weight);
- * g = (g1 * (1 - weight) + g2 * weight);
- * b = (b1 * (1 - weight) + b2 * weight);
- * finalColor = rgb(r,g,b);
- * @param color1
- * @param color2
- * @param weight
- * @returns
- */
-export function mix(color1: string, color2: string, weight: number): string {
-  weight = Math.max(Math.min(Number(weight), 1), 0)
-  const r1 = parseInt(color1.substring(1, 3), 16)
-  const g1 = parseInt(color1.substring(3, 5), 16)
-  const b1 = parseInt(color1.substring(5, 7), 16)
-  const r2 = parseInt(color2.substring(1, 3), 16)
-  const g2 = parseInt(color2.substring(3, 5), 16)
-  const b2 = parseInt(color2.substring(5, 7), 16)
-  let r: string | number = Math.round(r1 * (1 - weight) + r2 * weight)
-  let g: string | number = Math.round(g1 * (1 - weight) + g2 * weight)
-  let b: string | number = Math.round(b1 * (1 - weight) + b2 * weight)
-  r = ('0' + (r || 0).toString(16)).slice(-2)
-  g = ('0' + (g || 0).toString(16)).slice(-2)
-  b = ('0' + (b || 0).toString(16)).slice(-2)
-  return '#' + r + g + b
-}
+import { useRootSetting } from '/@/hooks/setting/useRootSetting'
+import { mixDarken, mixLighten } from '/@/utils/color'
+import { setCssVar } from '/@/utils/dom'
+
+const Element_CssVar_Prefix = '--el-color-primary'
 
 /**
  * 需要覆写的css变量并改变生成的light-${num}值
@@ -42,5 +17,21 @@ export function mix(color1: string, color2: string, weight: number): string {
  * --el-color-primary-light-8: #d9ecff;
  * --el-color-primary-light-9: #ecf5ff;
  * --el-color-primary-dark-2: #337ecc;
+ *
+ * https://github.com/element-plus/element-plus/blob/dev/packages/theme-chalk/src/common/var.scss
  */
-export function updateTheme() {}
+export function updateTheme(themeColor: string) {
+  const { setRootSetting } = useRootSetting()
+
+  setRootSetting({ themeColor })
+
+  setCssVar(Element_CssVar_Prefix, themeColor)
+
+  // set lighten css var
+  for (let i = 1; i < 10; i++) {
+    setCssVar(`${Element_CssVar_Prefix}-light-${i}`, mixLighten(themeColor, i * 0.1))
+  }
+
+  // set darken css var
+  setCssVar(`${Element_CssVar_Prefix}-dark-2`, mixDarken(themeColor, 2 * 0.1))
+}
