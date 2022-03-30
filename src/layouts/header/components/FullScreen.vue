@@ -1,8 +1,5 @@
 <template>
-  <span
-    @click="handleToggleFullScreen"
-    :class="isSupported ? 'cursor-pointer' : 'cursor-not-allowed'"
-  >
+  <span @click="handleToggleFullScreen" v-if="isSupported">
     <IconFullScreenExit v-if="isFullscreen" />
     <IconFullScreen v-else />
   </span>

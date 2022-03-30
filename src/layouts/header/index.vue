@@ -4,24 +4,16 @@
     :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed)]"
     class="border-gray-100 border-b flex flex-row justify-between bg-white box-border text-gray-700 relative"
   >
-    <nav :class="d.e('breadcrumb')">
-      <span
-        class="inline-block h-full px-4 cursor-pointer hover:bg-gray-50 flex items-center"
-        @click="toggleCollapse"
-      >
-        <Hamburger :collapsed="getCollapsed" />
-      </span>
+    <nav
+      class="inline-block h-full px-4 cursor-pointer hover:bg-gray-50 flex items-center"
+      @click="toggleCollapse"
+    >
+      <Hamburger :collapsed="getCollapsed" />
     </nav>
-    <nav :class="d.e('right-menu')" class="flex flex-row h-full items-center text-lg">
-      <span>
-        <FullScreen />
-      </span>
-      <span>
-        <UserDropdown />
-      </span>
-      <span>
-        <ProjectConfig />
-      </span>
+    <nav class="flex h-full text-lg">
+      <FullScreen class="h-full hover:bg-gray-50 px-1.5 cursor-pointer items-center flex" />
+      <UserDropdown class="h-full hover:bg-gray-50 px-1.5 cursor-pointer items-center flex" />
+      <ProjectConfig class="h-full hover:bg-gray-50 px-1.5 cursor-pointer items-center flex" />
     </nav>
   </header>
 </template>
@@ -30,7 +22,8 @@
 import { onMounted } from 'vue'
 
 import { ref } from 'vue'
-import { FullScreen, Hamburger, UserDropdown, ProjectConfig } from './components'
+import { FullScreen, Hamburger, UserDropdown } from './components'
+import ProjectConfig from '../setting/index.vue'
 
 import { useLayoutHeight } from '../content/useAppMainHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
@@ -69,12 +62,6 @@ const { getCollapsed, toggleCollapse } = useMenuSetting()
 
     @include when(collapsed) {
       width: calc(100% - var.$sideBarCollapsedWidth);
-    }
-  }
-
-  @include e(right-menu) {
-    & > span {
-      margin: 0 6px;
     }
   }
 }
