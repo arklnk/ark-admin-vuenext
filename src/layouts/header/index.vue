@@ -11,9 +11,9 @@
       <Hamburger :collapsed="getCollapsed" />
     </nav>
     <nav class="flex h-full text-lg">
-      <FullScreen class="h-full hover:bg-gray-50 px-1.5 cursor-pointer items-center flex" />
-      <UserDropdown class="h-full hover:bg-gray-50 px-1.5 cursor-pointer items-center flex" />
-      <ProjectConfig class="h-full hover:bg-gray-50 px-1.5 cursor-pointer items-center flex" />
+      <FullScreen class="h-full hover:bg-gray-50 px-2 cursor-pointer items-center flex" />
+      <UserDropdown class="h-full hover:bg-gray-50 px-2 cursor-pointer items-center flex" />
+      <ProjectConfig class="h-full hover:bg-gray-50 px-2 cursor-pointer items-center flex" />
     </nav>
   </header>
 </template>
