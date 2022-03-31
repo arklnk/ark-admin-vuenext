@@ -1,11 +1,14 @@
 // https://github.com/vbenjs/vite-plugin-theme/blob/main/client/colorUtils.ts
 
+export const Color_White = '#fff'
+export const Color_Black = '#000'
+
 export function mixLighten(colorStr: string, weight: number): string {
-  return mix('fff', colorStr, weight)
+  return mix(Color_White, colorStr, weight)
 }
 
 export function mixDarken(colorStr: string, weight: number): string {
-  return mix('000', colorStr, weight)
+  return mix(Color_Black, colorStr, weight)
 }
 
 /**
@@ -76,6 +79,21 @@ export function pad2(num: number) {
 export function isLight(colorStr: string): boolean {
   const [r, g, b] = toRGB(colorStr)
 
-  const brightness = (r * 299 + g * 587 + b * 114) / 1000
-  return brightness > 155
+  const brightness = r * 0.299 + g * 0.587 + b * 0.114
+  return brightness > 192
+}
+
+/**
+ * RGB 颜色值转换为 十六进制颜色值.
+ * r, g, 和 b 需要在 [0, 255] 范围内
+ *
+ * @return  String          类似#ff00ff
+ * @param r
+ * @param g
+ * @param b
+ */
+export function rgbToHex(r: number, g: number, b: number) {
+  // tslint:disable-next-line:no-bitwise
+  const hex = ((r << 16) | (g << 8) | b).toString(16)
+  return '#' + new Array(Math.abs(hex.length - 7)).join('0') + hex
 }

@@ -1,7 +1,8 @@
 <template>
   <aside
     :class="[d.b(), d.is('collapsed', getCollapsed)]"
-    class="relative border-gray-100 border-r h-full bg-white box-border"
+    :style="{ backgroundColor: getBgColor }"
+    class="relative h-full box-border"
   >
     <ElScrollbar height="100%">
       <ElMenu
@@ -40,7 +41,7 @@ const activeMenu = computed(() => {
   return $route.path
 })
 
-const { getUniqueOpened, getCollapsed } = useMenuSetting()
+const { getUniqueOpened, getCollapsed, getBgColor } = useMenuSetting()
 </script>
 
 <style lang="scss" scoped>
@@ -51,8 +52,23 @@ const { getUniqueOpened, getCollapsed } = useMenuSetting()
   transition: width var.$transitionDuration;
   width: var.$sideBarWidth;
 
-  :deep(.el-menu--collapse) {
-    width: var.$sideBarCollapsedWidth;
+  :deep(.el-menu) {
+    // --el-menu-active-color: var(--sidebar-menu-active-color);
+    --el-menu-text-color: var(--sidebar-menu-text-color);
+    --el-menu-hover-text-color: var(--sidebar-menu-hover-text-color);
+    --el-menu-bg-color: var(--sidebar-menu-bg-color);
+    --el-menu-hover-bg-color: var(--sidebar-menu-hover-bg-color);
+    --el-menu-item-hover-fill: var(--sidebar-menu-item-hover-fill);
+
+    // --el-menu-item-height: #{var.$navBarHeight};
+    .el-menu--collapse {
+      width: var.$sideBarCollapsedWidth;
+    }
+
+    .is-active {
+      background-color: var(--el-color-primary);
+      color: var(--el-menu-text-color);
+    }
   }
 
   @include when(collapsed) {

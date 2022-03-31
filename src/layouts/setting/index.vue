@@ -16,6 +16,12 @@
           :cursor="getHeaderBgColor"
           @change="handleHeaderBgChange"
         />
+        <ElDivider>菜单主题</ElDivider>
+        <ThemeColorPicker
+          :color-list="SIDE_BAR_BG_COLOR_LIST"
+          :cursor="getSideMenuBgColor"
+          @change="handleSideMenuBgChange"
+        />
         <ElDivider>界面功能</ElDivider>
         <SwitchItem title="折叠菜单" :def="getCollapsed" @change="handleMenuCollapsedChange" />
         <SwitchItem title="侧边菜单手风琴模式" :def="getUniqueOpened" @change="handleMenuUniqueOpenChange" />
@@ -31,7 +37,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import IconSettings from '~icons/icon-park-outline/setting-two'
-import { APP_PRESET_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST } from '/@/settings/designSetting'
+import { APP_PRESET_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST } from '/@/settings/designSetting'
 
 import ThemeColorPicker from './components/ThemeColorPicker.vue'
 import SwitchItem from './components/SwitchItem.vue'
@@ -42,6 +48,7 @@ import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { updateGrayMode } from '/@/core/theme/updateGrayMode'
 import { updateColorWeak } from '/@/core/theme/updateColorWeak'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
+import { updateSidebarBgColor } from '/@/core/theme/updateBackground'
 
 const visibleRef = ref(false)
 function handleClick() {
@@ -62,12 +69,16 @@ function handleColorWeakChange(colorWeak: boolean) {
   setRootSetting({ colorWeak })
 }
 
-const { getCollapsed, getUniqueOpened, setMenuSetting } = useMenuSetting()
+const { getCollapsed, getUniqueOpened, getBgColor: getSideMenuBgColor, setMenuSetting } = useMenuSetting()
 function handleMenuCollapsedChange(collapsed: boolean) {
   setMenuSetting({ collapsed })
 }
 function handleMenuUniqueOpenChange(uniqueOpened: boolean) {
   setMenuSetting({ uniqueOpened })
+}
+function handleSideMenuBgChange(bgColor: string) {
+  updateSidebarBgColor(bgColor)
+  setMenuSetting({ bgColor })
 }
 
 const { getFixed, getBgColor: getHeaderBgColor, setHeaderSetting } = useHeaderSetting()

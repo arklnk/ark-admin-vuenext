@@ -10,4 +10,15 @@ $transitionDuration: 0.3s;
 
 :root {
   --primary-color: var(--el-color-primary);
+
+  // sidebar menu css var
+  // --sidebar-menu-active-color: var(--el-color-primary);
+  --sidebar-menu-text-color: var(--el-text-color-primary);
+  --sidebar-menu-hover-text-color: var(--el-text-color-primary);
+
+  --sidebar-menu-bg-color: var(--el-fill-color-blank);
+  --sidebar-submenu-bg-color: var(--el-fill-color-blank);
+
+  --sidebar-menu-hover-bg-color: var(--el-color-primary-light-9);
+  --sidebar-menu-item-hover-fill: var(--el-color-primary-light-9);
 }
