@@ -16,6 +16,7 @@ export interface HeaderSetting {
 
 export interface ProjectConfig {
   grayMode: boolean
+  colorWeak: boolean
   showBreadCrumb: boolean
   showFooter: boolean
   themeColor: string

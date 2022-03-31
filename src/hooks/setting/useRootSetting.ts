@@ -3,7 +3,7 @@ import type { ProjectConfig } from '/#/config'
 import { computed } from 'vue'
 import { useAppStore } from '/@/stores/modules/app'
 
-type RootSetting = Omit<ProjectConfig, 'grayMode' | 'showBreadCrumb' | 'showFooter'>
+type RootSetting = Omit<ProjectConfig, 'menuSetting' | 'elementUISetting' | 'headerSetting'>
 
 export function useRootSetting() {
   const appStore = useAppStore()
@@ -16,6 +16,8 @@ export function useRootSetting() {
 
   const getThemeColor = computed(() => appStore.getProjectConfig.themeColor)
 
+  const getColorWeak = computed(() => appStore.getProjectConfig.colorWeak)
+
   function setRootSetting(setting: Partial<RootSetting>) {
     appStore.setProjectConfig(setting)
   }
@@ -23,6 +25,7 @@ export function useRootSetting() {
   return {
     setRootSetting,
 
+    getColorWeak,
     getThemeColor,
     getGrayMode,
     getShowBreadCrumb,

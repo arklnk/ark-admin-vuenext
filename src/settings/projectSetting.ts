@@ -3,6 +3,7 @@ import type { ProjectConfig } from '/#/config'
 
 const setting: ProjectConfig = {
   grayMode: false,
+  colorWeak: false,
   showBreadCrumb: true,
   showFooter: false,
   themeColor: APP_PRESET_COLOR_LIST[0],
