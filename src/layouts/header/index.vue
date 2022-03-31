@@ -85,6 +85,7 @@ const isLightBgColor = computed(() => isLight(getBgColor.value))
       background-color: #ccc;
       opacity: 0;
       content: " ";
+      pointer-events: none;
     }
 
     &:hover::before {
