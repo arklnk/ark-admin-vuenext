@@ -1,7 +1,7 @@
 <template>
   <header
     ref="appHeaderRef"
-    :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed), isLightBgColor ? 'text-black' : 'text-white']"
+    :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed), isLightBgColor ? 'text-gray-700' : 'text-white']"
     :style="{ backgroundColor: getBgColor }"
     class="border-gray-100 border-b flex flex-row justify-between box-border relative"
   >
@@ -72,6 +72,24 @@ const isLightBgColor = computed(() => isLight(getBgColor.value))
     padding: 0 8px;
     cursor: pointer;
     align-items: center;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-color: #ccc;
+      background-color: #ccc;
+      opacity: 0;
+      content: " ";
+    }
+
+    &:hover::before {
+      opacity: 0.1;
+    }
   }
 }
 </style>
