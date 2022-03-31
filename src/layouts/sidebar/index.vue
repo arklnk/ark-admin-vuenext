@@ -53,19 +53,32 @@ const { getUniqueOpened, getCollapsed, getBgColor } = useMenuSetting()
   width: var.$sideBarWidth;
 
   :deep(.el-menu) {
+    --el-menu-item-font-size: 12px;
+    --el-menu-item-height: #{var.$navBarHeight};
+
     // --el-menu-active-color: var(--sidebar-menu-active-color);
     --el-menu-text-color: var(--sidebar-menu-text-color);
     --el-menu-hover-text-color: var(--sidebar-menu-hover-text-color);
     --el-menu-bg-color: var(--sidebar-menu-bg-color);
     --el-menu-hover-bg-color: var(--sidebar-menu-hover-bg-color);
-    --el-menu-item-hover-fill: var(--sidebar-menu-item-hover-fill);
+    --el-menu-item-hover-fill: var(--sidebar-menu-hover-bg-color);
 
-    // --el-menu-item-height: #{var.$navBarHeight};
+    transition: all var.$transitionDuration;
+
     .el-menu--collapse {
       width: var.$sideBarCollapsedWidth;
     }
 
-    .is-active {
+    // .el-sub-menu .el-sub-menu,
+    // .el-menu .el-menu-item {
+    //   background-color: var(--sidebar-submenu-bg-color);
+
+    //   &:hover {
+    //     background-color: var(--el-menu-hover-bg-color);
+    //   }
+    // }
+
+    .el-menu-item.is-active {
       background-color: var(--el-color-primary);
       color: var(--el-menu-text-color);
     }
