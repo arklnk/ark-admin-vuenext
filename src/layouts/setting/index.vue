@@ -1,30 +1,37 @@
 <template>
-  <span :class="$attrs.class" class="inline-block" @click="handleClick">
+  <span @click="handleClick">
     <IconSettings />
+
+    <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="300" append-to-body>
+      <div class="w-full overflow-hidden">
+        <ElDivider>系统主题</ElDivider>
+        <ThemeColorPicker
+          :color-list="APP_PRESET_COLOR_LIST"
+          :cursor="getThemeColor"
+          @change="handleSystemThemeChange"
+        />
+        <ElDivider>顶栏主题</ElDivider>
+        <ThemeColorPicker
+          :color-list="HEADER_PRESET_BG_COLOR_LIST"
+          :cursor="getHeaderBgColor"
+          @change="handleHeaderBgChange"
+        />
+        <ElDivider>界面功能</ElDivider>
+        <SwitchItem title="折叠菜单" :def="getCollapsed" @change="handleMenuCollapsedChange" />
+        <SwitchItem title="侧边菜单手风琴模式" :def="getUniqueOpened" @change="handleMenuUniqueOpenChange" />
+        <SwitchItem title="固定顶栏" :def="getFixed" @change="handleHeaderFixedChange" />
+        <ElDivider>界面显示</ElDivider>
+        <SwitchItem title="灰色模式" :def="getGrayMode" @change="handleGrayModeChange" />
+        <SwitchItem title="色弱模式" :def="getColorWeak" @change="handleColorWeakChange" />
+      </div>
+    </ElDrawer>
   </span>
-  <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="300" append-to-body>
-    <div class="w-full overflow-hidden">
-      <ElDivider>系统主题</ElDivider>
-      <ThemeColorPicker
-        :color-list="APP_PRESET_COLOR_LIST"
-        :cursor="getThemeColor"
-        @change="handleSystemThemeChange"
-      />
-      <ElDivider>界面功能</ElDivider>
-      <SwitchItem title="折叠菜单" :def="getCollapsed" @change="handleMenuCollapsedChange" />
-      <SwitchItem title="侧边菜单手风琴模式" :def="getUniqueOpened" @change="handleMenuUniqueOpenChange" />
-      <SwitchItem title="固定顶部栏" :def="getFixed" @change="handleHeaderFixedChange" />
-      <ElDivider>界面显示</ElDivider>
-      <SwitchItem title="灰色模式" :def="getGrayMode" @change="handleGrayModeChange" />
-      <SwitchItem title="色弱模式" :def="getColorWeak" @change="handleColorWeakChange" />
-    </div>
-  </ElDrawer>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import IconSettings from '~icons/icon-park-outline/setting-two'
-import { APP_PRESET_COLOR_LIST } from '/@/settings/designSetting'
+import { APP_PRESET_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST } from '/@/settings/designSetting'
 
 import ThemeColorPicker from './components/ThemeColorPicker.vue'
 import SwitchItem from './components/SwitchItem.vue'
@@ -63,8 +70,11 @@ function handleMenuUniqueOpenChange(uniqueOpened: boolean) {
   setMenuSetting({ uniqueOpened })
 }
 
-const { getFixed, setHeaderSetting } = useHeaderSetting()
+const { getFixed, getBgColor: getHeaderBgColor, setHeaderSetting } = useHeaderSetting()
 function handleHeaderFixedChange(fixed: boolean) {
   setHeaderSetting({ fixed })
+}
+function handleHeaderBgChange(bgColor: string) {
+  setHeaderSetting({ bgColor })
 }
 </script>

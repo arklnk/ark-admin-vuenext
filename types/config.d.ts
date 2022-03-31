@@ -8,10 +8,12 @@ export interface ElementUISetting {
 export interface MenuSetting {
   collapsed: boolean
   uniqueOpened: boolean
+  bgColor: string
 }
 
 export interface HeaderSetting {
   fixed: boolean
+  bgColor: string
 }
 
 export interface ProjectConfig {

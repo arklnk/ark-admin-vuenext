@@ -8,6 +8,8 @@ export function useHeaderSetting() {
 
   const getFixed = computed(() => appStore.getHeaderSetting.fixed)
 
+  const getBgColor = computed(() => appStore.getHeaderSetting.bgColor)
+
   /* set header */
   function setHeaderSetting(headerSetting: Partial<HeaderSetting>) {
     appStore.setProjectConfig({ headerSetting })
@@ -16,6 +18,7 @@ export function useHeaderSetting() {
   return {
     setHeaderSetting,
 
+    getBgColor,
     getFixed,
   }
 }

@@ -1,10 +1,10 @@
 // https://github.com/vbenjs/vite-plugin-theme/blob/main/client/colorUtils.ts
 
-export function mixLighten(colorStr: string, weight: number) {
+export function mixLighten(colorStr: string, weight: number): string {
   return mix('fff', colorStr, weight)
 }
 
-export function mixDarken(colorStr: string, weight: number) {
+export function mixDarken(colorStr: string, weight: number): string {
   return mix('000', colorStr, weight)
 }
 
@@ -40,15 +40,15 @@ export function mix(
   const w1 = ((w * alphaDelta === -1 ? w : (w + alphaDelta) / (1 + w * alphaDelta)) + 1) / 2
   const w2 = 1 - w1
 
-  const rgb1 = toNum3(color1)
-  const rgb2 = toNum3(color2)
+  const rgb1 = toRGB(color1)
+  const rgb2 = toRGB(color2)
   const r = Math.round(w1 * rgb1[0] + w2 * rgb2[0])
   const g = Math.round(w1 * rgb1[1] + w2 * rgb2[1])
   const b = Math.round(w1 * rgb1[2] + w2 * rgb2[2])
   return '#' + pad2(r) + pad2(g) + pad2(b)
 }
 
-export function toNum3(colorStr: string) {
+export function toRGB(colorStr: string) {
   colorStr = dropPrefix(colorStr)
   if (colorStr.length === 3) {
     colorStr = colorStr[0] + colorStr[0] + colorStr[1] + colorStr[1] + colorStr[2] + colorStr[2]
@@ -67,4 +67,15 @@ export function pad2(num: number) {
   let t = num.toString(16)
   if (t.length === 1) t = '0' + t
   return t
+}
+
+/**
+ * https://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
+ * @returns
+ */
+export function isLight(colorStr: string): boolean {
+  const [r, g, b] = toRGB(colorStr)
+
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000
+  return brightness > 155
 }

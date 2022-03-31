@@ -1,25 +1,23 @@
 <template>
   <header
     ref="appHeaderRef"
-    :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed)]"
-    class="border-gray-100 border-b flex flex-row justify-between bg-white box-border text-gray-700 relative"
+    :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed), isLightBgColor ? 'text-black' : 'text-white']"
+    :style="{ backgroundColor: getBgColor }"
+    class="border-gray-100 border-b flex flex-row justify-between box-border relative"
   >
-    <nav
-      class="inline-block h-full px-4 cursor-pointer hover:bg-gray-50 flex items-center text-lg"
-      @click="toggleCollapse"
-    >
+    <nav class="item items-center text-lg !px-4" @click="toggleCollapse">
       <Hamburger :collapsed="getCollapsed" />
     </nav>
-    <nav class="flex h-full text-lg">
-      <FullScreen class="h-full hover:bg-gray-50 px-2 cursor-pointer items-center flex" />
-      <UserDropdown class="h-full hover:bg-gray-50 px-2 cursor-pointer items-center flex" />
-      <ProjectConfig class="h-full hover:bg-gray-50 px-2 cursor-pointer items-center flex" />
+    <nav :class="d.e('right-menu')" class="flex h-full text-lg">
+      <FullScreen class="item" />
+      <UserDropdown class="item" />
+      <ProjectConfig class="item" />
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 
 import { ref } from 'vue'
 import { FullScreen, Hamburger, UserDropdown } from './components'
@@ -30,6 +28,7 @@ import { useDesign } from '/@/hooks/core/useDesign'
 import { numberUnit } from '/@/utils'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
+import { isLight } from '/@/utils/color'
 
 const d = useDesign('app-header')
 const { setAppHeaderHeight } = useLayoutHeight()
@@ -40,8 +39,10 @@ onMounted(() => {
   setAppHeaderHeight(numberUnit(appHeaderStyle.height))
 })
 
-const { getFixed } = useHeaderSetting()
+const { getFixed, getBgColor } = useHeaderSetting()
 const { getCollapsed, toggleCollapse } = useMenuSetting()
+
+const isLightBgColor = computed(() => isLight(getBgColor.value))
 </script>
 
 <style lang="scss" scoped>
@@ -63,6 +64,14 @@ const { getCollapsed, toggleCollapse } = useMenuSetting()
     @include when(collapsed) {
       width: calc(100% - var.$sideBarCollapsedWidth);
     }
+  }
+
+  .item {
+    height: 100%;
+    display: flex;
+    padding: 0 8px;
+    cursor: pointer;
+    align-items: center;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <ElDropdown placement="bottom-end" @command="handleItemClick">
+  <ElDropdown class="text-current" placement="bottom-end" @command="handleItemClick">
     <span class="h-full inline-block flex items-center cursor-pointer">
-      <ElAvatar class="bg-gray-200" :src="userAvatar" :size="26" @error="isLoadAvatarError = true" />
+      <ElAvatar :src="userAvatar" :size="26" @error="isLoadAvatarError = true" />
       <span class="ml-2 text-xs font-medium">{{ userName }}</span>
     </span>
     <template #dropdown>
