@@ -4,6 +4,7 @@
     class="relative h-full box-border"
   >
     <ElScrollbar height="100%">
+      <AppLogo v-if="getShowLogo" :theme="isLightBg ? 'light' : 'dark'" />
       <ElMenu
         class="border-none"
         mode="vertical"
@@ -27,8 +28,11 @@ import { basicRoutes } from '/@/router/basicRoutes'
 import { usePermissionStore } from '/@/stores/modules/permission'
 
 import SideMenuItem from './SideMenuItem.vue'
+import { AppLogo } from '/@/components/Application'
+
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { isLight } from '/@/utils/color'
+import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 
 const d = useDesign('app-sidebar')
 
@@ -43,6 +47,8 @@ const activeMenu = computed(() => {
 
 const { getUniqueOpened, getCollapsed, getBgColor } = useMenuSetting()
 const isLightBg = computed(() => isLight(getBgColor.value))
+
+const { getShowLogo } = useRootSetting()
 </script>
 
 <style lang="scss" scoped>

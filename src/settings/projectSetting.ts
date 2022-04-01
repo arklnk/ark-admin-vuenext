@@ -10,7 +10,7 @@ const setting: ProjectConfig = {
   colorWeak: false,
   showBreadCrumb: true,
   showFooter: false,
-  showLogo: false,
+  showLogo: true,
   themeColor: APP_PRESET_COLOR_LIST[0],
   menuSetting: {
     collapsed: false,
