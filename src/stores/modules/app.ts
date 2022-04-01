@@ -1,5 +1,11 @@
 import { defineStore, _DeepPartial } from 'pinia'
-import type { ElementUISetting, HeaderSetting, MenuSetting, ProjectConfig } from '/#/config'
+import type {
+  ElementUISetting,
+  HeaderSetting,
+  MenuSetting,
+  TransitionSetting,
+  ProjectConfig,
+} from '/#/config'
 import { merge } from 'lodash-es'
 
 interface AppState {
@@ -23,6 +29,9 @@ export const useAppStore = defineStore({
     },
     getElementUISetting(): ElementUISetting {
       return this.getProjectConfig.elementUISetting
+    },
+    getTransitionSetting(): TransitionSetting {
+      return this.getProjectConfig.transitionSetting
     },
   },
   actions: {

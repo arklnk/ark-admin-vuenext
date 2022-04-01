@@ -10,6 +10,7 @@ const setting: ProjectConfig = {
   colorWeak: false,
   showBreadCrumb: true,
   showFooter: false,
+  showLogo: false,
   themeColor: APP_PRESET_COLOR_LIST[0],
   menuSetting: {
     collapsed: false,
@@ -25,6 +26,9 @@ const setting: ProjectConfig = {
     zIndex: 2000,
     autoInsertSpace: true,
     maxMessage: 5,
+  },
+  transitionSetting: {
+    enableNProgress: true,
   },
 }
 

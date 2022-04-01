@@ -29,6 +29,8 @@
         <ElDivider>界面显示</ElDivider>
         <SwitchItem title="灰色模式" :def="getGrayMode" @change="handleGrayModeChange" />
         <SwitchItem title="色弱模式" :def="getColorWeak" @change="handleColorWeakChange" />
+        <ElDivider>动画</ElDivider>
+        <SwitchItem title="顶栏进度条" :def="getEnableNProgress" @change="handleEnableNProgressChange" />
       </div>
     </ElDrawer>
   </span>
@@ -49,6 +51,7 @@ import { updateGrayMode } from '/@/core/theme/updateGrayMode'
 import { updateColorWeak } from '/@/core/theme/updateColorWeak'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { updateSidebarBgColor } from '/@/core/theme/updateBackground'
+import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
 
 const visibleRef = ref(false)
 function handleClick() {
@@ -87,5 +90,10 @@ function handleHeaderFixedChange(fixed: boolean) {
 }
 function handleHeaderBgChange(bgColor: string) {
   setHeaderSetting({ bgColor })
+}
+
+const { getEnableNProgress, setTransitionSetting } = useTransitionSetting()
+function handleEnableNProgressChange(enableNProgress: boolean) {
+  setTransitionSetting({ enableNProgress })
 }
 </script>

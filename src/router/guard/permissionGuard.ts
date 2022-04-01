@@ -10,6 +10,7 @@ import { getPageTitle } from '/@/utils'
 import { useUserStore } from '/@/stores/modules/user'
 import { usePermissionStore } from '/@/stores/modules/permission'
 import { error } from '/@/utils/log'
+import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
 
 /**
  * @description 白名单路由
@@ -24,10 +25,13 @@ export function setupPermissionGuard(router: Router) {
 
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
+  const { getEnableNProgress } = useTransitionSetting()
 
   router.beforeEach(async (to, _from) => {
     // start progress bar
-    NProgress.start()
+    if (getEnableNProgress.value) {
+      NProgress.start()
+    }
 
     // determine whether the user has logged in
     const curToken = userStore.getToken
@@ -89,6 +93,8 @@ export function setupPermissionGuard(router: Router) {
     document.title = getPageTitle(to.meta.title)
 
     // finish progress bar
-    NProgress.done()
+    if (NProgress.isStarted()) {
+      NProgress.done()
+    }
   })
 }

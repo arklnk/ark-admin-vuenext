@@ -16,13 +16,19 @@ export interface HeaderSetting {
   bgColor: string
 }
 
+export interface TransitionSetting {
+  enableNProgress: boolean
+}
+
 export interface ProjectConfig {
   grayMode: boolean
   colorWeak: boolean
+  themeColor: string
   showBreadCrumb: boolean
   showFooter: boolean
-  themeColor: string
+  showLogo: boolean
   menuSetting: MenuSetting
   elementUISetting: ElementUISetting
   headerSetting: HeaderSetting
+  transitionSetting: TransitionSetting
 }
