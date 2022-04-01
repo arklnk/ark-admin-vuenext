@@ -7,6 +7,7 @@ import { updateTheme } from './theme/updateTheme'
 import { error } from '/@/utils/log'
 import { updateGrayMode } from './theme/updateGrayMode'
 import { updateColorWeak } from './theme/updateColorWeak'
+import { updateSidebarBgColor } from './theme/updateBackground'
 
 /**
  * Initial project configuration
@@ -15,7 +16,12 @@ export function initAppConfig() {
   const appStore = useAppStore()
   const userStore = useUserStore()
 
-  const { grayMode, colorWeak, themeColor } = defaultSetting
+  const {
+    grayMode,
+    colorWeak,
+    themeColor,
+    menuSetting: { bgColor },
+  } = defaultSetting
 
   try {
     // update primary theme color
@@ -26,6 +32,9 @@ export function initAppConfig() {
   } catch (e) {
     error(`${e}`)
   }
+
+  // update background
+  bgColor && updateSidebarBgColor(bgColor)
 
   // setup global config
   appStore.setProjectConfig(defaultSetting)

@@ -1,6 +1,6 @@
 <template>
   <aside
-    :class="[d.b(), d.is('collapsed', getCollapsed)]"
+    :class="[d.b(), d.is('collapsed', getCollapsed), isLightBg ? 'border-r border-gray-100' : '']"
     :style="{ backgroundColor: getBgColor }"
     class="relative h-full box-border"
   >
@@ -29,6 +29,7 @@ import { usePermissionStore } from '/@/stores/modules/permission'
 
 import SideMenuItem from './SideMenuItem.vue'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
+import { isLight } from '/@/utils/color'
 
 const d = useDesign('app-sidebar')
 
@@ -42,6 +43,7 @@ const activeMenu = computed(() => {
 })
 
 const { getUniqueOpened, getCollapsed, getBgColor } = useMenuSetting()
+const isLightBg = computed(() => isLight(getBgColor.value))
 </script>
 
 <style lang="scss" scoped>
@@ -56,12 +58,12 @@ const { getUniqueOpened, getCollapsed, getBgColor } = useMenuSetting()
     --el-menu-item-font-size: 12px;
     --el-menu-item-height: #{var.$navBarHeight};
 
-    // --el-menu-active-color: var(--sidebar-menu-active-color);
     --el-menu-text-color: var(--sidebar-menu-text-color);
     --el-menu-hover-text-color: var(--sidebar-menu-hover-text-color);
     --el-menu-bg-color: var(--sidebar-menu-bg-color);
-    --el-menu-hover-bg-color: var(--sidebar-menu-hover-bg-color);
-    --el-menu-item-hover-fill: var(--sidebar-menu-hover-bg-color);
+
+    --el-menu-hover-bg-color: none;
+    --el-menu-item-hover-fill: none;
 
     transition: all var.$transitionDuration;
 
@@ -69,18 +71,23 @@ const { getUniqueOpened, getCollapsed, getBgColor } = useMenuSetting()
       width: var.$sideBarCollapsedWidth;
     }
 
-    // .el-sub-menu .el-sub-menu,
-    // .el-menu .el-menu-item {
-    //   background-color: var(--sidebar-submenu-bg-color);
+    .el-sub-menu .el-sub-menu,
+    .el-menu .el-menu-item {
+      background-color: var(--sidebar-submenu-bg-color);
+    }
 
-    //   &:hover {
-    //     background-color: var(--el-menu-hover-bg-color);
-    //   }
-    // }
+    .el-menu-item,
+    .el-sub-menu,
+    .el-sub-menu__title {
+      &:hover {
+        background-color: none !important;
+        color: var(--sidebar-menu-hover-text-color);
+      }
+    }
 
     .el-menu-item.is-active {
-      background-color: var(--el-color-primary);
-      color: var(--el-menu-text-color);
+      background-color: var(--sidebar-menu-active-bg-color);
+      color: var(--sidebar-menu-active-text-color);
     }
   }
 
