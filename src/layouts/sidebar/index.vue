@@ -1,10 +1,15 @@
 <template>
   <aside
-    :class="[d.b(), d.is('collapsed', getCollapsed), isLightBg ? 'border-r border-gray-100' : '']"
-    class="relative h-full box-border"
+    :class="[d.b(), d.is('collapsed', getCollapsed)]"
+    class="h-full box-border relative overflow-hidden"
   >
     <ElScrollbar height="100%">
-      <AppLogo v-if="getShowLogo" :theme="isLightBg ? 'light' : 'dark'" />
+      <AppLogo
+        v-if="getShowLogo"
+        :show-title="!getCollapsed"
+        :theme="isLightBg ? 'light' : 'dark'"
+        :class="d.e('menu-logo')"
+      />
       <ElMenu
         class="border-none"
         mode="vertical"
@@ -59,6 +64,11 @@ const { getShowLogo } = useRootSetting()
   width: var.$sideBarWidth;
   background-color: var(--sidebar-menu-bg-color);
   transition: width var.$transitionDuration;
+
+  @include e(menu-logo) {
+    width: var.$sideBarWidth;
+    height: var.$navBarHeight;
+  }
 
   @include when(collapsed) {
     width: var.$sideBarCollapsedWidth;

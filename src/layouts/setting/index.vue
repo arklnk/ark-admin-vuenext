@@ -10,25 +10,31 @@
           :cursor="getThemeColor"
           @change="handleSystemThemeChange"
         />
+
         <ElDivider>顶栏主题</ElDivider>
         <ThemeColorPicker
           :color-list="HEADER_PRESET_BG_COLOR_LIST"
           :cursor="getHeaderBgColor"
           @change="handleHeaderBgChange"
         />
+
         <ElDivider>菜单主题</ElDivider>
         <ThemeColorPicker
           :color-list="SIDE_BAR_BG_COLOR_LIST"
           :cursor="getSideMenuBgColor"
           @change="handleSideMenuBgChange"
         />
+
         <ElDivider>界面功能</ElDivider>
         <SwitchItem title="折叠菜单" :def="getCollapsed" @change="handleMenuCollapsedChange" />
         <SwitchItem title="侧边菜单手风琴模式" :def="getUniqueOpened" @change="handleMenuUniqueOpenChange" />
         <SwitchItem title="固定顶栏" :def="getFixed" @change="handleHeaderFixedChange" />
+
         <ElDivider>界面显示</ElDivider>
+        <SwitchItem title="Logo" :def="getShowLogo" @change="handleLogoChange" />
         <SwitchItem title="灰色模式" :def="getGrayMode" @change="handleGrayModeChange" />
         <SwitchItem title="色弱模式" :def="getColorWeak" @change="handleColorWeakChange" />
+
         <ElDivider>动画</ElDivider>
         <SwitchItem title="顶栏进度条" :def="getEnableNProgress" @change="handleEnableNProgressChange" />
       </div>
@@ -58,7 +64,7 @@ function handleClick() {
   visibleRef.value = true
 }
 
-const { getThemeColor, getGrayMode, getColorWeak, setRootSetting } = useRootSetting()
+const { getThemeColor, getGrayMode, getColorWeak, getShowLogo, setRootSetting } = useRootSetting()
 function handleSystemThemeChange(themeColor: string) {
   updateTheme(themeColor)
   setRootSetting({ themeColor })
@@ -70,6 +76,9 @@ function handleGrayModeChange(grayMode: boolean) {
 function handleColorWeakChange(colorWeak: boolean) {
   updateColorWeak(colorWeak)
   setRootSetting({ colorWeak })
+}
+function handleLogoChange(showLogo: boolean) {
+  setRootSetting({ showLogo })
 }
 
 const { getCollapsed, getUniqueOpened, getBgColor: getSideMenuBgColor, setMenuSetting } = useMenuSetting()

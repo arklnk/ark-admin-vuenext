@@ -1,7 +1,10 @@
 <template>
-  <div class="flex flex-row items-center cursor-pointer" :class="[d.b(), theme]">
+  <div
+    class="flex flex-row items-center text-sm font-semibold box-border cursor-pointer"
+    :class="[d.b(), theme, $attrs.class]"
+  >
     <img class="w-8 h-8" src="../../../assets/images/logo.png" />
-    <span class="ml-2">{{ title }}</span>
+    <span v-show="showTitle" class="ml-2">{{ title }}</span>
   </div>
 </template>
 
@@ -18,7 +21,7 @@ defineProps({
   theme: {
     type: String as PropType<'light' | 'dark'>,
     validator: (v: string) => ['light', 'dark'].includes(v),
-    required: true
+    default: 'light'
   },
 })
 
@@ -31,14 +34,17 @@ const d = useDesign('app-logo')
 
 @include b(app-logo) {
   transition: all var.$transitionDuration;
-  padding-left: 7px;
+  letter-spacing: 2px;
+  padding-left: calc(#{var.$sideBarCollapsedWidth} / 2 - 16px);
 
-  .light {
+  &.light {
     color: var.$color-black;
+    border-bottom: 1px solid var.$border-color-base;
   }
 
-  .dark {
+  &.dark {
     color: var.$color-white;
+    border-bottom: 0px;
   }
 
   img {

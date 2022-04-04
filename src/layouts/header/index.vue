@@ -3,7 +3,7 @@
     ref="appHeaderRef"
     :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed), isLightBgColor ? 'text-gray-700' : 'text-white']"
     :style="{ backgroundColor: getBgColor }"
-    class="border-gray-100 border-b flex flex-row justify-between box-border relative"
+    class="border-gray-100 border-b flex flex-row justify-between box-border relative overflow-hidden"
   >
     <nav class="item items-center text-lg !px-4" @click="toggleCollapse">
       <Hamburger :collapsed="getCollapsed" />

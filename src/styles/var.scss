@@ -11,6 +11,9 @@ $transitionDuration: 0.3s;
 $color-white: #ffffff;
 $color-black: #000000;
 
+// or windicss border-gray-100
+$border-color-base: rgba(243, 244, 246, 1);
+
 :root {
   --primary-color: var(--el-color-primary);
 
