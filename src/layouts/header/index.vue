@@ -1,9 +1,9 @@
 <template>
   <header
     ref="appHeaderRef"
-    :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed), isLightBgColor ? 'text-gray-700' : 'text-white']"
+    :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed), getLightOrDarkClass]"
     :style="{ backgroundColor: getBgColor }"
-    class="border-gray-100 border-b flex flex-row justify-between box-border relative overflow-hidden"
+    class="flex flex-row justify-between box-border relative overflow-hidden"
   >
     <nav class="item items-center text-lg !px-4" @click="toggleCollapse">
       <Hamburger :collapsed="getCollapsed" />
@@ -42,7 +42,7 @@ onMounted(() => {
 const { getFixed, getBgColor } = useHeaderSetting()
 const { getCollapsed, toggleCollapse } = useMenuSetting()
 
-const isLightBgColor = computed(() => isLight(getBgColor.value))
+const getLightOrDarkClass = computed(() => isLight(getBgColor.value) ? 'light' : 'dark')
 </script>
 
 <style lang="scss" scoped>
@@ -64,6 +64,15 @@ const isLightBgColor = computed(() => isLight(getBgColor.value))
     @include when(collapsed) {
       width: calc(100% - var.$sideBarCollapsedWidth);
     }
+  }
+
+  &.light {
+    color: var.$color-black;
+    border-bottom: 1px solid var.$border-color-base;
+  }
+
+  &.dark {
+    color: var.$color-white;
   }
 
   .item {

@@ -44,7 +44,6 @@ const d = useDesign('app-logo')
 
   &.dark {
     color: var.$color-white;
-    border-bottom: 0px;
   }
 
   img {
