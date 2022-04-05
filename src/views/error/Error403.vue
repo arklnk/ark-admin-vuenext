@@ -12,18 +12,17 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { PageEnum } from '/@/enums/pageEnum'
 import { useDesign } from '/@/hooks/core/useDesign'
+import { useGo } from '/@/hooks/web/useGo'
 import { useUserStore } from '/@/stores/modules/user'
 
 const userStore = useUserStore()
-const router = useRouter()
+const go = useGo()
 const d = useDesign('error403')
 
 function reSign() {
-  userStore.logout()
-  router.replace(PageEnum.Login)
+  userStore.logout().finally(() => go(PageEnum.Login, true))
 }
 </script>
 

@@ -11,25 +11,18 @@
     >
       <p class="mb-4 text-base text-gray-600">该页面无法正常打开...</p>
       <p class="mb-4 text-xs text-gray-400">请检查链接是否输入正确, 或点击按钮返回首页</p>
-      <ElButton class="mt-2" @click="jumpToHome">返回首页</ElButton>
+      <ElButton class="mt-2" @click="go()">返回首页</ElButton>
     </article>
   </main>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { PageEnum } from '/@/enums/pageEnum'
 import { useDesign } from '/@/hooks/core/useDesign'
+import { useGo } from '/@/hooks/web/useGo'
 
 const MAX_RANDOM_SIZE = Object.freeze(40)
-const router = useRouter()
+const go = useGo()
 const d = useDesign('error404')
-/**
- * @description 返回首页
- */
-function jumpToHome() {
-  router.push(PageEnum.Root)
-}
 </script>
 
 <style lang="scss" scoped>

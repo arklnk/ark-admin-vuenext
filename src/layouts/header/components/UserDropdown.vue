@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 import { computed, ref, unref } from 'vue'
-import { useRouter } from 'vue-router'
 import { ElLoading } from 'element-plus'
 
 import IconTablerPower from '~icons/tabler/power'
@@ -24,6 +23,7 @@ import IconAccount from '~icons/mdi/shield-account-outline'
 import { useUserStore } from '/@/stores/modules/user'
 import DefaultAvatar from '/@/assets/svg/user-default-avatar.svg'
 import { PageEnum } from '/@/enums/pageEnum'
+import { useGo } from '/@/hooks/web/useGo'
 
 const userStore = useUserStore()
 
@@ -31,7 +31,7 @@ const isLoadAvatarError = ref(false)
 const userAvatar = computed(() => unref(isLoadAvatarError) ? DefaultAvatar : (userStore.getUserInfo.avatar || DefaultAvatar))
 const userName = computed(() => userStore.getUserInfo.name)
 
-const router = useRouter()
+const go = useGo()
 function handleItemClick(command: string) {
   if (command === '/logout') {
     const loadingIst = ElLoading.service({ fullscreen: true })
@@ -40,10 +40,10 @@ function handleItemClick(command: string) {
       loadingIst.close()
 
       // redirect to login
-      router.replace(PageEnum.Login)
+      go(PageEnum.Login, true)
     })
   } else {
-    router.push(command)
+    go(command)
   }
 }
 </script>

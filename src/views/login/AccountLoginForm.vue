@@ -51,11 +51,12 @@
 import type { ElForm, FormItemRule } from 'element-plus'
 
 import { reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { isEmpty, throttle } from 'lodash-es'
 import { getImageCaptcha, userLogin } from '/@/api/login'
 import { useUserStore } from '/@/stores/modules/user'
 import { PageEnum } from '/@/enums/pageEnum'
+import { useGo } from '/@/hooks/web/useGo'
 
 const formData = reactive({
   username: '',
@@ -71,7 +72,7 @@ const isLogging = ref(false)
 type FormInstance = InstanceType<typeof ElForm>
 const formRef = ref<FormInstance>()
 const userStore = useUserStore()
-const router = useRouter()
+const go = useGo()
 const $route = useRoute()
 const handleLogin = throttle(() => {
   if (!formRef.value) return
@@ -86,9 +87,9 @@ const handleLogin = throttle(() => {
           userStore.setToken(data.token)
 
           if ($route.query.redirect) {
-            router.replace($route.query.redirect as string)
+            go($route.query.redirect as string, true)
           } else {
-            router.replace(PageEnum.Root)
+            go(PageEnum.Root, true)
           }
         }
       } finally {
