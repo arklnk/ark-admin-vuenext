@@ -32,7 +32,7 @@ import { useDesign } from '/@/hooks/core/useDesign'
 import { basicRoutes } from '/@/router/basicRoutes'
 import { usePermissionStore } from '/@/stores/modules/permission'
 
-import SideMenuItem from './SideMenuItem.vue'
+import SideMenuItem from './components/SideMenuItem.vue'
 import { AppLogo } from '/@/components/Application'
 
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'

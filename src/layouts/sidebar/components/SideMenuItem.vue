@@ -1,6 +1,6 @@
 <template>
   <template v-if="!route.meta?.hidden">
-    <AppLink v-if="showRoute" :to="showRoute.path">
+    <MenuLink v-if="showRoute" :to="showRoute.path">
       <ElMenuItem :index="showRoute.path">
         <ElIcon>
           <SvgIcon v-if="showRoute.meta?.icon" :icon="showRoute.meta.icon" />
@@ -9,7 +9,7 @@
           <span class="ml-2">{{ showRoute.meta?.title }}</span>
         </template>
       </ElMenuItem>
-    </AppLink>
+    </MenuLink>
     <ElSubMenu v-else :index="route.path">
       <template #title>
         <ElIcon>
@@ -34,7 +34,7 @@ import type { ComputedRef } from 'vue'
 
 import { computed, PropType } from 'vue'
 
-import { AppLink } from '/@/components/Application'
+import MenuLink from './MenuLink.vue'
 import { EmptyLayout, ParentLayout } from '/@/router/basicRoutes'
 
 const props = defineProps({
