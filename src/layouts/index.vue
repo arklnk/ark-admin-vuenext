@@ -1,5 +1,8 @@
 <template>
-  <div class="h-full w-full relative flex flex-row overflow-hidden">
+  <div
+    class="h-full w-full relative flex flex-row overflow-hidden"
+    style="background-color: #fafafb;"
+  >
     <AppSidebar />
     <section class="flex-1 relative overflow-auto">
       <AppHeader />
