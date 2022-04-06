@@ -9,7 +9,7 @@ const setting: ProjectConfig = {
   grayMode: false,
   colorWeak: false,
   showBreadCrumb: true,
-  showFooter: false,
+  showFooter: true,
   showLogo: true,
   themeColor: APP_PRESET_COLOR_LIST[3],
   menuSetting: {

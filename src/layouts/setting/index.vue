@@ -32,6 +32,7 @@
 
         <ElDivider>界面显示</ElDivider>
         <SwitchItem title="Logo" :def="getShowLogo" @change="handleLogoChange" />
+        <SwitchItem title="页脚" :def="getShowFooter" @change="handleFooterChange" />
         <SwitchItem title="灰色模式" :def="getGrayMode" @change="handleGrayModeChange" />
         <SwitchItem title="色弱模式" :def="getColorWeak" @change="handleColorWeakChange" />
 
@@ -64,7 +65,7 @@ function handleClick() {
   visibleRef.value = true
 }
 
-const { getThemeColor, getGrayMode, getColorWeak, getShowLogo, setRootSetting } = useRootSetting()
+const { getThemeColor, getGrayMode, getColorWeak, getShowLogo, getShowFooter, setRootSetting } = useRootSetting()
 function handleSystemThemeChange(themeColor: string) {
   updateTheme(themeColor)
   setRootSetting({ themeColor })
@@ -79,6 +80,9 @@ function handleColorWeakChange(colorWeak: boolean) {
 }
 function handleLogoChange(showLogo: boolean) {
   setRootSetting({ showLogo })
+}
+function handleFooterChange(showFooter: boolean) {
+  setRootSetting({ showFooter })
 }
 
 const { getCollapsed, getUniqueOpened, getBgColor: getSideMenuBgColor, setMenuSetting } = useMenuSetting()

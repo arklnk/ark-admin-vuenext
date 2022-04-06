@@ -5,18 +5,23 @@
         <component :is="Component" :key="route.fullPath" />
       </Transition>
     </RouterView>
+    <AppFooter v-show="getShowFooter" />
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+
+import AppFooter from '../footer/index.vue'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
+import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 
 const reloadFlag = ref(true)
 
 const { prefixCls } = useDesign('app-main')
 const { getFixed } = useHeaderSetting()
+const { getShowFooter } = useRootSetting()
 </script>
 
 <style lang="scss" scoped>
