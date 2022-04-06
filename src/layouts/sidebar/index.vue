@@ -67,7 +67,7 @@ $prefixCls: #{var.$namespace}-app-sidebar;
   background-color: var(--sidebar-menu-bg-color);
   transition: width var.$transitionDuration;
 
-  .#{$prefixCls}__menu-logo {
+  &__menu-logo {
     width: var.$sideBarWidth;
     height: var.$navBarHeight;
   }
