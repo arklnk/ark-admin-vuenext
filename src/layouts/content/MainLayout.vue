@@ -5,7 +5,7 @@
         <component :is="Component" :key="route.fullPath" />
       </Transition>
     </RouterView>
-    <AppFooter v-show="getShowFooter" />
+    <AppFooter v-if="getShowFooter" />
   </main>
 </template>
 
