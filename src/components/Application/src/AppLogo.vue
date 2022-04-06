@@ -29,6 +29,7 @@ const { prefixCls } = useDesign('app-logo')
 </script>
 
 <style lang="scss" scoped>
+@use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 
 $prefixCls: #{var.$namespace}-app-logo;
@@ -38,12 +39,12 @@ $prefixCls: #{var.$namespace}-app-logo;
   letter-spacing: 2px;
   padding-left: calc(#{var.$sideBarCollapsedWidth} / 2 - 16px);
 
-  &.light {
+  @include when(light) {
     color: var.$color-black;
     border-bottom: 1px solid var.$border-color-base;
   }
 
-  &.dark {
+  @include when(dark) {
     color: var.$color-white;
   }
 
