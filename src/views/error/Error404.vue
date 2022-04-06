@@ -1,12 +1,22 @@
 <template>
   <main
     class="relative flex items-center justify-center h-full w-full overflow-hidden bg-white text-black"
-    :class="d.b()"
+    :class="prefixCls"
   >
-    <span class="absolute block" :class="d.e('particle')" v-for="i in MAX_RANDOM_SIZE" :key="i">0</span>
-    <span class="absolute block" :class="d.e('particle')" v-for="i in MAX_RANDOM_SIZE" :key="i">4</span>
+    <span
+      class="absolute block"
+      :class="`${prefixCls}__particle`"
+      v-for="i in MAX_RANDOM_SIZE"
+      :key="i"
+    >0</span>
+    <span
+      class="absolute block"
+      :class="`${prefixCls}__particle`"
+      v-for="i in MAX_RANDOM_SIZE"
+      :key="i"
+    >4</span>
     <article
-      :class="d.e('content')"
+      :class="`${prefixCls}__content`"
       class="relative w-[500px] max-w-full m-5 bg-white text-center py-[60px] px-[40px] rounded-sm"
     >
       <p class="mb-4 text-base text-gray-600">该页面无法正常打开...</p>
@@ -22,11 +32,14 @@ import { useGo } from '/@/hooks/web/useGo'
 
 const MAX_RANDOM_SIZE = Object.freeze(40)
 const go = useGo()
-const d = useDesign('error404')
+const { prefixCls } = useDesign('error404')
 </script>
 
 <style lang="scss" scoped>
 @use '/@/styles/mixins.scss' as *;
+@use '/@/styles/var.scss';
+
+$prefixCls: #{var.$namespace}-error404;
 
 $anims: float, floatReverse, float2, floatReverse2;
 $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
@@ -39,8 +52,8 @@ $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
   animation-fill-mode: forwards;
 }
 
-@include b(error404) {
-  @include e(particle) {
+.#{$prefixCls} {
+  &__particle {
     pointer-events: none;
 
     @for $i from 1 through 80 {
@@ -60,7 +73,7 @@ $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
     }
   }
 
-  @include e(content) {
+  &__content {
     box-shadow: -10px 10px 67px -12px rgba(0, 0, 0, 0.2);
     animation: apparition 0.8s $easeSmooth forwards;
     opacity: 0;

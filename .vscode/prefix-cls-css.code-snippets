@@ -1,0 +1,16 @@
+{
+  "request-snippet": {
+    "scope": "scss",
+    "prefix": "sfcls",
+    "body": [
+      "@use '/@/styles/var.scss';",
+      "",
+      "\\$prefixCls: #{var.\\$namespace}-$1;",
+      "",
+      ".#{\\$prefixCls} {",
+      "",
+      "}"
+    ],
+    "description": "base router module template"
+  }
+}

@@ -1,6 +1,6 @@
 <template>
   <aside
-    :class="[d.b(), d.is('collapsed', getCollapsed), isLightBg ? 'light' : '']"
+    :class="[prefixCls, getCollapsed ? 'is-collapsed' : '', isLightBg ? 'light' : '']"
     class="h-full box-border relative overflow-hidden"
   >
     <ElScrollbar height="100%">
@@ -8,7 +8,7 @@
         v-if="getShowLogo"
         :show-title="!getCollapsed"
         :theme="isLightBg ? 'light' : 'dark'"
-        :class="d.e('menu-logo')"
+        :class="`${prefixCls}__menu-logo`"
       />
       <ElMenu
         class="border-none"
@@ -39,7 +39,7 @@ import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { isLight } from '/@/utils/color'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 
-const d = useDesign('app-sidebar')
+const { prefixCls } = useDesign('app-sidebar')
 
 const permissionStore = usePermissionStore()
 const routes = computed(() => {
@@ -57,24 +57,26 @@ const { getShowLogo } = useRootSetting()
 </script>
 
 <style lang="scss" scoped>
-@use '/@/styles/var.scss';
 @use '/@/styles/mixins.scss' as *;
+@use '/@/styles/var.scss';
 
-@include b(app-sidebar) {
+$prefixCls: #{var.$namespace}-app-sidebar;
+
+.#{$prefixCls} {
   width: var.$sideBarWidth;
   background-color: var(--sidebar-menu-bg-color);
   transition: width var.$transitionDuration;
 
-  @include e(menu-logo) {
+  .#{$prefixCls}__menu-logo {
     width: var.$sideBarWidth;
     height: var.$navBarHeight;
   }
 
-  @include when(collapsed) {
+  @include when(is-collapsed) {
     width: var.$sideBarCollapsedWidth;
   }
 
-  &.light {
+  @include when(light) {
     border-right: 1px solid var.$border-color-base;
   }
 

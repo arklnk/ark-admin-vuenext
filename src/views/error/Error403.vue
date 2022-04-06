@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-center w-full h-full bg-gray-200">
-    <div :class="d.b()">
-      <div :class="d.e('icon')"></div>
+    <div :class="prefixCls">
+      <div :class="`${prefixCls}__icon`"></div>
       <h1>访问被拒绝</h1>
       <p>
         请联系管理员进行申请必要权限, 或
@@ -19,7 +19,7 @@ import { useUserStore } from '/@/stores/modules/user'
 
 const userStore = useUserStore()
 const go = useGo()
-const d = useDesign('error403')
+const { prefixCls } = useDesign('error403')
 
 function reSign() {
   userStore.logout().finally(() => go(PageEnum.Login, true))
@@ -27,13 +27,15 @@ function reSign() {
 </script>
 
 <style lang="scss" scoped>
-@use '/@/styles/mixins.scss' as *;
+@use '/@/styles/var.scss';
+
+$prefixCls: #{var.$namespace}-error403;
 
 $bg: white;
 $color: #ef5350;
 $size: 4rem;
 
-@include b(error403) {
+.#{$prefixCls} {
   background: $bg;
   font-family: Montserrat, sans-serif;
   height: auto;
@@ -43,7 +45,7 @@ $size: 4rem;
   border-radius: 0.5rem;
   text-align: center;
 
-  @include e(icon) {
+  &__icon {
     margin: auto;
     width: calc($size + ($size/6));
     height: calc($size + ($size/6));

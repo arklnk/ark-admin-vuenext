@@ -1,14 +1,14 @@
 <template>
   <header
     ref="appHeaderRef"
-    :class="[d.b(), d.is('fixed', getFixed), d.is('collapsed', getCollapsed), getLightOrDarkClass]"
+    :class="[prefixCls, getFixed ? 'is-fixed' : '', getCollapsed ? 'is-collapsed' : '', getLightOrDarkClass]"
     :style="{ backgroundColor: getBgColor }"
     class="flex flex-row justify-between box-border relative overflow-hidden"
   >
     <nav class="item items-center text-lg !px-4" @click="toggleCollapse">
       <Hamburger :collapsed="getCollapsed" />
     </nav>
-    <nav :class="d.e('right-menu')" class="flex h-full text-lg">
+    <nav class="flex h-full text-lg">
       <FullScreen class="item" />
       <UserDropdown class="item" />
       <ProjectConfig class="item" />
@@ -30,7 +30,7 @@ import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { isLight } from '/@/utils/color'
 
-const d = useDesign('app-header')
+const { prefixCls } = useDesign('app-header')
 const { setAppHeaderHeight } = useLayoutHeight()
 
 const appHeaderRef = ref<HTMLElement>()
@@ -49,29 +49,31 @@ const getLightOrDarkClass = computed(() => isLight(getBgColor.value) ? 'light' :
 @use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 
-@include b(app-header) {
+$prefixCls: #{var.$namespace}-app-header;
+
+.#{$prefixCls} {
   height: var.$navBarHeight;
   line-height: var.$navBarHeight;
   transition: width var.$transitionDuration;
 
-  @include when(fixed) {
+  @include when(is-fixed) {
     position: fixed;
     top: 0;
     right: 0;
     z-index: 9;
     width: calc(100% - var.$sideBarWidth);
 
-    @include when(collapsed) {
+    @include when(is-collapsed) {
       width: calc(100% - var.$sideBarCollapsedWidth);
     }
   }
 
-  &.light {
+  @include when(light) {
     color: var.$color-black;
     border-bottom: 1px solid var.$border-color-base;
   }
 
-  &.dark {
+  @include when(dark) {
     color: var.$color-white;
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="d.b()"
+    :class="prefixCls"
     class="relative h-full w-full bg-no-repeat bg-cover bg-gray-100 overflow-y-auto"
   >
     <header class="max-w-[800px] h-20 px-5 m-auto flex justify-end items-center">
@@ -20,13 +20,15 @@ import { GITHUB_URL } from '/@/settings/siteSetting'
 import AccountLoginForm from './AccountLoginForm.vue'
 import { useDesign } from '/@/hooks/core/useDesign'
 
-const d = useDesign('login')
+const { prefixCls } = useDesign('login')
 </script>
 
 <style lang="scss" scoped>
-@use '/@/styles/mixins.scss' as *;
+@use '/@/styles/var.scss';
 
-@include b(login) {
+$prefixCls: #{var.$namespace}-login;
+
+.#{$prefixCls} {
   background-image: url("/@/assets/svg/login-bg.svg");
 }
 </style>

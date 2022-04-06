@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex flex-row items-center text-sm font-semibold box-border cursor-pointer"
-    :class="[d.b(), theme, $attrs.class]"
+    :class="[prefixCls, theme, $attrs.class]"
   >
     <img class="w-8 h-8" src="../../../assets/images/logo.png" />
     <span v-show="showTitle" class="ml-2">{{ title }}</span>
@@ -25,14 +25,15 @@ defineProps({
   },
 })
 
-const d = useDesign('app-logo')
+const { prefixCls } = useDesign('app-logo')
 </script>
 
 <style lang="scss" scoped>
-@use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 
-@include b(app-logo) {
+$prefixCls: #{var.$namespace}-app-logo;
+
+.#{$prefixCls} {
   transition: all var.$transitionDuration;
   letter-spacing: 2px;
   padding-left: calc(#{var.$sideBarCollapsedWidth} / 2 - 16px);

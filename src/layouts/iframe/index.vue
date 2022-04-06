@@ -1,5 +1,5 @@
 <template>
-  <div :class="d.b()" v-loading="loadingRef" :style="getStyle">
+  <div v-loading="loadingRef" :style="getStyle">
     <iframe
       :src="frameSrc"
       ref="frameRef"
@@ -15,13 +15,11 @@ import { computed, CSSProperties, unref } from 'vue'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLayoutHeight } from '../content/useAppMainHeight'
-import { useDesign } from '/@/hooks/core/useDesign'
 import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn'
 
 const route = useRoute()
 const frameSrc = route.meta.iframeSrc || ''
 
-const d = useDesign('app-iframe')
 const loadingRef = ref(true)
 function hideLoading() {
   loadingRef.value = false
@@ -45,7 +43,3 @@ function calcHeight() {
 }
 useWindowSizeFn<void>(calcHeight, 150, { immediate: true })
 </script>
-
-<style lang="scss" scoped>
-@use '/@/styles/mixins.scss' as *;
-</style>

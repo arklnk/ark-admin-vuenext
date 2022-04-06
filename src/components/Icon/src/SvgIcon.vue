@@ -1,5 +1,5 @@
 <template>
-  <svg :class="[d.b(), $attrs.class, d.is('spin', spin)]" aria-hidden="true">
+  <svg :class="[prefixCls, $attrs.class, spin ? 'is-spin' : '']" aria-hidden="true">
     <use :xlink:href="symbolId" />
   </svg>
 </template>
@@ -29,14 +29,17 @@ const props = defineProps({
   }
 })
 
-const d = useDesign('svg-icon')
+const { prefixCls } = useDesign('svg-icon')
 const symbolId = computed(() => `#${props.prefix}-${props.icon}`)
 </script>
 
 <style lang="scss">
 @use '/@/styles/mixins.scss' as *;
+@use '/@/styles/var.scss';
 
-@include b(svg-icon) {
+$prefixCls: #{var.$namespace}-svg-icon;
+
+.#{$prefixCls} {
   display: inline-block;
   overflow: hidden;
   vertical-align: -0.15em;
@@ -53,7 +56,7 @@ const symbolId = computed(() => `#${props.prefix}-${props.icon}`)
     }
   }
 
-  @include when(spin) {
+  @include when(is-spin) {
     animation: spin-animation 1s infinite linear;
   }
 }

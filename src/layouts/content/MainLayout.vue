@@ -1,5 +1,5 @@
 <template>
-  <main class="relative w-full" :class="[d.b(), d.is('fixed', getFixed)]">
+  <main class="relative w-full" :class="[prefixCls, getFixed ? 'is-fixed' : '']">
     <RouterView v-if="reloadFlag" v-slot="{ Component, route }">
       <Transition name="fade-bottom" mode="out-in">
         <component :is="Component" :key="route.fullPath" />
@@ -15,7 +15,7 @@ import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 
 const reloadFlag = ref(true)
 
-const d = useDesign('app-main')
+const { prefixCls } = useDesign('app-main')
 const { getFixed } = useHeaderSetting()
 </script>
 
@@ -23,8 +23,10 @@ const { getFixed } = useHeaderSetting()
 @use '/@/styles/var.scss';
 @use '/@/styles/mixins.scss' as *;
 
-@include b(app-main) {
-  @include when(fixed) {
+$prefixCls: #{var.$namespace}-app-main;
+
+.#{$prefixCls} {
+  @include when(is-fixed) {
     padding-top: var.$navBarHeight;
   }
 }

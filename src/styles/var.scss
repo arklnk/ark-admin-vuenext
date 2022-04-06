@@ -1,19 +1,25 @@
+// bem
+$namespace: 'sf';
+$element-separator: '__';
+$modifier-separator: '--';
+$state-prefix: 'is-';
+
+// layout
 $sideBarWidth: 230px;
 $sideBarCollapsedWidth: 64px;
-
 $navBarHeight: 50px;
-
 $appMainLayoutBackground: #f8f8fa;
 $componentBackground: #f5f4f6;
-
 $transitionDuration: 0.3s;
 
+//basic color
 $color-white: #ffffff;
 $color-black: #000000;
 
 // or windicss border-gray-100
 $border-color-base: rgba(243, 244, 246, 1);
 
+// css var
 :root {
   --primary-color: var(--el-color-primary);
 

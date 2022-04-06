@@ -1,5 +1,5 @@
 <template>
-  <IconHamburger :class="[d.b(), d.is('collapsed', collapsed)]" />
+  <IconHamburger :class="[prefixCls, collapsed ? 'is-collapsed' : '']" />
 </template>
 
 <script setup lang="ts">
@@ -13,16 +13,19 @@ defineProps({
   }
 })
 
-const d = useDesign('app-hamburger')
+const { prefixCls } = useDesign('app-hamburger')
 </script>
 
 <style lang="scss" scoped>
 @use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 
-@include b(app-hamburger) {
+$prefixCls: #{var.$namespace}-app-hamburger;
+
+.#{$prefixCls} {
   transition: transform var.$transitionDuration;
-  @include when(collapsed) {
+
+  @include when(is-collapsed) {
     transform: rotate(180deg);
   }
 }
