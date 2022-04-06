@@ -1,6 +1,6 @@
 <template>
   <aside
-    :class="[d.b(), d.is('collapsed', getCollapsed)]"
+    :class="[d.b(), d.is('collapsed', getCollapsed), isLightBg ? 'light' : '']"
     class="h-full box-border relative overflow-hidden"
   >
     <ElScrollbar height="100%">
@@ -72,6 +72,10 @@ const { getShowLogo } = useRootSetting()
 
   @include when(collapsed) {
     width: var.$sideBarCollapsedWidth;
+  }
+
+  &.light {
+    border-right: 1px solid var.$border-color-base;
   }
 
   :deep(.el-menu) {
