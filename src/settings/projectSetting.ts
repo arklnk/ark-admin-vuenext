@@ -11,11 +11,11 @@ const setting: ProjectConfig = {
   showBreadCrumb: true,
   showFooter: false,
   showLogo: true,
-  themeColor: APP_PRESET_COLOR_LIST[0],
+  themeColor: APP_PRESET_COLOR_LIST[3],
   menuSetting: {
     collapsed: false,
     uniqueOpened: false,
-    bgColor: SIDE_BAR_BG_COLOR_LIST[0],
+    bgColor: SIDE_BAR_BG_COLOR_LIST[2],
   },
   headerSetting: {
     fixed: true,
