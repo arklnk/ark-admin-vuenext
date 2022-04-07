@@ -1,7 +1,14 @@
 <template>
   <div class="w-full flex flex-row flex-wrap items-center text-sm my-1">
     <span class="inline-block flex-1">{{ title }}</span>
-    <ElSwitch :value="def" inline-prompt active-text="是" inactive-text="否" @change="handleChange" />
+    <ElSwitch
+      :disabled="disabled"
+      :value="def"
+      inline-prompt
+      active-text="是"
+      inactive-text="否"
+      @change="handleChange"
+    />
   </div>
 </template>
 

@@ -1,3 +1,4 @@
+import { RouterTransitionEnum } from '../enums/appEnum'
 import {
   APP_PRESET_COLOR_LIST,
   HEADER_PRESET_BG_COLOR_LIST,
@@ -9,7 +10,7 @@ const setting: ProjectConfig = {
   grayMode: false,
   colorWeak: false,
   showBreadCrumb: true,
-  showFooter: true,
+  showFooter: false,
   showLogo: true,
   themeColor: APP_PRESET_COLOR_LIST[3],
   removeAllHttpPending: false,
@@ -30,6 +31,7 @@ const setting: ProjectConfig = {
   },
   transitionSetting: {
     enableNProgress: true,
+    routerTransition: RouterTransitionEnum.FADE,
   },
 }
 

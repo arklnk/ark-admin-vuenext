@@ -38,6 +38,12 @@
 
         <ElDivider>动画</ElDivider>
         <SwitchItem title="顶栏进度条" :def="getEnableNProgress" @change="handleEnableNProgressChange" />
+        <SelectItem
+          title="切换动画类型"
+          :options="routerTransitionOptions"
+          :cursor="getRouterTransition"
+          @change="handleRouterTransitionChange"
+        />
       </div>
     </ElDrawer>
   </span>
@@ -59,6 +65,8 @@ import { updateColorWeak } from '/@/core/theme/updateColorWeak'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { updateSidebarBgColor } from '/@/core/theme/updateBackground'
 import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
+import SelectItem from './components/SelectItem.vue'
+import { RouterTransitionEnum } from '/@/enums/appEnum'
 
 const visibleRef = ref(false)
 function handleClick() {
@@ -105,8 +113,14 @@ function handleHeaderBgChange(bgColor: string) {
   setHeaderSetting({ bgColor })
 }
 
-const { getEnableNProgress, setTransitionSetting } = useTransitionSetting()
+const routerTransitionOptions: LabelValueOptions = Object.values(RouterTransitionEnum).map((e) => {
+  return { label: e, value: e }
+})
+const { getEnableNProgress, getRouterTransition, setTransitionSetting } = useTransitionSetting()
 function handleEnableNProgressChange(enableNProgress: boolean) {
   setTransitionSetting({ enableNProgress })
+}
+function handleRouterTransitionChange(routerTransition: RouterTransitionEnum) {
+  setTransitionSetting({ routerTransition })
 }
 </script>

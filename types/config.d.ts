@@ -1,3 +1,5 @@
+import { RouterTransitionEnum } from '/@/enums/appEnum'
+
 export interface ElementUISetting {
   size: 'small' | 'default' | 'large'
   zIndex: number
@@ -27,6 +29,9 @@ export interface HeaderSetting {
 export interface TransitionSetting {
   // NProgress设置
   enableNProgress: boolean
+
+  // 页面切换动画
+  routerTransition: RouterTransitionEnum
 }
 
 export interface ProjectConfig {
