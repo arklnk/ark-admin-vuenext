@@ -12,6 +12,7 @@ const setting: ProjectConfig = {
   showFooter: true,
   showLogo: true,
   themeColor: APP_PRESET_COLOR_LIST[3],
+  removeAllHttpPending: false,
   menuSetting: {
     collapsed: false,
     uniqueOpened: false,
