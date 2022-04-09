@@ -1,10 +1,12 @@
-import { RouterTransitionEnum } from '../enums/appEnum'
+import type { ProjectConfig } from '/#/config'
+
+import { RouterTransitionEnum } from '/@/enums/appEnum'
+import { MenuModeEnum } from '/@/enums/menuEnum'
 import {
   APP_PRESET_COLOR_LIST,
   HEADER_PRESET_BG_COLOR_LIST,
   SIDE_BAR_BG_COLOR_LIST,
 } from './designSetting'
-import type { ProjectConfig } from '/#/config'
 
 const setting: ProjectConfig = {
   grayMode: false,
@@ -18,6 +20,7 @@ const setting: ProjectConfig = {
     collapsed: false,
     uniqueOpened: false,
     bgColor: SIDE_BAR_BG_COLOR_LIST[2],
+    menuMode: MenuModeEnum.SIDEBAR,
   },
   headerSetting: {
     fixed: true,

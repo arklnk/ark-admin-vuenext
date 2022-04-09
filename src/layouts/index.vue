@@ -3,7 +3,7 @@
     class="h-full w-full relative flex flex-row overflow-hidden"
     style="background-color: #fafafb;"
   >
-    <AppSidebar />
+    <AppSidebar v-if="isSideBarMode" />
     <section class="flex-1 relative overflow-auto">
       <AppHeader />
       <AppMain />
@@ -15,4 +15,10 @@
 import AppSidebar from './sidebar/index.vue'
 import AppHeader from './header/index.vue'
 import AppMain from './content/MainLayout.vue'
+import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
+import { computed } from 'vue'
+import { MenuModeEnum } from '/@/enums/menuEnum'
+
+const { getMenuMode } = useMenuSetting()
+const isSideBarMode = computed(() => getMenuMode.value === MenuModeEnum.SIDEBAR)
 </script>

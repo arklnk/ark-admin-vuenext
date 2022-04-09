@@ -12,6 +12,8 @@ export function useMenuSetting() {
 
   const getBgColor = computed(() => appStore.getMenuSetting.bgColor)
 
+  const getMenuMode = computed(() => appStore.getMenuSetting.menuMode)
+
   function setMenuSetting(menuSetting: Partial<MenuSetting>) {
     appStore.setProjectConfig({ menuSetting })
   }
@@ -26,6 +28,7 @@ export function useMenuSetting() {
     setMenuSetting,
     toggleCollapse,
 
+    getMenuMode,
     getBgColor,
     getCollapsed,
     getUniqueOpened,

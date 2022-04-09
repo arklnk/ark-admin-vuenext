@@ -1,4 +1,5 @@
 import { RouterTransitionEnum } from '/@/enums/appEnum'
+import { MenuModeEnum } from '/@/enums/menuEnum'
 
 export interface ElementUISetting {
   size: 'small' | 'default' | 'large'
@@ -16,6 +17,11 @@ export interface MenuSetting {
 
   // 菜单背景色
   bgColor: string
+
+  /**
+   * 菜单模式
+   */
+  menuMode: MenuModeEnum
 }
 
 export interface HeaderSetting {
