@@ -6,6 +6,7 @@
     "mrmlnc.vscode-scss",
     "antfu.iconify",
     "voorjaar.windicss-intellisense",
-    "mikestead.dotenv"
+    "mikestead.dotenv",
+    "rvest.vs-code-prettier-eslint"
   ]
 }
