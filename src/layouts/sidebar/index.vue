@@ -42,17 +42,17 @@ const { getShowLogo } = useRootSetting()
 $prefixCls: #{var.$namespace}-app-sidebar;
 
 .#{$prefixCls} {
-  width: var.$sideBarWidth;
+  width: var.$sidebar-width;
   background-color: var(--sidebar-menu-bg-color);
-  transition: width var.$transitionDuration;
+  transition: width var.$transition-duration;
 
   &__menu-logo {
-    width: var.$sideBarWidth;
-    height: var.$navBarHeight;
+    width: var.$sidebar-width;
+    height: var.$header-height;
   }
 
   @include when(is-collapsed) {
-    width: var.$sideBarCollapsedWidth;
+    width: var.$sidebar-collapsed-width;
   }
 
   @include when(light) {

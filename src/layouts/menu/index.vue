@@ -1,5 +1,5 @@
 <template>
-  <div :class="prefixCls">
+  <div :class="[prefixCls, menuMode]">
     <ElMenu
       class="border-none"
       :mode="menuMode"
@@ -53,40 +53,47 @@ const menuMode = computed<'vertical' | 'horizontal'>(() => props.isHorizontal ? 
 $prefixCls: #{var.$namespace}-app-menu;
 
 .#{$prefixCls} {
-  border: none;
-
-  :deep(.el-menu) {
-    --el-menu-item-font-size: 12px;
-    --el-menu-item-height: #{var.$navBarHeight};
-
-    --el-menu-text-color: var(--sidebar-menu-text-color);
-    --el-menu-hover-text-color: var(--sidebar-menu-hover-text-color);
-    --el-menu-bg-color: var(--sidebar-menu-bg-color);
-
-    --el-menu-hover-bg-color: none;
-    --el-menu-item-hover-fill: none;
-
-    .el-menu--collapse {
-      width: var.$sideBarCollapsedWidth;
+  @include when(horizontal) {
+    :deep(.el-menu) {
+      --el-menu-item-font-size: 12px;
+      --el-menu-item-height: calc(#{var.$header-height} - 1px);
     }
+  }
 
-    .el-sub-menu .el-sub-menu,
-    .el-menu .el-menu-item {
-      background-color: var(--sidebar-submenu-bg-color);
-    }
+  @include when(vertical) {
+      :deep(.el-menu) {
+      --el-menu-item-font-size: 12px;
+      --el-menu-item-height: calc(#{var.$header-height} - 1px);
 
-    .el-menu-item,
-    .el-sub-menu,
-    .el-sub-menu__title {
-      &:hover {
-        background-color: none !important;
-        color: var(--sidebar-menu-hover-text-color);
+      --el-menu-text-color: var(--sidebar-menu-text-color);
+      --el-menu-hover-text-color: var(--sidebar-menu-hover-text-color);
+      --el-menu-bg-color: var(--sidebar-menu-bg-color);
+
+      --el-menu-hover-bg-color: none;
+      --el-menu-item-hover-fill: none;
+
+      .el-menu--collapse {
+        width: var.$sidebar-collapsed-width;
       }
-    }
 
-    .el-menu-item.is-active {
-      background-color: var(--sidebar-menu-active-bg-color);
-      color: var(--sidebar-menu-active-text-color);
+      .el-sub-menu .el-sub-menu,
+      .el-menu .el-menu-item {
+        background-color: var(--sidebar-submenu-bg-color);
+      }
+
+      .el-menu-item,
+      .el-sub-menu,
+      .el-sub-menu__title {
+        &:hover {
+          background-color: none !important;
+          color: var(--sidebar-menu-hover-text-color);
+        }
+      }
+
+      .el-menu-item.is-active {
+        background-color: var(--sidebar-menu-active-bg-color);
+        color: var(--sidebar-menu-active-text-color);
+      }
     }
   }
 }

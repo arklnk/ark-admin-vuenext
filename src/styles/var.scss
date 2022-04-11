@@ -5,12 +5,11 @@ $modifier-separator: '--';
 $state-prefix: 'is-';
 
 // layout
-$sideBarWidth: 230px;
-$sideBarCollapsedWidth: 64px;
-$navBarHeight: 50px;
-$appMainLayoutBackground: #f8f8fa;
-$componentBackground: #f5f4f6;
-$transitionDuration: 0.3s;
+$sidebar-width: 230px;
+$sidebar-collapsed-width: 64px;
+$header-height: 50px;
+$appmain-layout-bg-color: #f8f8fa;
+$transition-duration: 0.3s;
 
 //basic color
 $color-white: #ffffff;
@@ -27,9 +26,12 @@ $border-color-base: rgba(243, 244, 246, 1);
   --sidebar-menu-text-color: var(--el-text-color-primary);
   --sidebar-menu-hover-text-color: var(--el-text-color-primary);
 
-  --sidebar-menu-bg-color: var(--el-fill-color-blank);
-  --sidebar-submenu-bg-color: var(--el-fill-color-blank);
+  --sidebar-menu-bg-color: #{$color-white};
+  --sidebar-submenu-bg-color: #{$color-white};
 
   --sidebar-menu-active-bg-color: var(--el-color-primary-light-9);
   --sidebar-menu-active-text-color: var(--el-color-primary);
+
+  // header
+  --header-bg-color: #{$color-white};
 }

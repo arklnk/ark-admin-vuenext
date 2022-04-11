@@ -48,3 +48,7 @@ export function updateSidebarBgColor(color: string) {
     setCssVar(SIDEBAR_MENU_ACTIVE_BG_COLOR, 'var(--el-color-primary-light-9)')
   }
 }
+
+export function updateHeaderBgColor(color: string) {
+  console.log(color)
+}

@@ -26,8 +26,18 @@
         />
 
         <ElDivider>界面功能</ElDivider>
-        <SwitchItem title="折叠菜单" :def="getCollapsed" @change="handleMenuCollapsedChange" />
-        <SwitchItem title="侧边菜单手风琴模式" :def="getUniqueOpened" @change="handleMenuUniqueOpenChange" />
+        <SwitchItem
+          title="折叠菜单"
+          :def="getCollapsed"
+          @change="handleMenuCollapsedChange"
+          :disabled="disableSidebarRelSetting"
+        />
+        <SwitchItem
+          title="侧边菜单手风琴模式"
+          :def="getUniqueOpened"
+          @change="handleMenuUniqueOpenChange"
+          :disabled="disableSidebarRelSetting"
+        />
         <SwitchItem title="固定顶栏" :def="getFixed" @change="handleHeaderFixedChange" />
 
         <ElDivider>界面显示</ElDivider>
@@ -50,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import IconSettings from '~icons/icon-park-outline/setting-two'
 import { APP_PRESET_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST } from '/@/settings/designSetting'
 
@@ -67,6 +77,7 @@ import { updateSidebarBgColor } from '/@/core/theme/updateBackground'
 import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
 import { RouterTransitionEnum } from '/@/enums/appEnum'
+import { MenuModeEnum } from '/@/enums/menuEnum'
 
 const visibleRef = ref(false)
 function handleClick() {
@@ -93,7 +104,8 @@ function handleFooterChange(showFooter: boolean) {
   setRootSetting({ showFooter })
 }
 
-const { getCollapsed, getUniqueOpened, getBgColor: getSideMenuBgColor, setMenuSetting } = useMenuSetting()
+const { getCollapsed, getUniqueOpened, getBgColor: getSideMenuBgColor, getMenuMode, setMenuSetting } = useMenuSetting()
+const disableSidebarRelSetting = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
 function handleMenuCollapsedChange(collapsed: boolean) {
   setMenuSetting({ collapsed })
 }

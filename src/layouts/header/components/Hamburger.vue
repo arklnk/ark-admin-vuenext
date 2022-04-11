@@ -23,7 +23,7 @@ const { prefixCls } = useDesign('app-hamburger')
 $prefixCls: #{var.$namespace}-app-hamburger;
 
 .#{$prefixCls} {
-  transition: transform var.$transitionDuration;
+  transition: transform var.$transition-duration;
 
   @include when(is-collapsed) {
     transform: rotate(180deg);

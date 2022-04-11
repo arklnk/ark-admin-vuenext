@@ -34,7 +34,7 @@ $prefixCls: #{var.$namespace}-app-main;
 
 .#{$prefixCls} {
   @include when(is-fixed) {
-    padding-top: var.$navBarHeight;
+    padding-top: var.$header-height;
   }
 }
 </style>

@@ -35,9 +35,9 @@ const { prefixCls } = useDesign('app-logo')
 $prefixCls: #{var.$namespace}-app-logo;
 
 .#{$prefixCls} {
-  transition: all var.$transitionDuration;
+  transition: all var.$transition-duration;
   letter-spacing: 2px;
-  padding-left: calc(#{var.$sideBarCollapsedWidth} / 2 - 16px);
+  padding-left: calc(#{var.$sidebar-collapsed-width} / 2 - 16px);
 
   @include when(light) {
     color: var.$color-black;
