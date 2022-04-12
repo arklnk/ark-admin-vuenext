@@ -43,7 +43,7 @@ $prefixCls: #{var.$namespace}-app-sidebar;
 
 .#{$prefixCls} {
   width: var.$sidebar-width;
-  background-color: var(--sidebar-menu-bg-color);
+  background-color: var(--sidebar-bg-color);
   transition: width var.$transition-duration;
 
   &__menu-logo {

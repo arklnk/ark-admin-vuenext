@@ -4,10 +4,9 @@ import { useUserStore } from '/@/stores/modules/user'
 import defaultSetting from '/@/settings/projectSetting'
 import { getToken } from '/@/utils/auth'
 import { updateTheme } from './theme/updateTheme'
-import { error } from '/@/utils/log'
 import { updateGrayMode } from './theme/updateGrayMode'
 import { updateColorWeak } from './theme/updateColorWeak'
-import { updateSidebarBgColor } from './theme/updateBackground'
+import { updateHeaderBgColor, updateSidebarBgColor } from './theme/updateBackground'
 
 /**
  * Initial project configuration
@@ -21,20 +20,19 @@ export function initAppConfig() {
     colorWeak,
     themeColor,
     menuSetting: { bgColor },
+    headerSetting: { bgColor: headerbgColor },
   } = defaultSetting
 
-  try {
-    // update primary theme color
-    updateTheme(themeColor)
+  // update primary theme color
+  updateTheme(themeColor)
 
-    grayMode && updateGrayMode(grayMode)
-    colorWeak && updateColorWeak(colorWeak)
-  } catch (e) {
-    error(`${e}`)
-  }
+  // root class
+  grayMode && updateGrayMode(grayMode)
+  colorWeak && updateColorWeak(colorWeak)
 
   // update background
   bgColor && updateSidebarBgColor(bgColor)
+  headerbgColor && updateHeaderBgColor(headerbgColor)
 
   // setup global config
   appStore.setProjectConfig(defaultSetting)
