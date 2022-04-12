@@ -73,6 +73,7 @@ $menu-light-text-hover-color: #b3b3b3;
     :deep(.el-menu) {
       --el-menu-item-font-size: #{$menu-font-size};
       --el-menu-item-height: #{var.$header-height};
+      --el-menu-bg-color: var(--sidebar-bg-color);
 
       --el-menu-hover-bg-color: none;
       --el-menu-item-hover-fill: none;
@@ -86,8 +87,6 @@ $menu-light-text-hover-color: #b3b3b3;
       :deep(.el-menu) {
         --el-menu-text-color: #{var.$color-black};
         --el-menu-hover-text-color: var(--el-color-primary);
-
-        --el-menu-bg-color: var(--sidebar-bg-color);
 
         .el-menu-item.is-active {
           background-color: var(--el-color-primary-light-9);
@@ -109,7 +108,6 @@ $menu-light-text-hover-color: #b3b3b3;
       :deep(.el-menu) {
         --el-menu-text-color: #{var.$color-white};
         --el-menu-hover-text-color: #{$menu-light-text-hover-color};
-        --el-menu-bg-color: var(--sidebar-bg-color);
 
         .el-sub-menu .el-sub-menu,
         .el-menu .el-menu-item {
