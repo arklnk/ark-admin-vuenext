@@ -73,7 +73,7 @@ import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { updateGrayMode } from '/@/core/theme/updateGrayMode'
 import { updateColorWeak } from '/@/core/theme/updateColorWeak'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
-import { updateSidebarBgColor } from '/@/core/theme/updateBackground'
+import { updateHeaderBgColor, updateSidebarBgColor } from '/@/core/theme/updateBackground'
 import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
 import { RouterTransitionEnum } from '/@/enums/appEnum'
@@ -122,6 +122,7 @@ function handleHeaderFixedChange(fixed: boolean) {
   setHeaderSetting({ fixed })
 }
 function handleHeaderBgChange(bgColor: string) {
+  updateHeaderBgColor(bgColor)
   setHeaderSetting({ bgColor })
 }
 

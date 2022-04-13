@@ -16,6 +16,9 @@ export function updateSidebarBgColor(color: string) {
   }
 }
 
+const HEADER_BG_COLOR = '--header-bg-color'
+// const HEADER_LIGHTEN_BG_COLOR = '--header-lighten-bg-color'
+
 export function updateHeaderBgColor(color: string) {
-  console.log(color)
+  setCssVar(HEADER_BG_COLOR, color)
 }

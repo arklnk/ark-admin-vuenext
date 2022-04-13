@@ -56,15 +56,37 @@ const getLightOrDarkClass = computed<'light' | 'dark'>(() => {
 $prefixCls: #{var.$namespace}-app-menu;
 
 $menu-font-size: 12px;
-$menu-light-text-hover-color: #b3b3b3;
+$menu-hover-text-color: #ffffffa6;
 
 .#{$prefixCls} {
+  height: 100%;
 
   // 水平菜单，置于Header中
   @include when(horizontal) {
     :deep(.el-menu) {
       --el-menu-item-font-size: #{$menu-font-size};
-      --el-menu-item-height: calc(#{var.$header-height} - 1px);
+      --el-menu-item-height: 100%;
+      --el-menu-bg-color: var(--header-bg-color);
+
+      height: 100%;
+    }
+
+    @include when(light) {
+      :deep(.el-menu) {
+        --el-menu-text-color: #{var.$color-black};
+        --el-menu-hover-text-color: var(--el-color-primary);
+
+        --el-menu-hover-bg-color: none;
+        --el-menu-item-hover-fill: none;
+        
+        .el-sub-menu,
+        .el-sub-menu.is-active {
+          .el-sub-menu__title {
+            border-bottom: none;
+          }
+        }
+
+      }
     }
   }
 
@@ -107,7 +129,7 @@ $menu-light-text-hover-color: #b3b3b3;
     @include when(dark) {
       :deep(.el-menu) {
         --el-menu-text-color: #{var.$color-white};
-        --el-menu-hover-text-color: #{$menu-light-text-hover-color};
+        --el-menu-hover-text-color: #{$menu-hover-text-color};
 
         .el-sub-menu .el-sub-menu,
         .el-menu .el-menu-item {

@@ -1,7 +1,7 @@
 <template>
   <header
     ref="appHeaderRef"
-    :class="[prefixCls, getFixed ? 'is-fixed' : '', getCollapsed ? 'is-collapsed' : '', getLightOrDarkClass, isTopMenuMode ? 'is-not-has-sidebar' : '']"
+    :class="[prefixCls, getFixed ? 'is-fixed' : '', getCollapsed ? 'is-collapsed' : '', getLightOrDarkClass, isTopMenuMode ? 'not-has-sidebar' : '']"
     class="flex flex-row justify-between box-border relative overflow-hidden">
     <nav class="item items-center text-lg !px-4" @click="toggleCollapse" v-if="!isTopMenuMode">
       <Hamburger :collapsed="getCollapsed" />
@@ -74,7 +74,7 @@ $prefixCls: #{var.$namespace}-app-header;
     }
   }
 
-  @include when(is-not-has-sidebar) {
+  @include when(not-has-sidebar) {
     width: 100%;
   }
 
