@@ -2,7 +2,7 @@
   <main class="relative w-full" :class="[prefixCls, getFixed ? 'is-fixed' : '']">
     <RouterView v-slot="{ Component, route }">
       <Transition :name="getRouterTransition" mode="out-in">
-        <component :is="Component" :key="route.fullPath" />
+        <div :key="route.fullPath"><component :is="Component" /></div>
       </Transition>
     </RouterView>
     <AppFooter v-if="getShowFooter" />

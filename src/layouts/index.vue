@@ -4,10 +4,10 @@
     style="background-color: #fafafb;"
   >
     <AppSidebar v-if="isSideBarMode" />
-    <section class="flex-1 relative overflow-auto">
+    <ElScrollbar class="flex-1" :native="false">
       <AppHeader />
       <AppMain />
-    </section>
+    </ElScrollbar>
   </div>
 </template>
 
