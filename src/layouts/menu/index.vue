@@ -96,12 +96,13 @@ $menu-hover-text-color: #ffffffa6;
 
         .el-menu-item.is-active {
           background-color: var(--el-menu-hover-bg-color);
-          color: var.$color-white;
+          color: var(--el-menu-hover-text-color);
         }
 
         .el-sub-menu.is-active {
+          background-color: var(--el-menu-hover-bg-color);
           .el-sub-menu__title {
-            color: var.$color-white;
+            color: var(--el-menu-hover-text-color);
           }
         }
       }
