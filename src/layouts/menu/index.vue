@@ -1,5 +1,5 @@
 <template>
-  <div :class="[prefixCls, menuMode, getLightOrDarkClass]">
+  <div :class="[prefixCls, menuMode, getLightOrDarkClass]" class="relative">
     <ElMenu
       class="border-none" :mode="menuMode" :default-active="activeMenu" :unique-opened="getUniqueOpened"
       :collapse="getCollapsed" :collapse-transition="false">
@@ -59,16 +59,52 @@ $menu-font-size: 12px;
 $menu-hover-text-color: #ffffffa6;
 
 .#{$prefixCls} {
-  height: 100%;
 
   // 水平菜单，置于Header中
   @include when(horizontal) {
+    height: 100%;
+
     :deep(.el-menu) {
       --el-menu-item-font-size: #{$menu-font-size};
       --el-menu-item-height: 100%;
       --el-menu-bg-color: var(--header-bg-color);
 
       height: 100%;
+
+      .el-sub-menu,
+      .el-sub-menu.is-active {
+        .el-sub-menu__title {
+          border-bottom: none;
+        }
+      }
+    }
+
+    @include when(dark) {
+      :deep(.el-menu) {
+        --el-menu-text-color: #{var.$color-white};
+        --el-menu-hover-text-color: #{$menu-hover-text-color};
+
+        --el-menu-hover-bg-color: var(--header-hover-bg-color);
+        --el-menu-item-hover-fill: var(--header-hover-bg-color);
+
+        .el-sub-menu,
+        .el-sub-menu__title {
+          &:hover {
+            background-color: var(--el-menu-hover-bg-color);
+          }
+        }
+
+        .el-menu-item.is-active {
+          background-color: var(--el-menu-hover-bg-color);
+          color: var.$color-white;
+        }
+
+        .el-sub-menu.is-active {
+          .el-sub-menu__title {
+            color: var.$color-white;
+          }
+        }
+      }
     }
 
     @include when(light) {
@@ -78,14 +114,6 @@ $menu-hover-text-color: #ffffffa6;
 
         --el-menu-hover-bg-color: none;
         --el-menu-item-hover-fill: none;
-        
-        .el-sub-menu,
-        .el-sub-menu.is-active {
-          .el-sub-menu__title {
-            border-bottom: none;
-          }
-        }
-
       }
     }
   }

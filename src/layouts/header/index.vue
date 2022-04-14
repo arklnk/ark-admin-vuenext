@@ -97,20 +97,21 @@ $prefixCls: #{var.$namespace}-app-header;
 
     &::before {
       position: absolute;
+      z-index: -1;
       width: 100%;
       height: 100%;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      border-color: #ccc;
-      background-color: #ccc;
+      border-color: var(--header-hover-bg-color);
+      background-color: var(--header-hover-bg-color);
       opacity: 0;
       content: " ";
       pointer-events: none;
     }
 
     &:hover::before {
-      opacity: 0.1;
+      opacity: 1;
     }
   }
 }
