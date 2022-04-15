@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
+import dayjs from 'dayjs'
 
 import { createViteProxy } from './build/proxy'
 import { createVitePlugins } from './build/plugin'
@@ -13,7 +14,7 @@ function pathResolve(dir: string) {
 // inject info
 const __APP_INFO__ = {
   pkg: { dependencies, devDependencies, version },
-  lastBuildTime: new Date(),
+  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 }
 
 /**
