@@ -17,14 +17,14 @@
         </ElIcon>
         <span class="ml-2">{{ route.meta?.title }}</span>
       </template>
-      <SideMenuItem v-for="child in route.children" :key="child.path" :route="child" />
+      <MenuItem v-for="child in route.children" :key="child.path" :route="child" />
     </ElSubMenu>
   </template>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'SideMenuItem'
+  name: 'MenuItem'
 }
 </script>
 

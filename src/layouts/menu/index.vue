@@ -3,7 +3,7 @@
     <ElMenu
       class="border-none" :mode="menuMode" :default-active="activeMenu" :unique-opened="getUniqueOpened"
       :collapse="getCollapsed" :collapse-transition="false">
-      <SideMenuItem v-for="route in routes" :key="route.path" :route="route" />
+      <MenuItem v-for="route in routes" :key="route.path" :route="route" />
     </ElMenu>
   </div>
 </template>
@@ -16,7 +16,7 @@ import { useDesign } from '/@/hooks/core/useDesign'
 import { basicRoutes } from '/@/router/basicRoutes'
 import { usePermissionStore } from '/@/stores/modules/permission'
 
-import SideMenuItem from './components/SideMenuItem.vue'
+import MenuItem from './components/MenuItem.vue'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { isLight } from '/@/utils/color'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
