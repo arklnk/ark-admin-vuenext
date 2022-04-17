@@ -5,7 +5,7 @@
     <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="300" append-to-body>
       <div class="w-full overflow-hidden">
         <ElDivider>导航栏模式</ElDivider>
-        <MenuModePicker :def="getMenuMode" />
+        <MenuModePicker :def="getMenuMode" @change="handleMenuModeChange" />
 
         <ElDivider>系统主题</ElDivider>
         <ThemeColorPicker
@@ -119,6 +119,9 @@ function handleMenuUniqueOpenChange(uniqueOpened: boolean) {
 function handleSideMenuBgChange(bgColor: string) {
   updateSidebarBgColor(bgColor)
   setMenuSetting({ bgColor })
+}
+function handleMenuModeChange(menuMode: MenuModeEnum) {
+  setMenuSetting({ menuMode })
 }
 
 const { getFixed, getBgColor: getHeaderBgColor, setHeaderSetting } = useHeaderSetting()

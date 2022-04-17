@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-wrap justify-around" :class="prefixCls">
-    <div :class="[`${prefixCls}-item`, `${prefixCls}-item--sidebar`, isActive(MenuModeEnum.SIDEBAR) ? `${prefixCls}-item--active` : '']"></div>
-    <div :class="[`${prefixCls}-item`, `${prefixCls}-item--top-menu`, isActive(MenuModeEnum.TOP_MENU) ? `${prefixCls}-item--active` : '']"></div>
+    <div
+      :class="[`${prefixCls}-item`, `${prefixCls}-item--sidebar`, isActive(MenuModeEnum.SIDEBAR) ? `${prefixCls}-item--active` : '']" 
+      @click="handleClick(MenuModeEnum.SIDEBAR)"></div>
+    <div
+      :class="[`${prefixCls}-item`, `${prefixCls}-item--top-menu`, isActive(MenuModeEnum.TOP_MENU) ? `${prefixCls}-item--active` : '']" 
+      @click="handleClick(MenuModeEnum.TOP_MENU)"></div>
   </div>
 </template>
 
@@ -17,11 +21,16 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits<{ (e: 'change', value: MenuModeEnum): void }>()
+
 const { prefixCls } = useDesign('setting-menu-mode-picker')
 
 function isActive(cur: MenuModeEnum) {
-  console.log(props.def === cur)
   return props.def === cur
+}
+
+function handleClick(cur: MenuModeEnum) {
+  emit('change', cur)
 }
 </script>
 
@@ -40,10 +49,10 @@ $header-height: 10px;
     overflow: hidden;
     cursor: pointer;
     border-radius: 4px;
-    box-sizing: content-box;
+    // box-sizing: content-box;
     background-color: var.$app-bg-color;
     box-shadow: 0 1px 2.5px #0000002e;
-    border: 2px solid transparent;
+    // border: 2px solid transparent;
 
     &:hover {
       border: 2px solid var(--el-color-primary);
@@ -61,6 +70,7 @@ $header-height: 10px;
         height: 100%;
         left: 0;
         top: 0;
+        z-index: 1;
         background-color: var(--sidebar-bg-color);
       }
 
