@@ -4,6 +4,9 @@
 
     <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="300" append-to-body>
       <div class="w-full overflow-hidden">
+        <ElDivider>导航栏模式</ElDivider>
+        <MenuModePicker :def="getMenuMode" />
+
         <ElDivider>系统主题</ElDivider>
         <ThemeColorPicker
           :color-list="APP_PRESET_COLOR_LIST"
@@ -66,6 +69,7 @@ import { APP_PRESET_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_L
 
 import ThemeColorPicker from './components/ThemeColorPicker.vue'
 import SwitchItem from './components/SwitchItem.vue'
+import MenuModePicker from './components/MenuModePicker.vue'
 
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 import { updateTheme } from '/@/core/theme/updateTheme'

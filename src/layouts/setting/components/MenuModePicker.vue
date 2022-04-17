@@ -1,0 +1,91 @@
+<template>
+  <div class="flex flex-wrap justify-around" :class="prefixCls">
+    <div :class="[`${prefixCls}-item`, `${prefixCls}-item--sidebar`, isActive(MenuModeEnum.SIDEBAR) ? `${prefixCls}-item--active` : '']"></div>
+    <div :class="[`${prefixCls}-item`, `${prefixCls}-item--top-menu`, isActive(MenuModeEnum.TOP_MENU) ? `${prefixCls}-item--active` : '']"></div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { PropType } from 'vue'
+import { MenuModeEnum } from '/@/enums/menuEnum'
+import { useDesign } from '/@/hooks/core/useDesign'
+
+const props = defineProps({
+  def: {
+    type: String as PropType<MenuModeEnum>,
+    required: true
+  }
+})
+
+const { prefixCls } = useDesign('setting-menu-mode-picker')
+
+function isActive(cur: MenuModeEnum) {
+  console.log(props.def === cur)
+  return props.def === cur
+}
+</script>
+
+<style lang="scss" scoped>
+@use '/@/styles/var.scss';
+
+$prefixCls: #{var.$namespace}-setting-menu-mode-picker;
+$sidebar-width: 20px;
+$header-height: 10px;
+
+.#{$prefixCls} {
+  &-item {
+    position: relative;
+    height: 48px;
+    width: 56px;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 4px;
+    box-sizing: content-box;
+    background-color: var.$app-bg-color;
+    box-shadow: 0 1px 2.5px #0000002e;
+    border: 2px solid transparent;
+
+    &:hover {
+      border: 2px solid var(--el-color-primary);
+    }
+
+    &--active {
+      border: 2px solid var(--el-color-primary);
+    }
+
+    &--sidebar {
+      &::before {
+        content: ' ';
+        position: absolute;
+        width: $sidebar-width;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: var(--sidebar-bg-color);
+      }
+
+      &::after {
+        content: ' ';
+        position: absolute;
+        height: $header-height;
+        width: calc(56px - #{$sidebar-width});
+        top: 0;
+        right: 0;
+        background-color: var(--header-bg-color);
+      }
+    }
+
+    &--top-menu {
+      &::before {
+        content: ' ';
+        position: absolute;
+        height: $header-height;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background-color: var(--header-bg-color);
+      }
+    }
+  }
+}
+</style>
