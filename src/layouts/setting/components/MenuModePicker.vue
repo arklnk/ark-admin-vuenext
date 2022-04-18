@@ -43,7 +43,7 @@ function handleClick(cur: MenuModeEnum) {
 
 $prefixCls: #{var.$namespace}-setting-menu-mode-picker;
 $sidebar-width: 20px;
-$header-height: 10px;
+$header-height: 14px;
 
 .#{$prefixCls} {
   &-item {
