@@ -1,11 +1,15 @@
 <template>
   <div class="flex flex-wrap justify-around" :class="prefixCls">
-    <div
-      :class="[`${prefixCls}-item`, `${prefixCls}-item--sidebar`, isActive(MenuModeEnum.SIDEBAR) ? `${prefixCls}-item--active` : '']" 
-      @click="handleClick(MenuModeEnum.SIDEBAR)"></div>
-    <div
-      :class="[`${prefixCls}-item`, `${prefixCls}-item--top-menu`, isActive(MenuModeEnum.TOP_MENU) ? `${prefixCls}-item--active` : '']" 
-      @click="handleClick(MenuModeEnum.TOP_MENU)"></div>
+    <ElTooltip placement="bottom" content="左侧菜单模式">
+      <div
+        :class="[`${prefixCls}-item`, `${prefixCls}-item--sidebar`, isActive(MenuModeEnum.SIDEBAR) ? `${prefixCls}-item--active` : '']" 
+        @click="handleClick(MenuModeEnum.SIDEBAR)"></div>
+    </ElTooltip>
+    <ElTooltip placement="bottom" content="顶部菜单模式">
+      <div
+        :class="[`${prefixCls}-item`, `${prefixCls}-item--top-menu`, isActive(MenuModeEnum.TOP_MENU) ? `${prefixCls}-item--active` : '']" 
+        @click="handleClick(MenuModeEnum.TOP_MENU)"></div>
+    </ElTooltip>
   </div>
 </template>
 
