@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="h-full w-full relative flex flex-row overflow-hidden"
-    style="background-color: #fafafb;"
-  >
+  <div class="h-full w-full relative flex flex-row overflow-hidden">
     <AppSidebar v-if="isSideBarMode" />
     <ElScrollbar class="flex-1" :native="false">
       <AppHeader />
