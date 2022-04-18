@@ -20,7 +20,7 @@ const setting: ProjectConfig = {
     collapsed: false,
     uniqueOpened: false,
     bgColor: SIDE_BAR_BG_COLOR_LIST[2],
-    menuMode: MenuModeEnum.TOP_MENU,
+    menuMode: MenuModeEnum.SIDEBAR,
   },
   headerSetting: {
     fixed: true,
