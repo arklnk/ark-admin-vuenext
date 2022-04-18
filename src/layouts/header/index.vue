@@ -1,7 +1,7 @@
 <template>
   <header
     ref="appHeaderRef"
-    :class="[prefixCls, getFixed ? 'is-fixed' : '', getCollapsed ? 'is-collapsed' : '', getLightOrDarkClass, isTopMenuMode ? 'not-has-sidebar' : '']"
+    :class="[prefixCls, getFixed ? 'is-fixed' : '', isCollapsed ? 'is-collapsed' : '', getLightOrDarkClass, isTopMenuMode ? 'not-has-sidebar' : '']"
     class="flex flex-row justify-between box-border relative overflow-hidden">
     <nav class="item items-center text-lg !px-4" @click="toggleCollapse" v-if="!isTopMenuMode">
       <Hamburger :collapsed="getCollapsed" />
@@ -48,6 +48,7 @@ const { getCollapsed, getMenuMode, toggleCollapse } = useMenuSetting()
 const getLightOrDarkClass = computed(() => isLight(getBgColor.value) ? 'light' : 'dark')
 
 const isTopMenuMode = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
+const isCollapsed = computed(() => isTopMenuMode.value ? false : getCollapsed.value)
 </script>
 
 <style lang="scss" scoped>
@@ -76,6 +77,7 @@ $prefixCls: #{var.$namespace}-app-header;
 
   @include when(not-has-sidebar) {
     width: 100%;
+    transition: none;
   }
 
   @include when(light) {

@@ -1,8 +1,8 @@
 <template>
-  <div :class="[prefixCls, menuMode, getLightOrDarkClass]" class="relative">
+  <div :class="[prefixCls, mode, getLightOrDarkClass]" class="relative">
     <ElMenu
-      class="border-none" :mode="menuMode" :default-active="activeMenu" :unique-opened="getUniqueOpened"
-      :collapse="getCollapsed" :collapse-transition="false">
+      class="border-none" :mode="mode" :default-active="activeMenu" :unique-opened="getUniqueOpened"
+      :collapse="isCollapsed" :collapse-transition="false">
       <MenuItem v-for="route in routes" :key="route.path" :route="route" />
     </ElMenu>
   </div>
@@ -20,6 +20,7 @@ import MenuItem from './components/MenuItem.vue'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { isLight } from '/@/utils/color'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
+import { MenuModeEnum } from '/@/enums/menuEnum'
 
 const props = defineProps({
   isHorizontal: {
@@ -39,14 +40,17 @@ const activeMenu = computed(() => {
   return $route.path
 })
 
-const { getUniqueOpened, getCollapsed, getBgColor: getSideBgColor } = useMenuSetting()
+const { getUniqueOpened, getCollapsed, getBgColor: getSideBgColor, getMenuMode } = useMenuSetting()
 const { getBgColor: getHeaderBgColor } = useHeaderSetting()
-const menuMode = computed<'vertical' | 'horizontal'>(() => props.isHorizontal ? 'horizontal' : 'vertical')
+const mode = computed<'vertical' | 'horizontal'>(() => props.isHorizontal ? 'horizontal' : 'vertical')
 
 const getLightOrDarkClass = computed<'light' | 'dark'>(() => {
-  const bgColor = unref(menuMode) === 'vertical' ? unref(getSideBgColor) : unref(getHeaderBgColor)
+  const bgColor = unref(mode) === 'vertical' ? unref(getSideBgColor) : unref(getHeaderBgColor)
   return isLight(bgColor) ? 'light' : 'dark'
 })
+
+const isTopMenuMode = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
+const isCollapsed = computed(() => isTopMenuMode.value ? false : getCollapsed.value)
 </script>
 
 <style lang="scss" scoped>
