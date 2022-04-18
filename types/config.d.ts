@@ -1,4 +1,4 @@
-import { RouterTransitionEnum } from '/@/enums/appEnum'
+import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 
 export interface ElementUISetting {
@@ -58,6 +58,9 @@ export interface ProjectConfig {
 
   // 是否显示网页Logo
   showLogo: boolean
+
+  // 内容区域宽度
+  contentMode: ContentEnum
 
   // 切换界面时是否取消已经发送但没有响应的http请求。
   // 如果启用，我想覆盖单个接口。可以在单独的界面中设置

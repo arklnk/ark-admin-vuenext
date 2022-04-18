@@ -1,6 +1,6 @@
 import type { ProjectConfig } from '/#/config'
 
-import { RouterTransitionEnum } from '/@/enums/appEnum'
+import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import {
   APP_PRESET_COLOR_LIST,
@@ -15,6 +15,7 @@ const setting: ProjectConfig = {
   showFooter: false,
   showLogo: true,
   themeColor: APP_PRESET_COLOR_LIST[3],
+  contentMode: ContentEnum.FULL,
   removeAllHttpPending: false,
   menuSetting: {
     collapsed: false,
