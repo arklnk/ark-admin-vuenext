@@ -1,9 +1,6 @@
 // refer to Bootstrap's responsive design
 export const MOBILE_WIDTH = 768
 
-// content fixed width 1200 px
-export const CONTENT_FIXED_WIDTH = 1200
-
 //  Route switching animation
 export enum RouterTransitionEnum {
   ZOOM_FADE = 'zoom-fade',
@@ -18,3 +15,10 @@ export enum ContentEnum {
   FULL = 'full',
   FIXED = 'fixed',
 }
+
+export const contentMap: Map<ContentEnum, string> = (() => {
+  const map = new Map<ContentEnum, string>()
+  map.set(ContentEnum.FULL, '流式')
+  map.set(ContentEnum.FIXED, '定宽')
+  return map
+})()

@@ -42,6 +42,7 @@
           :disabled="disableSidebarRelSetting"
         />
         <SwitchItem title="固定顶栏" :def="getFixed" @change="handleHeaderFixedChange" />
+        <SelectItem title="内容区域宽度" :options="contentModeOptions" :cursor="getContentMode" @change="handleContentModeChange" />
 
         <ElDivider>界面显示</ElDivider>
         <SwitchItem title="Logo" :def="getShowLogo" @change="handleLogoChange" />
@@ -80,7 +81,7 @@ import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/core/theme/updateBackground'
 import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
-import { RouterTransitionEnum } from '/@/enums/appEnum'
+import { ContentEnum, contentMap, RouterTransitionEnum } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 
 const visibleRef = ref(false)
@@ -88,7 +89,8 @@ function handleClick() {
   visibleRef.value = true
 }
 
-const { getThemeColor, getGrayMode, getColorWeak, getShowLogo, getShowFooter, setRootSetting } = useRootSetting()
+const { getThemeColor, getGrayMode, getColorWeak, getShowLogo, getShowFooter, getContentMode, setRootSetting } = useRootSetting()
+const contentModeOptions: LabelValueOptions = Array.from(contentMap).map(([key, value]) => { return { label: value, value: key } })
 function handleSystemThemeChange(themeColor: string) {
   updateTheme(themeColor)
   setRootSetting({ themeColor })
@@ -106,6 +108,9 @@ function handleLogoChange(showLogo: boolean) {
 }
 function handleFooterChange(showFooter: boolean) {
   setRootSetting({ showFooter })
+}
+function handleContentModeChange(contentMode: ContentEnum) {
+  setRootSetting({ contentMode })
 }
 
 const { getCollapsed, getUniqueOpened, getBgColor: getSideMenuBgColor, getMenuMode, setMenuSetting } = useMenuSetting()
