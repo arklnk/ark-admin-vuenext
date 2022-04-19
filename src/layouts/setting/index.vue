@@ -1,8 +1,8 @@
 <template>
   <span @click="handleClick">
     <IconSettings />
-    <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="300">
-      <div class="w-full overflow-hidden">
+    <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="300" append-to-body destroy-on-close>
+      <div class="w-full overflow-hidden text-black">
         <ElDivider>导航栏模式</ElDivider>
         <MenuModePicker :def="getMenuMode" @change="handleMenuModeChange" />
 
