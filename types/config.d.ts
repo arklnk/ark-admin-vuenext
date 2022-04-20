@@ -22,6 +22,11 @@ export interface MenuSetting {
    * 菜单模式
    */
   menuMode: MenuModeEnum
+
+  /**
+   * 顶部菜单模式时放置位置
+   */
+  topMenuAlign: 'start' | 'center' | 'end'
 }
 
 export interface HeaderSetting {
