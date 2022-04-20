@@ -49,6 +49,7 @@ $prefixCls: #{var.$namespace}-app-sidebar;
   &__menu-logo {
     width: var.$sidebar-width;
     height: var.$header-height;
+    padding-left: calc(#{var.$sidebar-collapsed-width} / 2 - 16px);
   }
 
   @include when(is-collapsed) {

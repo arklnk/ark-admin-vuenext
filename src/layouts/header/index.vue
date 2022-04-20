@@ -6,7 +6,10 @@
     <nav class="item items-center text-lg !px-4" @click="toggleCollapse" v-if="!isTopMenuMode">
       <Hamburger :collapsed="getCollapsed" />
     </nav>
-    <nav v-if="isTopMenuMode" class="flex-1 px-30">
+    <nav class="item !px-8" v-if="showHeaderLogo">
+      <AppLogo :theme="getLightOrDarkClass" show-title />
+    </nav>
+    <nav v-if="isTopMenuMode" class="flex-1">
       <Menu is-horizontal />
     </nav>
     <nav class="flex h-full text-lg">
@@ -18,9 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
-
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { AppLogo } from '/@/components/Application'
 import { FullScreen, Hamburger, UserDropdown } from './components'
 import ProjectConfig from '../setting/index.vue'
 
@@ -32,6 +34,7 @@ import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { isLight } from '/@/utils/color'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import Menu from '../menu/index.vue'
+import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 
 const { prefixCls } = useDesign('app-header')
 const { setAppHeaderHeight } = useLayoutHeight()
@@ -44,11 +47,13 @@ onMounted(() => {
 
 const { getFixed, getBgColor } = useHeaderSetting()
 const { getCollapsed, getMenuMode, toggleCollapse } = useMenuSetting()
+const { getShowLogo } = useRootSetting()
 
 const getLightOrDarkClass = computed(() => isLight(getBgColor.value) ? 'light' : 'dark')
 
 const isTopMenuMode = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
 const isCollapsed = computed(() => isTopMenuMode.value ? false : getCollapsed.value)
+const showHeaderLogo = computed(() => getShowLogo.value && isTopMenuMode.value)
 </script>
 
 <style lang="scss" scoped>
