@@ -1,7 +1,14 @@
 <template>
   <span @click="handleClick">
     <IconSettings />
-    <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="320" destroy-on-close>
+    <ElDrawer
+      v-model="visibleRef"
+      direction="rtl"
+      title="项目配置"
+      :size="320"
+      append-to-body
+      destroy-on-close
+    >
       <div class="w-full overflow-hidden text-black flex flex-col">
         <ElDivider>导航栏模式</ElDivider>
         <MenuModePicker :def="getMenuMode" @change="handleMenuModeChange" />
@@ -80,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import IconSettings from '~icons/icon-park-outline/setting-two'
 import {
   APP_PRESET_COLOR_LIST,
@@ -145,10 +152,12 @@ function handleContentModeChange(contentMode: ContentEnum) {
   setRootSetting({ contentMode })
 }
 function handleFullContentChange(fullContent: boolean) {
-  // set to invisible
   visibleRef.value = false
-  // apply setting
-  setRootSetting({ fullContent })
+
+  // wait for apply
+  nextTick(() => {
+    setRootSetting({ fullContent })
+  })
 }
 
 const {
