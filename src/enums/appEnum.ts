@@ -27,8 +27,8 @@ export const contentMap: Map<ContentEnum, string> = (() => {
 
 export const topMenuAlignMap: Map<TopMenuAlign, string> = (() => {
   const map = new Map<TopMenuAlign, string>()
-  map.set('center', '居中')
   map.set('flex-start', '居左')
+  map.set('center', '居中')
   map.set('flex-end', '居右')
   return map
 })()
