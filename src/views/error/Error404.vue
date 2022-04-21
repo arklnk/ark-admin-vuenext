@@ -8,13 +8,15 @@
       :class="`${prefixCls}__particle`"
       v-for="i in MAX_RANDOM_SIZE"
       :key="i"
-    >0</span>
+      >0</span
+    >
     <span
       class="absolute block"
       :class="`${prefixCls}__particle`"
       v-for="i in MAX_RANDOM_SIZE"
       :key="i"
-    >4</span>
+      >4</span
+    >
     <article
       :class="`${prefixCls}__content`"
       class="relative w-[500px] max-w-full m-5 bg-white text-center py-[60px] px-[40px] rounded-sm"
@@ -96,6 +98,7 @@ $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
     100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(180px);
     }
@@ -106,6 +109,7 @@ $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
     100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(-180px);
     }
@@ -116,6 +120,7 @@ $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
     100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(28px);
     }
@@ -126,6 +131,7 @@ $easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
     100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(-28px);
     }

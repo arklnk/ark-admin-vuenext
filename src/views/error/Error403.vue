@@ -60,7 +60,7 @@ $size: 4rem;
       position: absolute;
       background-color: $bg;
       border-radius: 50%;
-      content: "";
+      content: '';
       width: $size;
       height: $size;
       transform: scale(0);
@@ -69,7 +69,7 @@ $size: 4rem;
     }
 
     &::after {
-      content: "";
+      content: '';
       z-index: 2;
       position: absolute;
       width: $size;
