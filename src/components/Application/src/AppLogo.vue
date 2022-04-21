@@ -2,6 +2,7 @@
   <div
     class="flex flex-row items-center text-sm font-semibold box-border cursor-pointer"
     :class="[prefixCls, theme, $attrs.class]"
+    @click="go('/')"
   >
     <img class="w-8 h-8" src="../../../assets/images/logo.png" />
     <span v-show="showTitle" class="ml-2">{{ title }}</span>
@@ -11,21 +12,24 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { useDesign } from '/@/hooks/core/useDesign'
+import { useGo } from '/@/hooks/web/useGo'
 const title = import.meta.env.VITE_APP_TITLE
 
 defineProps({
   showTitle: {
     type: Boolean,
-    default: true
+    default: true,
   },
   theme: {
     type: String as PropType<'light' | 'dark'>,
     validator: (v: string) => ['light', 'dark'].includes(v),
-    default: 'light'
+    default: 'light',
   },
 })
 
 const { prefixCls } = useDesign('app-logo')
+
+const go = useGo()
 </script>
 
 <style lang="scss" scoped>
