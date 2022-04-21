@@ -1,8 +1,15 @@
 <template>
   <span @click="handleClick">
     <IconSettings />
-    <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="300" append-to-body destroy-on-close>
-      <div class="w-full overflow-hidden text-black">
+    <ElDrawer
+      v-model="visibleRef"
+      direction="rtl"
+      title="项目配置"
+      :size="320"
+      append-to-body
+      destroy-on-close
+    >
+      <div class="w-full overflow-hidden text-black flex flex-col">
         <ElDivider>导航栏模式</ElDivider>
         <MenuModePicker :def="getMenuMode" @change="handleMenuModeChange" />
 
@@ -41,7 +48,19 @@
           :disabled="disableSidebarRelSetting"
         />
         <SwitchItem title="固定顶栏" :def="getFixed" @change="handleHeaderFixedChange" />
-        <SelectItem title="内容区域宽度" :options="contentModeOptions" :cursor="getContentMode" @change="handleContentModeChange" />
+        <SelectItem
+          title="顶部菜单布局"
+          :options="topMenuAlignOptions"
+          :cursor="getTopMenuAlign"
+          :disabled="!disableSidebarRelSetting"
+          @change="handleTopMenuAlignModeChange"
+        />
+        <SelectItem
+          title="内容区域宽度"
+          :options="contentModeOptions"
+          :cursor="getContentMode"
+          @change="handleContentModeChange"
+        />
 
         <ElDivider>界面显示</ElDivider>
         <SwitchItem title="Logo" :def="getShowLogo" @change="handleLogoChange" />
@@ -50,7 +69,11 @@
         <SwitchItem title="色弱模式" :def="getColorWeak" @change="handleColorWeakChange" />
 
         <ElDivider>动画</ElDivider>
-        <SwitchItem title="顶栏进度条" :def="getEnableNProgress" @change="handleEnableNProgressChange" />
+        <SwitchItem
+          title="顶栏进度条"
+          :def="getEnableNProgress"
+          @change="handleEnableNProgressChange"
+        />
         <SelectItem
           title="切换动画类型"
           :options="routerTransitionOptions"
@@ -65,7 +88,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import IconSettings from '~icons/icon-park-outline/setting-two'
-import { APP_PRESET_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST } from '/@/settings/designSetting'
+import {
+  APP_PRESET_COLOR_LIST,
+  HEADER_PRESET_BG_COLOR_LIST,
+  SIDE_BAR_BG_COLOR_LIST,
+} from '/@/settings/designSetting'
 
 import ThemeColorPicker from './components/ThemeColorPicker.vue'
 import SwitchItem from './components/SwitchItem.vue'
@@ -80,16 +107,27 @@ import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/core/theme/updateBackground'
 import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
-import { ContentEnum, contentMap, RouterTransitionEnum } from '/@/enums/appEnum'
+import { ContentEnum, contentMap, RouterTransitionEnum, topMenuAlignMap } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
+import { TopMenuAlign } from '/#/config'
 
 const visibleRef = ref(false)
 function handleClick() {
   visibleRef.value = true
 }
 
-const { getThemeColor, getGrayMode, getColorWeak, getShowLogo, getShowFooter, getContentMode, setRootSetting } = useRootSetting()
-const contentModeOptions: LabelValueOptions = Array.from(contentMap).map(([key, value]) => { return { label: value, value: key } })
+const {
+  getThemeColor,
+  getGrayMode,
+  getColorWeak,
+  getShowLogo,
+  getShowFooter,
+  getContentMode,
+  setRootSetting,
+} = useRootSetting()
+const contentModeOptions: LabelValueOptions = Array.from(contentMap).map(([key, value]) => {
+  return { label: value, value: key }
+})
 function handleSystemThemeChange(themeColor: string) {
   updateTheme(themeColor)
   setRootSetting({ themeColor })
@@ -112,8 +150,18 @@ function handleContentModeChange(contentMode: ContentEnum) {
   setRootSetting({ contentMode })
 }
 
-const { getCollapsed, getUniqueOpened, getBgColor: getSideMenuBgColor, getMenuMode, setMenuSetting } = useMenuSetting()
+const {
+  getCollapsed,
+  getUniqueOpened,
+  getBgColor: getSideMenuBgColor,
+  getMenuMode,
+  getTopMenuAlign,
+  setMenuSetting,
+} = useMenuSetting()
 const disableSidebarRelSetting = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
+const topMenuAlignOptions: LabelValueOptions = Array.from(topMenuAlignMap).map(([key, value]) => {
+  return { label: value, value: key }
+})
 function handleMenuCollapsedChange(collapsed: boolean) {
   setMenuSetting({ collapsed })
 }
@@ -126,6 +174,9 @@ function handleSideMenuBgChange(bgColor: string) {
 }
 function handleMenuModeChange(menuMode: MenuModeEnum) {
   setMenuSetting({ menuMode })
+}
+function handleTopMenuAlignModeChange(topMenuAlign: TopMenuAlign) {
+  setMenuSetting({ topMenuAlign })
 }
 
 const { getFixed, getBgColor: getHeaderBgColor, setHeaderSetting } = useHeaderSetting()

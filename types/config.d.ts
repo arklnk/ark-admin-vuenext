@@ -1,6 +1,8 @@
 import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 
+export type TopMenuAlign = 'flex-start' | 'center' | 'flex-end'
+
 export interface ElementUISetting {
   size: 'small' | 'default' | 'large'
   zIndex: number
@@ -26,7 +28,7 @@ export interface MenuSetting {
   /**
    * 顶部菜单模式时放置位置
    */
-  topMenuAlign: 'start' | 'center' | 'end'
+  topMenuAlign: TopMenuAlign
 }
 
 export interface HeaderSetting {

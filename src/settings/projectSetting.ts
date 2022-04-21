@@ -22,7 +22,7 @@ const setting: ProjectConfig = {
     uniqueOpened: false,
     bgColor: SIDE_BAR_BG_COLOR_LIST[2],
     menuMode: MenuModeEnum.SIDEBAR,
-    topMenuAlign: 'start',
+    topMenuAlign: 'flex-start',
   },
   headerSetting: {
     fixed: true,
