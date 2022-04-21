@@ -24,10 +24,12 @@ const frameSrc = route.meta.iframeSrc || ''
 const loadingRef = ref(true)
 function hideLoading() {
   loadingRef.value = false
+  calcHeight()
 }
 
 const frameRef = ref<HTMLIFrameElement>()
 const heightRef = ref(window.innerHeight)
+const topRef = ref(50)
 const { appHeaderHeightRef } = useLayoutHeight()
 const { getFullContent } = useRootSetting()
 const getStyle = computed((): CSSProperties => {
@@ -41,8 +43,12 @@ function calcHeight() {
   if (!iframe) {
     return
   }
+
   const top = getFullContent.value ? 0 : appHeaderHeightRef.value
+  topRef.value = top
   heightRef.value = window.innerHeight - top
+  // const clientHeight = document.documentElement.clientHeight - top
+  // iframe.style.height = `${clientHeight}px`
 }
 
 useWindowSizeFn<void>(calcHeight, 150, { immediate: true })
