@@ -8,8 +8,8 @@ import { prefixCls as PrefixClsValue } from '/@/settings/designSetting'
 const props = {
   prefixCls: {
     type: String,
-    default: PrefixClsValue
-  }
+    default: PrefixClsValue,
+  },
 }
 
 export default defineComponent({
@@ -17,7 +17,6 @@ export default defineComponent({
   inheritAttrs: false,
   props,
   setup(props, { slots }) {
-
     const isMobile = ref(false)
     const { prefixCls } = toRefs(props)
 
@@ -26,12 +25,12 @@ export default defineComponent({
       isMobile.value = rect.width - 1 < MOBILE_WIDTH
     }
 
-    useWindowSizeFn<void>(windowSizeListener)
+    useWindowSizeFn(windowSizeListener)
 
     // Inject variables into the global
     createAppProviderContext({
       isMobile,
-      prefixCls
+      prefixCls,
     })
 
     return () => slots.default?.()
