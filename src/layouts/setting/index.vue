@@ -1,14 +1,7 @@
 <template>
   <span @click="handleClick">
     <IconSettings />
-    <ElDrawer
-      v-model="visibleRef"
-      direction="rtl"
-      title="项目配置"
-      :size="320"
-      append-to-body
-      destroy-on-close
-    >
+    <ElDrawer v-model="visibleRef" direction="rtl" title="项目配置" :size="320" destroy-on-close>
       <div class="w-full overflow-hidden text-black flex flex-col">
         <ElDivider>导航栏模式</ElDivider>
         <MenuModePicker :def="getMenuMode" @change="handleMenuModeChange" />
@@ -65,6 +58,7 @@
         <ElDivider>界面显示</ElDivider>
         <SwitchItem title="Logo" :def="getShowLogo" @change="handleLogoChange" />
         <SwitchItem title="页脚" :def="getShowFooter" @change="handleFooterChange" />
+        <SwitchItem title="全屏内容" :def="getFullContent" @change="handleFullContentChange" />
         <SwitchItem title="灰色模式" :def="getGrayMode" @change="handleGrayModeChange" />
         <SwitchItem title="色弱模式" :def="getColorWeak" @change="handleColorWeakChange" />
 
@@ -123,6 +117,7 @@ const {
   getShowLogo,
   getShowFooter,
   getContentMode,
+  getFullContent,
   setRootSetting,
 } = useRootSetting()
 const contentModeOptions: LabelValueOptions = Array.from(contentMap).map(([key, value]) => {
@@ -148,6 +143,12 @@ function handleFooterChange(showFooter: boolean) {
 }
 function handleContentModeChange(contentMode: ContentEnum) {
   setRootSetting({ contentMode })
+}
+function handleFullContentChange(fullContent: boolean) {
+  // set to invisible
+  visibleRef.value = false
+  // apply setting
+  setRootSetting({ fullContent })
 }
 
 const {

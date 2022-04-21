@@ -14,3 +14,5 @@ export function useLayoutHeight() {
 
   return { setAppHeaderHeight, setAppFooterHeight, appFooterHeightRef, appHeaderHeightRef }
 }
+
+export function useContentViewHeight() {}

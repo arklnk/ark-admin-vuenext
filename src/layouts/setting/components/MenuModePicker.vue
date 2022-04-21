@@ -2,13 +2,23 @@
   <div class="flex flex-wrap justify-around" :class="prefixCls">
     <ElTooltip placement="bottom" content="左侧菜单模式">
       <div
-        :class="[`${prefixCls}-item`, `${prefixCls}-item--sidebar`, isActive(MenuModeEnum.SIDEBAR) ? `${prefixCls}-item--active` : '']" 
-        @click="handleClick(MenuModeEnum.SIDEBAR)"></div>
+        :class="[
+          `${prefixCls}-item`,
+          `${prefixCls}-item--sidebar`,
+          isActive(MenuModeEnum.SIDEBAR) ? `${prefixCls}-item--active` : '',
+        ]"
+        @click="handleClick(MenuModeEnum.SIDEBAR)"
+      ></div>
     </ElTooltip>
     <ElTooltip placement="bottom" content="顶部菜单模式">
       <div
-        :class="[`${prefixCls}-item`, `${prefixCls}-item--top-menu`, isActive(MenuModeEnum.TOP_MENU) ? `${prefixCls}-item--active` : '']" 
-        @click="handleClick(MenuModeEnum.TOP_MENU)"></div>
+        :class="[
+          `${prefixCls}-item`,
+          `${prefixCls}-item--top-menu`,
+          isActive(MenuModeEnum.TOP_MENU) ? `${prefixCls}-item--active` : '',
+        ]"
+        @click="handleClick(MenuModeEnum.TOP_MENU)"
+      ></div>
     </ElTooltip>
   </div>
 </template>
@@ -21,8 +31,8 @@ import { useDesign } from '/@/hooks/core/useDesign'
 const props = defineProps({
   def: {
     type: String as PropType<MenuModeEnum>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits<{ (e: 'change', value: MenuModeEnum): void }>()

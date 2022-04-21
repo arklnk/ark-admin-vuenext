@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex flex-row flex-wrap items-center text-sm my-1">
-    <span class="inline-block flex-1">{{ title }}</span>
+    <span class="inline-block flex-1 text-left">{{ title }}</span>
     <ElSwitch
       :disabled="disabled"
       :value="def"

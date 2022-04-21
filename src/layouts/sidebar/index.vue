@@ -1,5 +1,6 @@
 <template>
   <aside
+    v-if="!getFullContent"
     :class="[prefixCls, getCollapsed ? 'is-collapsed' : '', isLightBg ? 'light' : '']"
     class="h-full box-border relative overflow-hidden"
   >
@@ -32,7 +33,7 @@ const { prefixCls } = useDesign('app-sidebar')
 const { getCollapsed, getBgColor } = useMenuSetting()
 const isLightBg = computed(() => isLight(getBgColor.value))
 
-const { getShowLogo } = useRootSetting()
+const { getShowLogo, getFullContent } = useRootSetting()
 </script>
 
 <style lang="scss" scoped>

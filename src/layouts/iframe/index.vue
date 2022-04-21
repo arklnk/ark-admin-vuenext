@@ -10,12 +10,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, CSSProperties, unref } from 'vue'
+import { computed, CSSProperties, unref, watch } from 'vue'
 
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useLayoutHeight } from '../content/useAppMainHeight'
+import { useLayoutHeight } from '../content/useContentViewHeight'
 import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn'
+import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 
 const route = useRoute()
 const frameSrc = route.meta.iframeSrc || ''
@@ -28,18 +29,23 @@ function hideLoading() {
 const frameRef = ref<HTMLIFrameElement>()
 const heightRef = ref(window.innerHeight)
 const { appHeaderHeightRef } = useLayoutHeight()
+const { getFullContent } = useRootSetting()
 const getStyle = computed((): CSSProperties => {
   return {
-    height: `${unref(heightRef)}px`
+    height: `${unref(heightRef)}px`,
   }
 })
+
 function calcHeight() {
   const iframe = unref(frameRef)
   if (!iframe) {
     return
   }
-  const top = appHeaderHeightRef.value
+  const top = getFullContent.value ? 0 : appHeaderHeightRef.value
   heightRef.value = window.innerHeight - top
 }
+
 useWindowSizeFn<void>(calcHeight, 150, { immediate: true })
+
+watch(getFullContent, calcHeight)
 </script>

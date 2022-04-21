@@ -1,5 +1,6 @@
 <template>
   <header
+    v-if="!getFullContent"
     ref="appHeaderRef"
     :class="[
       prefixCls,
@@ -33,7 +34,7 @@ import { AppLogo } from '/@/components/Application'
 import { FullScreen, Hamburger, UserDropdown } from './components'
 import ProjectConfig from '../setting/index.vue'
 
-import { useLayoutHeight } from '../content/useAppMainHeight'
+import { useLayoutHeight } from '../content/useContentViewHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { numberUnit } from '/@/utils'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
@@ -54,7 +55,7 @@ onMounted(() => {
 
 const { getFixed, getBgColor } = useHeaderSetting()
 const { getCollapsed, getMenuMode, toggleCollapse } = useMenuSetting()
-const { getShowLogo, getShowSettingButton } = useRootSetting()
+const { getShowLogo, getShowSettingButton, getFullContent } = useRootSetting()
 
 const getLightOrDarkClass = computed(() => (isLight(getBgColor.value) ? 'light' : 'dark'))
 

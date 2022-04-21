@@ -72,6 +72,9 @@ export interface ProjectConfig {
   // 内容区域宽度
   contentMode: ContentEnum
 
+  // 主界面全屏显示， 菜单以及顶部不会显示
+  fullContent: boolean
+
   // 切换界面时是否取消已经发送但没有响应的http请求。
   // 如果启用，我想覆盖单个接口。可以在单独的界面中设置
   removeAllHttpPending: boolean
