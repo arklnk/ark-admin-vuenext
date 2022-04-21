@@ -22,7 +22,7 @@
     <nav class="flex h-full text-lg">
       <FullScreen class="item" />
       <UserDropdown class="item" />
-      <ProjectConfig class="item" />
+      <ProjectConfig v-if="getShowSettingButton" class="item" />
     </nav>
   </header>
 </template>
@@ -54,7 +54,7 @@ onMounted(() => {
 
 const { getFixed, getBgColor } = useHeaderSetting()
 const { getCollapsed, getMenuMode, toggleCollapse } = useMenuSetting()
-const { getShowLogo } = useRootSetting()
+const { getShowLogo, getShowSettingButton } = useRootSetting()
 
 const getLightOrDarkClass = computed(() => (isLight(getBgColor.value) ? 'light' : 'dark'))
 

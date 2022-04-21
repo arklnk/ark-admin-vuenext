@@ -14,6 +14,7 @@ const setting: ProjectConfig = {
   showBreadCrumb: true,
   showFooter: false,
   showLogo: true,
+  showSettingButton: true,
   themeColor: APP_PRESET_COLOR_LIST[3],
   contentMode: ContentEnum.FULL,
   removeAllHttpPending: false,

@@ -25,6 +25,8 @@ export function useRootSetting() {
 
   const getContentMode = computed(() => appStore.getProjectConfig.contentMode)
 
+  const getShowSettingButton = computed(() => appStore.getProjectConfig.showSettingButton)
+
   const getRemoveAllHttpPending = computed(() => appStore.getProjectConfig.removeAllHttpPending)
 
   function setRootSetting(setting: Partial<RootSetting>) {
@@ -34,6 +36,7 @@ export function useRootSetting() {
   return {
     setRootSetting,
 
+    getShowSettingButton,
     getContentMode,
     getRemoveAllHttpPending,
     getShowLogo,

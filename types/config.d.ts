@@ -66,6 +66,9 @@ export interface ProjectConfig {
   // 是否显示网页Logo
   showLogo: boolean
 
+  // 显示设置按钮
+  showSettingButton: boolean
+
   // 内容区域宽度
   contentMode: ContentEnum
 
