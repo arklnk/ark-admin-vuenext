@@ -1,7 +1,13 @@
 <template>
   <div class="w-full flex flex-row flex-wrap items-center text-sm my-1">
     <span class="inline-block flex-1">{{ title }}</span>
-    <el-select :disabled="disabled" :model-value="cursor" class="max-w-2/5" @change="handleChange">
+    <el-select
+      size="small"
+      :disabled="disabled"
+      :model-value="cursor"
+      class="max-w-2/5"
+      @change="handleChange"
+    >
       <el-option
         v-for="item in options"
         :key="item.value"

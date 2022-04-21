@@ -8,6 +8,7 @@
       active-text="是"
       inactive-text="否"
       @change="handleChange"
+      size="small"
     />
   </div>
 </template>
@@ -16,16 +17,16 @@
 defineProps({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   disabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   def: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits<{ (e: 'change', value: boolean): void }>()
