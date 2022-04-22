@@ -1,5 +1,6 @@
 import 'vue-router'
 import { defineComponent } from 'vue'
+import { RouterTransitionEnum } from '/@/enums/appEnum'
 
 export type Component<T = any> =
   | ReturnType<typeof defineComponent>
@@ -63,9 +64,9 @@ declare module 'vue-router' {
     affix?: boolean
 
     /**
-     * @description menu sorting, the larger the number, the higher the front
+     * @description page transition enum
      */
-    order?: number
+    transitionName?: RouterTransitionEnum
 
     /**
      * @description iframe src

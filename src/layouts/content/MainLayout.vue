@@ -1,9 +1,20 @@
 <template>
   <main :class="[prefixCls, isFixed ? 'is-header-fixed' : '', contentModeClass]">
     <RouterView v-slot="{ Component, route }">
-      <Transition :name="getRouterTransition" mode="out-in">
-        <div :key="route.fullPath"><component :is="Component" /></div>
-      </Transition>
+      <transition
+        :name="
+          getTransitionName({
+            def: getRouterTransition,
+            enableTransition: getEnableTransition,
+            route,
+          })
+        "
+        mode="out-in"
+      >
+        <div :key="route.fullPath">
+          <component :is="Component" />
+        </div>
+      </transition>
     </RouterView>
     <AppFooter v-if="getShowFooter" />
     <ProjectConfig v-if="getFullContent && getShowSettingButton" :class="`${prefixCls}__setting`" />
@@ -18,11 +29,12 @@ import { useDesign } from '/@/hooks/core/useDesign'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
+import { getTransitionName } from './getTransitionName'
 
 const { prefixCls } = useDesign('app-main')
 const { getFixed } = useHeaderSetting()
 const { getShowFooter, getContentMode, getFullContent, getShowSettingButton } = useRootSetting()
-const { getRouterTransition } = useTransitionSetting()
+const { getRouterTransition, getEnableTransition } = useTransitionSetting()
 
 const isFixed = computed(() => (getFullContent.value ? false : getFixed.value))
 

@@ -9,6 +9,8 @@ export function useTransitionSetting() {
 
   const getRouterTransition = computed(() => appStore.getTransitionSetting.routerTransition)
 
+  const getEnableTransition = computed(() => appStore.getTransitionSetting.enable)
+
   function setTransitionSetting(transitionSetting: Partial<TransitionSetting>) {
     appStore.setProjectConfig({ transitionSetting })
   }
@@ -16,6 +18,7 @@ export function useTransitionSetting() {
   return {
     setTransitionSetting,
 
+    getEnableTransition,
     getRouterTransition,
     getEnableNProgress,
   }

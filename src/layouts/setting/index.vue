@@ -75,8 +75,14 @@
           :def="getEnableNProgress"
           @change="handleEnableNProgressChange"
         />
+        <SwitchItem
+          title="切换动画"
+          :def="getEnableTransition"
+          @change="handleEnableTransitionChange"
+        />
         <SelectItem
           title="切换动画类型"
+          :disabled="!getEnableTransition"
           :options="routerTransitionOptions"
           :cursor="getRouterTransition"
           @change="handleRouterTransitionChange"
@@ -201,11 +207,15 @@ function handleHeaderBgChange(bgColor: string) {
 const routerTransitionOptions: LabelValueOptions = Object.values(RouterTransitionEnum).map((e) => {
   return { label: e, value: e }
 })
-const { getEnableNProgress, getRouterTransition, setTransitionSetting } = useTransitionSetting()
+const { getEnableNProgress, getRouterTransition, getEnableTransition, setTransitionSetting } =
+  useTransitionSetting()
 function handleEnableNProgressChange(enableNProgress: boolean) {
   setTransitionSetting({ enableNProgress })
 }
 function handleRouterTransitionChange(routerTransition: RouterTransitionEnum) {
   setTransitionSetting({ routerTransition })
+}
+function handleEnableTransitionChange(enable: boolean) {
+  setTransitionSetting({ enable })
 }
 </script>

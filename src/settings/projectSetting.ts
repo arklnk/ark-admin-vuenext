@@ -37,6 +37,7 @@ const setting: ProjectConfig = {
     maxMessage: 5,
   },
   transitionSetting: {
+    enable: true,
     enableNProgress: true,
     routerTransition: RouterTransitionEnum.FADE,
   },

@@ -40,6 +40,9 @@ export interface HeaderSetting {
 }
 
 export interface TransitionSetting {
+  // 页面切换动画是否开启
+  enable: boolean
+
   // NProgress设置
   enableNProgress: boolean
 
