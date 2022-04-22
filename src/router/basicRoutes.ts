@@ -26,7 +26,6 @@ export const NotFoundRoute: RouteRecordRaw = {
   redirect: PageEnum.NotFound,
   meta: {
     hidden: true,
-    order: Number.MIN_SAFE_INTEGER,
   },
 }
 
@@ -85,7 +84,6 @@ const DashboardRoute: RouteRecordRaw = {
       meta: {
         title: PageTitleEnum.Dashboard,
         icon: 'dashboard',
-        order: Number.MAX_SAFE_INTEGER,
       },
     },
   ],
