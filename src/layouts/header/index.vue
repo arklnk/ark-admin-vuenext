@@ -1,6 +1,5 @@
 <template>
   <header
-    v-if="!getFullContent"
     ref="appHeaderRef"
     :class="[
       prefixCls,
@@ -55,7 +54,7 @@ onMounted(() => {
 
 const { getFixed, getBgColor } = useHeaderSetting()
 const { getCollapsed, getMenuMode, toggleCollapse } = useMenuSetting()
-const { getShowLogo, getShowSettingButton, getFullContent } = useRootSetting()
+const { getShowLogo, getShowSettingButton } = useRootSetting()
 
 const getLightOrDarkClass = computed(() => (isLight(getBgColor.value) ? 'light' : 'dark'))
 
