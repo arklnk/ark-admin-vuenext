@@ -51,7 +51,20 @@ span {
   background-color: var.$app-bg-color;
 }
 
-// overwrite nprogress
-#nprogress .bar {
-  background: var(--el-color-primary) !important;
+// =================================
+// ==============nprogress==========
+// =================================
+#nprogress {
+  pointer-events: none;
+
+  .bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    width: 100%;
+    height: 2px;
+    background-color: var(--el-color-primary);
+    opacity: 80%;
+  }
 }
