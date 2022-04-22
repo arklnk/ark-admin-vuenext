@@ -5,8 +5,8 @@
       :disabled="disabled"
       :value="def"
       inline-prompt
-      active-text="是"
-      inactive-text="否"
+      active-text="开"
+      inactive-text="关"
       @change="handleChange"
       size="small"
     />
