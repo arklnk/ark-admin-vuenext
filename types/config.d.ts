@@ -1,4 +1,4 @@
-import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum'
+import { ContentEnum, PermissionModeEnum, RouterTransitionEnum } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 
 export type TopMenuAlign = 'flex-start' | 'center' | 'flex-end'
@@ -77,6 +77,9 @@ export interface ProjectConfig {
 
   // 主界面全屏显示， 菜单以及顶部不会显示
   fullContent: boolean
+
+  // 权限模式
+  permissionMode: PermissionModeEnum
 
   // 切换界面时是否取消已经发送但没有响应的http请求。
   // 如果启用，我想覆盖单个接口。可以在单独的界面中设置
