@@ -20,7 +20,7 @@
       <Menu is-horizontal />
     </nav>
     <nav class="flex h-full text-lg">
-      <FullScreen class="item" />
+      <FullScreen v-if="getShowFullScreen" class="item" />
       <UserDropdown class="item" />
       <ProjectConfig v-if="getShowSettingButton" class="item" />
     </nav>
@@ -52,7 +52,7 @@ onMounted(() => {
   setAppHeaderHeight(numberUnit(appHeaderStyle.height))
 })
 
-const { getFixed, getBgColor } = useHeaderSetting()
+const { getFixed, getBgColor, getShowFullScreen } = useHeaderSetting()
 const { getCollapsed, getMenuMode, toggleCollapse } = useMenuSetting()
 const { getShowLogo, getShowSettingButton } = useRootSetting()
 

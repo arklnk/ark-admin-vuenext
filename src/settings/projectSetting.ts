@@ -30,6 +30,7 @@ const setting: ProjectConfig = {
   headerSetting: {
     fixed: true,
     bgColor: HEADER_PRESET_BG_COLOR_LIST[0],
+    showFullScreen: true,
   },
   elementUISetting: {
     size: 'default',

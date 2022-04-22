@@ -37,6 +37,9 @@ export interface HeaderSetting {
 
   // 顶部背景色
   bgColor: string
+
+  // 是否显示全屏按钮
+  showFullScreen: boolean
 }
 
 export interface TransitionSetting {
