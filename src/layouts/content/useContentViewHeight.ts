@@ -27,10 +27,6 @@ export function useContentViewHeight(includeFooter: boolean = false) {
     return unref(contentHeight) - headerHeight - footerHeight || 0
   })
 
-  function setContentHeight(height: number) {
-    contentHeight.value = height
-  }
-
   useWindowSizeFn(
     () => {
       contentHeight.value = window.innerHeight
@@ -42,6 +38,6 @@ export function useContentViewHeight(includeFooter: boolean = false) {
   return {
     contentHeight: getViewHeight,
 
-    setContentHeight,
+    pageHeight: contentHeight,
   }
 }
