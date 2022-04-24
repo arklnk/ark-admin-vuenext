@@ -29,19 +29,9 @@ export interface RequestOptions {
   isReturnNativeResponse?: boolean
 
   /**
-   * 是否加入url
-   */
-  joinPrefix?: boolean
-
-  /**
    * 接口路径
    */
   apiUrl?: string
-
-  /**
-   * 请求拼接路径
-   */
-  urlPrefix?: string
 
   /**
    * 是否加入时间戳
