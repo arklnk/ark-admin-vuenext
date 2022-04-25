@@ -4,14 +4,9 @@ export interface Result<T = any> {
   data: T
 }
 
-export type ErrorMessageMode = 'modal' | 'message' | 'none' | undefined
+export type ErrorMessageMode = 'messageBox' | 'message' | 'none' | undefined
 
 export interface RequestOptions {
-  /**
-   * 将请求参数拼接到url
-   */
-  joinParamsToUrl?: boolean
-
   /**
    * 格式化请求参数时间
    */

@@ -6,19 +6,18 @@ import { RequestOptions } from '/#/axios'
 import { AxiosCanceler } from './axiosCanceler'
 import { isFunction } from 'lodash-es'
 
+export interface CreateAxiosOptions extends AxiosRequestConfig {
+  transform?: AxiosTransform
+  requestOptions?: RequestOptions
+}
+
 export class SAxios {
   private axiosInstance: AxiosInstance
+  private readonly options: CreateAxiosOptions
 
-  private readonly options: RequestOptions
-  private readonly transform: AxiosTransform
-  private readonly config: AxiosRequestConfig
-
-  constructor(options: RequestOptions, transform: AxiosTransform, config: AxiosRequestConfig) {
+  constructor(options: CreateAxiosOptions) {
     this.options = options
-    this.transform = transform
-    this.config = config
-
-    this.axiosInstance = axios.create(config)
+    this.axiosInstance = axios.create(options)
     this.setupInterceptors()
   }
 
@@ -26,8 +25,9 @@ export class SAxios {
     return this.axiosInstance
   }
 
-  getTransform(): AxiosTransform {
-    return this.transform
+  getTransform(): Nullable<AxiosTransform> {
+    const { transform } = this.options
+    return transform
   }
 
   setHeaders(headers: any): void {
@@ -57,12 +57,12 @@ export class SAxios {
 
     // request
     this.axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
-      const ignoreCancel = this.options?.ignoreCancelToken
+      const ignoreCancel = this.options.requestOptions?.ignoreCancelToken
 
       !ignoreCancel && canceler.addPending(config)
 
       if (requestInterceptors && isFunction(requestInterceptors)) {
-        config = requestInterceptors(config, this.options)
+        config = requestInterceptors(config, this.options.requestOptions)
       }
 
       return config

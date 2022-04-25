@@ -10,7 +10,7 @@ export abstract class AxiosTransform {
   /**
    * 请求成功处理
    */
-  transformRequestHook?: (res: AxiosResponse<Result>, options: RequestOptions) => any
+  transformResponseHook?: (res: AxiosResponse<Result>, options: RequestOptions) => any
 
   /**
    * 请求失败处理
@@ -20,7 +20,10 @@ export abstract class AxiosTransform {
   /**
    * 请求拦截器
    */
-  requestInterceptors?: (config: AxiosRequestConfig, options: RequestOptions) => AxiosRequestConfig
+  requestInterceptors?: (
+    config: AxiosRequestConfig,
+    options: Nullable<RequestOptions>
+  ) => AxiosRequestConfig
 
   /**
    * 请求拦截器错误处理
