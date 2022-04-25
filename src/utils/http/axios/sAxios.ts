@@ -1,10 +1,10 @@
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { AxiosTransform } from './axiosTransform'
+import type { RequestOptions, Result } from '/#/axios'
 
 import axios from 'axios'
-import { RequestOptions } from '/#/axios'
 import { AxiosCanceler } from './axiosCanceler'
-import { isFunction } from 'lodash-es'
+import { cloneDeep, isFunction } from 'lodash-es'
 
 export interface CreateAxiosOptions extends AxiosRequestConfig {
   transform?: AxiosTransform
@@ -88,5 +88,63 @@ export class SAxios {
     responseInterceptorsCatch &&
       isFunction(responseInterceptorsCatch) &&
       this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch)
+  }
+
+  request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    let conf: CreateAxiosOptions = cloneDeep(config)
+    const transform = this.getTransform()
+
+    // merge options
+    const { requestOptions } = this.options
+    const opt: RequestOptions = Object.assign({}, requestOptions, options)
+
+    // hook
+    const { transformResponseHook, beforeRequestHook, requestCatchHook } = transform || {}
+
+    if (beforeRequestHook && isFunction(beforeRequestHook)) {
+      conf = beforeRequestHook(conf, opt)
+    }
+    conf.requestOptions = opt
+
+    return new Promise((resolve, reject) => {
+      this.axiosInstance
+        .request<any, AxiosResponse<Result>>(conf)
+        .then((res: AxiosResponse<Result>) => {
+          if (transformResponseHook && isFunction(transformResponseHook)) {
+            try {
+              const ret = transformResponseHook(res, opt)
+              resolve(ret)
+            } catch (err) {
+              reject(err || new Error('request error!'))
+            }
+            return
+          }
+          // no hook
+          resolve(res as unknown as Promise<T>)
+        })
+        .catch((err: Error | AxiosError) => {
+          if (requestCatchHook && isFunction(requestCatchHook)) {
+            reject(requestCatchHook(err, opt))
+            return
+          }
+          reject(err)
+        })
+    })
+  }
+
+  get<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request<T>({ ...config, method: 'GET' }, options)
+  }
+
+  post<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request<T>({ ...config, method: 'POST' }, options)
+  }
+
+  put<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request<T>({ ...config, method: 'PUT' }, options)
+  }
+
+  delete<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request<T>({ ...config, method: 'DELETE' }, options)
   }
 }
