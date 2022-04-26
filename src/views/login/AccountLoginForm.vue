@@ -42,7 +42,7 @@
         class="w-full mt-3"
         type="primary"
         @click="handleLogin"
-        >登录</ElButton
+      >登录</ElButton
       >
     </ElFormItem>
   </ElForm>

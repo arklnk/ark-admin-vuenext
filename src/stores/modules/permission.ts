@@ -3,7 +3,6 @@ import type { RouteRecordRaw } from 'vue-router'
 import { defineStore } from 'pinia'
 import { getPermAndMenu } from '/@/api/account'
 import { filterAsyncRoutes } from '/@/router/helper/routeHelper'
-import { NotFoundRoute } from '/@/router/basicRoutes'
 
 interface PermissionState {
   /**

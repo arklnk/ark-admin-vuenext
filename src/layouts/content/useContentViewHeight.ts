@@ -17,7 +17,7 @@ export function useLayoutHeight() {
   return { setAppHeaderHeight, setAppFooterHeight, appFooterHeightRef, appHeaderHeightRef }
 }
 
-export function useContentViewHeight(includeFooter: boolean = false) {
+export function useContentViewHeight(includeFooter = false) {
   const { getFullContent } = useRootSetting()
   const contentHeight = ref(window.innerHeight)
 

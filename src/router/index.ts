@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import { basicRoutes } from './basicRoutes'
 import { setupRouterGuard } from './guard'
-import { setupPermissionGuard } from './guard/permissionGuard'
 
 /**
  * 白名单应该包含基本静态路由
