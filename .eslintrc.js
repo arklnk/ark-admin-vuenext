@@ -18,11 +18,7 @@ module.exports = defineConfig({
       jsx: true,
     },
   },
-  extends: [
-    'plugin:vue/vue3-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-  ],
+  extends: ['plugin:vue/vue3-recommended', 'plugin:@typescript-eslint/recommended'],
   rules: {
     // style
     semi: ['error', 'never'],
