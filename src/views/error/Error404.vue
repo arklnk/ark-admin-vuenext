@@ -8,14 +8,14 @@
       :class="`${prefixCls}__particle`"
       v-for="i in MAX_RANDOM_SIZE"
       :key="i"
-      >0</span
+    >0</span
     >
     <span
       class="absolute block"
       :class="`${prefixCls}__particle`"
       v-for="i in MAX_RANDOM_SIZE"
       :key="i"
-      >4</span
+    >4</span
     >
     <article
       :class="`${prefixCls}__content`"
