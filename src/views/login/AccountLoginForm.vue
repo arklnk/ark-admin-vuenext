@@ -42,7 +42,8 @@
         class="w-full mt-3"
         type="primary"
         @click="handleLogin"
-      >登录</ElButton>
+        >登录</ElButton
+      >
     </ElFormItem>
   </ElForm>
 </template>
@@ -62,7 +63,7 @@ const formData = reactive({
   username: '',
   password: '',
   verifyCode: '',
-  captchaId: ''
+  captchaId: '',
 })
 
 /**
@@ -81,7 +82,7 @@ const handleLogin = throttle(() => {
     if (valid) {
       try {
         isLogging.value = true
-        const { data } = await userLogin(formData)
+        const data = await userLogin(formData)
         if (data && !isEmpty(data.token)) {
           // logging
           userStore.setToken(data.token)
@@ -92,6 +93,8 @@ const handleLogin = throttle(() => {
             go(PageEnum.Root, true)
           }
         }
+      } catch (err) {
+        // nothing to do
       } finally {
         isLogging.value = false
       }
@@ -106,11 +109,13 @@ const handleLogin = throttle(() => {
  */
 const captchaData = ref('')
 const handleGetImageCaptcha = throttle(async () => {
-  const { data } = await getImageCaptcha()
-  formData.captchaId = data!.id
-  captchaData.value = data!.img
-  // 清空文本
-  formData.verifyCode = ''
+  try {
+    const { id, img } = await getImageCaptcha()
+    formData.captchaId = id
+    captchaData.value = img
+    // 清空文本
+    formData.verifyCode = ''
+  } catch (err) {}
 }, 1000)
 
 // init
@@ -132,8 +137,8 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
         } else {
           return '输入的用户名不合法'
         }
-      }
-    }
+      },
+    },
   ],
   password: [
     {
@@ -147,8 +152,8 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
         } else {
           return '输入的密码不合法'
         }
-      }
-    }
+      },
+    },
   ],
   verifyCode: [
     {
@@ -163,8 +168,8 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
         } else {
           return '输入的验证码不合法'
         }
-      }
-    }
-  ]
+      },
+    },
+  ],
 })
 </script>

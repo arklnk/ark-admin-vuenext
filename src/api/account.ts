@@ -1,7 +1,5 @@
-import type { BaseResultPromise } from '/#/request'
+import { defHttp } from '../utils/http/axios'
 import type { Menu } from '/#/vue-router'
-
-import request from '/@/utils/request'
 
 enum Api {
   info = 'account/info',
@@ -17,27 +15,18 @@ interface AccountInfoResult {
   remark: string
   headImg: string
 }
-export function getAccountInfo(): BaseResultPromise<AccountInfoResult> {
-  return request({
-    url: Api.info,
-    method: 'GET',
-  })
+export function getAccountInfo(): Promise<AccountInfoResult> {
+  return defHttp.get<AccountInfoResult>({ url: Api.info })
 }
 
 interface PermMenuResult {
   perms: string[]
   menus: Menu[]
 }
-export function getPermAndMenu(): BaseResultPromise<PermMenuResult> {
-  return request({
-    url: Api.permmenu,
-    method: 'GET',
-  })
+export function getPermAndMenu(): Promise<PermMenuResult> {
+  return defHttp.get<PermMenuResult>({ url: Api.permmenu })
 }
 
-export function logout(): BaseResultPromise {
-  return request({
-    url: Api.logout,
-    method: 'POST',
-  })
+export function logout(): Promise<void> {
+  return defHttp.post<void>({ url: Api.logout })
 }

@@ -1,5 +1,4 @@
-import type { BaseResultPromise } from '/#/request'
-import request from '/@/utils/request'
+import { defHttp } from '../utils/http/axios'
 
 export enum Api {
   login = 'login',
@@ -14,12 +13,8 @@ interface CaptchaImgResult {
   img: string
   id: string
 }
-export function getImageCaptcha(params?: CaptchaImgParams): BaseResultPromise<CaptchaImgResult> {
-  return request({
-    url: Api.captcha,
-    method: 'GET',
-    params,
-  })
+export function getImageCaptcha(params?: CaptchaImgParams) {
+  return defHttp.get<CaptchaImgResult>({ url: Api.captcha, params }, { errorMessageMode: 'none' })
 }
 
 interface UserLoginParams {
@@ -31,10 +26,9 @@ interface UserLoginParams {
 interface UserLoginResult {
   token: string
 }
-export function userLogin(data: UserLoginParams): BaseResultPromise<null | UserLoginResult> {
-  return request({
-    url: Api.login,
-    method: 'POST',
-    data,
-  })
+export function userLogin(data: UserLoginParams): Promise<Nullable<UserLoginResult>> {
+  return defHttp.post<Nullable<UserLoginResult>>(
+    { url: Api.login, data },
+    { errorMessageMode: 'message' }
+  )
 }

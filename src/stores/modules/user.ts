@@ -38,7 +38,7 @@ export const useUserStore = defineStore({
       this.token = token
     },
     async initUserInfo(): Promise<void> {
-      const { data } = await getAccountInfo()
+      const data = await getAccountInfo()
       this.name = data!.name
       this.avatar = data!.headImg
     },
