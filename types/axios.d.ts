@@ -1,7 +1,7 @@
 export interface Result<T = any> {
   message: string
   code: number
-  data: T
+  data?: T
 }
 
 export type ErrorMessageMode = 'messageBox' | 'message' | 'none' | undefined

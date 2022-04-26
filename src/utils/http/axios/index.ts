@@ -1,21 +1,26 @@
 import type { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios'
 import type { AxiosTransform } from './axiosTransform'
+import type { CreateAxiosOptions } from './sAxios'
 import type { RequestOptions, Result } from '/#/axios'
 
-import { isString } from 'lodash-es'
-import { ResultEnum } from '/@/enums/httpEnum'
+import { isString, merge } from 'lodash-es'
+import { ContentTypeEnum, ResultEnum } from '/@/enums/httpEnum'
+import { useMessage } from '/@/hooks/web/useMessage'
+import { SAxios } from './sAxios'
 import { formatRequestDate, joinTimestamp as joinTimestampHelper } from './helper'
 import { getToken } from '../../auth'
-import { CreateAxiosOptions } from './sAxios'
 
 const UnknownErrorMsg = '未知错误,请稍候重试!'
+const ErrorTip = '错误提示'
+
+const { createMessage, createMessageBox } = useMessage()
 
 const transform: AxiosTransform = {
   /**
    * @description 处理请求数据，将接口数据转换成所需的格式
    */
   transformResponseHook: (res: AxiosResponse<Result>, options: RequestOptions): any => {
-    const { isTransformResponse, isReturnNativeResponse } = options
+    const { isTransformResponse, isReturnNativeResponse, errorMessageMode } = options
     // 返回原生响应
     if (isReturnNativeResponse) {
       return res
@@ -38,7 +43,16 @@ const transform: AxiosTransform = {
       return result
     }
 
-    // 抛出业务异常
+    /**
+     * errorMessageMode=‘messageBox’的时候会显示MessageBox错误弹窗，而不是消息提示，用于一些比较重要的错误
+     * errorMessageMode=‘message’的时候会显示Message错误弹窗，而不是错误弹窗，用于一些比较简单的错误
+     */
+    if (errorMessageMode === 'messageBox') {
+      createMessageBox.confirm(message, ErrorTip, { type: 'error' }).catch(() => {})
+    } else if (errorMessageMode === 'message') {
+      createMessage.error(message)
+    }
+
     throw new Error(message || UnknownErrorMsg)
   },
 
@@ -106,12 +120,12 @@ const transform: AxiosTransform = {
     const errorMessageMode =
       (config as CreateAxiosOptions)?.requestOptions?.errorMessageMode || 'none'
 
-    const msg = response?.data?.message || ''
     const err = error?.toString?.() || ''
 
     let errMessage = ''
 
-    if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {
+    // axios timeout
+    if (code === 'ECONNABORTED' && message?.indexOf('timeout') !== -1) {
       errMessage = '接口请求超时,请刷新页面重试!'
     }
 
@@ -121,20 +135,22 @@ const transform: AxiosTransform = {
 
     // 检查status
     const status = response?.status
-
     switch (status) {
-      // 业务类型错误代码
-      case 200:
-        errMessage = msg
-        break
       case 404:
         errMessage = '网络请求错误,未找到该资源!'
+        break
+      case 422:
+        errMessage = '参数错误,服务器无法响应!'
+        break
+      case 405:
+        errMessage = '网络请求错误,请求方法未允许!'
         break
       case 500:
         errMessage = '服务器错误,请联系管理员!'
         break
-      case 422:
-        errMessage = '服务器无法处理该请求,请检查参数!'
+      case 503:
+        errMessage = '服务不可用，服务器暂时过载或维护!'
+        break
       default:
     }
 
@@ -143,11 +159,40 @@ const transform: AxiosTransform = {
      * errorMessageMode=‘message’的时候会显示Message错误弹窗，而不是错误弹窗，用于一些比较简单的错误
      */
     if (errorMessageMode === 'messageBox') {
-      // TODO
+      createMessageBox.confirm(errMessage, ErrorTip, { type: 'error' }).catch(() => {})
     } else if (errorMessageMode === 'message') {
-      // TODO
+      createMessage.error(errMessage)
     }
-    // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
+
     return Promise.reject(error)
   },
 }
+
+function createAxios(opt?: Partial<CreateAxiosOptions>): SAxios {
+  return new SAxios(
+    merge(
+      {
+        timeout: 10000,
+        // baseURL: import.meta.env.BASE_URL,
+        headers: {
+          'Content-Type': ContentTypeEnum.JSON,
+        },
+        // 数据处理
+        transform,
+        requestOptions: {
+          isReturnNativeResponse: false,
+          isTransformResponse: true,
+          formatDate: true,
+          errorMessageMode: 'message',
+          apiUrl: import.meta.env.VITE_APP_BASE_API,
+          joinTimestamp: false,
+          ignoreCancelToken: true,
+          withToken: true,
+        },
+      } as CreateAxiosOptions,
+      opt || {}
+    )
+  )
+}
+
+export const defHttp = createAxios()

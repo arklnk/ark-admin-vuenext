@@ -99,7 +99,8 @@ export class SAxios {
     const opt: RequestOptions = Object.assign({}, requestOptions, options)
 
     // hook
-    const { transformResponseHook, beforeRequestHook, requestCatchHook } = transform || {}
+    const { transformResponseHook, beforeRequestHook, requestCatchHook } =
+      transform || ({} as AxiosTransform)
 
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
       conf = beforeRequestHook(conf, opt)
