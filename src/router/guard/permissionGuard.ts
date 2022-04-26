@@ -1,10 +1,8 @@
 import type { Router } from 'vue-router'
 
-import { isEmpty } from 'lodash-es'
 import { PageEnum } from '/@/enums/pageEnum'
 import { useUserStore } from '/@/stores/modules/user'
 import { usePermissionStore } from '/@/stores/modules/permission'
-import { error } from '/@/utils/log'
 import { NotFoundRoute } from '../routes/basic'
 
 /**

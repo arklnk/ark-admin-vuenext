@@ -14,7 +14,7 @@ export function createMessageGuard(router: Router) {
         createNotification.closeAll()
       }
     } catch (err) {
-      warn(`MessageGuard Error:` + err)
+      warn('MessageGuard Error:' + err)
     }
     return true
   })
