@@ -1,100 +1,71 @@
 import type { Router } from 'vue-router'
 
-import NProgress from 'nprogress'
-// import 'nprogress/nprogress.css'
-
 import { isEmpty } from 'lodash-es'
-
 import { PageEnum } from '/@/enums/pageEnum'
-import { getPageTitle } from '/@/utils'
 import { useUserStore } from '/@/stores/modules/user'
 import { usePermissionStore } from '/@/stores/modules/permission'
 import { error } from '/@/utils/log'
-import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
+import { NotFoundRoute } from '../routes/basic'
 
 /**
  * @description 白名单路由
  */
 export const whitePathList: (PageEnum | string)[] = [PageEnum.Login]
 
-/**
- * setup router guard
- */
-export function setupPermissionGuard(router: Router) {
-  NProgress.configure({ showSpinner: false })
-
+export function createPermissionGuard(router: Router) {
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
-  const { getEnableNProgress } = useTransitionSetting()
 
-  router.beforeEach(async (to, _from) => {
-    // start progress bar
-    if (getEnableNProgress.value) {
-      NProgress.start()
+  router.beforeEach(async (to, from) => {
+    const token = userStore.getToken
+
+    // 白名单
+    if (whitePathList.includes(to.path)) {
+      if (to.path === PageEnum.Login && token) {
+        return (to.query?.redirect as string) || PageEnum.Root
+      }
+      return true
     }
 
-    // determine whether the user has logged in
-    const curToken = userStore.getToken
-
-    // logged in
-    if (!isEmpty(curToken)) {
-      if (to.path === PageEnum.Login) {
-        // if is logged in, redirect to the home page
-        return PageEnum.Root
-      } else {
-        // check permission route
-        const hasRoutes = !isEmpty(permissionStore.getMenuList)
-
-        // access
-        if (hasRoutes) {
-          return true
-        } else if (!hasRoutes && permissionStore.getIsDynamicAddedRoute) {
-          // 如果该用户没有权限路由，则重定向至 403
-          // fixed Detected an infinite redirection in a navigation guard
-          return to.path === PageEnum.Forbidden ? true : PageEnum.Forbidden
-        } else {
-          // config permission and menu
-          try {
-            const [menus, _] = await Promise.all([
-              permissionStore.buildPermAndMenu(),
-              userStore.initUserInfo(),
-            ])
-            // dynamic add route
-            menus.forEach(router.addRoute)
-            // is added
-            permissionStore.setDynamicAddedRoute(true)
-            // hack method to ensure that addRoutes is complete
-            // set the replace: true, so the navigation will not leave a history record
-            return { ...to, replace: true }
-          } catch (e) {
-            error(`${e}`)
-            // remove token
-            userStore.resetState()
-            permissionStore.resetState()
-
-            return `${PageEnum.Login}?redirect=${encodeURIComponent(to.fullPath)}`
-          }
-        }
+    // token不存在
+    if (!token) {
+      return {
+        path: PageEnum.Login,
+        replace: true,
+        query: {
+          redirect: to.path,
+        },
       }
+    }
+
+    // 判断是否需要初始化用户信息
+    if (userStore.getLastUpdateTime <= 0) {
+      await userStore.getUserInfoAction()
+    }
+
+    // 如果权限路由已初始化则直接pass
+    if (permissionStore.getIsDynamicAddedRoute) {
+      return true
+    }
+
+    // 初始化权限路由
+    const routes = await permissionStore.buildRoutesAction()
+    routes.forEach((route) => {
+      router.addRoute(route)
+    })
+
+    router.addRoute(NotFoundRoute)
+
+    permissionStore.setDynamicAddedRoute(true)
+
+    if (to.name === NotFoundRoute.name) {
+      // 动态添加路由后，此处应当重定向到fullPath，否则会加载404页面内容
+      return { path: to.fullPath, replace: true, query: to.query }
     } else {
-      // not logged in
-      if (whitePathList.indexOf(to.path) !== -1) {
-        // in the free login whitelist, go directly
-        return true
-      } else {
-        // other pages that do not have permission to access are redirected to the login page.
-        return `${PageEnum.Login}?redirect=${encodeURIComponent(to.fullPath)}`
-      }
-    }
-  })
-
-  router.afterEach((to) => {
-    // set page title
-    document.title = getPageTitle(to.meta.title)
-
-    // finish progress bar
-    if (NProgress.isStarted()) {
-      NProgress.done()
+      const redirectPath = (from.query.redirect || to.path) as string
+      const redirect = decodeURIComponent(redirectPath)
+      const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect }
+      return nextData
     }
   })
 }

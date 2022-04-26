@@ -2,6 +2,7 @@ import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { basicRoutes } from './basicRoutes'
+import { setupRouterGuard } from './guard'
 import { setupPermissionGuard } from './guard/permissionGuard'
 
 /**
@@ -34,6 +35,6 @@ export function resetRouter() {
 export async function setupRouter(app: App<Element>) {
   app.use(router)
 
-  // router guard
-  setupPermissionGuard(router)
+  // guard
+  setupRouterGuard(router)
 }

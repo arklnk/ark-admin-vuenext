@@ -88,6 +88,9 @@ export interface ProjectConfig {
   // 如果启用，我想覆盖单个接口。可以在单独的界面中设置
   removeAllHttpPending: boolean
 
+  // 切换页面时关闭上一页所有消息
+  closeMessageOnSwitch: boolean
+
   // 菜单设置
   menuSetting: MenuSetting
 

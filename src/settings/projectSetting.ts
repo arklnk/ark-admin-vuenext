@@ -20,6 +20,7 @@ const setting: ProjectConfig = {
   contentMode: ContentEnum.FULL,
   permissionMode: PermissionModeEnum.BACK,
   removeAllHttpPending: false,
+  closeMessageOnSwitch: false,
   menuSetting: {
     collapsed: false,
     uniqueOpened: false,

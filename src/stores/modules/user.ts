@@ -8,6 +8,8 @@ interface UserState {
   token: string
   name: string
   avatar: string
+  // 最后更新时间
+  lastUpdateTime: number
 }
 
 export const useUserStore = defineStore({
@@ -17,6 +19,7 @@ export const useUserStore = defineStore({
       token: '',
       name: '',
       avatar: '',
+      lastUpdateTime: 0,
     }
   },
   getters: {
@@ -29,6 +32,9 @@ export const useUserStore = defineStore({
         avatar: this.avatar,
       }
     },
+    getLastUpdateTime(): number {
+      return this.lastUpdateTime
+    },
   },
   actions: {
     setToken(token: string) {
@@ -37,10 +43,12 @@ export const useUserStore = defineStore({
       // store token
       this.token = token
     },
-    async initUserInfo(): Promise<void> {
+    async getUserInfoAction(): Promise<void> {
       const data = await getAccountInfo()
       this.name = data!.name
       this.avatar = data!.headImg
+      // 设置更新时间
+      this.lastUpdateTime = new Date().getTime()
     },
     async logout(): Promise<void> {
       // can fail

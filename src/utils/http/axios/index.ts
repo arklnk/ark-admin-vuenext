@@ -48,7 +48,10 @@ const transform: AxiosTransform = {
      * errorMessageMode=‘message’的时候会显示Message错误弹窗，而不是错误弹窗，用于一些比较简单的错误
      */
     if (errorMessageMode === 'messageBox') {
-      createMessageBox.confirm(message, ErrorTip, { type: 'error' }).catch(() => {})
+      createMessageBox
+        .alert(message, ErrorTip, { type: 'error' })
+        .then(() => {})
+        .catch(() => {})
     } else if (errorMessageMode === 'message') {
       createMessage.error(message)
     }
@@ -159,7 +162,7 @@ const transform: AxiosTransform = {
      * errorMessageMode=‘message’的时候会显示Message错误弹窗，而不是错误弹窗，用于一些比较简单的错误
      */
     if (errorMessageMode === 'messageBox') {
-      createMessageBox.confirm(errMessage, ErrorTip, { type: 'error' }).catch(() => {})
+      createMessageBox.alert(errMessage, ErrorTip, { type: 'error' }).catch(() => {})
     } else if (errorMessageMode === 'message') {
       createMessage.error(errMessage)
     }

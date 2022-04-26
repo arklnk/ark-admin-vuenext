@@ -54,14 +54,12 @@ export const usePermissionStore = defineStore({
     /**
      * @description 获取登录管理员权限和菜单配置
      */
-    async buildPermAndMenu(): Promise<RouteRecordRaw[]> {
-      const { data } = await getPermAndMenu()
+    async buildRoutesAction(): Promise<RouteRecordRaw[]> {
+      const { menus: menusList, perms } = await getPermAndMenu()
       // 过滤菜单数据
-      const menus = filterAsyncRoutes(data!.menus, null)
+      const menus = filterAsyncRoutes(menusList, null)
       // setter
-      this.permissionList = data!.perms
-      // notfound route add end
-      menus.push(NotFoundRoute)
+      this.permissionList = perms
       this.menuList = menus
       return menus
     },
