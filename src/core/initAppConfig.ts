@@ -18,13 +18,21 @@ export function initAppConfig() {
   const appStore = useAppStore()
   const userStore = useUserStore()
 
+  // setup global config
+  try {
+    const config = JSON.parse(localStorage.getItem(KEY_SETTING) || '{}') as ProjectConfig
+    appStore.setProjectConfig(merge({}, defaultSetting, config))
+  } catch (err) {
+    appStore.setProjectConfig(defaultSetting)
+  }
+
   const {
     grayMode,
     colorWeak,
     themeColor,
     menuSetting: { bgColor },
     headerSetting: { bgColor: headerbgColor },
-  } = defaultSetting
+  } = appStore.getProjectConfig
 
   // update primary theme color
   updateTheme(themeColor)
@@ -36,14 +44,6 @@ export function initAppConfig() {
   // update background
   bgColor && updateSidebarBgColor(bgColor)
   headerbgColor && updateHeaderBgColor(headerbgColor)
-
-  // setup global config
-  try {
-    const config = JSON.parse(localStorage.getItem(KEY_SETTING) || '{}') as ProjectConfig
-    appStore.setProjectConfig(merge(defaultSetting, config))
-  } catch (err) {
-    appStore.setProjectConfig(defaultSetting)
-  }
 
   // setup user config
   userStore.setToken(getToken())
