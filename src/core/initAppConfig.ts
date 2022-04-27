@@ -7,6 +7,9 @@ import { updateTheme } from './theme/updateTheme'
 import { updateGrayMode } from './theme/updateGrayMode'
 import { updateColorWeak } from './theme/updateColorWeak'
 import { updateHeaderBgColor, updateSidebarBgColor } from './theme/updateBackground'
+import { KEY_SETTING } from '/@/enums/cacheEnum'
+import { ProjectConfig } from '/#/config'
+import { merge } from 'lodash-es'
 
 /**
  * Initial project configuration
@@ -35,7 +38,12 @@ export function initAppConfig() {
   headerbgColor && updateHeaderBgColor(headerbgColor)
 
   // setup global config
-  appStore.setProjectConfig(defaultSetting)
+  try {
+    const config = JSON.parse(localStorage.getItem(KEY_SETTING) || '{}') as ProjectConfig
+    appStore.setProjectConfig(merge(defaultSetting, config))
+  } catch (err) {
+    appStore.setProjectConfig(defaultSetting)
+  }
 
   // setup user config
   userStore.setToken(getToken())

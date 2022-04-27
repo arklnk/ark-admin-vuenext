@@ -7,6 +7,7 @@ import type {
   ProjectConfig,
 } from '/#/config'
 import { merge } from 'lodash-es'
+import { KEY_SETTING } from '/@/enums/cacheEnum'
 
 interface AppState {
   projectConfig: ProjectConfig | null
@@ -37,6 +38,8 @@ export const useAppStore = defineStore({
   actions: {
     setProjectConfig(config: DeepPartial<ProjectConfig>): void {
       this.projectConfig = merge(this.projectConfig || {}, config) as ProjectConfig
+      // store
+      localStorage.setItem(KEY_SETTING, JSON.stringify(this.getProjectConfig))
     },
   },
 })
