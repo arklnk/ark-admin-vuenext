@@ -1,6 +1,7 @@
 import 'vue-router'
 import { defineComponent } from 'vue'
 import { RouterTransitionEnum } from '/@/enums/appEnum'
+import { RoleEnum } from '/@/enums/roleEnum'
 
 export type Component<T = any> =
   | ReturnType<typeof defineComponent>
@@ -72,5 +73,10 @@ declare module 'vue-router' {
      * @description iframe src
      */
     iframeSrc?: string
+
+    /**
+     * @description role info
+     */
+    roles?: RoleEnum[]
   }
 }

@@ -37,7 +37,7 @@ export function createPermissionGuard(router: Router) {
     }
 
     // 判断是否需要初始化用户信息
-    if (userStore.getLastUpdateTime <= 0) {
+    if (!userStore.getUserInfo) {
       await userStore.getUserInfoAction()
     }
 

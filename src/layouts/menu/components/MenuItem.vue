@@ -35,7 +35,7 @@ import type { ComputedRef } from 'vue'
 import { computed, PropType } from 'vue'
 
 import MenuLink from './MenuLink.vue'
-import { EmptyLayout, ParentLayout } from '/@/router/basicRoutes'
+import { EmptyLayout, ParentLayout } from '/@/router/contants'
 
 const props = defineProps({
   route: {

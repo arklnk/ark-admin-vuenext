@@ -1,12 +1,12 @@
-import type { Menu, Component } from '/#/vue-router'
+import type { Menu } from '/#/vue-router'
 import type { RouteRecordRaw, RouteMeta } from 'vue-router'
 
-import { EmptyLayout, IFrameLayout, ParentLayout } from '/@/router/basicRoutes'
+import { EmptyLayout, IFrameLayout, ParentLayout } from '/@/router/contants'
 import { isUrl as isExtUrl } from '/@/utils/is'
 import { IframePrefix, MenuTypeEnum } from '/@/enums/menuEnum'
 import { warn } from '/@/utils/log'
 
-import { routeModuleMap } from './routeModule'
+import { routeModuleMap } from '../routes/'
 
 /**
  * Filter asynchronous routing tables by recursion
@@ -151,11 +151,4 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
         component: comp,
         meta,
       }
-}
-
-/**
- * ts
- */
-export function defineRouteModule(module: Record<string, Component>) {
-  return module
 }

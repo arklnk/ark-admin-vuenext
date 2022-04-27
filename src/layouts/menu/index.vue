@@ -18,7 +18,7 @@ import { computed, unref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useDesign } from '/@/hooks/core/useDesign'
-import { basicRoutes } from '/@/router/basicRoutes'
+import { basicRoutes } from '/@/router/routes/basic'
 import { usePermissionStore } from '/@/stores/modules/permission'
 
 import MenuItem from './components/MenuItem.vue'

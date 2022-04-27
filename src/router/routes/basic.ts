@@ -1,21 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { ParentLayout } from '../contants'
 import { NotFoundRouteName, PageEnum, PageTitleEnum, RouteRouteName } from '/@/enums/pageEnum'
 import { toHump } from '/@/utils'
-
-/**
- * @description default layout
- */
-export const ParentLayout = () => import('/@/layouts/index.vue')
-
-/**
- * @description iframe layout
- */
-export const IFrameLayout = () => import('/@/layouts/iframe/index.vue')
-
-/**
- * @description empty layout
- */
-export const EmptyLayout = () => import('/@/layouts/content/EmptyLayout.vue')
 
 /**
  * @description notfound route

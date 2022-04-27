@@ -28,8 +28,8 @@ import { useGo } from '/@/hooks/web/useGo'
 const userStore = useUserStore()
 
 const isLoadAvatarError = ref(false)
-const userAvatar = computed(() => unref(isLoadAvatarError) ? DefaultAvatar : (userStore.getUserInfo.avatar || DefaultAvatar))
-const userName = computed(() => userStore.getUserInfo.name)
+const userAvatar = computed(() => unref(isLoadAvatarError) ? DefaultAvatar : (userStore.getUserInfo!.avatar || DefaultAvatar))
+const userName = computed(() => userStore.getUserInfo!.name)
 
 const go = useGo()
 function handleItemClick(command: string) {

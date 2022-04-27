@@ -48,10 +48,7 @@ const transform: AxiosTransform = {
      * errorMessageMode=‘message’的时候会显示Message错误弹窗，而不是错误弹窗，用于一些比较简单的错误
      */
     if (errorMessageMode === 'messageBox') {
-      createMessageBox
-        .alert(message, ErrorTip, { type: 'error' })
-        .then(() => {})
-        .catch(() => {})
+      createMessageBox.alert(message, ErrorTip, { type: 'error' }).catch(() => {})
     } else if (errorMessageMode === 'message') {
       createMessage.error(message)
     }

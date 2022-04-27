@@ -5,7 +5,7 @@ import { warn } from '/@/utils/log'
 export const routeModuleMap: Record<string, Component> = {}
 export const viewPathList: string[] = []
 
-const modules = import.meta.globEager('../modules/**/*.ts')
+const modules = import.meta.globEager('../routes/modules/**/*.ts')
 
 Object.keys(modules).forEach((key) => {
   const mod = modules[key].default

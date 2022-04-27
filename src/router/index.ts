@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { basicRoutes } from './basicRoutes'
+import { basicRoutes } from './routes/basic'
 import { setupRouterGuard } from './guard'
 
 /**

@@ -1,15 +1,19 @@
 import { defineStore } from 'pinia'
 import { usePermissionStore } from './permission'
 import { getAccountInfo, logout as logoutRequest } from '/@/api/account'
+import { RoleEnum } from '/@/enums/roleEnum'
 import { resetRouter } from '/@/router'
 import { setToken as setLocalToken, removeToken } from '/@/utils/auth'
 
 interface UserState {
   token: string
+  userInfo: Nullable<UserInfo>
+  roleList: RoleEnum[]
+}
+
+interface UserInfo {
   name: string
   avatar: string
-  // 最后更新时间
-  lastUpdateTime: number
 }
 
 export const useUserStore = defineStore({
@@ -17,23 +21,19 @@ export const useUserStore = defineStore({
   state: (): UserState => {
     return {
       token: '',
-      name: '',
-      avatar: '',
-      lastUpdateTime: 0,
+      userInfo: null,
+      roleList: [],
     }
   },
   getters: {
     getToken(): string {
       return this.token
     },
-    getUserInfo(): Pick<UserState, 'name' | 'avatar'> {
-      return {
-        name: this.name,
-        avatar: this.avatar,
-      }
+    getUserInfo(): Nullable<UserInfo> {
+      return this.userInfo
     },
-    getLastUpdateTime(): number {
-      return this.lastUpdateTime
+    getRoleList(): RoleEnum[] {
+      return this.roleList
     },
   },
   actions: {
@@ -43,12 +43,17 @@ export const useUserStore = defineStore({
       // store token
       this.token = token
     },
+    setRoleList(roleList: RoleEnum[]): void {
+      this.roleList = roleList
+    },
     async getUserInfoAction(): Promise<void> {
       const data = await getAccountInfo()
-      this.name = data!.name
-      this.avatar = data!.headImg
-      // 设置更新时间
-      this.lastUpdateTime = new Date().getTime()
+      this.userInfo = {
+        name: data!.name,
+        avatar: data!.headImg,
+      }
+      // 角色列表（远程获取，这里Mock了假数据）
+      this.setRoleList([RoleEnum.ROOT])
     },
     async logout(): Promise<void> {
       // can fail
@@ -65,8 +70,8 @@ export const useUserStore = defineStore({
       removeToken()
       // store
       this.token = ''
-      this.name = ''
-      this.avatar = ''
+      this.userInfo = null
+      this.roleList = []
     },
   },
 })
