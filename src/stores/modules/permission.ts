@@ -8,7 +8,7 @@ import projectSetting from '/@/settings/projectSetting'
 import { PermissionModeEnum } from '/@/enums/appEnum'
 import { useUserStore } from './user'
 import { toRaw } from 'vue'
-import { filter } from '/@/utils/helper'
+import { filter } from '/@/utils/helper/tree'
 import { roleRoutes } from '/@/router/routes'
 
 interface PermissionState {
@@ -74,7 +74,7 @@ export const usePermissionStore = defineStore({
       const roleList = toRaw(userStore.getRoleList) || []
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig
 
-      const routeFilter = (route: RouteRecordRaw): boolean => {
+      const roleRouteFilter = (route: RouteRecordRaw): boolean => {
         const { meta } = route
         const { roles } = meta || ({} as RouteMeta)
 
@@ -98,7 +98,7 @@ export const usePermissionStore = defineStore({
           break
         // 角色路由模式
         case PermissionModeEnum.ROLE:
-          routes = filter(roleRoutes, routeFilter)
+          routes = filter(roleRoutes, roleRouteFilter)
           break
       }
 
