@@ -1,10 +1,12 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { AxiosTransform } from './axiosTransform'
-import type { RequestOptions, Result } from '/#/axios'
+import type { RequestOptions, Result, UploadFileParams } from '/#/axios'
 
 import axios from 'axios'
+import qs from 'qs'
 import { AxiosCanceler } from './axiosCanceler'
 import { cloneDeep, isFunction } from 'lodash-es'
+import { ContentTypeEnum } from '/@/enums/httpEnum'
 
 export interface CreateAxiosOptions extends AxiosRequestConfig {
   transform?: AxiosTransform
@@ -90,6 +92,66 @@ export class SAxios {
       this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch)
   }
 
+  /**
+   * file upload
+   */
+  uploadFile<T = any>(config: AxiosRequestConfig, params: UploadFileParams) {
+    const formData = new FormData()
+    const customFileName = params.name || 'file'
+
+    if (params.filename) {
+      formData.append(customFileName, params.file, params.filename)
+    } else {
+      formData.append(customFileName, params.file)
+    }
+
+    if (params.data) {
+      Object.keys(params.data).forEach((key) => {
+        const value = params.data![key]
+        if (Array.isArray(value)) {
+          value.forEach((valueItem) => {
+            formData.append(`${key}[]`, valueItem)
+          })
+        } else {
+          formData.append(key, value)
+        }
+      })
+    }
+
+    return this.axiosInstance.request<T>({
+      ...config,
+      method: 'POST',
+      data: formData,
+      headers: {
+        'Content-Type': ContentTypeEnum.FORM_DATA,
+      },
+    })
+  }
+
+  /**
+   * support form data
+   */
+  supportFormData(config: AxiosRequestConfig): AxiosRequestConfig {
+    const headers = config.headers || this.options.headers
+    const contentType = headers?.['Content-Type'] || headers?.['content-type']
+
+    if (
+      contentType !== ContentTypeEnum.FORM_URLENCODED ||
+      !config.data ||
+      config.method?.toUpperCase() === 'GET'
+    ) {
+      return config
+    }
+
+    return {
+      ...config,
+      data: qs.stringify(config.data, { arrayFormat: 'brackets' }),
+    }
+  }
+
+  /**
+   * axios request hook
+   */
   request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     let conf: CreateAxiosOptions = cloneDeep(config)
     const transform = this.getTransform()
@@ -106,6 +168,8 @@ export class SAxios {
       conf = beforeRequestHook(conf, opt)
     }
     conf.requestOptions = opt
+
+    conf = this.supportFormData(conf)
 
     return new Promise((resolve, reject) => {
       this.axiosInstance

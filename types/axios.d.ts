@@ -64,7 +64,7 @@ export interface UploadFileParams {
   /**
    * 上传的文件
    */
-  file?: File | Blob
+  file: File | Blob
 
   /**
    * 文件名称
