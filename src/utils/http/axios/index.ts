@@ -9,6 +9,8 @@ import { useMessage } from '/@/hooks/web/useMessage'
 import { SAxios } from './sAxios'
 import { formatRequestDate, joinTimestamp as joinTimestampHelper } from './helper'
 import { getToken } from '../../auth'
+import { useUserStore } from '/@/stores/modules/user'
+import { usePermissionStore } from '/@/stores/modules/permission'
 
 const UnknownErrorMsg = '未知错误,请稍候重试!'
 const ErrorTip = '错误提示'
@@ -43,17 +45,39 @@ const transform: AxiosTransform = {
       return result
     }
 
+    // 错误描述信息
+    let errMessage = ''
+
+    // 在此处根据自己项目的实际情况对不同的code执行不同的操作
+    // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
+    switch (code) {
+      case ResultEnum.TOKEN_INVALID:
+      case ResultEnum.TOKEN_EXPIRE:
+        // Token过期或Token无效则清除
+        const userStore = useUserStore()
+        const permissionStore = usePermissionStore()
+
+        userStore.resetState()
+        permissionStore.resetState()
+
+        errMessage = `[${code}] ${message},请重新登录`
+        break
+      default:
+        errMessage = `[${code}] ${message}`
+    }
+
     /**
      * errorMessageMode=‘messageBox’的时候会显示MessageBox错误弹窗，而不是消息提示，用于一些比较重要的错误
      * errorMessageMode=‘message’的时候会显示Message错误弹窗，而不是错误弹窗，用于一些比较简单的错误
      */
     if (errorMessageMode === 'messageBox') {
-      createMessageBox.alert(message, ErrorTip, { type: 'error' }).catch(() => {})
+      createMessageBox.alert(errMessage, ErrorTip, { type: 'error' }).catch(() => {})
     } else if (errorMessageMode === 'message') {
-      createMessage.error(message)
+      createMessage.error(errMessage)
     }
 
-    throw new Error(message || UnknownErrorMsg)
+    // throw
+    throw new Error(errMessage || UnknownErrorMsg)
   },
 
   /**
