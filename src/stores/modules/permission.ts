@@ -102,8 +102,7 @@ export const usePermissionStore = defineStore({
           break
       }
 
-      console.log(routes)
-
+      // store
       this.setMenuList(routes)
       return routes
     },
