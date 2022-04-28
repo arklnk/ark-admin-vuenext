@@ -6,12 +6,15 @@ import { isUrl as isExtUrl } from '/@/utils/is'
 import { IframePrefix, MenuTypeEnum } from '/@/enums/menuEnum'
 import { warn } from '/@/utils/log'
 
-import { routeModuleMap } from '../routes/'
+import { backModuleMap } from '../routes/'
 
 /**
  * Filter asynchronous routing tables by recursion
  */
-export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): RouteRecordRaw[] {
+export function transformMenuToRoute(
+  routes: Menu[],
+  parentRoute: Nullable<Menu>
+): RouteRecordRaw[] {
   const asyncRoutes: RouteRecordRaw[] = []
 
   routes.forEach((routeItem) => {
@@ -26,7 +29,7 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
       realRoute = createRouteItem(routeItem, true)
     } else if (!parentRoute && !routeItem.parentId && routeItem.type === MenuTypeEnum.Catalogue) {
       // 目录
-      const childRoutes = filterAsyncRoutes(routes, routeItem)
+      const childRoutes = transformMenuToRoute(routes, routeItem)
       realRoute = createRouteItem(routeItem, true)
       if (childRoutes && childRoutes.length > 0) {
         realRoute!.redirect = childRoutes[0].path
@@ -45,7 +48,7 @@ export function filterAsyncRoutes(routes: Menu[], parentRoute: Nullable<Menu>): 
       routeItem.type === MenuTypeEnum.Catalogue
     ) {
       // 如果还是目录，继续递归
-      const childRoute = filterAsyncRoutes(routes, routeItem)
+      const childRoute = transformMenuToRoute(routes, routeItem)
       realRoute = createRouteItem(routeItem, false)
       if (childRoute && childRoute.length > 0) {
         realRoute!.redirect = childRoute[0].path
@@ -124,7 +127,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
   }
 
   // 内嵌视图菜单
-  const comp = routeModuleMap[menu.viewPath]
+  const comp = backModuleMap[menu.viewPath]
   if (!comp) {
     warn('未定义的视图' + menu.viewPath + ',请自行创建模块建立关联!')
     return null

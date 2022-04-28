@@ -18,7 +18,7 @@ const setting: ProjectConfig = {
   fullContent: false,
   themeColor: APP_PRESET_COLOR_LIST[3],
   contentMode: ContentEnum.FULL,
-  permissionMode: PermissionModeEnum.BACK,
+  permissionMode: PermissionModeEnum.ROLE,
   removeAllHttpPending: false,
   closeMessageOnSwitch: false,
   menuSetting: {

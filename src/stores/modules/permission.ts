@@ -2,12 +2,14 @@ import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 
 import { defineStore } from 'pinia'
 import { getPermAndMenu } from '/@/api/account'
-import { filterAsyncRoutes } from '/@/router/helper/backHelper'
+import { transformMenuToRoute } from '/@/router/helper/backHelper'
 import { useAppStore } from './app'
 import projectSetting from '/@/settings/projectSetting'
 import { PermissionModeEnum } from '/@/enums/appEnum'
 import { useUserStore } from './user'
 import { toRaw } from 'vue'
+import { filter } from '/@/utils/helper'
+import { roleRoutes } from '/@/router/routes'
 
 interface PermissionState {
   /**
@@ -72,7 +74,6 @@ export const usePermissionStore = defineStore({
       const roleList = toRaw(userStore.getRoleList) || []
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig
 
-      // 角色权限路由过滤
       const routeFilter = (route: RouteRecordRaw): boolean => {
         const { meta } = route
         const { roles } = meta || ({} as RouteMeta)
@@ -81,7 +82,7 @@ export const usePermissionStore = defineStore({
           return true
         }
 
-        return roleList.some((role) => roleList.includes(role))
+        return roleList.some((role) => roles.includes(role))
       }
 
       // 判断权限路由模式
@@ -89,20 +90,21 @@ export const usePermissionStore = defineStore({
         // 后端路由模式
         case PermissionModeEnum.BACK:
           const { menus: menusList, perms } = await getPermAndMenu()
-          // 过滤菜单数据
-          const menus = filterAsyncRoutes(menusList, null)
+          const menus = transformMenuToRoute(menusList, null)
 
           // 按钮级别权限数据
           this.setPermissionList(perms || [])
-
-          this.setMenuList(menus)
           routes = menus
           break
         // 角色路由模式
         case PermissionModeEnum.ROLE:
-          console.log(roleList, routeFilter)
+          routes = filter(roleRoutes, routeFilter)
+          break
       }
 
+      console.log(routes)
+
+      this.setMenuList(routes)
       return routes
     },
   },
