@@ -127,7 +127,7 @@ export function createRouteItem(menu: Menu, isRoot: boolean): RouteRecordRaw | n
   }
 
   // 内嵌视图菜单
-  const comp = backModuleMap[menu.viewPath]
+  const comp = backModuleMap[menu.viewPath || '']
   if (!comp) {
     warn('未定义的视图' + menu.viewPath + ',请自行创建模块建立关联!')
     return null

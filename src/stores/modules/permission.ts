@@ -1,15 +1,17 @@
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
+import type { Menu } from '/#/vue-router'
 
 import { defineStore } from 'pinia'
 import { getPermAndMenu } from '/@/api/account'
-import { transformMenuToRoute } from '/@/router/helper/backHelper'
 import { useAppStore } from './app'
 import projectSetting from '/@/settings/projectSetting'
 import { PermissionModeEnum } from '/@/enums/appEnum'
 import { useUserStore } from './user'
 import { toRaw } from 'vue'
-import { filter } from '/@/utils/helper/tree'
+import { filter, listToTree } from '/@/utils/helper/tree'
 import { roleRoutes } from '/@/router/routes'
+import { MenuTypeEnum } from '/@/enums/menuEnum'
+import { transformMenuToRoute } from '/@/router/helper/routeHelper'
 
 interface PermissionState {
   /**
@@ -85,16 +87,25 @@ export const usePermissionStore = defineStore({
         return roleList.some((role) => roles.includes(role))
       }
 
+      const menuFilter = (menu: Menu): boolean => {
+        return menu.type !== MenuTypeEnum.Permission
+      }
+
       // 判断权限路由模式
       switch (permissionMode) {
         // 后端路由模式
         case PermissionModeEnum.BACK:
-          const { menus: menusList, perms } = await getPermAndMenu()
-          const menus = transformMenuToRoute(menusList, null)
+          const { menus, perms } = await getPermAndMenu()
+          // 过滤权限
+          let menusTree = filter(menus, menuFilter)
+
+          // 转换成真实的vue-router对象
+          menusTree = listToTree(menus)
+          routes = transformMenuToRoute(menusTree)
 
           // 按钮级别权限数据
           this.setPermissionList(perms || [])
-          routes = menus
+          // routes = result
           break
         // 角色路由模式
         case PermissionModeEnum.ROLE:

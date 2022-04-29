@@ -1,7 +1,6 @@
-import 'vue-router'
-import { defineComponent } from 'vue'
-import { RouterTransitionEnum } from '/@/enums/appEnum'
-import { RoleEnum } from '/@/enums/roleEnum'
+import type { defineComponent } from 'vue'
+import type { RouterTransitionEnum } from '/@/enums/appEnum'
+import type { RoleEnum } from '/@/enums/roleEnum'
 
 export type Component<T = any> =
   | ReturnType<typeof defineComponent>
@@ -13,16 +12,17 @@ export interface Menu {
   createdAt: string
   updatedAt: string
   id: number
-  parentId: number
+  parentId?: number
   name: string
   router: string
-  perms: string
+  // perms: string
   type: number
   icon: string
-  orderNum: number
-  viewPath: string
-  keepalive: boolean
-  isShow: boolean
+  orderNum?: number
+  viewPath?: string
+  keepalive?: boolean
+  isShow?: boolean
+  children?: Menu[]
 }
 
 /**
