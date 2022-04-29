@@ -53,7 +53,7 @@ import type { ElForm, FormItemRule } from 'element-plus'
 
 import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { isEmpty, throttle } from 'lodash-es'
+import { isEmpty, debounce } from 'lodash-es'
 import { getImageCaptcha, userLogin } from '/@/api/login'
 import { useUserStore } from '/@/stores/modules/user'
 import { PageEnum } from '/@/enums/pageEnum'
@@ -75,7 +75,7 @@ const formRef = ref<FormInstance>()
 const userStore = useUserStore()
 const go = useGo()
 const $route = useRoute()
-const handleLogin = throttle(() => {
+const handleLogin = debounce(() => {
   if (!formRef.value) return
 
   formRef.value.validate(async (valid) => {
@@ -108,7 +108,7 @@ const handleLogin = throttle(() => {
  * get image captcha
  */
 const captchaData = ref('')
-const handleGetImageCaptcha = throttle(async () => {
+const handleGetImageCaptcha = debounce(async () => {
   try {
     const { id, img } = await getImageCaptcha()
     formData.captchaId = id
