@@ -14,23 +14,20 @@ LayoutMap.set('IFRAME', IFrameLayout)
 
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>
 
-export function dynamicImport(view?: string): Component {
+export function dynamicImport(component: string): Component {
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/index.{vue,tsx}')
 
   const keys = Object.keys(dynamicViewsModules)
-  if (!view) {
-    return
-  }
 
   const matchKeys = keys.filter((key) => {
     // support sf-vue-admin: views/system/permission/menu,
     // but vuenext view path: views/system/permission/menu/index.vue | index.tsx
     const k = key.replace('../../', '')
-    const startFlag = view.startsWith('/')
-    const endFlag = view.endsWith('index.vue') || view.endsWith('index.tsx')
+    const startFlag = component.startsWith('/')
+    const endFlag = component.endsWith('index.vue') || component.endsWith('index.tsx')
     const startIndex = startFlag ? 0 : 1
     const lastIndex = endFlag ? k.length : k.lastIndexOf('.') - 5
-    return k.substring(startIndex, lastIndex) === view
+    return k.substring(startIndex, lastIndex) === component
   })
   if (matchKeys?.length === 1) {
     const matchKey = matchKeys[0]
@@ -41,7 +38,7 @@ export function dynamicImport(view?: string): Component {
     )
     return
   } else {
-    warn(`在src/views/${view}找不到指定的文件,请自行创建!`)
+    warn(`在src/views/${component}找不到指定的文件,请自行创建!`)
     return
   }
 }
