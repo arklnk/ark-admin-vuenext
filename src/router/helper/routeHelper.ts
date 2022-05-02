@@ -1,32 +1,30 @@
 import type { Component, Menu } from '/#/vue-router'
 
-import { EmptyLayout, IFrameLayout, ParentLayout } from '../contants'
-import { RouteRecordRaw } from 'vue-router'
+import { EmptyLayout, IFrameLayout, ParentLayout, ViewNotFound } from '../contants'
+import { RouteMeta, RouteRecordRaw } from 'vue-router'
 import { warn } from '/@/utils/log'
-import { MenuTypeEnum } from '/@/enums/menuEnum'
-
-export type LayoutMapKey = 'LAYOUT'
-
-const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>()
-
-LayoutMap.set('LAYOUT', ParentLayout)
-LayoutMap.set('IFRAME', IFrameLayout)
+import { IframePrefix, MenuTypeEnum } from '/@/enums/menuEnum'
+import { isUrl } from '/@/utils/is'
 
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>
 
-export function dynamicImport(component: string): Component {
+export function dynamicImport(component?: string): Component {
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/index.{vue,tsx}')
 
   const keys = Object.keys(dynamicViewsModules)
+
+  if (!component) {
+    return ViewNotFound
+  }
 
   const matchKeys = keys.filter((key) => {
     // support sf-vue-admin: views/system/permission/menu,
     // but vuenext view path: views/system/permission/menu/index.vue | index.tsx
     const k = key.replace('../../', '')
     const startFlag = component.startsWith('/')
-    const endFlag = component.endsWith('index.vue') || component.endsWith('index.tsx')
+    const endFlag = component.endsWith('/index.vue') || component.endsWith('/index.tsx')
     const startIndex = startFlag ? 0 : 1
-    const lastIndex = endFlag ? k.length : k.lastIndexOf('.') - 5
+    const lastIndex = endFlag ? k.length : k.lastIndexOf('/')
     return k.substring(startIndex, lastIndex) === component
   })
   if (matchKeys?.length === 1) {
@@ -38,8 +36,8 @@ export function dynamicImport(component: string): Component {
     )
     return
   } else {
-    warn(`在src/views/${component}找不到指定的文件,请自行创建!`)
-    return
+    warn(`在src/${component}找不到指定的文件,请自行创建!`)
+    return ViewNotFound
   }
 }
 
@@ -47,13 +45,72 @@ export function dynamicImport(component: string): Component {
  * transform back menu object to route
  */
 export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecordRaw[] {
-  return menus.map((menu) => {
-    // 根菜单则需要多一层ParentLayout包裹
-    if (isRoot && menu.type === MenuTypeEnum.Menu) {
+  return menus.map((menu): RouteRecordRaw => {
+    const meta: RouteMeta = {
+      title: menu.name,
+      icon: menu.icon,
+      hidden: !menu.isShow,
+      noCache: !menu.keepalive,
     }
-    return {
-      path: menu.router,
-      component: isRoot ? ParentLayout : EmptyLayout,
+
+    // 目录
+    if (menu.type === MenuTypeEnum.Catalogue) {
+      const route: RouteRecordRaw = {
+        name: menu.router,
+        path: menu.router,
+        component: isRoot ? ParentLayout : EmptyLayout,
+        meta,
+      }
+
+      if (menu.children && menu.children.length > 0) {
+        route.children = transformMenuToRoute(menu.children)
+      }
+      return route
+    }
+
+    // 外链
+    if (isUrl(menu.router)) {
+      return {
+        path: menu.router,
+        name: menu.router,
+        redirect: menu.router,
+        meta,
+      }
+    }
+
+    // 内嵌页面
+    let component: Component | null = null
+    let path = menu.router
+    if (menu.router.startsWith(IframePrefix)) {
+      path = `/iframe/${menu.id}`
+      meta.iframeSrc = menu.router.substring(IframePrefix.length, menu.router.length)
+      component = IFrameLayout
+    } else {
+      component = dynamicImport(menu.viewPath)
+    }
+
+    if (isRoot) {
+      // 需要ParentLayout包裹
+      return {
+        path,
+        name: menu.router,
+        component: ParentLayout,
+        redirect: `${path}/index`,
+        children: [
+          {
+            path: `${path}/index`,
+            component,
+            meta,
+          },
+        ],
+      }
+    } else {
+      return {
+        path,
+        name: menu.router,
+        component,
+        meta,
+      }
     }
   })
 }

@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!route.meta?.hidden">
+  <template v-if="!showRoute?.meta?.hidden">
     <MenuLink v-if="showRoute" :to="showRoute.path">
       <ElMenuItem :index="showRoute.path">
         <ElIcon>
@@ -44,21 +44,18 @@ const props = defineProps({
   }
 })
 
-/**
- * 渲染菜单或者目录
- */
-const showRoute: ComputedRef<RouteRecordRaw | null> = computed(() => {
+const showRoute: ComputedRef<Nullable<RouteRecordRaw>> = computed(() => {
+  // 根菜单
+  if (!props.route.meta) {
+    return props.route.children?.[0]
+  }
 
-  const showingChildren = props.route.children?.filter(item => !item.meta?.hidden) || []
+  // 目录或次级目录
+  if (props.route.component?.name === ParentLayout.name || props.route.component?.name === EmptyLayout.name) {
+    return null
+  }
+
   // 菜单
-  if (showingChildren.length === 1) {
-    return props.route.meta ? null : showingChildren[0]
-  }
-  // 判断是否需要渲染成目录
-  if (showingChildren.length === 0) {
-    return (props.route.component?.name === ParentLayout.name || props.route.component?.name === EmptyLayout.name)
-      ? null : props.route
-  }
-  return null
+  return props.route
 })
 </script>

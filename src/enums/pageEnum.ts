@@ -1,5 +1,4 @@
 export const NotFoundRouteName = Symbol('NotFound')
-export const RouteRouteName = Symbol('Root')
 
 export enum PageEnum {
   Root = '/',

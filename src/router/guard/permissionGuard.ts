@@ -74,13 +74,4 @@ export function createPermissionGuard(router: Router) {
       return nextData
     }
   })
-
-  // 捕获路由异常，尝试跳转至登录页面
-  router.onError(() => {
-    const route = router.currentRoute
-
-    if (route.value.path !== PageEnum.Login) {
-      router.replace(PageEnum.Login)
-    }
-  })
 }

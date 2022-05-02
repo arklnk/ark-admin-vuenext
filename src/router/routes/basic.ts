@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { ParentLayout } from '../contants'
-import { NotFoundRouteName, PageEnum, PageTitleEnum, RouteRouteName } from '/@/enums/pageEnum'
+import { NotFoundRouteName, PageEnum, PageTitleEnum } from '/@/enums/pageEnum'
 import { toHump } from '/@/utils'
 
 /**
@@ -42,7 +42,7 @@ const Error404Route: RouteRecordRaw = {
 }
 
 /**
- * @description 404 page route
+ * @description 403 page route
  */
 const Error403Route: RouteRecordRaw = {
   path: PageEnum.Forbidden,
@@ -55,21 +55,40 @@ const Error403Route: RouteRecordRaw = {
 }
 
 /**
- * @description root route
+ * @description dashboard route
  */
 const DashboardRoute: RouteRecordRaw = {
   path: PageEnum.Root,
-  name: RouteRouteName,
+  name: toHump(PageEnum.Dashboard),
   component: ParentLayout,
   redirect: PageEnum.Dashboard,
   children: [
     {
       path: PageEnum.Dashboard,
-      name: toHump(PageEnum.Dashboard),
       component: () => import('/@/views/dashboard/Dashboard.vue'),
       meta: {
         title: PageTitleEnum.Dashboard,
         icon: 'dashboard',
+      },
+    },
+  ],
+}
+
+/**
+ * @description redirect route
+ */
+const RedirectRoute: RouteRecordRaw = {
+  path: '/redirect',
+  name: 'RedirectTo',
+  component: ParentLayout,
+  children: [
+    {
+      path: '/redirect/:path(.*)',
+      name: 'Redirect',
+      component: () => import('/@/views/redirect/Redirect.vue'),
+      meta: {
+        hidden: true,
+        title: '页面跳转中...',
       },
     },
   ],
@@ -83,4 +102,5 @@ export const basicRoutes: RouteRecordRaw[] = [
   Error404Route,
   Error403Route,
   DashboardRoute,
+  RedirectRoute,
 ]

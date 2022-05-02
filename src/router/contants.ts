@@ -12,3 +12,8 @@ export const IFrameLayout = () => import('/@/layouts/iframe/index.vue')
  * @description empty layout
  */
 export const EmptyLayout = () => import('/@/layouts/content/EmptyLayout.vue')
+
+/**
+ * @description view exception
+ */
+export const ViewNotFound = () => import('/@/views/error/ViewNotFound.vue')

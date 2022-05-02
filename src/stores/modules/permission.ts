@@ -100,12 +100,13 @@ export const usePermissionStore = defineStore({
           let menusTree = filter(menus, menuFilter)
 
           // 转换成真实的vue-router对象
-          menusTree = listToTree(menus)
-          routes = transformMenuToRoute(menusTree)
+          menusTree = listToTree(menusTree, { pid: 'parentId' })
+
+          routes = transformMenuToRoute(menusTree, true)
+          console.log(routes)
 
           // 按钮级别权限数据
           this.setPermissionList(perms || [])
-          // routes = result
           break
         // 角色路由模式
         case PermissionModeEnum.ROLE:

@@ -10,7 +10,9 @@ import { setupRouterGuard } from './guard'
 const WHITE_NAME_LIST: string[] = []
 const getRouteNames = (array: any[]) =>
   array.forEach((item) => {
-    WHITE_NAME_LIST.push(item.name)
+    if (item.name) {
+      WHITE_NAME_LIST.push(item.name)
+    }
     getRouteNames(item.children || [])
   })
 getRouteNames([...basicRoutes])
