@@ -23,8 +23,8 @@ export function dynamicImport(component?: string): Component {
     const k = key.replace('../../', '')
     const startFlag = component.startsWith('/')
     const endFlag = component.endsWith('/index.vue') || component.endsWith('/index.tsx')
-    const startIndex = startFlag ? 0 : 1
-    const lastIndex = endFlag ? k.length : k.lastIndexOf('/')
+    const startIndex = startFlag ? 1 : 0
+    const lastIndex = endFlag ? k.length : k.lastIndexOf('.') - 6 // remove /index
     return k.substring(startIndex, lastIndex) === component
   })
   if (matchKeys?.length === 1) {
@@ -64,6 +64,8 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
 
       if (menu.children && menu.children.length > 0) {
         route.children = transformMenuToRoute(menu.children)
+        // 目录时则尝试重定向至默认首个子项路径
+        route.redirect = route.children[0].path
       }
       return route
     }

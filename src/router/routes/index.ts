@@ -6,25 +6,15 @@ import { warn } from '/@/utils/log'
 export const backModuleMap: Record<string, Component> = {}
 export const roleRoutes: RouteRecordRaw[] = []
 
-const backModules = import.meta.globEager('./modules/**/*.back.ts')
-const roleModules = import.meta.globEager('./modules/**/*.role.ts')
-
-// back module
-Object.keys(backModules).forEach((key) => {
-  const mod = backModules[key].default
-
-  if (mod) {
-    Object.keys(mod).forEach((viewpath) => {
-      backModuleMap[viewpath] = mod[viewpath]
-    })
-  } else {
-    warn(`模块${key}必须以export default导出`)
-  }
-})
+const roleModules = import.meta.globEager('./modules/**/*.ts')
 
 // role module
 Object.keys(roleModules).forEach((key) => {
-  const mod = roleModules[key].default || {}
+  const mod = roleModules[key].default
+  if (!mod) {
+    warn(`导出的${key}模块为空`)
+    return
+  }
   const modList = Array.isArray(mod) ? [...mod] : [mod]
   roleRoutes.push(...modList)
 })
