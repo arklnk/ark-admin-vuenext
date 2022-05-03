@@ -2,10 +2,16 @@
   "name": "sf-vuenext-admin",
   "version": "0.0.0",
   "scripts": {
+    "bootstrap": "yarn install",
+    "serve": "npm run dev",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint --cache --max-warnings 0  \"src/**/*.{vue,ts,tsx}\" --fix"
+    "preview:dist": "vite preview",
+    "lint": "eslint --cache --max-warnings 0  \"src/**/*.{vue,ts,tsx}\" --fix",
+    "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
+    "clean:lib": "rimraf node_modules",
+    "type:check": "vue-tsc --noEmit --skipLibCheck",
+    "reinstall": "rimraf yarn.lock && rimraf package-lock.json && rimraf node_modules && npm run bootstrap"
   },
   "dependencies": {
     "@vueuse/core": "^7.6.1",
@@ -37,6 +43,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-define-config": "^1.2.2",
     "eslint-plugin-vue": "^8.3.0",
+    "rimraf": "^3.0.2",
     "sass": "^1.49.7",
     "typescript": "^4.4.4",
     "unplugin-icons": "^0.13.1",
