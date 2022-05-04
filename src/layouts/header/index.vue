@@ -35,7 +35,6 @@ import ProjectConfig from '../setting/index.vue'
 
 import { useLayoutHeight } from '../content/useContentViewHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
-import { numberUnit } from '/@/utils'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { isLight } from '/@/utils/color'
@@ -48,8 +47,7 @@ const { setAppHeaderHeight } = useLayoutHeight()
 
 const appHeaderRef = ref<HTMLElement>()
 onMounted(() => {
-  const appHeaderStyle = getComputedStyle(appHeaderRef.value!)
-  setAppHeaderHeight(numberUnit(appHeaderStyle.height))
+  setAppHeaderHeight(appHeaderRef.value!.offsetHeight)
 })
 
 const { getFixed, getBgColor, getShowFullScreen } = useHeaderSetting()
