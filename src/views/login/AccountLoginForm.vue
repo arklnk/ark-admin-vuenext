@@ -102,7 +102,7 @@ const handleLogin = debounce(() => {
       return false
     }
   })
-}, 2000)
+}, 500)
 
 /**
  * get image captcha
@@ -116,7 +116,7 @@ const handleGetImageCaptcha = debounce(async () => {
     // 清空文本
     formData.verifyCode = ''
   } catch (err) {}
-}, 1000)
+}, 500)
 
 // init
 handleGetImageCaptcha()
