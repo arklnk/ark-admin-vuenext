@@ -1,16 +1,18 @@
 <template>
   <aside
     :class="[prefixCls, getCollapsed ? 'is-collapsed' : '', isLightBg ? 'light' : '']"
-    class="h-full box-border relative overflow-hidden"
+    class="h-full box-border"
   >
-    <ElScrollbar height="100%">
-      <AppLogo
-        v-if="getShowLogo"
-        :show-title="!getCollapsed"
-        :theme="isLightBg ? 'light' : 'dark'"
-        :class="`${prefixCls}__menu-logo`"
-      />
-      <Menu :is-horizontal="false" />
+    <ElScrollbar>
+      <div class="overflow-x-hidden">
+        <AppLogo
+          v-if="getShowLogo"
+          :show-title="!getCollapsed"
+          :theme="isLightBg ? 'light' : 'dark'"
+          :class="`${prefixCls}__menu-logo`"
+        />
+        <Menu :is-horizontal="false" />
+      </div>
     </ElScrollbar>
   </aside>
 </template>
@@ -19,12 +21,11 @@
 import { computed } from 'vue'
 
 import { useDesign } from '/@/hooks/core/useDesign'
-
 import { AppLogo } from '/@/components/Application'
-
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { isLight } from '/@/utils/color'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
+
 import Menu from '../menu/index.vue'
 
 const { prefixCls } = useDesign('app-sidebar')
