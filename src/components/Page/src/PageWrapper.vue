@@ -1,6 +1,7 @@
 <template>
-  <div :class="getWrapperClass">
-    <PageHeader 
+  <div ref="wrapperRef" :class="getWrapperClass">
+    <PageHeader
+      ref="headerRef"
       v-if="headerContent || $slots.headerContent || title" 
       :title="title">
       <template #default>
@@ -11,16 +12,19 @@
       </template>
     </PageHeader>
 
-    <div class="overflow-hidden"></div>
+    <div ref="contentRef" :class="getContentClass" :style="getContentStyle">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import type { CSSProperties, PropType } from 'vue'
+import { CSSProperties, PropType, ref } from 'vue'
 
 import { defineComponent, computed } from 'vue'
 import PageHeader from './PageHeader.vue'
 import { useDesign } from '/@/hooks/core/useDesign'
+import { useContentHeight } from '/@/hooks/web/useContentHeight'
 
 export default defineComponent({
   name: 'PageWrapper',
@@ -32,6 +36,10 @@ export default defineComponent({
       default: ''
     },
     dense: {
+      type: Boolean,
+      default: false
+    },
+    fixedHeight: {
       type: Boolean,
       default: false
     },
@@ -48,10 +56,18 @@ export default defineComponent({
     },
     contentBackground: {
       type: Boolean,
-      default: false
+      default: true
+    },
+    upwardSpace: {
+      type: [Number, String],
+      default: 0
     }
   },
   setup(props, { attrs }) {
+    const wrapperRef = ref(null)
+    const headerRef = ref(null)
+    const contentRef = ref(null)
+
     const { prefixCls } = useDesign('page-wrapper')
 
     const getWrapperClass = computed(() => {
@@ -64,8 +80,44 @@ export default defineComponent({
       ]
     })
 
+    const getIsFixdHeight = computed(() => props.fixedHeight)
+    const getUpwardSpace = computed(() => props.upwardSpace)
+    const { contentHeight } = useContentHeight(getIsFixdHeight, wrapperRef, [headerRef], [contentRef], getUpwardSpace)
+    const getContentStyle = computed((): CSSProperties => {
+      const { fixedHeight, contentStyle } = props
+
+      if (!fixedHeight) {
+        return {
+          ...contentStyle
+        }
+      }
+
+      const height = `${contentHeight.value}px`
+      return {
+        ...contentStyle,
+        ...{ height }
+      }
+    })
+
+    const getContentClass = computed(() => {
+      const { contentClass, contentBackground } = props
+      return [
+        `${prefixCls}-content`,
+        {
+          [`${prefixCls}-content-bg`]: contentBackground
+        },
+        contentClass
+      ]
+    })
+
     return {
-      getWrapperClass
+      wrapperRef,
+      headerRef,
+      contentRef,
+
+      getWrapperClass,
+      getContentClass,
+      getContentStyle
     }
   }
 })
@@ -78,6 +130,9 @@ $prefixCls: #{var.$namespace}-page-wrapper;
 
 .#{$prefixCls} {
   position: relative;
+  overflow: hidden;
+  // display: flex;
+  // flex-direction: column;
 
   &--dense {
     .#{$prefixCls}-content {
@@ -86,7 +141,7 @@ $prefixCls: #{var.$namespace}-page-wrapper;
   }
 
   &-content {
-    margin: 20px;
+    margin: 16px;
   }
 
   &-content-bg {

@@ -1,5 +1,5 @@
 <template>
-  <main :class="[prefixCls, isFixed ? 'is-header-fixed' : '', contentModeClass]">
+  <div :class="[prefixCls, isFixed ? 'is-header-fixed' : '', contentModeClass]">
     <RouterView v-slot="{ Component, route }">
       <transition
         :name="
@@ -11,14 +11,15 @@
         "
         mode="out-in"
       >
-        <div :key="route.fullPath">
+        <main :key="route.fullPath">
           <component :is="Component" />
-        </div>
+        </main>
       </transition>
     </RouterView>
+    
     <AppFooter v-if="getShowFooter" />
     <ProjectConfig v-if="getFullContent && getShowSettingButton" :class="`${prefixCls}__setting`" />
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -6,8 +6,6 @@ interface WindowSizeOptions {
   listenerOptions?: AddEventListenerOptions | boolean
 }
 
-type Fn = () => void
-
 export function useWindowSizeFn(fn: Fn, wait = 150, options?: WindowSizeOptions) {
   let handler = () => {
     fn()
