@@ -1,6 +1,6 @@
 import { defHttp } from '../utils/http/axios'
 
-export enum Api {
+enum Api {
   login = 'login',
   captcha = 'captcha/img',
 }
