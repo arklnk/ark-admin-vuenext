@@ -136,9 +136,7 @@ export function useContentHeight(
   }
 
   onMountedOrActivated(() => {
-    nextTick(() => {
-      calcContentHeight()
-    })
+    recalcHeight()
   })
 
   useWindowSizeFn(
