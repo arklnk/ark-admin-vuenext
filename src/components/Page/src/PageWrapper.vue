@@ -2,8 +2,9 @@
   <div ref="wrapperRef" :class="getWrapperClass">
     <PageHeader
       ref="headerRef"
-      v-if="headerContent || $slots.headerContent || title" 
-      :title="title">
+      v-if="headerContent || $slots.headerContent || title"
+      :title="title"
+    >
       <template #default>
         <template v-if="headerContent">
           <span>{{ headerContent }}</span>
@@ -19,11 +20,12 @@
 </template>
 
 <script lang="ts">
-import { CSSProperties, PropType, ref } from 'vue'
+import type { CSSProperties, PropType } from 'vue'
 
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import PageHeader from './PageHeader.vue'
 import { useDesign } from '/@/hooks/core/useDesign'
+import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 import { useContentHeight } from '/@/hooks/web/useContentHeight'
 
 export default defineComponent({
@@ -33,35 +35,35 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     dense: {
       type: Boolean,
-      default: false
+      default: false,
     },
     fixedHeight: {
       type: Boolean,
-      default: false
+      default: false,
     },
     headerContent: {
       type: String,
-      default: null
+      default: null,
     },
     contentStyle: {
-      type: Object as PropType<CSSProperties>
+      type: Object as PropType<CSSProperties>,
     },
     contentClass: {
       type: String,
-      default: ''
+      default: '',
     },
     contentBackground: {
       type: Boolean,
-      default: true
+      default: true,
     },
     upwardSpace: {
       type: [Number, String],
-      default: 0
-    }
+      default: 0,
+    },
   },
   setup(props, { attrs }) {
     const wrapperRef = ref(null)
@@ -74,28 +76,34 @@ export default defineComponent({
       return [
         prefixCls,
         {
-          [`${prefixCls}--dense`]: props.dense
+          [`${prefixCls}--dense`]: props.dense,
         },
-        attrs.class || {}
+        attrs.class || {},
       ]
     })
 
     const getIsFixdHeight = computed(() => props.fixedHeight)
     const getUpwardSpace = computed(() => props.upwardSpace)
-    const { contentHeight } = useContentHeight(getIsFixdHeight, wrapperRef, [headerRef], [contentRef], getUpwardSpace)
+    const { contentHeight, recalcHeight } = useContentHeight(
+      getIsFixdHeight,
+      wrapperRef,
+      [headerRef],
+      [contentRef],
+      getUpwardSpace
+    )
     const getContentStyle = computed((): CSSProperties => {
       const { fixedHeight, contentStyle } = props
 
       if (!fixedHeight) {
         return {
-          ...contentStyle
+          ...contentStyle,
         }
       }
 
       const height = `${contentHeight.value}px`
       return {
         ...contentStyle,
-        ...{ height }
+        ...{ height },
       }
     })
 
@@ -104,11 +112,24 @@ export default defineComponent({
       return [
         `${prefixCls}-content`,
         {
-          [`${prefixCls}-content-bg`]: contentBackground
+          [`${prefixCls}-content-bg`]: contentBackground,
         },
-        contentClass
+        contentClass,
       ]
     })
+
+    const { getFullContent } = useRootSetting()
+
+    watch(
+      () => [getFullContent.value],
+      () => {
+        recalcHeight()
+      },
+      {
+        flush: 'post',
+        immediate: true
+      }
+    )
 
     return {
       wrapperRef,
@@ -117,9 +138,9 @@ export default defineComponent({
 
       getWrapperClass,
       getContentClass,
-      getContentStyle
+      getContentStyle,
     }
-  }
+  },
 })
 </script>
 
@@ -130,9 +151,8 @@ $prefixCls: #{var.$namespace}-page-wrapper;
 
 .#{$prefixCls} {
   position: relative;
+  // 解决content margin高度塌陷 BFC
   overflow: hidden;
-  // display: flex;
-  // flex-direction: column;
 
   &--dense {
     .#{$prefixCls}-content {
