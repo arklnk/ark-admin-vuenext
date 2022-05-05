@@ -2,7 +2,6 @@ import { isString, isNumber } from 'lodash-es'
 import { ComputedRef, nextTick, Ref, ref, unref } from 'vue'
 import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated'
 import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn'
-import { useLayoutHeight } from '/@/layouts/content/useContentViewHeight'
 import { numberUnit } from '/@/utils'
 import { getViewportOffset } from '/@/utils/dom'
 
@@ -30,7 +29,6 @@ export function useContentHeight(
   offsetHeightRef: Ref<number> = ref(0)
 ) {
   const contentHeight: Ref<number> = ref(0)
-  const { appFooterHeightRef } = useLayoutHeight()
 
   function getEl(element: any): Nullable<HTMLDivElement> {
     if (!element) return null
@@ -121,7 +119,6 @@ export function useContentHeight(
     const height =
       bottomIncludeBody -
       unref(offsetHeightRef) -
-      unref(appFooterHeightRef) -
       substractHeight -
       substractSpaceHeight -
       upwardSpaceHeight

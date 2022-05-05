@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import type { CSSProperties, PropType } from 'vue'
+import { CSSProperties, PropType, unref } from 'vue'
 
 import { defineComponent, computed, ref, watch } from 'vue'
 import PageHeader from './PageHeader.vue'
@@ -91,13 +91,16 @@ export default defineComponent({
     const { appFooterHeightRef } = useLayoutHeight()
     const getIsFixdHeight = computed(() => props.fixedHeight)
     const getUpwardSpace = computed(() => props.upwardSpace)
+    const getFooterOffsetHeight = computed(() => {
+      return props.includeFooter ? unref(appFooterHeightRef) : 0
+    })
     const { contentHeight, recalcHeight } = useContentHeight(
       getIsFixdHeight,
       wrapperRef,
       [headerRef],
       [contentRef],
       getUpwardSpace,
-      props.includeFooter ? appFooterHeightRef : undefined
+      getFooterOffsetHeight
     )
     const getContentStyle = computed((): CSSProperties => {
       const { fixedHeight, contentStyle } = props
@@ -126,10 +129,10 @@ export default defineComponent({
       ]
     })
 
-    const { getFullContent } = useRootSetting()
-
+    // 是否需要重新计算content height
+    const { getFullContent, getShowFooter } = useRootSetting()
     watch(
-      () => [getFullContent.value, appFooterHeightRef.value],
+      () => [getFullContent.value, getShowFooter.value],
       () => {
         recalcHeight()
       },
