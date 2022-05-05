@@ -27,6 +27,7 @@ import PageHeader from './PageHeader.vue'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 import { useContentHeight } from '/@/hooks/web/useContentHeight'
+import { useLayoutHeight } from '/@/layouts/content/useContentViewHeight'
 
 export default defineComponent({
   name: 'PageWrapper',
@@ -64,6 +65,11 @@ export default defineComponent({
       type: [Number, String],
       default: 0,
     },
+    // 内容区域高度是否计算上Footer
+    includeFooter: {
+      type: Boolean,
+      default: false
+    }
   },
   setup(props, { attrs }) {
     const wrapperRef = ref(null)
@@ -82,6 +88,7 @@ export default defineComponent({
       ]
     })
 
+    const { appFooterHeightRef } = useLayoutHeight()
     const getIsFixdHeight = computed(() => props.fixedHeight)
     const getUpwardSpace = computed(() => props.upwardSpace)
     const { contentHeight, recalcHeight } = useContentHeight(
@@ -89,7 +96,8 @@ export default defineComponent({
       wrapperRef,
       [headerRef],
       [contentRef],
-      getUpwardSpace
+      getUpwardSpace,
+      props.includeFooter ? appFooterHeightRef : undefined
     )
     const getContentStyle = computed((): CSSProperties => {
       const { fixedHeight, contentStyle } = props
@@ -100,7 +108,7 @@ export default defineComponent({
         }
       }
 
-      const height = `${contentHeight.value}px`
+      let height = `${contentHeight.value}px`
       return {
         ...contentStyle,
         ...{ height },
@@ -121,7 +129,7 @@ export default defineComponent({
     const { getFullContent } = useRootSetting()
 
     watch(
-      () => [getFullContent.value],
+      () => [getFullContent.value, appFooterHeightRef.value],
       () => {
         recalcHeight()
       },

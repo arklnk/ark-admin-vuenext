@@ -17,7 +17,7 @@
       </transition>
     </RouterView>
     
-    <AppFooter v-if="getShowFooter" />
+    <AppFooter />
     <ProjectConfig v-if="getFullContent && getShowSettingButton" :class="`${prefixCls}__setting`" />
   </div>
 </template>
@@ -34,7 +34,7 @@ import { getTransitionName } from './getTransitionName'
 
 const { prefixCls } = useDesign('app-main')
 const { getFixed } = useHeaderSetting()
-const { getShowFooter, getContentMode, getFullContent, getShowSettingButton } = useRootSetting()
+const { getContentMode, getFullContent, getShowSettingButton } = useRootSetting()
 const { getRouterTransition, getEnableTransition } = useTransitionSetting()
 
 const isFixed = computed(() => (getFullContent.value ? false : getFixed.value))
