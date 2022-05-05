@@ -1,20 +1,18 @@
 <template>
-  <div v-loading="loadingRef" :style="getStyle">
+  <PageWrapper v-loading="loadingRef" fixed-height :content-background="false" dense>
     <iframe
       :src="frameSrc"
       ref="frameRef"
       class="w-full h-full overflow-hidden border-0 box-border relative"
       @load="hideLoading"
     ></iframe>
-  </div>
+  </PageWrapper>
 </template>
 
 <script setup lang="ts">
-import { computed, CSSProperties, unref } from 'vue'
-
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useContentViewHeight } from '../content/useContentViewHeight'
+import { PageWrapper } from '/@/components/Page'
 
 const route = useRoute()
 const frameSrc = route.meta.iframeSrc || ''
@@ -23,12 +21,4 @@ const loadingRef = ref(true)
 function hideLoading() {
   loadingRef.value = false
 }
-
-const frameRef = ref<HTMLIFrameElement>()
-const { contentHeight } = useContentViewHeight()
-const getStyle = computed((): CSSProperties => {
-  return {
-    height: `${unref(contentHeight)}px`,
-  }
-})
 </script>
