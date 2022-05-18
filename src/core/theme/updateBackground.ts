@@ -23,7 +23,7 @@ export function updateHeaderBgColor(color: string) {
   setCssVar(HEADER_BG_COLOR, color)
 
   if (!isLight(color)) {
-    const lightenBgColor = mixLighten(color, 0.2)
+    const lightenBgColor = mixLighten(color, 0.05)
     setCssVar(HEADER_HOVER_BG_COLOR, lightenBgColor)
   } else {
     const darkenBgColor = mixDarken(color, 0.05)
