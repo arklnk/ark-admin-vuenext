@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full flex flex-row flex-wrap items-center text-sm my-1">
-    <span class="inline-block flex-1 text-left">{{ title }}</span>
+  <div class="w-full flex flex-row flex-wrap items-center text-sm">
+    <span class="inline-block flex-1 text-left text-black dark:text-white">{{ title }}</span>
     <ElSwitch
       :disabled="disabled"
       :value="def"
@@ -8,7 +8,7 @@
       active-text="开"
       inactive-text="关"
       @change="handleChange"
-      size="small"
+      size="default"
     />
   </div>
 </template>
