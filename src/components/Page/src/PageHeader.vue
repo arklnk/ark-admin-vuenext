@@ -3,7 +3,7 @@
     <div :class="`${prefixCls}-heading`">
       <span :class="`${prefixCls}-heading__title`">{{ title }}</span>
     </div>
-    <div v-if="$slots.default?.length > 0" :class="`${prefixCls}-content`">
+    <div v-if="$slots.default && $slots.default?.length > 0" :class="`${prefixCls}-content`">
       <slot></slot>
     </div>
   </div>
