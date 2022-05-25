@@ -17,6 +17,7 @@ const setting: ProjectConfig = {
   showSettingButton: true,
   fullContent: false,
   themeColor: APP_PRESET_COLOR_LIST[3],
+  darkMode: false,
   contentMode: ContentEnum.FULL,
   permissionMode: PermissionModeEnum.BACK,
   removeAllHttpPending: false,
