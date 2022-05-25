@@ -27,7 +27,7 @@ import PageHeader from './PageHeader.vue'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 import { useContentHeight } from '/@/hooks/web/useContentHeight'
-import { useLayoutHeight } from '/@/layouts/content/useContentViewHeight'
+import { useLayoutHeight } from '/@/layouts/content/useLayoutHeight'
 
 export default defineComponent({
   name: 'PageWrapper',

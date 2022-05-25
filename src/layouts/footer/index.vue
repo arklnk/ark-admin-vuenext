@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed, ref, unref } from 'vue'
-import { useLayoutHeight } from '../content/useContentViewHeight'
+import { useLayoutHeight } from '../content/useLayoutHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 

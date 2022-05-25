@@ -33,7 +33,7 @@ import { AppLogo } from '/@/components/Application'
 import { FullScreen, Hamburger, UserDropdown } from './components'
 import ProjectConfig from '../setting/index.vue'
 
-import { useLayoutHeight } from '../content/useContentViewHeight'
+import { useLayoutHeight } from '../content/useLayoutHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
