@@ -2,7 +2,7 @@ import type { Plugin } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
-import { prefixCls } from '../../src/settings/designSetting'
+import { prefixCls } from '../../../src/settings/designSetting'
 
 export function configIconsPlugin(isBuild: boolean) {
   // iconfy

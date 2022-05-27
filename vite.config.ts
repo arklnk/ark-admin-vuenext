@@ -2,8 +2,8 @@ import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
 import dayjs from 'dayjs'
 
-import { createViteProxy } from './build/proxy'
-import { createVitePlugins } from './build/plugin'
+import { createViteProxy } from './build/vite/proxy'
+import { createVitePlugins } from './build/vite/plugin'
 
 import { dependencies, devDependencies, version } from './package.json'
 
