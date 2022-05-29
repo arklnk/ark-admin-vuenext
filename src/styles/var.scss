@@ -21,8 +21,6 @@ $border-color-base: rgba(243, 244, 246, 1);
 
 // css var
 :root {
-  --primary-color: var(--el-color-primary);
-
   // sidebar bg
   --sidebar-bg-color: #{$color-white};
   --sidebar-darken-bg-color: #{$color-white};
