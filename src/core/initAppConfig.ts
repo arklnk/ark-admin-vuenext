@@ -11,6 +11,7 @@ import { KEY_SETTING } from '/@/enums/cacheEnum'
 import { ProjectConfig } from '/#/config'
 import { merge } from 'lodash-es'
 import { updateDarkMode } from './theme/updateDarkMode'
+import { ThemeEnum } from '../enums/appEnum'
 
 /**
  * Initial project configuration
@@ -36,19 +37,25 @@ export function initAppConfig() {
     headerSetting: { bgColor: headerbgColor },
   } = appStore.getProjectConfig
 
-  // root class
-  grayMode && updateGrayMode(grayMode)
-  colorWeak && updateColorWeak(colorWeak)
-
-  // 夜间模式
-  updateDarkMode(theme)
-
   // update primary theme color
   updateTheme(themeColor)
 
-  // update background
-  bgColor && updateSidebarBgColor(bgColor)
-  headerbgColor && updateHeaderBgColor(headerbgColor)
+  if (theme === ThemeEnum.DARK) {
+    // 夜间模式
+    updateDarkMode(theme)
+
+    // 更新夜间模式下的配置，以防被手动修改了非夜间模式不支持的背景设置
+    updateSidebarBgColor()
+    updateHeaderBgColor()
+  } else {
+    // update background
+    bgColor && updateSidebarBgColor(bgColor)
+    headerbgColor && updateHeaderBgColor(headerbgColor)
+  }
+
+  // root class
+  grayMode && updateGrayMode(grayMode)
+  colorWeak && updateColorWeak(colorWeak)
 
   // setup user config
   userStore.setToken(getToken())
