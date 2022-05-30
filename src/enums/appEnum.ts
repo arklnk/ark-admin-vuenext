@@ -3,6 +3,27 @@ import { TopMenuAlign } from '/#/config'
 // refer to Bootstrap's responsive design
 export const MOBILE_WIDTH = 768
 
+// menu theme enum
+export enum ThemeEnum {
+  DARK = 'dark',
+  LIGHT = 'light',
+}
+
+// 夜间模式下的mix color，如果覆写了element-plus中的值也需要一并修改这个值
+/**
+ * // Background
+ * $bg-color: () !default;
+ * $bg-color: map.merge(
+ *  (
+ *    'page': #0a0a0a,
+ *    '': #141414, // 与该值关联
+ *    'overlay': #1d1e1f,
+ *  ),
+ *  $bg-color
+ * );
+ */
+export const DARK_MODE_MIX_COLOR = '#141414'
+
 //  Route switching animation
 export enum RouterTransitionEnum {
   FADE = 'fade',

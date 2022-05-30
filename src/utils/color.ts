@@ -76,10 +76,10 @@ export function pad2(num: number) {
  * https://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
  * @returns
  */
-export function isLight(colorStr: string): boolean {
+export function colorIsLight(colorStr: string): boolean {
   const [r, g, b] = toRGB(colorStr)
 
-  const brightness = r * 0.299 + g * 0.587 + b * 0.114
+  const brightness = r * 0.299 + g * 0.578 + b * 0.114
   return brightness > 192
 }
 

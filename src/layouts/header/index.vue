@@ -5,7 +5,7 @@
       prefixCls,
       getFixed ? 'is-fixed' : '',
       isCollapsed ? 'is-collapsed' : '',
-      getLightOrDarkClass,
+      getHeaderTheme,
       isTopMenuMode ? 'not-has-sidebar' : '',
     ]"
     class="flex flex-row justify-between box-border relative overflow-hidden"
@@ -14,7 +14,7 @@
       <Hamburger :collapsed="getCollapsed" />
     </nav>
     <nav class="item !px-8" v-if="showHeaderLogo">
-      <AppLogo :theme="getLightOrDarkClass" show-title />
+      <AppLogo :theme="getHeaderTheme" show-title />
     </nav>
     <nav v-if="isTopMenuMode" class="flex-1">
       <Menu is-horizontal />
@@ -37,7 +37,6 @@ import { useLayoutHeight } from '../content/useLayoutHeight'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
-import { isLight } from '/@/utils/color'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import Menu from '../menu/index.vue'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
@@ -50,11 +49,9 @@ onMounted(() => {
   setAppHeaderHeight(appHeaderRef.value!.offsetHeight)
 })
 
-const { getFixed, getBgColor, getShowFullScreen } = useHeaderSetting()
+const { getFixed, getShowFullScreen, getHeaderTheme } = useHeaderSetting()
 const { getCollapsed, getMenuMode, toggleCollapse } = useMenuSetting()
 const { getShowLogo, getShowSettingButton } = useRootSetting()
-
-const getLightOrDarkClass = computed(() => (isLight(getBgColor.value) ? 'light' : 'dark'))
 
 const isTopMenuMode = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
 const isCollapsed = computed(() => (isTopMenuMode.value ? false : getCollapsed.value))

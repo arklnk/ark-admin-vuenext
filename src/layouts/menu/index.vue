@@ -23,7 +23,6 @@ import { usePermissionStore } from '/@/stores/modules/permission'
 
 import MenuItem from './components/MenuItem.vue'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
-import { isLight } from '/@/utils/color'
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 
@@ -48,18 +47,17 @@ const activeMenu = computed(() => {
 const {
   getUniqueOpened,
   getCollapsed,
-  getBgColor: getSideBgColor,
+  getMenuTheme,
   getMenuMode,
   getTopMenuAlign,
 } = useMenuSetting()
-const { getBgColor: getHeaderBgColor } = useHeaderSetting()
+const { getHeaderTheme } = useHeaderSetting()
 const mode = computed<'vertical' | 'horizontal'>(() =>
   props.isHorizontal ? 'horizontal' : 'vertical'
 )
 
 const getLightOrDarkClass = computed<'light' | 'dark'>(() => {
-  const bgColor = unref(mode) === 'vertical' ? unref(getSideBgColor) : unref(getHeaderBgColor)
-  return isLight(bgColor) ? 'light' : 'dark'
+  return unref(mode) === 'vertical' ? getMenuTheme.value : getHeaderTheme.value
 })
 
 const isTopMenuMode = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)

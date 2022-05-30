@@ -10,6 +10,9 @@
       destroy-on-close
     >
       <div class="w-full overflow-hidden text-black flex flex-col">
+        <ElDivider>主题</ElDivider>
+        <AppDarkModeToggle />
+
         <ElDivider>导航栏模式</ElDivider>
         <MenuModePicker :def="getMenuMode" @change="handleMenuModeChange" />
 
@@ -104,6 +107,7 @@ import {
 import ThemeColorPicker from './components/ThemeColorPicker.vue'
 import SwitchItem from './components/SwitchItem.vue'
 import MenuModePicker from './components/MenuModePicker.vue'
+import { AppDarkModeToggle } from '/@/components/Application'
 
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 import { updateTheme } from '/@/core/theme/updateTheme'
@@ -114,7 +118,12 @@ import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/core/theme/updateBackground'
 import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
-import { ContentEnum, contentMap, RouterTransitionEnum, topMenuAlignMap } from '/@/enums/appEnum'
+import {
+  ContentEnum,
+  contentMap,
+  RouterTransitionEnum,
+  topMenuAlignMap,
+} from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import { TopMenuAlign } from '/#/config'
 

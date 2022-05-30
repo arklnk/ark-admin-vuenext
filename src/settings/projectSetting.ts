@@ -1,6 +1,6 @@
 import type { ProjectConfig } from '/#/config'
 
-import { ContentEnum, PermissionModeEnum, RouterTransitionEnum } from '/@/enums/appEnum'
+import { ContentEnum, PermissionModeEnum, RouterTransitionEnum, ThemeEnum } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import {
   APP_PRESET_COLOR_LIST,
@@ -17,7 +17,7 @@ const setting: ProjectConfig = {
   showSettingButton: true,
   fullContent: false,
   themeColor: APP_PRESET_COLOR_LIST[3],
-  darkMode: false,
+  theme: ThemeEnum.LIGHT,
   contentMode: ContentEnum.FULL,
   permissionMode: PermissionModeEnum.BACK,
   removeAllHttpPending: false,
@@ -26,12 +26,14 @@ const setting: ProjectConfig = {
     collapsed: false,
     uniqueOpened: false,
     bgColor: SIDE_BAR_BG_COLOR_LIST[2],
+    theme: ThemeEnum.DARK,
     menuMode: MenuModeEnum.SIDEBAR,
     topMenuAlign: 'flex-start',
   },
   headerSetting: {
     fixed: true,
     bgColor: HEADER_PRESET_BG_COLOR_LIST[0],
+    theme: ThemeEnum.LIGHT,
     showFullScreen: true,
   },
   elementUISetting: {

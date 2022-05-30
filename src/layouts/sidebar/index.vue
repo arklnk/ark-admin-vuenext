@@ -1,6 +1,6 @@
 <template>
   <aside
-    :class="[prefixCls, getCollapsed ? 'is-collapsed' : '', isLightBg ? 'light' : '']"
+    :class="[prefixCls, getCollapsed ? 'is-collapsed' : '', getMenuTheme]"
     class="h-full box-border"
   >
     <ElScrollbar>
@@ -8,7 +8,7 @@
         <AppLogo
           v-if="getShowLogo"
           :show-title="!getCollapsed"
-          :theme="isLightBg ? 'light' : 'dark'"
+          :theme="getMenuTheme"
           :class="`${prefixCls}__menu-logo`"
         />
         <Menu :is-horizontal="false" />
@@ -18,20 +18,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
 import { useDesign } from '/@/hooks/core/useDesign'
 import { AppLogo } from '/@/components/Application'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
-import { isLight } from '/@/utils/color'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
 
 import Menu from '../menu/index.vue'
 
 const { prefixCls } = useDesign('app-sidebar')
 
-const { getCollapsed, getBgColor } = useMenuSetting()
-const isLightBg = computed(() => isLight(getBgColor.value))
+const { getCollapsed, getMenuTheme } = useMenuSetting()
 
 const { getShowLogo } = useRootSetting()
 </script>

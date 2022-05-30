@@ -2,6 +2,7 @@ import type { ProjectConfig } from '/#/config'
 
 import { computed } from 'vue'
 import { useAppStore } from '/@/stores/modules/app'
+import { ThemeEnum } from '/@/enums/appEnum'
 
 type RootSetting = Omit<
   ProjectConfig,
@@ -31,12 +32,19 @@ export function useRootSetting() {
 
   const getRemoveAllHttpPending = computed(() => appStore.getProjectConfig.removeAllHttpPending)
 
+  const getTheme = computed(() => appStore.getProjectConfig.theme)
+
   function setRootSetting(setting: Partial<RootSetting>) {
     appStore.setProjectConfig(setting)
   }
 
+  function setDarkMode(theme: ThemeEnum) {
+    appStore.setProjectConfig({ theme })
+  }
+
   return {
     setRootSetting,
+    setDarkMode,
 
     getFullContent,
     getShowSettingButton,
@@ -48,5 +56,6 @@ export function useRootSetting() {
     getGrayMode,
     getShowBreadCrumb,
     getShowFooter,
+    getTheme,
   }
 }

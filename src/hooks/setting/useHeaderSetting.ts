@@ -12,6 +12,8 @@ export function useHeaderSetting() {
 
   const getShowFullScreen = computed(() => appStore.getHeaderSetting.showFullScreen)
 
+  const getHeaderTheme = computed(() => appStore.getHeaderSetting.theme)
+
   /* set header */
   function setHeaderSetting(headerSetting: Partial<HeaderSetting>) {
     appStore.setProjectConfig({ headerSetting })
@@ -23,5 +25,6 @@ export function useHeaderSetting() {
     getShowFullScreen,
     getBgColor,
     getFixed,
+    getHeaderTheme,
   }
 }

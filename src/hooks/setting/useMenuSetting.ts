@@ -16,6 +16,8 @@ export function useMenuSetting() {
 
   const getTopMenuAlign = computed(() => appStore.getMenuSetting.topMenuAlign)
 
+  const getMenuTheme = computed(() => appStore.getMenuSetting.theme)
+
   function setMenuSetting(menuSetting: Partial<MenuSetting>) {
     appStore.setProjectConfig({ menuSetting })
   }
@@ -35,5 +37,6 @@ export function useMenuSetting() {
     getBgColor,
     getCollapsed,
     getUniqueOpened,
+    getMenuTheme,
   }
 }

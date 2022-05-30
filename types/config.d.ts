@@ -1,4 +1,4 @@
-import { ContentEnum, PermissionModeEnum, RouterTransitionEnum } from '/@/enums/appEnum'
+import { ContentEnum, PermissionModeEnum, RouterTransitionEnum, ThemeEnum } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 
 export type TopMenuAlign = 'flex-start' | 'center' | 'flex-end'
@@ -20,6 +20,9 @@ export interface MenuSetting {
   // 菜单背景色
   bgColor: string
 
+  // 背景主题
+  theme: ThemeEnum
+
   /**
    * 菜单模式
    */
@@ -37,6 +40,9 @@ export interface HeaderSetting {
 
   // 顶部背景色
   bgColor: string
+
+  // 背景主题
+  theme: ThemeEnum
 
   // 是否显示全屏按钮
   showFullScreen: boolean
@@ -64,7 +70,7 @@ export interface ProjectConfig {
   themeColor: string
 
   // 夜间模式
-  darkMode: boolean
+  theme: ThemeEnum
 
   // 是否显示面包屑
   showBreadCrumb: boolean

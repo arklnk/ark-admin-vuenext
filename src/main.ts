@@ -1,5 +1,6 @@
 import 'normalize.css/normalize.css'
 import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:windi.css'
 import 'virtual:svg-icons-register'
 

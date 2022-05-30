@@ -10,6 +10,7 @@ import { updateHeaderBgColor, updateSidebarBgColor } from './theme/updateBackgro
 import { KEY_SETTING } from '/@/enums/cacheEnum'
 import { ProjectConfig } from '/#/config'
 import { merge } from 'lodash-es'
+import { updateDarkMode } from './theme/updateDarkMode'
 
 /**
  * Initial project configuration
@@ -29,17 +30,21 @@ export function initAppConfig() {
   const {
     grayMode,
     colorWeak,
+    theme,
     themeColor,
     menuSetting: { bgColor },
     headerSetting: { bgColor: headerbgColor },
   } = appStore.getProjectConfig
 
-  // update primary theme color
-  updateTheme(themeColor)
-
   // root class
   grayMode && updateGrayMode(grayMode)
   colorWeak && updateColorWeak(colorWeak)
+
+  // 夜间模式
+  updateDarkMode(theme)
+
+  // update primary theme color
+  updateTheme(themeColor)
 
   // update background
   bgColor && updateSidebarBgColor(bgColor)
