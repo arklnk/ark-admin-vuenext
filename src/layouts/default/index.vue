@@ -15,7 +15,7 @@ import AppMain from './content/MainLayout.vue'
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
 import { computed } from 'vue'
 import { MenuModeEnum } from '/@/enums/menuEnum'
-import { useRootSetting } from '../hooks/setting/useRootSetting'
+import { useRootSetting } from '../../hooks/setting/useRootSetting'
 
 const { getMenuMode } = useMenuSetting()
 const { getFullContent } = useRootSetting()

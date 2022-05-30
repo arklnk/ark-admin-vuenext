@@ -1,7 +1,7 @@
 /**
  * @description default layout
  */
-export const ParentLayout = () => import('/@/layouts/index.vue')
+export const ParentLayout = () => import('/@/layouts/default/index.vue')
 
 /**
  * @description iframe layout
@@ -11,7 +11,7 @@ export const IFrameLayout = () => import('/@/layouts/iframe/index.vue')
 /**
  * @description empty layout
  */
-export const EmptyLayout = () => import('/@/layouts/content/EmptyLayout.vue')
+export const EmptyLayout = () => import('/@/layouts/empty/index.vue')
 
 /**
  * @description view exception
