@@ -58,4 +58,11 @@ $prefixCls: #{var.$namespace}-page-header;
     padding-top: 12px;
   }
 }
+
+html.dark {
+  .#{$prefixCls} {
+    color: var.$color-white;
+    background-color: var.$app-page-dark-bg-color;
+  }
+}
 </style>

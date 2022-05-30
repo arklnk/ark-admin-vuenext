@@ -68,8 +68,8 @@ export default defineComponent({
     // 内容区域高度是否计算上Footer
     includeFooter: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup(props, { attrs }) {
     const wrapperRef = ref(null)
@@ -138,7 +138,7 @@ export default defineComponent({
       },
       {
         flush: 'post',
-        immediate: true
+        immediate: true,
       }
     )
 
@@ -177,6 +177,14 @@ $prefixCls: #{var.$namespace}-page-wrapper;
 
   &-content-bg {
     background-color: var.$color-white;
+  }
+}
+
+html.dark {
+  .#{$prefixCls} {
+    &-content-bg {
+      background-color: var.$app-page-dark-bg-color;
+    }
   }
 }
 </style>

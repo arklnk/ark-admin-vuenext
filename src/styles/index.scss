@@ -51,6 +51,12 @@ span {
   background-color: var.$app-bg-color;
 }
 
+html.dark {
+  #app {
+    background-color: var.$color-black;
+  }
+}
+
 // =================================
 // ==============nprogress==========
 // =================================
