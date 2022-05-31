@@ -89,7 +89,7 @@ $prefixCls: #{var.$namespace}-app-header;
 
   @include when(light) {
     color: var.$color-black;
-    border-bottom: 1px solid var.$border-color-base;
+    box-shadow: 0 8px 24px -2px rgb(0 0 0 / 5%);
   }
 
   @include when(dark) {

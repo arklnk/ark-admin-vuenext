@@ -42,6 +42,8 @@ $prefixCls: #{var.$namespace}-app-sidebar;
   width: var.$sidebar-width;
   background-color: var(--sidebar-bg-color);
   transition: width var.$transition-duration;
+  box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
+  z-index: 10;
 
   &__menu-logo {
     width: var.$sidebar-width;
@@ -53,8 +55,8 @@ $prefixCls: #{var.$namespace}-app-sidebar;
     width: var.$sidebar-collapsed-width;
   }
 
-  @include when(light) {
-    border-right: 1px solid var.$border-color-base;
+  @include when(dark) {
+    box-shadow: rgba(13, 13, 13, 0.65) 0px 2px 8px 0px;
   }
 }
 </style>
