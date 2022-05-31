@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-row items-center text-sm font-semibold box-border cursor-pointer"
+    class="flex flex-row items-center box-border cursor-pointer"
     :class="[prefixCls, theme, $attrs.class]"
     @click="go('/')"
   >
@@ -41,10 +41,11 @@ $prefixCls: #{var.$namespace}-app-logo;
 .#{$prefixCls} {
   transition: all var.$transition-duration;
   letter-spacing: 2px;
+  font-weight: 600;
+  font-size: 18px;
 
   @include when(light) {
-    color: var.$color-black;
-    border-bottom: 1px solid var.$border-color-base;
+    color: var(--el-color-primary);
   }
 
   @include when(dark) {
