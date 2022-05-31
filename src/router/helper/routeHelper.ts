@@ -73,7 +73,7 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
     // 外链
     if (isUrl(menu.router)) {
       return {
-        path: menu.router,
+        path: `/external-link/${menu.id}`,
         name: menu.router,
         redirect: menu.router,
         meta,
@@ -92,10 +92,10 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
     }
 
     // 判断url是否合法
-    if (!menu.router.startsWith('/')) {
-      warn(`此路由${menu.router}定义不合法,路由需以/开头`)
-      // 自动修补或抛出错误
-      path = `/${menu.router}`
+    if (!path.startsWith('/')) {
+      warn(`此路由${path}定义不合法,路由需以/开头`)
+      // 防止与vue2版本参数检查异常尝试修补
+      path = `/${path}`
     }
 
     if (isRoot) {

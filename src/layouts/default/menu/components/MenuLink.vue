@@ -12,12 +12,16 @@ import { isUrl } from '/@/utils/is'
 const props = defineProps({
   to: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
+  redirect: {
+    type: String,
+    default: '',
+  },
 })
 
 const isExternal = computed(() => {
-  return isUrl(props.to)
+  return isUrl(props.redirect)
 })
 
 const type = computed(() => {
@@ -25,10 +29,15 @@ const type = computed(() => {
 })
 
 const linkProps = computed(() => {
-  return unref(isExternal) ? {
-    href: props.to,
-    target: '_blank',
-    rel: 'noopener'
-  } : { to: props.to }
+  if (unref(isExternal)) {
+    // 外链重定向
+    return {
+      href: props.redirect,
+      target: '_blank',
+      rel: 'noopener',
+    }
+  } else {
+    return { to: props.to }
+  }
 })
 </script>

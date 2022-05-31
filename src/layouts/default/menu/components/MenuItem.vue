@@ -1,6 +1,6 @@
 <template>
   <template v-if="!showRoute?.meta?.hidden">
-    <MenuLink v-if="showRoute" :to="showRoute.path">
+    <MenuLink v-if="showRoute" :to="showRoute.path" :redirect="showRoute.redirect?.toString()">
       <ElMenuItem :index="showRoute.path">
         <ElIcon>
           <SvgIcon v-if="showRoute.meta?.icon" :icon="showRoute.meta.icon" />
