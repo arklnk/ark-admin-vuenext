@@ -100,8 +100,8 @@ $menu-hover-text-color: #ffffffa6;
 
     @include when(dark) {
       :deep(.el-menu) {
-        --el-menu-text-color: #{var.$color-white};
-        --el-menu-hover-text-color: #{$menu-hover-text-color};
+        --el-menu-text-color: #{$menu-hover-text-color};
+        --el-menu-hover-text-color: #{var.$color-white};
 
         --el-menu-hover-bg-color: var(--header-hover-bg-color);
         --el-menu-item-hover-fill: var(--header-hover-bg-color);
