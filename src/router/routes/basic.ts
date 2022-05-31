@@ -42,19 +42,6 @@ const Error404Route: RouteRecordRaw = {
 }
 
 /**
- * @description 403 page route
- */
-const Error403Route: RouteRecordRaw = {
-  path: PageEnum.Forbidden,
-  name: toHump(PageEnum.Forbidden),
-  component: () => import('/@/views/error/Error403.vue'),
-  meta: {
-    title: PageTitleEnum.Forbidden,
-    hidden: true,
-  },
-}
-
-/**
  * @description dashboard route
  */
 const DashboardRoute: RouteRecordRaw = {
@@ -100,7 +87,6 @@ const RedirectRoute: RouteRecordRaw = {
 export const basicRoutes: RouteRecordRaw[] = [
   LoginRoute,
   Error404Route,
-  Error403Route,
   DashboardRoute,
   RedirectRoute,
 ]

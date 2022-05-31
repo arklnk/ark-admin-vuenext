@@ -44,14 +44,6 @@ export function createPermissionGuard(router: Router) {
 
       // 如果权限路由已初始化
       if (permissionStore.getIsDynamicAddedRoute) {
-        // 检查权限路由，无任何权限则进入403
-        if (
-          permissionStore.getMenuList &&
-          permissionStore.getMenuList.length <= 0 &&
-          to.path !== PageEnum.Forbidden
-        ) {
-          return PageEnum.Forbidden
-        }
         return true
       }
 
