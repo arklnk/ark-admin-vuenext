@@ -55,6 +55,14 @@ $prefixCls: #{var.$namespace}-setting-menu-mode-picker;
 $sidebar-width: 20px;
 $header-height: 14px;
 
+html.dark {
+  .#{$prefixCls} {
+    &-item {
+      background-color: var.$color-black;
+    }
+  }
+}
+
 .#{$prefixCls} {
   &-item {
     position: relative;

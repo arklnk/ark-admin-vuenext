@@ -10,10 +10,10 @@
       destroy-on-close
     >
       <div class="w-full overflow-hidden text-black flex flex-col">
-        <ElDivider>主题</ElDivider>
-        <AppDarkModeToggle />
+        <ElDivider>风格设置</ElDivider>
+        <AppDarkModeToggle class="text-2xl" />
 
-        <ElDivider>导航栏模式</ElDivider>
+        <ElDivider>导航模式</ElDivider>
         <MenuModePicker :def="getMenuMode" @change="handleMenuModeChange" />
 
         <ElDivider>系统主题</ElDivider>
