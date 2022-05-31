@@ -1,6 +1,6 @@
 <template>
   <main
-    class="relative flex items-center justify-center h-full w-full overflow-hidden bg-white text-black"
+    class="relative flex items-center justify-center h-full w-full overflow-hidden bg-white dark:bg-black text-black dark:text-white"
     :class="prefixCls"
   >
     <span
@@ -17,14 +17,14 @@
       :key="i"
     >4</span
     >
-    <article
+    <ElCard
       :class="`${prefixCls}__content`"
-      class="relative w-[500px] max-w-full m-5 bg-white text-center py-[60px] px-[40px] rounded-sm"
+      class="relative w-[500px] max-w-full m-5 text-center py-[60px] px-[40px] rounded-sm"
     >
       <p class="mb-4 text-base text-gray-600">该页面无法正常打开...</p>
       <p class="mb-4 text-xs text-gray-400">请检查链接是否输入正确, 或点击按钮返回首页</p>
       <ElButton class="mt-2" @click="go()">返回首页</ElButton>
-    </article>
+    </ElCard>
   </main>
 </template>
 
