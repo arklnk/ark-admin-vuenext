@@ -8,7 +8,9 @@ export const roleRoutes: RouteRecordRaw[] = []
 
 const roleModules = import.meta.globEager('./modules/**/*.ts')
 
-// role module
+/**
+ * 角色权限路由时使用
+ */
 Object.keys(roleModules).forEach((key) => {
   const mod = roleModules[key].default
   if (!mod) {

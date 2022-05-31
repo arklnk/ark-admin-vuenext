@@ -76,6 +76,7 @@ export const usePermissionStore = defineStore({
       const roleList = toRaw(userStore.getRoleList) || []
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig
 
+      // 角色路由过滤
       const roleRouteFilter = (route: RouteRecordRaw): boolean => {
         const { meta } = route
         const { roles } = meta || ({} as RouteMeta)
@@ -87,9 +88,8 @@ export const usePermissionStore = defineStore({
         return roleList.some((role) => roles.includes(role))
       }
 
-      const menuFilter = (menu: Menu): boolean => {
-        return menu.type !== MenuTypeEnum.Permission
-      }
+      // 后端权限路由过滤，过滤权限
+      const menuFilter = (menu: Menu): boolean => menu.type !== MenuTypeEnum.Permission
 
       // 判断权限路由模式
       switch (permissionMode) {
