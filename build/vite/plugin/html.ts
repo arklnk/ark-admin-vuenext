@@ -1,16 +1,17 @@
-import type { Plugin } from 'vite'
+import type { PluginOption } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
 export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
   const { VITE_APP_TITLE } = env
 
-  const htmlPlugin: Plugin[] = createHtmlPlugin({
+  const htmlPlugin: PluginOption[] = createHtmlPlugin({
     minify: isBuild,
     inject: {
       data: {
         title: VITE_APP_TITLE,
       },
     },
-  }) as Plugin[]
+  }) as PluginOption[]
+
   return htmlPlugin
 }

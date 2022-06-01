@@ -1,4 +1,4 @@
-import type { Plugin } from 'vite'
+import type { PluginOption } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
@@ -6,7 +6,7 @@ import { prefixCls } from '../../../src/settings/designSetting'
 
 export function configIconsPlugin(isBuild: boolean) {
   // iconfy
-  const iconsPlugin: Plugin = Icons({
+  const iconsPlugin: PluginOption = Icons({
     compiler: 'vue3',
     defaultClass: `${prefixCls}-svg-icon`,
   })
@@ -14,7 +14,7 @@ export function configIconsPlugin(isBuild: boolean) {
   /**
    * https://github.com/vbenjs/vite-plugin-svg-icons
    */
-  const svgIconsPlugin: Plugin = createSvgIconsPlugin({
+  const svgIconsPlugin: PluginOption = createSvgIconsPlugin({
     /**
      * Specify the icon folder to be cached
      */
