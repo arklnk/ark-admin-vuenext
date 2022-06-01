@@ -1,9 +1,25 @@
 FROM node:lts-alpine as builder
 WORKDIR /sf-vuenext-admin
 # RUN npm set registry https://registry.npm.taobao.org
-# cache step
+
 COPY package.json /sf-vuenext-admin/package.json
-RUN yarn
+# support imagemin: https://github.com/imagemin/mozjpeg-bin/issues/47
+RUN apk --no-cache add shadow \                                                                   
+    gcc \                                                                                         
+    musl-dev \                                                                                    
+    autoconf \                                                                                    
+    automake \                                                                                    
+    make \                                                                                        
+    libtool \                                                                                     
+    nasm \                                                                                        
+    tiff \                                                                                        
+    jpeg \                                                                                        
+    zlib \                                                                                        
+    zlib-dev \                                                                                    
+    file \                                                                                        
+    pkgconf \                                                                                     
+    && yarn bootstrap
+
 # build
 COPY ./ /sf-vuenext-admin
 RUN yarn build
