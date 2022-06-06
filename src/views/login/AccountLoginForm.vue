@@ -28,7 +28,8 @@
           @keyup.enter="handleLogin"
         />
         <ElImage
-          class="h-8 w-20 ml-2 cursor-pointer bg-gray-200"
+          class="h-8 w-20 ml-2 cursor-pointer"
+          style="background-color: var(--el-fill-color-dark)"
           :src="captchaData"
           fit="fill"
           @click="handleGetImageCaptcha"
