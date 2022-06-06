@@ -1,6 +1,6 @@
 import type { TreeNode } from 'element-plus/lib/components/table/src/table/defaults'
 import type { PropType, CSSProperties } from 'vue'
-import { PaginationProps } from './types/pagination'
+import type { PaginationProps } from './types/pagination'
 import type {
   SizeType,
   TableRowRecord,
@@ -9,6 +9,7 @@ import type {
   TableSorter,
   TableSummaryRecord,
   TableLayoutType,
+  TooltipType,
 } from './types/table'
 
 /**
@@ -22,7 +23,7 @@ export const basicTableProps = {
    * 表格数据源
    */
   dataSource: {
-    type: Array as PropType<any[]>,
+    type: Array as PropType<Recordable[]>,
     default: null,
   },
   /**
@@ -137,51 +138,6 @@ export const basicTableProps = {
     ],
   },
   /**
-   * 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。
-   */
-  cellClassName: {
-    type: [String, Function as PropType<(data: TableRowColumnRecord<any>) => string>],
-  },
-  /**
-   * 单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。
-   */
-  cellStyle: {
-    type: [
-      Object as CSSProperties,
-      Function as PropType<(data: TableRowColumnRecord<any>) => CSSProperties>,
-    ],
-  },
-  /**
-   * 表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className。
-   */
-  headerRowClassName: {
-    type: [String, Function as PropType<(data: TableRowRecord<any>) => string>],
-  },
-  /**
-   * 表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style。
-   */
-  headerRowStyle: {
-    type: [
-      Object as CSSProperties,
-      Function as PropType<(data: TableRowRecord<any>) => CSSProperties>,
-    ],
-  },
-  /**
-   * 表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className。
-   */
-  headerCellClassName: {
-    type: [String, Function as PropType<(data: TableRowColumnRecord<any>) => string>],
-  },
-  /**
-   * 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。
-   */
-  headerCellStyle: {
-    type: [
-      Object as CSSProperties,
-      Function as PropType<(data: TableRowColumnRecord<any>) => CSSProperties>,
-    ],
-  },
-  /**
    * 行数据的 Key
    */
   rowKey: {
@@ -217,7 +173,7 @@ export const basicTableProps = {
    * tooltip effect 属性
    */
   tooltipEffect: {
-    type: String as PropType<'dark' | 'light'>,
+    type: String as PropType<TooltipType>,
     default: 'dark',
   },
   /**
