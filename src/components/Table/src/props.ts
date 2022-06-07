@@ -23,10 +23,22 @@ export const basicProps = {
     type: Function as PropType<BasicTableProps<any>['api']>,
     default: null,
   },
+  beforeFetch: {
+    type: Function as PropType<Fn>,
+    default: null,
+  },
+  afterFetch: {
+    type: Function as PropType<Fn>,
+    default: null,
+  },
   /**
    * 是否立即执行api请求
    */
   immediate: {
+    type: Boolean,
+    default: true,
+  },
+  autoCreateKey: {
     type: Boolean,
     default: true,
   },
@@ -231,7 +243,6 @@ export const basicProps = {
    */
   treeProps: {
     type: Object as PropType<BasicTableProps<any>['treeProps']>,
-    default: () => ({ hasChildren: 'hasChildren', children: 'children' }),
   },
   /**
    * 设置表格单元、行和列的布局方式

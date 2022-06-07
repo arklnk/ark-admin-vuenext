@@ -1,21 +1,13 @@
-import type { FetchSetting } from '/@/components/Table/src/types/table'
-import type { PaginationProps } from '/@/components/Table/src/types/pagination'
-
 export default {
   table: {
-    pagination: {
-      pageSizes: [10, 50, 80, 100],
-      pageSize: 10,
-      defaultPageSize: 10,
-      layout: 'prev, pager, next, jumper, ->, total',
-      pagerCount: 7,
-    } as PaginationProps,
+    defaultPageSizes: [10, 50, 80, 100],
+    defaultPageSize: 10,
+    defaultLayout: 'prev, pager, next, jumper, ->, total',
     fetchSetting: {
       pageField: 'page',
       sizeField: 'size',
       listField: 'list',
       totalField: 'pagination.total',
-    } as FetchSetting,
-    treeProps: { hasChildren: 'hasChildren', children: 'children' },
+    },
   },
 }

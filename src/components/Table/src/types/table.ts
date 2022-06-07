@@ -26,7 +26,10 @@ export interface FetchParams {
 export interface BasicTableProps<T = any> extends TableProps<T> {
   dataSource?: Recordable[]
   api?: (...arg: any[]) => Promise<any>
+  beforeFetch?: Fn
+  afterFetch?: Fn
   immediate?: boolean
+  autoCreateKey?: boolean
   clearSelectOnPageChange?: boolean
   tableSetting?: TableSetting
   fetchSetting?: FetchSetting

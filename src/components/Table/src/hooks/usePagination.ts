@@ -4,12 +4,7 @@ import type { PaginationProps } from '../types/pagination'
 
 import { ref, watch, unref, computed } from 'vue'
 import { isBoolean } from 'lodash-es'
-
-import componentSetting from '/@/settings/componentSetting'
-
-const {
-  table: { pagination: DefaultPaginationConfig },
-} = componentSetting
+import { DEFAULT_LAYOUT, DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZES } from '../const'
 
 export function usePagination(props: ComputedRef<BasicTableProps>) {
   const configRef = ref<PaginationProps>({})
@@ -36,8 +31,9 @@ export function usePagination(props: ComputedRef<BasicTableProps>) {
 
     return {
       currentPage: 1,
-      small: false,
-      ...DefaultPaginationConfig,
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageSizes: DEFAULT_PAGE_SIZES,
+      layout: DEFAULT_LAYOUT,
       ...(isBoolean(pagination) ? {} : pagination),
       ...unref(configRef),
     }

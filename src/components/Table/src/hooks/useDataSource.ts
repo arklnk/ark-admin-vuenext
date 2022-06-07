@@ -2,14 +2,9 @@ import type { ComputedRef, Ref } from 'vue'
 import type { PaginationProps } from '../types/pagination'
 import type { BasicTableProps, FetchParams } from '../types/table'
 
-import { watch, unref, ref, onMounted } from 'vue'
+import { watch, unref, ref, onMounted, computed } from 'vue'
 import { get, isBoolean, isFunction } from 'lodash-es'
-
-import componentSetting from '/@/settings/componentSetting'
-
-const {
-  table: { fetchSetting: FETCH_SETTING },
-} = componentSetting
+import { DEFAULT_PAGE_SIZE, FETCH_SETTING, ROW_KEY } from '../const'
 
 interface DataSourceAction {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>
@@ -18,7 +13,11 @@ interface DataSourceAction {
   tableData: Ref<Recordable[]>
 }
 
-export function useDataSource(props: ComputedRef<BasicTableProps>, action: DataSourceAction) {
+export function useDataSource(
+  props: ComputedRef<BasicTableProps>,
+  action: DataSourceAction,
+  emit: EmitFn
+) {
   const { setLoading, getPaginationInfo, setPagination } = action
 
   const dataSourceRef = ref<Recordable[]>([])
@@ -36,8 +35,17 @@ export function useDataSource(props: ComputedRef<BasicTableProps>, action: DataS
     }
   )
 
+  const getAutoCreateKey = computed(() => {
+    return unref(props).autoCreateKey && !unref(props).rowKey
+  })
+
+  const getRowKey = computed(() => {
+    const { rowKey } = unref(props)
+    return unref(getAutoCreateKey) ? ROW_KEY : rowKey
+  })
+
   async function fetch(opt?: FetchParams) {
-    const { api, fetchSetting, pagination } = unref(props)
+    const { api, fetchSetting, pagination, beforeFetch, afterFetch } = unref(props)
     if (!api || !isFunction(api)) return
 
     try {
@@ -51,24 +59,34 @@ export function useDataSource(props: ComputedRef<BasicTableProps>, action: DataS
 
       const pageParams: Recordable = {}
 
-      const { currentPage = 1, pageSize = -1 } = unref(getPaginationInfo) as PaginationProps
+      const { currentPage = 1, pageSize = DEFAULT_PAGE_SIZE } = unref(
+        getPaginationInfo
+      ) as PaginationProps
 
       if (isBoolean(pagination) && !pagination) {
         pageParams[pageField] = (opt && opt.page) || currentPage
         pageParams[sizeField] = pageSize
       }
 
-      const apiParams: Recordable = {
+      let apiParams: Recordable = {
         ...pageParams,
         ...(opt?.searchInfo || {}),
+      }
+
+      if (beforeFetch && isFunction(beforeFetch)) {
+        apiParams = (await beforeFetch(apiParams)) || apiParams
       }
 
       const res = await api(apiParams)
 
       const isArrayResult = Array.isArray(res)
 
-      const resultItems: Recordable[] = isArrayResult ? res : get(res, listField)
+      let resultItems: Recordable[] = isArrayResult ? res : get(res, listField)
       const resultTotal: number = isArrayResult ? 0 : get(res, totalField)
+
+      if (afterFetch && isFunction(afterFetch)) {
+        resultItems = (await afterFetch(resultItems)) || resultItems
+      }
 
       dataSourceRef.value = resultItems
       setPagination({
@@ -80,11 +98,18 @@ export function useDataSource(props: ComputedRef<BasicTableProps>, action: DataS
           currentPage: opt.page,
         })
       }
+
+      emit('fetch-success', {
+        items: resultItems,
+        total: resultTotal,
+      })
     } catch (error) {
       dataSourceRef.value = []
       setPagination({
         total: 0,
       })
+
+      emit('fetch-error', error)
     } finally {
       setLoading(false)
     }
@@ -101,5 +126,8 @@ export function useDataSource(props: ComputedRef<BasicTableProps>, action: DataS
   return {
     fetch,
     reload,
+
+    getAutoCreateKey,
+    getRowKey,
   }
 }
