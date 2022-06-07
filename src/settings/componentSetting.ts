@@ -11,8 +11,8 @@ export default {
       pagerCount: 7,
     } as PaginationProps,
     fetchSetting: {
-      pageField: 'pagination.page',
-      sizeField: 'pagination.size',
+      pageField: 'page',
+      sizeField: 'size',
       listField: 'list',
       totalField: 'pagination.total',
     } as FetchSetting,

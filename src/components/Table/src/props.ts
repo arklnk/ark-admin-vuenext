@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import type { PaginationProps } from './types/pagination'
-import type { TableSetting, BasicTableProps } from './types/table'
+import type { TableSetting, BasicTableProps, FetchSetting } from './types/table'
 
 /**
  * 二次封装表格，由于需要TS只能提示，需要手动编写原ElTable的props
@@ -42,6 +42,10 @@ export const basicProps = {
    */
   tableSetting: {
     type: Object as PropType<TableSetting>,
+    default: () => {},
+  },
+  fetchSetting: {
+    type: Object as PropType<FetchSetting>,
     default: () => {},
   },
   /**

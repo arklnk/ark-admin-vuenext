@@ -8,6 +8,12 @@ import { basicProps } from './props'
 
 export default defineComponent({
   name: 'BasicTable',
-  props: basicProps
+  props: basicProps,
+  emits: [
+    'register',
+    'fetch-success',
+    'fetch-error'
+  ],
+  setup() {}
 })
 </script>
