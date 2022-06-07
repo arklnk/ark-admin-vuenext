@@ -1,16 +1,6 @@
-import type { TreeNode } from 'element-plus/lib/components/table/src/table/defaults'
-import type { PropType, CSSProperties } from 'vue'
+import type { PropType } from 'vue'
 import type { PaginationProps } from './types/pagination'
-import type {
-  SizeType,
-  TableRowRecord,
-  TableRowColumnRecord,
-  TableSetting,
-  TableSorter,
-  TableSummaryRecord,
-  TableLayoutType,
-  TooltipType,
-} from './types/table'
+import type { TableSetting, BasicTableProps } from './types/table'
 
 /**
  * 二次封装表格，由于需要TS只能提示，需要手动编写原ElTable的props
@@ -18,19 +8,19 @@ import type {
  *
  * https://element-plus.org/zh-CN/component/table.html
  */
-export const basicTableProps = {
+export const basicProps = {
   /**
    * 表格数据源
    */
   dataSource: {
-    type: Array as PropType<Recordable[]>,
+    type: Array as PropType<BasicTableProps<any>['dataSource']>,
     default: null,
   },
   /**
    * 表格数据api请求
    */
   api: {
-    type: Function as PropType<(...arg: any[]) => Promise<any>>,
+    type: Function as PropType<BasicTableProps<any>['api']>,
     default: null,
   },
   /**
@@ -65,7 +55,7 @@ export const basicTableProps = {
    * 分页功能
    */
   pagination: {
-    type: Object as PropType<PaginationProps>,
+    type: [Object, Boolean] as PropType<PaginationProps | boolean>,
   },
   /**
    * 表格loading加载
@@ -75,6 +65,12 @@ export const basicTableProps = {
     default: false,
   },
   //----- ElTable原有的属性
+  height: {
+    type: [String, Number],
+  },
+  maxHeight: {
+    type: [String, Number],
+  },
   /**
    * 是否为斑马纹 table
    */
@@ -93,7 +89,7 @@ export const basicTableProps = {
    * Table 的尺寸
    */
   size: {
-    type: String as PropType<SizeType>,
+    type: String as PropType<BasicTableProps<any>['size']>,
   },
   /**
    * 列的宽度是否自撑开
@@ -126,22 +122,19 @@ export const basicTableProps = {
    * 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
    */
   rowClassName: {
-    type: [String, Function as PropType<(data: TableRowRecord<any>) => string>],
+    type: [String, Function] as PropType<BasicTableProps<any>['rowClassName']>,
   },
   /**
    * 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
    */
   rowStyle: {
-    type: [
-      Object as CSSProperties,
-      Function as PropType<(data: TableRowRecord<any>) => CSSProperties>,
-    ],
+    type: [Object, Function] as PropType<BasicTableProps<any>['rowStyle']>,
   },
   /**
    * 行数据的 Key
    */
   rowKey: {
-    type: [String, Function as PropType<(data: any) => string>],
+    type: [String, Function] as PropType<BasicTableProps<any>['rowKey']>,
   },
   /**
    * 空数据时显示的文本内容， 也可以通过 #empty 设置
@@ -161,19 +154,19 @@ export const basicTableProps = {
    * 可以通过该属性设置 Table 目前的展开行，需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。
    */
   expandRowKeys: {
-    type: [Array as PropType<any[]>],
+    type: Array as PropType<any[]>,
   },
   /**
    * 默认的排序列的 prop 和顺序。 它的 prop 属性指定默认的排序的列，order 指定默认排序的顺序
    */
   defaultSort: {
-    type: Object as PropType<TableSorter>,
+    type: Object as PropType<BasicTableProps<any>['defaultSort']>,
   },
   /**
    * tooltip effect 属性
    */
   tooltipEffect: {
-    type: String as PropType<TooltipType>,
+    type: String as PropType<BasicTableProps<any>['tooltipEffect']>,
     default: 'dark',
   },
   /**
@@ -194,20 +187,13 @@ export const basicTableProps = {
    * 自定义的合计计算方法
    */
   summaryMethod: {
-    type: Function as PropType<(data: TableSummaryRecord<any>) => string[]>,
+    type: Function as PropType<BasicTableProps<any>['summaryMethod']>,
   },
   /**
    * 合并行或列的计算方法
    */
   spanMethod: {
-    type: Function as PropType<
-      (data: TableRowColumnRecord<any>) =>
-        | number[]
-        | {
-            rowspan: number
-            colspan: number
-          }
-    >,
+    type: Function as PropType<BasicTableProps<any>['spanMethod']>,
   },
   /**
    * 在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。 若为 true，则选中所有行；若为 false，则取消选择所有行
@@ -234,25 +220,20 @@ export const basicTableProps = {
    * 加载子节点数据的函数，lazy 为 true 时生效，函数第二个参数包含了节点的层级信息
    */
   load: {
-    type: Function as PropType<
-      (row: any, treeNode: TreeNode, resolve: (data: any[]) => void) => void
-    >,
+    type: Function as PropType<BasicTableProps<any>['load']>,
   },
   /**
    * 渲染嵌套数据的配置选项
    */
   treeProps: {
-    type: Object as PropType<{
-      hasChildren?: string | undefined
-      children?: string | undefined
-    }>,
+    type: Object as PropType<BasicTableProps<any>['treeProps']>,
     default: () => ({ hasChildren: 'hasChildren', children: 'children' }),
   },
   /**
    * 设置表格单元、行和列的布局方式
    */
   tableLayout: {
-    type: String as PropType<TableLayoutType>,
+    type: String as PropType<BasicTableProps<any>['tableLayout']>,
     default: 'fixed',
   },
   /**
