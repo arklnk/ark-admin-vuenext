@@ -54,7 +54,6 @@ export function useDataSource(
         item[ROW_KEY] = buildUUID()
       }
 
-      // tree
       if (item[childrenKeyName] && item[childrenKeyName].length) {
         setTableKey(item[childrenKeyName])
       }
