@@ -243,6 +243,7 @@ export const basicProps = {
    */
   treeProps: {
     type: Object as PropType<BasicTableProps<any>['treeProps']>,
+    default: () => ({ hasChildren: 'hasChildren', children: 'children' }),
   },
   /**
    * 设置表格单元、行和列的布局方式

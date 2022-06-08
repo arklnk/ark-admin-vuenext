@@ -18,11 +18,6 @@ export interface FetchSetting {
   totalField: string
 }
 
-export interface FetchParams {
-  searchInfo?: Recordable
-  page?: number
-}
-
 export interface BasicTableProps<T = any> extends TableProps<T> {
   dataSource?: Recordable[]
   api?: (...arg: any[]) => Promise<any>

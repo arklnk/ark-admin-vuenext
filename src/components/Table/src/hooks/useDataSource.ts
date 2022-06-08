@@ -1,16 +1,17 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { PaginationProps } from '../types/pagination'
-import type { BasicTableProps, FetchParams } from '../types/table'
+import type { BasicTableProps } from '../types/table'
 
 import { watch, unref, ref, onMounted, computed } from 'vue'
-import { get, isBoolean, isFunction } from 'lodash-es'
+import { cloneDeep, get, isBoolean, isFunction } from 'lodash-es'
 import { DEFAULT_PAGE_SIZE, FETCH_SETTING, ROW_KEY } from '../const'
+import { buildUUID } from '/@/utils/uuid'
 
 interface DataSourceAction {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
-  tableData: Ref<Recordable[]>
+  clearSelectedRowKeys: () => void
 }
 
 export function useDataSource(
@@ -18,7 +19,7 @@ export function useDataSource(
   action: DataSourceAction,
   emit: EmitFn
 ) {
-  const { setLoading, getPaginationInfo, setPagination } = action
+  const { setLoading, getPaginationInfo, setPagination, clearSelectedRowKeys } = action
 
   const dataSourceRef = ref<Recordable[]>([])
 
@@ -35,6 +36,35 @@ export function useDataSource(
     }
   )
 
+  function handleTableChange(pagination: PaginationProps) {
+    const { clearSelectOnPageChange } = unref(props)
+    if (clearSelectOnPageChange) {
+      clearSelectedRowKeys()
+    }
+    setPagination(pagination)
+    fetch()
+  }
+
+  function setTableKey(items: any[]) {
+    if (!items || !Array.isArray(items)) return
+    const childrenKeyName = unref(getChildrenKey)
+
+    items.forEach((item) => {
+      if (!item[ROW_KEY]) {
+        item[ROW_KEY] = buildUUID()
+      }
+
+      // tree
+      if (item[childrenKeyName] && item[childrenKeyName].length) {
+        setTableKey(item[childrenKeyName])
+      }
+    })
+  }
+
+  const getChildrenKey = computed(() => {
+    return unref(props).treeProps?.children || 'children'
+  })
+
   const getAutoCreateKey = computed(() => {
     return unref(props).autoCreateKey && !unref(props).rowKey
   })
@@ -44,7 +74,39 @@ export function useDataSource(
     return unref(getAutoCreateKey) ? ROW_KEY : rowKey
   })
 
-  async function fetch(opt?: FetchParams) {
+  const getDataSourceRef = computed((): Recordable[] => {
+    const dataSource = unref(dataSourceRef)
+    const childrenKeyName = unref(getChildrenKey)
+
+    if (!dataSource || dataSource.length === 0) {
+      return unref(dataSourceRef)
+    }
+    if (unref(getAutoCreateKey)) {
+      const first = dataSource[0]
+      const last = dataSource[dataSource.length - 1]
+
+      if (first && last) {
+        if (!first[ROW_KEY] && !last[ROW_KEY]) {
+          const cloneData = cloneDeep(dataSource)
+          cloneData.forEach((item) => {
+            if (!item[ROW_KEY]) {
+              item[ROW_KEY] = buildUUID()
+            }
+
+            if (item[childrenKeyName] && item[childrenKeyName].length) {
+              setTableKey(item[childrenKeyName])
+            }
+          })
+
+          dataSourceRef.value = cloneData
+        }
+      }
+    }
+
+    return unref(dataSourceRef)
+  })
+
+  async function fetch() {
     const { api, fetchSetting, pagination, beforeFetch, afterFetch } = unref(props)
     if (!api || !isFunction(api)) return
 
@@ -64,13 +126,12 @@ export function useDataSource(
       ) as PaginationProps
 
       if (isBoolean(pagination) && !pagination) {
-        pageParams[pageField] = (opt && opt.page) || currentPage
+        pageParams[pageField] = currentPage
         pageParams[sizeField] = pageSize
       }
 
       let apiParams: Recordable = {
         ...pageParams,
-        ...(opt?.searchInfo || {}),
       }
 
       if (beforeFetch && isFunction(beforeFetch)) {
@@ -93,12 +154,6 @@ export function useDataSource(
         total: resultTotal,
       })
 
-      if (opt && opt.page) {
-        setPagination({
-          currentPage: opt.page,
-        })
-      }
-
       emit('fetch-success', {
         items: resultItems,
         total: resultTotal,
@@ -115,8 +170,12 @@ export function useDataSource(
     }
   }
 
-  async function reload(opt?: FetchParams) {
-    return await fetch(opt)
+  function getDataSource<T = Recordable>() {
+    return getDataSourceRef.value as T[]
+  }
+
+  async function reload() {
+    return await fetch()
   }
 
   onMounted(() => {
@@ -124,10 +183,14 @@ export function useDataSource(
   })
 
   return {
+    getDataSourceRef,
+    getDataSource,
+    getAutoCreateKey,
+    getRowKey,
+
     fetch,
     reload,
 
-    getAutoCreateKey,
-    getRowKey,
+    handleTableChange,
   }
 }
