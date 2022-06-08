@@ -43,13 +43,6 @@ export const basicProps = {
     default: true,
   },
   /**
-   * 切换页面时清空选择
-   */
-  clearSelectOnPageChange: {
-    type: Boolean,
-    default: false,
-  },
-  /**
    * 显示需要的表格设置
    */
   tableSetting: {

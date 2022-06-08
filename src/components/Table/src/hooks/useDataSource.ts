@@ -11,7 +11,6 @@ interface DataSourceAction {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
-  clearSelectedRowKeys: () => void
 }
 
 export function useDataSource(
@@ -19,7 +18,7 @@ export function useDataSource(
   action: DataSourceAction,
   emit: EmitFn
 ) {
-  const { setLoading, getPaginationInfo, setPagination, clearSelectedRowKeys } = action
+  const { setLoading, getPaginationInfo, setPagination } = action
 
   const dataSourceRef = ref<Recordable[]>([])
 
@@ -35,15 +34,6 @@ export function useDataSource(
       immediate: true,
     }
   )
-
-  function handleTableChange(pagination: PaginationProps) {
-    const { clearSelectOnPageChange } = unref(props)
-    if (clearSelectOnPageChange) {
-      clearSelectedRowKeys()
-    }
-    setPagination(pagination)
-    fetch()
-  }
 
   function setTableKey(items: any[]) {
     if (!items || !Array.isArray(items)) return
@@ -124,7 +114,7 @@ export function useDataSource(
         getPaginationInfo
       ) as PaginationProps
 
-      if (isBoolean(pagination) && !pagination) {
+      if (!isBoolean(pagination) || !isBoolean(unref(getPaginationInfo))) {
         pageParams[pageField] = currentPage
         pageParams[sizeField] = pageSize
       }
@@ -189,7 +179,5 @@ export function useDataSource(
 
     fetch,
     reload,
-
-    handleTableChange,
   }
 }

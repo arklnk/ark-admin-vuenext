@@ -25,7 +25,6 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
   afterFetch?: Fn
   immediate?: boolean
   autoCreateKey?: boolean
-  clearSelectOnPageChange?: boolean
   tableSetting?: TableSetting
   fetchSetting?: FetchSetting
   showTableSetting?: boolean

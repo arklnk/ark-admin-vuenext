@@ -57,6 +57,10 @@ export function usePagination(props: ComputedRef<BasicTableProps>) {
   }
 
   function getShowPagination() {
+    const pagination = getPagination()
+    if (isBoolean(pagination) && !pagination) {
+      return false
+    }
     return unref(showRef)
   }
 
