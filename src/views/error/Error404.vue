@@ -21,7 +21,7 @@
       :class="`${prefixCls}__content`"
       class="relative w-[500px] max-w-full m-5 text-center py-[60px] px-[40px] rounded-sm"
     >
-      <p class="mb-4 text-base text-gray-600">该页面无法正常打开...</p>
+      <p class="mb-4 text-base text-gray-600 dark:text-white">该页面无法正常打开...</p>
       <p class="mb-4 text-xs text-gray-400">请检查链接是否输入正确, 或点击按钮返回首页</p>
       <ElButton class="mt-2" @click="go()">返回首页</ElButton>
     </ElCard>
