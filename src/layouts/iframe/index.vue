@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper v-loading="loadingRef" fixed-height :content-background="false" dense>
+  <PageWrapper v-loading="loadingRef" fixed-height content-full-height :content-background="false" dense>
     <iframe
       :src="frameSrc"
       ref="frameRef"

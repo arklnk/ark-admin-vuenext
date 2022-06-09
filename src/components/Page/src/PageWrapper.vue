@@ -20,9 +20,10 @@
 </template>
 
 <script lang="ts">
-import { CSSProperties, PropType, unref } from 'vue'
+import { CSSProperties, PropType, provide, unref } from 'vue'
 
 import { defineComponent, computed, ref, watch } from 'vue'
+import { PageWrapperFixedHeightKey } from '..'
 import PageHeader from './PageHeader.vue'
 import { useDesign } from '/@/hooks/core/useDesign'
 import { useRootSetting } from '/@/hooks/setting/useRootSetting'
@@ -38,11 +39,24 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    /**
+     * 是否取消margin
+     */
     dense: {
       type: Boolean,
       default: false,
     },
+    /**
+     * 固定高度影响height
+     */
     fixedHeight: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * 占满高度影响min-height
+     */
+    contentFullHeight: {
       type: Boolean,
       default: false,
     },
@@ -57,6 +71,9 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    /**
+     * 是否使用自带的背景颜色
+     */
     contentBackground: {
       type: Boolean,
       default: true,
@@ -65,7 +82,9 @@ export default defineComponent({
       type: [Number, String],
       default: 0,
     },
-    // 内容区域高度是否计算上Footer
+    /**
+     * 当contentFullHeight启用时内容区域高度是否计算上Footer
+     */
     includeFooter: {
       type: Boolean,
       default: false,
@@ -88,14 +107,19 @@ export default defineComponent({
       ]
     })
 
+    provide(
+      PageWrapperFixedHeightKey,
+      computed(() => props.fixedHeight)
+    )
+
     const { appFooterHeightRef } = useLayoutHeight()
-    const getIsFixdHeight = computed(() => props.fixedHeight)
+    const getContentFullHeight = computed(() => props.contentFullHeight)
     const getUpwardSpace = computed(() => props.upwardSpace)
     const getFooterOffsetHeight = computed(() => {
       return props.includeFooter ? unref(appFooterHeightRef) : 0
     })
     const { contentHeight, recalcHeight } = useContentHeight(
-      getIsFixdHeight,
+      getContentFullHeight,
       wrapperRef,
       [headerRef],
       [contentRef],
@@ -103,9 +127,9 @@ export default defineComponent({
       getFooterOffsetHeight
     )
     const getContentStyle = computed((): CSSProperties => {
-      const { fixedHeight, contentStyle } = props
+      const { contentStyle, contentFullHeight, fixedHeight } = props
 
-      if (!fixedHeight) {
+      if (!contentFullHeight) {
         return {
           ...contentStyle,
         }
@@ -114,7 +138,8 @@ export default defineComponent({
       let height = `${contentHeight.value}px`
       return {
         ...contentStyle,
-        ...{ height },
+        minHeight: height,
+        ...(fixedHeight ? { height } : {}),
       }
     })
 
