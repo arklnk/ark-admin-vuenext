@@ -1,5 +1,5 @@
 <template>
-  <span class="text-center cursor-pointer text-black dark:text-white" @click="toggleDarkMode">
+  <span class="text-center cursor-pointer text-yellow-300 dark:text-purple-300" @click="toggleDarkMode">
     <IcBaselineWbSunny v-if="getTheme === ThemeEnum.LIGHT" />
     <IcOutlineDarkMode v-else />
   </span>
