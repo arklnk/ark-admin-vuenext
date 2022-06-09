@@ -1,8 +1,11 @@
 export default {
   table: {
-    defaultPageSizes: [10, 50, 80, 100],
-    defaultPageSize: 10,
-    defaultLayout: 'prev, pager, next, jumper, ->, total',
+    pagination: {
+      pageSizes: [10, 50, 80, 100],
+      pageSize: 10,
+      layout: 'total, sizes, prev, pager, next',
+      background: true,
+    },
     fetchSetting: {
       pageField: 'page',
       sizeField: 'size',

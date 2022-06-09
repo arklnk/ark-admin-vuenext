@@ -4,7 +4,7 @@ import type { BasicTableProps } from '../types/table'
 
 import { watch, unref, ref, onMounted, computed } from 'vue'
 import { cloneDeep, get, isBoolean, isFunction } from 'lodash-es'
-import { DEFAULT_PAGE_SIZE, FETCH_SETTING, ROW_KEY } from '../const'
+import { DEFAULT_PAGINATION, FETCH_SETTING, ROW_KEY } from '../const'
 import { buildUUID } from '/@/utils/uuid'
 
 interface DataSourceAction {
@@ -34,6 +34,12 @@ export function useDataSource(
       immediate: true,
     }
   )
+
+  function handlePageChange(pagination: Partial<PaginationProps>) {
+    setPagination(pagination)
+
+    fetch()
+  }
 
   function setTableKey(items: any[]) {
     if (!items || !Array.isArray(items)) return
@@ -110,7 +116,7 @@ export function useDataSource(
 
       const pageParams: Recordable = {}
 
-      const { currentPage = 1, pageSize = DEFAULT_PAGE_SIZE } = unref(
+      const { currentPage = 1, pageSize = DEFAULT_PAGINATION.pageSize } = unref(
         getPaginationInfo
       ) as PaginationProps
 
@@ -179,5 +185,7 @@ export function useDataSource(
 
     fetch,
     reload,
+
+    handlePageChange,
   }
 }

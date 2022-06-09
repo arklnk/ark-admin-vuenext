@@ -65,11 +65,16 @@ export const basicProps = {
    */
   pagination: {
     type: [Object, Boolean] as PropType<PaginationProps | boolean>,
+    default: null,
   },
   /**
    * 表格loading加载
    */
   loading: {
+    type: Boolean,
+    default: false,
+  },
+  fixedHeader: {
     type: Boolean,
     default: false,
   },
@@ -85,7 +90,7 @@ export const basicProps = {
    */
   stripe: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   /**
    * 是否带有纵向边框

@@ -30,4 +30,5 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
   showTableSetting?: boolean
   pagination?: PaginationProps | boolean
   loading?: boolean
+  fixedHeader?: boolean
 }

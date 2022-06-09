@@ -2,13 +2,9 @@ import componentSetting from '/@/settings/componentSetting'
 
 const { table } = componentSetting
 
-const { defaultLayout, defaultPageSize, defaultPageSizes, fetchSetting } = table
+const { pagination, fetchSetting } = table
 
-export const DEFAULT_LAYOUT = defaultLayout
-
-export const DEFAULT_PAGE_SIZE = defaultPageSize
-
-export const DEFAULT_PAGE_SIZES = defaultPageSizes
+export const DEFAULT_PAGINATION = pagination
 
 export const FETCH_SETTING = fetchSetting
 

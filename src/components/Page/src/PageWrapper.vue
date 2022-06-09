@@ -198,6 +198,7 @@ $prefixCls: #{var.$namespace}-page-wrapper;
 
   &-content {
     margin: 16px;
+    overflow: auto;
   }
 
   &-content-bg {
