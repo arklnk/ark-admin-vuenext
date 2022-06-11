@@ -27,7 +27,7 @@ import { basicProps } from './props'
 import { usePagination } from './hooks/usePagination'
 import { useDataSource } from './hooks/useDataSource'
 import { useDesign } from '/@/hooks/core/useDesign'
-import { isBoolean } from 'lodash'
+import { isBoolean, omit } from 'lodash-es'
 
 export default defineComponent({
   name: 'BasicTable',
@@ -52,16 +52,17 @@ export default defineComponent({
       { getPaginationInfo, setPagination, setLoading },
       emit
     )
+
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
-      console.log({
-        ...unref(getProps),
-        data,
-      })
-      return {
+      let propsData: Recordable = {
         ...unref(getProps),
         data,
       }
+
+      propsData = omit(propsData, ['class'])
+
+      return propsData
     })
 
     const getPagingBindValues = computed((): PaginationProps => {

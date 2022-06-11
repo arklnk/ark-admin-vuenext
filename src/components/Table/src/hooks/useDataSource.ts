@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue'
 import type { PaginationProps } from '../types/pagination'
-import type { BasicTableProps } from '../types/table'
+import type { BasicTableProps, FetchParams } from '../types/table'
 
 import { watch, unref, ref, onMounted, computed } from 'vue'
 import { cloneDeep, get, isBoolean, isFunction } from 'lodash-es'
@@ -101,7 +101,7 @@ export function useDataSource(
     return unref(dataSourceRef)
   })
 
-  async function fetch() {
+  async function fetch(opt?: FetchParams) {
     const { api, fetchSetting, pagination, beforeFetch, afterFetch } = unref(props)
     if (!api || !isFunction(api)) return
 
@@ -121,7 +121,7 @@ export function useDataSource(
       ) as PaginationProps
 
       if (!isBoolean(pagination) || !isBoolean(unref(getPaginationInfo))) {
-        pageParams[pageField] = currentPage
+        pageParams[pageField] = (opt && opt.page) || currentPage
         pageParams[sizeField] = pageSize
       }
 
@@ -138,7 +138,7 @@ export function useDataSource(
       const isArrayResult = Array.isArray(res)
 
       let resultItems: Recordable[] = isArrayResult ? res : get(res, listField)
-      const resultTotal: number = isArrayResult ? 0 : get(res, totalField)
+      const resultTotal: number = isArrayResult ? res.length : get(res, totalField)
 
       if (afterFetch && isFunction(afterFetch)) {
         resultItems = (await afterFetch(resultItems)) || resultItems
@@ -148,6 +148,12 @@ export function useDataSource(
       setPagination({
         total: resultTotal,
       })
+
+      if (opt && opt.page) {
+        setPagination({
+          currentPage: opt.page || 1
+        })
+      }
 
       emit('fetch-success', {
         items: resultItems,
@@ -169,8 +175,8 @@ export function useDataSource(
     return getDataSourceRef.value as T[]
   }
 
-  async function reload() {
-    return await fetch()
+  async function reload(opt?: FetchParams) {
+    return await fetch(opt)
   }
 
   onMounted(() => {

@@ -10,7 +10,7 @@ import type { TableSetting, BasicTableProps, FetchSetting } from './types/table'
  */
 export const basicProps = {
   /**
-   * 表格数据源
+   * 表格数据源，原ElTable的data属性不生效，当api属性存在时该值也不生效
    */
   dataSource: {
     type: Array as PropType<BasicTableProps<any>['dataSource']>,
@@ -71,10 +71,6 @@ export const basicProps = {
    * 表格loading加载
    */
   loading: {
-    type: Boolean,
-    default: false,
-  },
-  fixedHeader: {
     type: Boolean,
     default: false,
   },

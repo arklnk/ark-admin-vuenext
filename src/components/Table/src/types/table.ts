@@ -18,6 +18,10 @@ export interface FetchSetting {
   totalField: string
 }
 
+export interface FetchParams {
+  page?: number
+}
+
 export interface BasicTableProps<T = any> extends TableProps<T> {
   dataSource?: Recordable[]
   api?: (...arg: any[]) => Promise<any>
@@ -30,5 +34,9 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
   showTableSetting?: boolean
   pagination?: PaginationProps | boolean
   loading?: boolean
-  fixedHeader?: boolean
+}
+
+export interface BasicTableActionType {
+  reload: (opt?: FetchParams) => Promise<void>
+  setLoading: (loading: boolean) => void
 }
