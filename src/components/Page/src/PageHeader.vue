@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDesign } from '/@/hooks/core/useDesign'
+import { useDesign } from '/@/composables/core/useDesign'
 
 defineProps({
   title: {

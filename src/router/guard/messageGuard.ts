@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-import { useMessage } from '/@/hooks/web/useMessage'
+import { useMessage } from '/@/composables/web/useMessage'
 import projectSetting from '/@/settings/projectSetting'
 import { warn } from '/@/utils/log'
 

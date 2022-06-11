@@ -12,7 +12,7 @@ import IcOutlineDarkMode from '~icons/ic/outline-dark-mode'
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/core/theme/updateBackground'
 import { updateDarkMode } from '/@/core/theme/updateDarkMode'
 import { ThemeEnum } from '/@/enums/appEnum'
-import { useRootSetting } from '/@/hooks/setting/useRootSetting'
+import { useRootSetting } from '/@/composables/setting/useRootSetting'
 
 const { getTheme, setDarkMode } = useRootSetting()
 

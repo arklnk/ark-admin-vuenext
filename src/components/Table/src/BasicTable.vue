@@ -22,11 +22,11 @@ import type { BasicTableProps } from './types/table'
 import type { PaginationProps } from './types/pagination'
 
 import { computed, defineComponent, ref, unref } from 'vue'
-import { useLoading } from './hooks/useLoading'
+import { useLoading } from './composables/useLoading'
 import { basicProps } from './props'
-import { usePagination } from './hooks/usePagination'
-import { useDataSource } from './hooks/useDataSource'
-import { useDesign } from '/@/hooks/core/useDesign'
+import { usePagination } from './composables/usePagination'
+import { useDataSource } from './composables/useDataSource'
+import { useDesign } from '/@/composables/core/useDesign'
 import { isBoolean, omit } from 'lodash-es'
 
 export default defineComponent({

@@ -1,7 +1,7 @@
 import { isString, isNumber } from 'lodash-es'
 import { ComputedRef, nextTick, Ref, ref, unref } from 'vue'
-import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated'
-import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn'
+import { onMountedOrActivated } from '../core/onMountedOrActivated'
+import { useWindowSizeFn } from '../event/useWindowSizeFn'
 import { numberUnit } from '/@/utils'
 import { getViewportOffset } from '/@/utils/dom'
 
@@ -10,7 +10,7 @@ type Upward = string | number | null | undefined
 /**
  * 动态计算内容高度，根据锚点dom最下坐标到屏幕最下坐标，根据传入dom的高度、padding、margin等值进行动态计算
  * 最终获取合适的内容高度
- * @link https://github.com/vbenjs/vben-admin-thin-next/blob/main/src/hooks/web/useContentHeight.ts
+ * @link https://github.com/vbenjs/vben-admin-thin-next/blob/main/src/composables/web/useContentHeight.ts
  *
  * @param flag 用于开启计算的响应式标识
  * @param anchorRef 锚点组件 Ref<ElRef | ComponentRef>

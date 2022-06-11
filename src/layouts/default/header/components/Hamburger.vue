@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import IconHamburger from '~icons/icon-park-outline/indent-right'
-import { useDesign } from '/@/hooks/core/useDesign'
+import { useDesign } from '/@/composables/core/useDesign'
 
 defineProps({
   collapsed: {

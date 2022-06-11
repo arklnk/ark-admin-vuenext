@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { MenuModeEnum } from '/@/enums/menuEnum'
-import { useDesign } from '/@/hooks/core/useDesign'
+import { useDesign } from '/@/composables/core/useDesign'
 
 const props = defineProps({
   def: {

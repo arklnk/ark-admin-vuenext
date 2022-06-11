@@ -20,7 +20,7 @@
 import AccountLoginForm from './AccountLoginForm.vue'
 import { AppDarkModeToggle } from '/@/components/Application'
 import { GITHUB_URL } from '/@/settings/siteSetting'
-import { useDesign } from '/@/hooks/core/useDesign'
+import { useDesign } from '/@/composables/core/useDesign'
 
 const { prefixCls } = useDesign('login')
 </script>

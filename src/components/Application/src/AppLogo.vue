@@ -11,8 +11,8 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { useDesign } from '/@/hooks/core/useDesign'
-import { useGo } from '/@/hooks/web/useGo'
+import { useDesign } from '/@/composables/core/useDesign'
+import { useGo } from '/@/composables/web/useGo'
 const title = import.meta.env.VITE_APP_TITLE
 
 defineProps({

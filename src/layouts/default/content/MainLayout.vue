@@ -26,10 +26,10 @@
 import { computed } from 'vue'
 import AppFooter from '../footer/index.vue'
 import ProjectConfig from '../setting/index.vue'
-import { useDesign } from '/@/hooks/core/useDesign'
-import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
-import { useRootSetting } from '/@/hooks/setting/useRootSetting'
-import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
+import { useDesign } from '/@/composables/core/useDesign'
+import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
+import { useRootSetting } from '/@/composables/setting/useRootSetting'
+import { useTransitionSetting } from '/@/composables/setting/useTransitionSetting'
 import { getTransitionName } from './getTransitionName'
 
 const { prefixCls } = useDesign('app-main')

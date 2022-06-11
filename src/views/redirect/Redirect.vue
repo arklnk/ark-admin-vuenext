@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { useGo } from '/@/hooks/web/useGo'
+import { useGo } from '/@/composables/web/useGo'
 
 const { params, query } = useRoute()
 const { path } = params

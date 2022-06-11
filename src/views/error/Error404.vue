@@ -29,8 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { useDesign } from '/@/hooks/core/useDesign'
-import { useGo } from '/@/hooks/web/useGo'
+import { useDesign } from '/@/composables/core/useDesign'
+import { useGo } from '/@/composables/web/useGo'
 
 const MAX_RANDOM_SIZE = Object.freeze(40)
 const go = useGo()

@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import { useDesign } from '/@/hooks/core/useDesign'
+import { useDesign } from '/@/composables/core/useDesign'
 import { AppLogo } from '/@/components/Application'
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
-import { useRootSetting } from '/@/hooks/setting/useRootSetting'
+import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
+import { useRootSetting } from '/@/composables/setting/useRootSetting'
 
 import Menu from '../menu/index.vue'
 

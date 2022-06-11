@@ -23,7 +23,7 @@ import IconAccount from '~icons/mdi/shield-account-outline'
 import { useUserStore } from '/@/stores/modules/user'
 import DefaultAvatar from '/@/assets/svg/user-default-avatar.svg'
 import { PageEnum } from '/@/enums/pageEnum'
-import { useGo } from '/@/hooks/web/useGo'
+import { useGo } from '/@/composables/web/useGo'
 
 const userStore = useUserStore()
 

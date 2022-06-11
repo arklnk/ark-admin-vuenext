@@ -1,7 +1,7 @@
 import type { Router } from 'vue-router'
 
 import NProgress from 'nprogress'
-import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
+import { useTransitionSetting } from '/@/composables/setting/useTransitionSetting'
 import { unref } from 'vue'
 
 export function createProgressGuard(router: Router) {

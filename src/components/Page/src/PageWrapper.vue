@@ -25,9 +25,9 @@ import { CSSProperties, PropType, provide, unref } from 'vue'
 import { defineComponent, computed, ref, watch } from 'vue'
 import { PageWrapperFixedHeightKey } from '..'
 import PageHeader from './PageHeader.vue'
-import { useDesign } from '/@/hooks/core/useDesign'
-import { useRootSetting } from '/@/hooks/setting/useRootSetting'
-import { useContentHeight } from '/@/hooks/web/useContentHeight'
+import { useDesign } from '/@/composables/core/useDesign'
+import { useRootSetting } from '/@/composables/setting/useRootSetting'
+import { useContentHeight } from '/@/composables/web/useContentHeight'
 import { useLayoutHeight } from '/@/layouts/default/content/useLayoutHeight'
 
 export default defineComponent({

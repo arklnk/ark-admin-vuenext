@@ -17,13 +17,13 @@
 import { computed, unref } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { useDesign } from '/@/hooks/core/useDesign'
+import { useDesign } from '/@/composables/core/useDesign'
 import { basicRoutes } from '/@/router/routes/basic'
 import { usePermissionStore } from '/@/stores/modules/permission'
 
 import MenuItem from './components/MenuItem.vue'
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
-import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
+import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
+import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 
 const props = defineProps({

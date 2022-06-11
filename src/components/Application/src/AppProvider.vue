@@ -2,7 +2,7 @@
 import { defineComponent, ref, toRefs } from 'vue'
 import { createAppProviderContext } from './useAppContext'
 import { MOBILE_WIDTH } from '/@/enums/appEnum'
-import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn'
+import { useWindowSizeFn } from '/@/composables/event/useWindowSizeFn'
 import { prefixCls as PrefixClsValue } from '/@/settings/designSetting'
 
 const props = {

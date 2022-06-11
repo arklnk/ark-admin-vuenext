@@ -34,12 +34,12 @@ import { FullScreen, Hamburger, UserDropdown } from './components'
 import ProjectConfig from '../setting/index.vue'
 
 import { useLayoutHeight } from '../content/useLayoutHeight'
-import { useDesign } from '/@/hooks/core/useDesign'
-import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
+import { useDesign } from '/@/composables/core/useDesign'
+import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
+import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import Menu from '../menu/index.vue'
-import { useRootSetting } from '/@/hooks/setting/useRootSetting'
+import { useRootSetting } from '/@/composables/setting/useRootSetting'
 
 const { prefixCls } = useDesign('app-header')
 const { setAppHeaderHeight } = useLayoutHeight()

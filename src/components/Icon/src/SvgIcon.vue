@@ -12,7 +12,7 @@ export default {
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useDesign } from '/@/hooks/core/useDesign'
+import { useDesign } from '/@/composables/core/useDesign'
 
 const props = defineProps({
   prefix: {

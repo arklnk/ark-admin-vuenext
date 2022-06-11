@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { AppProvider } from '/@/components/Application'
 import localeZh from 'element-plus/lib/locale/lang/zh-cn'
-import { useElementUISetting } from './hooks/setting/useElementUISetting'
+import { useElementUISetting } from './composables/setting/useElementUISetting'
 
 // default zh locale
 const locale = localeZh

@@ -5,7 +5,7 @@ import type { RequestOptions, Result } from '/#/axios'
 
 import { isString, merge } from 'lodash-es'
 import { ContentTypeEnum, ResultEnum } from '/@/enums/httpEnum'
-import { useMessage } from '/@/hooks/web/useMessage'
+import { useMessage } from '/@/composables/web/useMessage'
 import { SAxios } from './sAxios'
 import { formatRequestDate, joinTimestamp as joinTimestampHelper } from './helper'
 import { getToken } from '../../auth'

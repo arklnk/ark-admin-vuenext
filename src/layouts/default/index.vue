@@ -12,10 +12,10 @@
 import AppSidebar from './sidebar/index.vue'
 import AppHeader from './header/index.vue'
 import AppMain from './content/MainLayout.vue'
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
+import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
 import { computed } from 'vue'
 import { MenuModeEnum } from '/@/enums/menuEnum'
-import { useRootSetting } from '../../hooks/setting/useRootSetting'
+import { useRootSetting } from '../../composables/setting/useRootSetting'
 
 const { getMenuMode } = useMenuSetting()
 const { getFullContent } = useRootSetting()

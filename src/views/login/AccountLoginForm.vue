@@ -58,7 +58,7 @@ import { isEmpty, debounce } from 'lodash-es'
 import { getImageCaptcha, userLogin } from '/@/api/login'
 import { useUserStore } from '/@/stores/modules/user'
 import { PageEnum } from '/@/enums/pageEnum'
-import { useGo } from '/@/hooks/web/useGo'
+import { useGo } from '/@/composables/web/useGo'
 
 const formData = reactive({
   username: '',

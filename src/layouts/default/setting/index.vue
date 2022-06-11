@@ -109,14 +109,14 @@ import SwitchItem from './components/SwitchItem.vue'
 import MenuModePicker from './components/MenuModePicker.vue'
 import { AppDarkModeToggle } from '/@/components/Application'
 
-import { useRootSetting } from '/@/hooks/setting/useRootSetting'
+import { useRootSetting } from '/@/composables/setting/useRootSetting'
 import { updateTheme } from '/@/core/theme/updateTheme'
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting'
+import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
 import { updateGrayMode } from '/@/core/theme/updateGrayMode'
 import { updateColorWeak } from '/@/core/theme/updateColorWeak'
-import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting'
+import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/core/theme/updateBackground'
-import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting'
+import { useTransitionSetting } from '/@/composables/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
 import {
   ContentEnum,
