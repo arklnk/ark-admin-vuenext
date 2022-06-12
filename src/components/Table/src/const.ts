@@ -8,4 +8,6 @@ export const DEFAULT_PAGINATION = pagination
 
 export const FETCH_SETTING = fetchSetting
 
+export const DEFAULT_SIZE = 'small'
+
 export const ROW_KEY = 'id'

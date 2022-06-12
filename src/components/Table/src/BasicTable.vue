@@ -18,8 +18,9 @@
 </template>
 
 <script lang="ts">
-import type { BasicTableProps } from './types/table'
+import type { BasicTableActionType, BasicTableProps } from './types/table'
 import type { PaginationProps } from './types/pagination'
+import type { SizeType } from '/#/config'
 import type { ElTable } from 'element-plus'
 
 import { computed, defineComponent, ref, unref } from 'vue'
@@ -34,7 +35,7 @@ export default defineComponent({
   name: 'BasicTable',
   props: basicProps,
   emits: ['register', 'fetch-success', 'fetch-error', 'selection-change'],
-  setup(props, { emit, attrs }) {
+  setup(props, { emit, attrs, expose }) {
     const wrapRef = ref<HTMLDivElement>()
     const tableElRef = ref<InstanceType<typeof ElTable>>()
 
@@ -48,7 +49,11 @@ export default defineComponent({
 
     const { setLoading, getLoading } = useLoading(getProps)
     const { getPaginationInfo, setPagination, getShowPagination } = usePagination(getProps)
-    const { getDataSourceRef, handlePageChange: onPageChange } = useDataSource(
+    const {
+      getDataSourceRef,
+      handlePageChange: onPageChange,
+      reload,
+    } = useDataSource(
       getProps,
       { getPaginationInfo, setPagination, setLoading, clearSelectionRows: () => {} },
       emit
@@ -83,6 +88,16 @@ export default defineComponent({
     const getWrapperClass = computed(() => {
       return [prefixCls, attrs.class]
     })
+
+    const tableAction: BasicTableActionType = {
+      reload,
+      setLoading,
+      getSize: () => {
+        return unref(getBindValues).size as SizeType
+      },
+    }
+
+    expose(tableAction)
 
     emit('register')
 

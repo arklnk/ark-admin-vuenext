@@ -3,8 +3,10 @@ import { MenuModeEnum } from '/@/enums/menuEnum'
 
 export type TopMenuAlign = 'flex-start' | 'center' | 'flex-end'
 
+export type SizeType = 'small' | 'default' | 'large'
+
 export interface ElementUISetting {
-  size: 'small' | 'default' | 'large'
+  size: SizeType
   zIndex: number
   autoInsertSpace: boolean
   maxMessage: number

@@ -1,5 +1,6 @@
 import type { TableProps } from 'element-plus/lib/components/table/src/table/defaults'
 import type { PaginationProps } from './pagination'
+import type { SizeType } from '/#/config'
 
 export interface TableSetting {
   redo?: boolean
@@ -40,4 +41,5 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
 export interface BasicTableActionType {
   reload: (opt?: FetchParams) => Promise<void>
   setLoading: (loading: boolean) => void
+  getSize: () => SizeType
 }

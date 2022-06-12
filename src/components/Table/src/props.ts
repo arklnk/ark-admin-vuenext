@@ -1,6 +1,10 @@
 import type { PropType } from 'vue'
+import type { SizeType } from '/#/config'
 import type { PaginationProps } from './types/pagination'
 import type { TableSetting, BasicTableProps, FetchSetting } from './types/table'
+
+import { DEFAULT_SIZE } from './const'
+
 
 /**
  * 二次封装表格，由于需要TS只能提示，需要手动编写原ElTable的props
@@ -106,7 +110,8 @@ export const basicProps = {
    * Table 的尺寸
    */
   size: {
-    type: String as PropType<BasicTableProps<any>['size']>,
+    type: String as PropType<SizeType>,
+    default: DEFAULT_SIZE
   },
   /**
    * 列的宽度是否自撑开
