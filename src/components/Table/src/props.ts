@@ -74,6 +74,13 @@ export const basicProps = {
     type: Boolean,
     default: false,
   },
+  /**
+   * 页面切换时清空选中项
+   */
+  clearSelectionOnPageChange: {
+    type: Boolean,
+    default: false,
+  },
   //----- ElTable原有的属性
   height: {
     type: [String, Number],

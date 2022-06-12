@@ -20,6 +20,7 @@
 <script lang="ts">
 import type { BasicTableProps } from './types/table'
 import type { PaginationProps } from './types/pagination'
+import type { ElTable } from 'element-plus'
 
 import { computed, defineComponent, ref, unref } from 'vue'
 import { useLoading } from './composables/useLoading'
@@ -32,10 +33,10 @@ import { isBoolean, omit } from 'lodash-es'
 export default defineComponent({
   name: 'BasicTable',
   props: basicProps,
-  emits: ['register', 'fetch-success', 'fetch-error'],
+  emits: ['register', 'fetch-success', 'fetch-error', 'selection-change'],
   setup(props, { emit, attrs }) {
-    const wrapRef = ref(null)
-    const tableElRef = ref(null)
+    const wrapRef = ref<HTMLDivElement>()
+    const tableElRef = ref<InstanceType<typeof ElTable>>()
 
     const innerPropsRef = ref<Partial<BasicTableProps>>({})
 
@@ -49,7 +50,7 @@ export default defineComponent({
     const { getPaginationInfo, setPagination, getShowPagination } = usePagination(getProps)
     const { getDataSourceRef, handlePageChange: onPageChange } = useDataSource(
       getProps,
-      { getPaginationInfo, setPagination, setLoading },
+      { getPaginationInfo, setPagination, setLoading, clearSelectionRows: () => {} },
       emit
     )
 
@@ -60,7 +61,7 @@ export default defineComponent({
         data,
       }
 
-      propsData = omit(propsData, ['class'])
+      propsData = omit(propsData, ['class', 'onSelectionChange'])
 
       return propsData
     })
