@@ -37,7 +37,7 @@ export function useDataSource(
     }
   )
 
-  function handlePageChange(pagination: Partial<PaginationProps>) {
+  function handleTableChange(pagination: Partial<PaginationProps>) {
     const { clearSelectionOnPageChange } = unref(props)
     if (clearSelectionOnPageChange) {
       clearSelectionRows()
@@ -199,6 +199,6 @@ export function useDataSource(
     fetch,
     reload,
 
-    handlePageChange,
+    handleTableChange,
   }
 }

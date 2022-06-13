@@ -10,8 +10,8 @@
     <div v-if="getShowPagination" class="flex justify-end">
       <ElPagination
         v-bind="getPagingBindValues"
-        @update:current-page="handleCurrentPageChange"
-        @update:page-size="handlePageSizeChange"
+        @update:current-page="(currentPage: number) => handleTableChange('currentPage', currentPage)"
+        @update:page-size="(pageSize: number) => handleTableChange('pageSize', pageSize)"
       />
     </div>
   </div>
@@ -34,7 +34,7 @@ import { isBoolean, omit } from 'lodash-es'
 export default defineComponent({
   name: 'BasicTable',
   props: basicProps,
-  emits: ['register', 'fetch-success', 'fetch-error', 'selection-change'],
+  emits: ['register', 'fetch-success', 'fetch-error', 'change', 'selection-change'],
   setup(props, { emit, attrs, expose }) {
     const wrapRef = ref<HTMLDivElement>()
     const tableElRef = ref<InstanceType<typeof ElTable>>()
@@ -51,7 +51,7 @@ export default defineComponent({
     const { getPaginationInfo, setPagination, getShowPagination } = usePagination(getProps)
     const {
       getDataSourceRef,
-      handlePageChange: onPageChange,
+      handleTableChange: onTableChange,
       reload,
     } = useDataSource(
       getProps,
@@ -78,11 +78,12 @@ export default defineComponent({
       }
       return pagination as PaginationProps
     })
-    function handleCurrentPageChange(currentPage: number) {
-      onPageChange({ currentPage })
-    }
-    function handlePageSizeChange(pageSize: number) {
-      onPageChange({ pageSize })
+    function handleTableChange(type: string, val: number) {
+      const args = {
+        [type]: val,
+      }
+      onTableChange(args)
+      emit('change', args)
     }
 
     const getWrapperClass = computed(() => {
@@ -109,8 +110,7 @@ export default defineComponent({
       getPagingBindValues,
       getLoading,
       getShowPagination,
-      handleCurrentPageChange,
-      handlePageSizeChange,
+      handleTableChange,
     }
   },
 })

@@ -1,4 +1,4 @@
-import { ComputedRef } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { BasicTableProps } from '../types/table'
 
 import { reactive, watch, nextTick } from 'vue'

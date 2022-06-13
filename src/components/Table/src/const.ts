@@ -1,3 +1,5 @@
+import type { SizeType } from '/#/config'
+
 import componentSetting from '/@/settings/componentSetting'
 
 const { table } = componentSetting
@@ -8,6 +10,6 @@ export const DEFAULT_PAGINATION = pagination
 
 export const FETCH_SETTING = fetchSetting
 
-export const DEFAULT_SIZE = 'small'
+export const DEFAULT_SIZE: SizeType = 'default'
 
 export const ROW_KEY = 'id'
