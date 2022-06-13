@@ -14,7 +14,7 @@
     "reinstall": "rimraf yarn.lock && rimraf package-lock.json && rimraf node_modules && npm run bootstrap"
   },
   "dependencies": {
-    "@vueuse/core": "^7.6.1",
+    "@vueuse/core": "^8.6.0",
     "axios": "^0.24.0",
     "dayjs": "^1.11.1",
     "element-plus": "^2.2.5",
