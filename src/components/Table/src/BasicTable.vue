@@ -2,7 +2,8 @@
   <div ref="wrapRef" :class="getWrapperClass">
     <!-- Table -->
     <div class="flex-1">
-      <ElTable ref="tableElRef" v-loading="getLoading" v-bind="getBindValues">
+      <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
+        <SelectionColumn />
         <slot></slot>
       </ElTable>
     </div>
@@ -23,6 +24,7 @@ import type { PaginationProps } from './types/pagination'
 import type { SizeType } from '/#/config'
 
 import { computed, defineComponent, ref, unref } from 'vue'
+import SelectionColumn from './components/SelectionColumn.vue'
 import { useLoading } from './composables/useLoading'
 import { basicProps } from './props'
 import { usePagination } from './composables/usePagination'
@@ -30,14 +32,16 @@ import { useDataSource } from './composables/useDataSource'
 import { useDesign } from '/@/composables/core/useDesign'
 import { isBoolean, omit } from 'lodash-es'
 import { useRowSelection } from './composables/useRowSelection'
+import { createTableContext } from './composables/useTableContext'
 
 export default defineComponent({
   name: 'BasicTable',
+  components: { SelectionColumn },
   props: basicProps,
   emits: ['register', 'fetch-success', 'fetch-error', 'change', 'selection-change'],
   setup(props, { emit, attrs, expose }) {
     const wrapRef = ref(null)
-    const tableElRef = ref(null)
+    const tableRef = ref(null)
 
     const innerPropsRef = ref<Partial<BasicTableProps>>()
 
@@ -56,7 +60,7 @@ export default defineComponent({
       setShowPagination,
     } = usePagination(getProps)
 
-    const { clearSelectionRows } = useRowSelection(getProps, tableElRef, emit)
+    const { clearSelectionRows } = useRowSelection(getProps, tableRef, emit)
 
     const {
       getDataSourceRef,
@@ -114,13 +118,15 @@ export default defineComponent({
       getSize: () => unref(getBindValues).size as SizeType,
     }
 
+    createTableContext({ ...tableAction, wrapRef, tableRef, getBindValues })
+
     expose(tableAction)
 
     emit('register', tableAction)
 
     return {
       wrapRef,
-      tableElRef,
+      tableRef,
       getWrapperClass,
       getBindValues,
       getPagingBindValues,

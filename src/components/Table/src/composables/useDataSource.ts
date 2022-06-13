@@ -7,21 +7,18 @@ import { cloneDeep, get, isBoolean, isFunction } from 'lodash-es'
 import { DEFAULT_PAGINATION, FETCH_SETTING, ROW_KEY } from '../const'
 import { buildUUID } from '/@/utils/uuid'
 
-interface DataSourceAction {
+interface Action {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
   clearSelectionRows: () => void
-  updateSelectionRows?: () => void
 }
 
 export function useDataSource(
   props: ComputedRef<BasicTableProps>,
-  action: DataSourceAction,
+  { setLoading, getPaginationInfo, setPagination, clearSelectionRows }: Action,
   emit: EmitFn
 ) {
-  const { setLoading, getPaginationInfo, setPagination, clearSelectionRows } = action
-
   const dataSourceRef = ref<Recordable[]>([])
 
   watch(
@@ -50,20 +47,20 @@ export function useDataSource(
 
   function setTableKey(items: any[]) {
     if (!items || !Array.isArray(items)) return
-    const childrenKeyName = unref(getChildrenKey)
+    const childrenName = unref(getChildrenName)
 
     items.forEach((item) => {
       if (!item[ROW_KEY]) {
         item[ROW_KEY] = buildUUID()
       }
 
-      if (item[childrenKeyName] && item[childrenKeyName].length) {
-        setTableKey(item[childrenKeyName])
+      if (item[childrenName] && item[childrenName].length) {
+        setTableKey(item[childrenName])
       }
     })
   }
 
-  const getChildrenKey = computed(() => {
+  const getChildrenName = computed(() => {
     return unref(props).treeProps?.children || 'children'
   })
 
@@ -78,7 +75,7 @@ export function useDataSource(
 
   const getDataSourceRef = computed((): Recordable[] => {
     const dataSource = unref(dataSourceRef)
-    const childrenKeyName = unref(getChildrenKey)
+    const childrenName = unref(getChildrenName)
 
     if (!dataSource || dataSource.length === 0) {
       return unref(dataSourceRef)
@@ -95,8 +92,8 @@ export function useDataSource(
               item[ROW_KEY] = buildUUID()
             }
 
-            if (item[childrenKeyName] && item[childrenKeyName].length) {
-              setTableKey(item[childrenKeyName])
+            if (item[childrenName] && item[childrenName].length) {
+              setTableKey(item[childrenName])
             }
           })
 
