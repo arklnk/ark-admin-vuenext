@@ -7,7 +7,7 @@
       </ElTable>
     </div>
     <!-- Pagination -->
-    <div v-if="getShowPagination" class="flex justify-end">
+    <div v-if="getShowPaginationRef" class="flex justify-end">
       <ElPagination
         v-bind="getPagingBindValues"
         @update:current-page="(currentPage: number) => handleTableChange('currentPage', currentPage)"
@@ -21,7 +21,6 @@
 import type { BasicTableActionType, BasicTableProps } from './types/table'
 import type { PaginationProps } from './types/pagination'
 import type { SizeType } from '/#/config'
-import type { ElTable } from 'element-plus'
 
 import { computed, defineComponent, ref, unref } from 'vue'
 import { useLoading } from './composables/useLoading'
@@ -30,16 +29,17 @@ import { usePagination } from './composables/usePagination'
 import { useDataSource } from './composables/useDataSource'
 import { useDesign } from '/@/composables/core/useDesign'
 import { isBoolean, omit } from 'lodash-es'
+import { useRowSelection } from './composables/useRowSelection'
 
 export default defineComponent({
   name: 'BasicTable',
   props: basicProps,
   emits: ['register', 'fetch-success', 'fetch-error', 'change', 'selection-change'],
   setup(props, { emit, attrs, expose }) {
-    const wrapRef = ref<HTMLDivElement>()
-    const tableElRef = ref<InstanceType<typeof ElTable>>()
+    const wrapRef = ref(null)
+    const tableElRef = ref(null)
 
-    const innerPropsRef = ref<Partial<BasicTableProps>>({})
+    const innerPropsRef = ref<Partial<BasicTableProps>>()
 
     const { prefixCls } = useDesign('basic-table')
 
@@ -48,14 +48,24 @@ export default defineComponent({
     })
 
     const { setLoading, getLoading } = useLoading(getProps)
-    const { getPaginationInfo, setPagination, getShowPagination } = usePagination(getProps)
+    const {
+      getPaginationInfo,
+      setPagination,
+      getShowPaginationRef,
+      getShowPagination,
+      setShowPagination,
+    } = usePagination(getProps)
+
+    const { clearSelectionRows } = useRowSelection(getProps, tableElRef, emit)
+
     const {
       getDataSourceRef,
+      getDataSource,
       handleTableChange: onTableChange,
       reload,
     } = useDataSource(
       getProps,
-      { getPaginationInfo, setPagination, setLoading, clearSelectionRows: () => {} },
+      { getPaginationInfo, setPagination, setLoading, clearSelectionRows },
       emit
     )
 
@@ -90,17 +100,23 @@ export default defineComponent({
       return [prefixCls, attrs.class]
     })
 
+    function setProps(props: Partial<BasicTableProps>) {
+      innerPropsRef.value = { ...unref(innerPropsRef), ...props }
+    }
+
     const tableAction: BasicTableActionType = {
       reload,
       setLoading,
-      getSize: () => {
-        return unref(getBindValues).size as SizeType
-      },
+      setProps,
+      setShowPagination,
+      getShowPagination,
+      getDataSource,
+      getSize: () => unref(getBindValues).size as SizeType,
     }
 
     expose(tableAction)
 
-    emit('register')
+    emit('register', tableAction)
 
     return {
       wrapRef,
@@ -109,7 +125,7 @@ export default defineComponent({
       getBindValues,
       getPagingBindValues,
       getLoading,
-      getShowPagination,
+      getShowPaginationRef,
       handleTableChange,
     }
   },

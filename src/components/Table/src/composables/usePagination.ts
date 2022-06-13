@@ -55,7 +55,7 @@ export function usePagination(props: ComputedRef<BasicTableProps>) {
     showRef.value = show
   }
 
-  const getShowPagination = computed(() => {
+  const getShowPaginationRef = computed(() => {
     const pagination = getPagination()
     if (isBoolean(pagination) && !pagination) {
       return false
@@ -63,9 +63,14 @@ export function usePagination(props: ComputedRef<BasicTableProps>) {
     return unref(showRef)
   })
 
+  function getShowPagination() {
+    return unref(getShowPaginationRef)
+  }
+
   return {
     setShowPagination,
     getShowPagination,
+    getShowPaginationRef,
 
     setPagination,
     getPagination,

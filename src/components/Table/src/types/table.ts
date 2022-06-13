@@ -41,5 +41,9 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
 export interface BasicTableActionType {
   reload: (opt?: FetchParams) => Promise<void>
   setLoading: (loading: boolean) => void
+  setProps: (props: Partial<BasicTableProps>) => void
+  setShowPagination: (show: boolean) => void
+  getShowPagination: () => boolean
+  getDataSource: <T = Recordable>() => T[]
   getSize: () => SizeType
 }
