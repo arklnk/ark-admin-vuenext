@@ -77,6 +77,10 @@ export const basicProps = {
     type: Boolean,
     default: false,
   },
+  rowSelection: {
+    type: Object as PropType<BasicTableProps<any>['rowSelection']>,
+    default: null,
+  },
   //----- ElTable原有的属性
   height: {
     type: [String, Number],

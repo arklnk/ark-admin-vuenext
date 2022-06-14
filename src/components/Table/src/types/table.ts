@@ -35,6 +35,15 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
   showTableSetting?: boolean
   pagination?: PaginationProps | boolean
   loading?: boolean
+  rowSelection?: TableRowSelection
+}
+
+export interface TableRowSelection {
+  selectedRowKeys?: (string | number)[]
+  type?: 'checkbox' | 'radio'
+  fixed?: boolean
+  hideSelectAll?: boolean
+  columnWidth?: string | number
 }
 
 export interface BasicTableActionType {

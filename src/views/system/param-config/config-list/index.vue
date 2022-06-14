@@ -6,13 +6,12 @@
       :api="mockData"
       border
       :pagination="{
-        pageSizes: [50, 100, 200, 300]
+        pageSizes: [50, 100, 200, 300],
       }"
       size="small"
       class="h-full"
       height="100%"
     >
-      <ElTableColumn type="selection" prop="name" width="50" align="center" />
       <ElTableColumn label="参数名称" prop="name" align="center" />
       <ElTableColumn label="参数值" prop="value" align="center" />
       <ElTableColumn label="参数值" prop="value" align="center" />

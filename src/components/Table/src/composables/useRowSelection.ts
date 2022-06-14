@@ -1,72 +1,40 @@
-import type { ComputedRef, Ref } from 'vue'
-import type { ElTable } from 'element-plus'
+import type { ComputedRef } from 'vue'
 import type { BasicTableProps } from '../types/table'
 
-import { ref, unref, nextTick, watch, computed } from 'vue'
-import { ROW_KEY } from '../const'
+import { reactive, unref, watch, computed } from 'vue'
+import { isEmpty } from 'lodash-es'
 
-export function useRowSelection(
-  props: ComputedRef<BasicTableProps>,
-  tableRef: Ref<Nullable<InstanceType<typeof ElTable>>>,
-  emit: EmitFn
-) {
-  const selectionRowsRef = ref<Recordable[]>([])
+interface SelectedStateRow {
+  selected: boolean
+  row: Recordable
+}
+
+export function useRowSelection(props: ComputedRef<BasicTableProps>, _emit: EmitFn) {
+  const selectedRowsRef = reactive<Map<string | number, SelectedStateRow>>(new Map())
 
   watch(
-    () => selectionRowsRef,
-    () => {
-      nextTick(() => {
-        emit('selection-change', getSelectionRows)
-      })
-    },
-    {
-      deep: true,
+    () => unref(props).rowSelection?.selectedRowKeys,
+    (keys: (string | number)[] | undefined) => {
+      console.log(keys)
     }
   )
 
-  const getAutoCreateKey = computed(() => {
-    return unref(props).autoCreateKey && !unref(props).rowKey
+  const getShowSelectionRef = computed((): boolean => {
+    const rowSelection = unref(props).rowSelection
+    return isEmpty(rowSelection)
   })
-
-  const getRowKey = computed(() => {
-    const { rowKey } = unref(props)
-    return unref(getAutoCreateKey) ? ROW_KEY : rowKey
-  })
-
-  function handleSelectChange(_: Recordable[], row: Recordable) {
-    const rowKeyName = unref(getRowKey)
-    let targetKeyName: string
-    if (typeof rowKeyName === 'function') {
-      targetKeyName = rowKeyName(row)
-    } else {
-      targetKeyName = rowKeyName as string
-    }
-
-    const targetKey = row[targetKeyName]
-
-    // 查找是否存在
-    const index = unref(selectionRowsRef).findIndex((item) => item[targetKeyName] === targetKey)
-    if (index === -1) {
-      unref(selectionRowsRef).push(row)
-    } else {
-      unref(selectionRowsRef).slice(index, 1)
-    }
-  }
-
-  function handleSelectAllChange(_rows: Recordable[]) {}
 
   function clearSelectionRows() {
-    selectionRowsRef.value = []
+    selectedRowsRef.clear()
   }
 
   function getSelectionRows<T = Recordable>() {
-    return unref(selectionRowsRef) as T[]
+    return [] as T[]
   }
 
   return {
     clearSelectionRows,
     getSelectionRows,
-    handleSelectChange,
-    handleSelectAllChange,
+    getShowSelectionRef,
   }
 }

@@ -2,12 +2,7 @@
   <div ref="wrapRef" :class="getWrapperClass">
     <!-- Table -->
     <div class="flex-1">
-      <ElTable
-        ref="tableRef"
-        v-loading="getLoading"
-        v-bind="getBindValues"
-        @select="handleTableSelect"
-      >
+      <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
         <slot></slot>
       </ElTable>
     </div>
@@ -40,7 +35,7 @@ import { createTableContext } from './composables/useTableContext'
 export default defineComponent({
   name: 'BasicTable',
   props: basicProps,
-  emits: ['register', 'fetch-success', 'fetch-error', 'change', 'selection-change', 'select'],
+  emits: ['register', 'fetch-success', 'fetch-error', 'change', 'selection-change'],
   setup(props, { emit, attrs, expose }) {
     const wrapRef = ref(null)
     const tableRef = ref(null)
@@ -62,15 +57,7 @@ export default defineComponent({
       setShowPagination,
     } = usePagination(getProps)
 
-    const { getSelectionRows, handleSelectChange: onTableSelect } = useRowSelection(
-      getProps,
-      tableRef,
-      emit
-    )
-    function handleTableSelect(...args: unknown[]) {
-      onTableSelect.call<undefined, [...any], void>(undefined, ...args)
-      emit('select', ...args)
-    }
+    const { getSelectionRows } = useRowSelection(getProps, emit)
 
     const {
       getDataSourceRef,
@@ -140,7 +127,6 @@ export default defineComponent({
       getLoading,
       getShowPaginationRef,
       handleTableChange,
-      handleTableSelect,
     }
   },
 })
