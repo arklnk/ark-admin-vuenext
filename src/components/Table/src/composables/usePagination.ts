@@ -28,14 +28,20 @@ export function usePagination(props: ComputedRef<BasicTableProps>) {
     if (!unref(showRef) || (isBoolean(pagination) && !pagination)) {
       return false
     }
-
-    return {
+    const info: PaginationProps = {
       total: 0,
       currentPage: 1,
       ...DEFAULT_PAGINATION,
       ...(isBoolean(pagination) ? {} : pagination),
       ...unref(configRef),
     }
+
+    // 检查pageSize属性是否存在于pageSizes中
+    if (!info.pageSizes!.includes(info.pageSize!) && info.pageSizes!.length > 0) {
+      info.pageSize = info.pageSizes![0]
+    }
+
+    return info
   })
 
   function setPagination(pagination: Partial<PaginationProps>) {

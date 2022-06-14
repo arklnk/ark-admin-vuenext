@@ -11,12 +11,11 @@ interface Action {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
-  clearSelectionRows: () => void
 }
 
 export function useDataSource(
   props: ComputedRef<BasicTableProps>,
-  { setLoading, getPaginationInfo, setPagination, clearSelectionRows }: Action,
+  { setLoading, getPaginationInfo, setPagination }: Action,
   emit: EmitFn
 ) {
   const dataSourceRef = ref<Recordable[]>([])
@@ -35,11 +34,6 @@ export function useDataSource(
   )
 
   function handleTableChange(pagination: Partial<PaginationProps>) {
-    const { clearSelectionOnPageChange } = unref(props)
-    if (clearSelectionOnPageChange) {
-      clearSelectionRows()
-    }
-
     setPagination(pagination)
 
     fetch()
@@ -66,11 +60,6 @@ export function useDataSource(
 
   const getAutoCreateKey = computed(() => {
     return unref(props).autoCreateKey && !unref(props).rowKey
-  })
-
-  const getRowKey = computed(() => {
-    const { rowKey } = unref(props)
-    return unref(getAutoCreateKey) ? ROW_KEY : rowKey
   })
 
   const getDataSourceRef = computed((): Recordable[] => {
@@ -190,12 +179,8 @@ export function useDataSource(
   return {
     getDataSourceRef,
     getDataSource,
-    getAutoCreateKey,
-    getRowKey,
-
     fetch,
     reload,
-
     handleTableChange,
   }
 }

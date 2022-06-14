@@ -2,8 +2,12 @@
   <div ref="wrapRef" :class="getWrapperClass">
     <!-- Table -->
     <div class="flex-1">
-      <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
-        <SelectionColumn />
+      <ElTable
+        ref="tableRef"
+        v-loading="getLoading"
+        v-bind="getBindValues"
+        @select="handleTableSelect"
+      >
         <slot></slot>
       </ElTable>
     </div>
@@ -24,7 +28,6 @@ import type { PaginationProps } from './types/pagination'
 import type { SizeType } from '/#/config'
 
 import { computed, defineComponent, ref, unref } from 'vue'
-import SelectionColumn from './components/SelectionColumn.vue'
 import { useLoading } from './composables/useLoading'
 import { basicProps } from './props'
 import { usePagination } from './composables/usePagination'
@@ -36,9 +39,8 @@ import { createTableContext } from './composables/useTableContext'
 
 export default defineComponent({
   name: 'BasicTable',
-  components: { SelectionColumn },
   props: basicProps,
-  emits: ['register', 'fetch-success', 'fetch-error', 'change', 'selection-change'],
+  emits: ['register', 'fetch-success', 'fetch-error', 'change', 'selection-change', 'select'],
   setup(props, { emit, attrs, expose }) {
     const wrapRef = ref(null)
     const tableRef = ref(null)
@@ -60,18 +62,22 @@ export default defineComponent({
       setShowPagination,
     } = usePagination(getProps)
 
-    const { clearSelectionRows } = useRowSelection(getProps, tableRef, emit)
+    const { getSelectionRows, handleSelectChange: onTableSelect } = useRowSelection(
+      getProps,
+      tableRef,
+      emit
+    )
+    function handleTableSelect(...args: unknown[]) {
+      onTableSelect.call<undefined, [...any], void>(undefined, ...args)
+      emit('select', ...args)
+    }
 
     const {
       getDataSourceRef,
       getDataSource,
       handleTableChange: onTableChange,
       reload,
-    } = useDataSource(
-      getProps,
-      { getPaginationInfo, setPagination, setLoading, clearSelectionRows },
-      emit
-    )
+    } = useDataSource(getProps, { getPaginationInfo, setPagination, setLoading }, emit)
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -109,12 +115,13 @@ export default defineComponent({
     }
 
     const tableAction: BasicTableActionType = {
-      reload,
       setLoading,
       setProps,
       setShowPagination,
       getShowPagination,
+      reload,
       getDataSource,
+      getSelectionRows,
       getSize: () => unref(getBindValues).size as SizeType,
     }
 
@@ -133,6 +140,7 @@ export default defineComponent({
       getLoading,
       getShowPaginationRef,
       handleTableChange,
+      handleTableSelect,
     }
   },
 })

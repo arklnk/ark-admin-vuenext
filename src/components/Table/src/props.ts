@@ -5,7 +5,6 @@ import type { TableSetting, BasicTableProps, FetchSetting } from './types/table'
 
 import { DEFAULT_SIZE } from './const'
 
-
 /**
  * 二次封装表格，由于需要TS只能提示，需要手动编写原ElTable的props
  * node_modules/element-plus/es/components/table/index.d.ts
@@ -78,13 +77,6 @@ export const basicProps = {
     type: Boolean,
     default: false,
   },
-  /**
-   * 页面切换时清空选中项
-   */
-  clearSelectionOnPageChange: {
-    type: Boolean,
-    default: false,
-  },
   //----- ElTable原有的属性
   height: {
     type: [String, Number],
@@ -111,7 +103,7 @@ export const basicProps = {
    */
   size: {
     type: String as PropType<SizeType>,
-    default: DEFAULT_SIZE
+    default: DEFAULT_SIZE,
   },
   /**
    * 列的宽度是否自撑开
@@ -157,6 +149,7 @@ export const basicProps = {
    */
   rowKey: {
     type: [String, Function] as PropType<BasicTableProps<any>['rowKey']>,
+    default: '',
   },
   /**
    * 空数据时显示的文本内容， 也可以通过 #empty 设置

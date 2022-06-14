@@ -35,16 +35,6 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
   showTableSetting?: boolean
   pagination?: PaginationProps | boolean
   loading?: boolean
-  clearSelectionOnPageChange?: boolean
-}
-
-export interface TableRowSelection {
-  // 多选/单选
-  type?: 'checkbox' | 'radio'
-  // 固定在左侧
-  fixed?: boolean
-  // 隐藏全选和反选
-  hideDefaultSelections?: boolean
 }
 
 export interface BasicTableActionType {
@@ -54,5 +44,6 @@ export interface BasicTableActionType {
   setShowPagination: (show: boolean) => void
   getShowPagination: () => boolean
   getDataSource: <T = Recordable>() => T[]
+  getSelectionRows: <T = Recordable>() => T[]
   getSize: () => SizeType
 }

@@ -1,15 +1,31 @@
 <template>
   <PageWrapper content-full-height fixed-height>
-    <BasicTable :data-source="[]" :api="mockData" border class="h-full" height="100%">
+    <BasicTable
+      ref="tableRef"
+      :data-source="[]"
+      :api="mockData"
+      border
+      :pagination="{
+        pageSizes: [50, 100, 200, 300]
+      }"
+      size="small"
+      class="h-full"
+      height="100%"
+    >
+      <ElTableColumn type="selection" prop="name" width="50" align="center" />
       <ElTableColumn label="参数名称" prop="name" align="center" />
+      <ElTableColumn label="参数值" prop="value" align="center" />
       <ElTableColumn label="参数值" prop="value" align="center" />
     </BasicTable>
   </PageWrapper>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable } from '/@/components/Table'
+
+const tableRef = ref(null)
 
 function mockData(params: Recordable) {
   console.log(params)
