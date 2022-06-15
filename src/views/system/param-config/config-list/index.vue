@@ -8,12 +8,16 @@
       :pagination="{
         pageSizes: [50, 100, 200, 300],
       }"
+      row-key="id"
+      :row-selection="{
+        selectedRowKeys: ['1', '8'],
+        type: 'checkbox',
+      }"
       size="small"
       class="h-full"
       height="100%"
     >
       <ElTableColumn label="参数名称" prop="name" align="center" />
-      <ElTableColumn label="参数值" prop="value" align="center" />
       <ElTableColumn label="参数值" prop="value" align="center" />
     </BasicTable>
   </PageWrapper>
@@ -27,7 +31,6 @@ import { BasicTable } from '/@/components/Table'
 const tableRef = ref(null)
 
 function mockData(params: Recordable) {
-  console.log(params)
   return new Promise((resolve: Fn) => {
     setTimeout(() => {
       const result = []

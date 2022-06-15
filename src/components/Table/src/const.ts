@@ -12,4 +12,6 @@ export const FETCH_SETTING = fetchSetting
 
 export const DEFAULT_SIZE: SizeType = 'default'
 
+export const DEFAULT_CHILDREN_KEY = 'children'
+
 export const ROW_KEY = 'id'

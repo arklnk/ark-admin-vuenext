@@ -1,21 +1,23 @@
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { PaginationProps } from '../types/pagination'
 import type { BasicTableProps, FetchParams } from '../types/table'
 
-import { watch, unref, ref, onMounted, computed } from 'vue'
+import { watch, unref, ref, onMounted, computed, watchEffect } from 'vue'
 import { cloneDeep, get, isBoolean, isFunction } from 'lodash-es'
-import { DEFAULT_PAGINATION, FETCH_SETTING, ROW_KEY } from '../const'
+import { DEFAULT_CHILDREN_KEY, DEFAULT_PAGINATION, FETCH_SETTING, ROW_KEY } from '../const'
 import { buildUUID } from '/@/utils/uuid'
 
-interface Action {
+interface ActionType {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
+  clearSelectedRows: () => void
+  tableData: Ref<Recordable[]>
 }
 
 export function useDataSource(
   props: ComputedRef<BasicTableProps>,
-  { setLoading, getPaginationInfo, setPagination }: Action,
+  { setLoading, getPaginationInfo, setPagination, clearSelectedRows, tableData }: ActionType,
   emit: EmitFn
 ) {
   const dataSourceRef = ref<Recordable[]>([])
@@ -33,7 +35,15 @@ export function useDataSource(
     }
   )
 
+  watchEffect(() => {
+    tableData.value = unref(getDataSourceRef)
+  })
+
   function handleTableChange(pagination: Partial<PaginationProps>) {
+    if (unref(props).rowSelection?.clearOnPageChange) {
+      clearSelectedRows()
+    }
+
     setPagination(pagination)
 
     fetch()
@@ -55,7 +65,7 @@ export function useDataSource(
   }
 
   const getChildrenName = computed(() => {
-    return unref(props).treeProps?.children || 'children'
+    return unref(props).treeProps?.children || DEFAULT_CHILDREN_KEY
   })
 
   const getAutoCreateKey = computed(() => {

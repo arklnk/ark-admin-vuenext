@@ -41,6 +41,9 @@ export const basicProps = {
     type: Boolean,
     default: true,
   },
+  /**
+   * rowKey指定时不生效
+   */
   autoCreateKey: {
     type: Boolean,
     default: true,

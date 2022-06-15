@@ -39,11 +39,15 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
 }
 
 export interface TableRowSelection {
-  selectedRowKeys?: (string | number)[]
+  selectedRowKeys?: any[]
   type?: 'checkbox' | 'radio'
   fixed?: boolean
   hideSelectAll?: boolean
   columnWidth?: string | number
+  clearOnPageChange?: boolean
+  align?: 'center' | 'left' | 'right'
+  resizable?: boolean
+  selectable?: (row: Recordable) => boolean
 }
 
 export interface BasicTableActionType {
@@ -53,6 +57,7 @@ export interface BasicTableActionType {
   setShowPagination: (show: boolean) => void
   getShowPagination: () => boolean
   getDataSource: <T = Recordable>() => T[]
-  getSelectionRows: <T = Recordable>() => T[]
+  getSelectedRows: <T = Recordable>() => T[]
+  deleteSelectedRowByKey: (key: string) => void
   getSize: () => SizeType
 }
