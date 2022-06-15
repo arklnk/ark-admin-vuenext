@@ -38,8 +38,10 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
   rowSelection?: TableRowSelection
 }
 
+export type Key = string | number
+
 export interface TableRowSelection {
-  selectedRowKeys?: any[]
+  selectedRowKeys?: Key[]
   type?: 'checkbox' | 'radio'
   fixed?: boolean
   hideSelectAll?: boolean
@@ -57,7 +59,5 @@ export interface BasicTableActionType {
   setShowPagination: (show: boolean) => void
   getShowPagination: () => boolean
   getDataSource: <T = Recordable>() => T[]
-  getSelectedRows: <T = Recordable>() => T[]
-  deleteSelectedRowByKey: (key: string) => void
   getSize: () => SizeType
 }
