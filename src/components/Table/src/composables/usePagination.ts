@@ -6,24 +6,26 @@ import { ref, watch, unref, computed } from 'vue'
 import { isBoolean } from 'lodash-es'
 import { DEFAULT_PAGINATION } from '../const'
 
-export function usePagination(props: ComputedRef<BasicTableProps>) {
+export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   const configRef = ref<PaginationProps>({})
   const showRef = ref(true)
 
   watch(
-    () => unref(props).pagination,
+    () => unref(getProps).pagination,
     (pagination) => {
       if (!isBoolean(pagination) && pagination) {
         configRef.value = {
           ...unref(configRef),
           ...(pagination || {}),
         }
+      } else if (!pagination) {
+        showRef.value = false
       }
     }
   )
 
   const getPaginationInfo = computed((): PaginationProps | boolean => {
-    const { pagination } = unref(props)
+    const { pagination } = unref(getProps)
 
     if (!unref(showRef) || (isBoolean(pagination) && !pagination)) {
       return false
@@ -61,22 +63,13 @@ export function usePagination(props: ComputedRef<BasicTableProps>) {
     showRef.value = show
   }
 
-  const getShowPaginationRef = computed(() => {
-    const pagination = getPagination()
-    if (isBoolean(pagination) && !pagination) {
-      return false
-    }
-    return unref(showRef)
-  })
-
   function getShowPagination() {
-    return unref(getShowPaginationRef)
+    return unref(showRef)
   }
 
   return {
     setShowPagination,
     getShowPagination,
-    getShowPaginationRef,
 
     setPagination,
     getPagination,

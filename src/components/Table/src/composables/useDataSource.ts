@@ -2,29 +2,28 @@ import type { ComputedRef, Ref } from 'vue'
 import type { PaginationProps } from '../types/pagination'
 import type { BasicTableProps, FetchParams } from '../types/table'
 
-import { watch, unref, ref, onMounted, computed, watchEffect } from 'vue'
-import { cloneDeep, get, isBoolean, isFunction } from 'lodash-es'
-import { DEFAULT_CHILDREN_KEY, DEFAULT_PAGINATION, FETCH_SETTING, ROW_KEY } from '../const'
-import { buildUUID } from '/@/utils/uuid'
+import { watch, unref, ref, onMounted, watchEffect, computed } from 'vue'
+import { get, isBoolean, isFunction } from 'lodash-es'
+import { DEFAULT_PAGINATION, FETCH_SETTING } from '../const'
 
 interface ActionType {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
-  tableData: Ref<Recordable[]>
+  tableDataRef: Ref<Recordable[]>
 }
 
 export function useDataSource(
-  props: ComputedRef<BasicTableProps>,
-  { setLoading, getPaginationInfo, setPagination, tableData }: ActionType,
+  getProps: ComputedRef<BasicTableProps>,
+  { setLoading, getPaginationInfo, setPagination, tableDataRef }: ActionType,
   emit: EmitFn
 ) {
   const dataSourceRef = ref<Recordable[]>([])
 
   watch(
-    () => unref(props).dataSource,
+    () => unref(getProps).dataSource,
     () => {
-      const { dataSource, api } = unref(props)
+      const { dataSource, api } = unref(getProps)
       if (!api && dataSource) {
         dataSourceRef.value = dataSource
       }
@@ -35,7 +34,7 @@ export function useDataSource(
   )
 
   watchEffect(() => {
-    tableData.value = unref(getDataSourceRef)
+    tableDataRef.value = unref(dataSourceRef)
   })
 
   function handleTableChange(pagination: Partial<PaginationProps>) {
@@ -44,63 +43,12 @@ export function useDataSource(
     fetch()
   }
 
-  function setTableKey(items: any[]) {
-    if (!items || !Array.isArray(items)) return
-    const childrenName = unref(getChildrenName)
-
-    items.forEach((item) => {
-      if (!item[ROW_KEY]) {
-        item[ROW_KEY] = buildUUID()
-      }
-
-      if (item[childrenName] && item[childrenName].length) {
-        setTableKey(item[childrenName])
-      }
-    })
-  }
-
-  const getChildrenName = computed(() => {
-    return unref(props).treeProps?.children || DEFAULT_CHILDREN_KEY
-  })
-
-  const getAutoCreateKey = computed(() => {
-    return unref(props).autoCreateKey && !unref(props).rowKey
-  })
-
-  const getDataSourceRef = computed((): Recordable[] => {
-    const dataSource = unref(dataSourceRef)
-    const childrenName = unref(getChildrenName)
-
-    if (!dataSource || dataSource.length === 0) {
-      return unref(dataSourceRef)
-    }
-    if (unref(getAutoCreateKey)) {
-      const first = dataSource[0]
-      const last = dataSource[dataSource.length - 1]
-
-      if (first && last) {
-        if (!first[ROW_KEY] && !last[ROW_KEY]) {
-          const cloneData = cloneDeep(dataSource)
-          cloneData.forEach((item) => {
-            if (!item[ROW_KEY]) {
-              item[ROW_KEY] = buildUUID()
-            }
-
-            if (item[childrenName] && item[childrenName].length) {
-              setTableKey(item[childrenName])
-            }
-          })
-
-          dataSourceRef.value = cloneData
-        }
-      }
-    }
-
+  const getDataSourceRef = computed(() => {
     return unref(dataSourceRef)
   })
 
   async function fetch(opt?: FetchParams) {
-    const { api, fetchSetting, pagination, beforeFetch, afterFetch } = unref(props)
+    const { api, fetchSetting, pagination, beforeFetch, afterFetch } = unref(getProps)
     if (!api || !isFunction(api)) return
 
     try {
@@ -170,7 +118,7 @@ export function useDataSource(
   }
 
   function getDataSource<T = Recordable>() {
-    return getDataSourceRef.value as T[]
+    return dataSourceRef.value as T[]
   }
 
   async function reload(opt?: FetchParams) {
@@ -178,7 +126,7 @@ export function useDataSource(
   }
 
   onMounted(() => {
-    unref(props).immediate && fetch()
+    unref(getProps).immediate && fetch()
   })
 
   return {

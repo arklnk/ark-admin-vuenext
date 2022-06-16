@@ -42,13 +42,6 @@ export const basicProps = {
     default: true,
   },
   /**
-   * rowKey指定时不生效
-   */
-  autoCreateKey: {
-    type: Boolean,
-    default: true,
-  },
-  /**
    * 显示需要的表格设置
    */
   tableSetting: {

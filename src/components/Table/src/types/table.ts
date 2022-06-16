@@ -29,7 +29,6 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
   beforeFetch?: Fn
   afterFetch?: Fn
   immediate?: boolean
-  autoCreateKey?: boolean
   tableSetting?: TableSetting
   fetchSetting?: FetchSetting
   showTableSetting?: boolean
@@ -39,6 +38,8 @@ export interface BasicTableProps<T = any> extends TableProps<T> {
 }
 
 export type Key = string | number
+
+export type GetRowKey<T = Recordable> = (record: T, index?: number) => Key
 
 export interface TableRowSelection {
   selectedRowKeys?: Key[]

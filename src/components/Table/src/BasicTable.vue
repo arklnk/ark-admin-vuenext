@@ -8,7 +8,7 @@
       </ElTable>
     </div>
     <!-- Pagination -->
-    <div v-if="getShowPaginationRef" class="flex justify-end">
+    <div v-if="getShowPagination()" class="flex justify-end">
       <ElPagination
         v-bind="getPagingProps"
         @update:current-page="(currentPage: number) => handleTableChange('currentPage', currentPage)"
@@ -41,7 +41,7 @@ export default defineComponent({
     const tableRef = ref(null)
 
     const innerPropsRef = ref<Partial<BasicTableProps>>()
-    const tableData = ref<Recordable[]>([])
+    const tableDataRef = ref<Recordable[]>([])
 
     const { prefixCls } = useDesign('basic-table')
 
@@ -50,20 +50,19 @@ export default defineComponent({
     })
 
     const { setLoading, getLoading } = useLoading(getProps)
-    const {
-      getPaginationInfo,
-      setPagination,
-      getShowPaginationRef,
-      getShowPagination,
-      setShowPagination,
-    } = usePagination(getProps)
+    const { getPaginationInfo, setPagination, getShowPagination, setShowPagination } =
+      usePagination(getProps)
 
     const {
       getDataSourceRef,
       getDataSource,
       handleTableChange: onTableChange,
       reload,
-    } = useDataSource(getProps, { getPaginationInfo, setPagination, setLoading, tableData }, emit)
+    } = useDataSource(
+      getProps,
+      { getPaginationInfo, setPagination, setLoading, tableDataRef },
+      emit
+    )
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -123,7 +122,7 @@ export default defineComponent({
       getBindValues,
       getPagingProps,
       getLoading,
-      getShowPaginationRef,
+      getShowPagination,
       handleTableChange,
     }
   },
