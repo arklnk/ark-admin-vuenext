@@ -157,7 +157,7 @@ export default defineComponent({
     // 是否需要重新计算content height
     const { getFullContent, getShowFooter } = useRootSetting()
     watch(
-      () => [getFullContent, getShowFooter],
+      [getFullContent, getShowFooter],
       () => {
         recalcHeight()
       },
