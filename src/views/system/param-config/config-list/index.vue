@@ -10,8 +10,9 @@
       }"
       row-key="id"
       :row-selection="{
-        selectedRowKeys: ['1', '8'],
+        selectedRowKeys: [2, 3, 5],
         type: 'checkbox',
+        clearOnPageChange: true,
       }"
       size="small"
       class="h-full"
@@ -30,13 +31,16 @@ import { BasicTable } from '/@/components/Table'
 
 const tableRef = ref(null)
 
+const total = 1000
+
 function mockData(params: Recordable) {
   return new Promise((resolve: Fn) => {
     setTimeout(() => {
       const result = []
+      const lastSize = (params.page - 1) * params.size
       for (let i = 0; i < params.size; i++) {
         result.push({
-          id: i,
+          id: i + lastSize,
           name: 'haha' + i,
           value: 'woc' + i,
         })
@@ -44,7 +48,7 @@ function mockData(params: Recordable) {
       resolve({
         list: result,
         pagination: {
-          total: result.length,
+          total,
         },
       })
     }, 2000)

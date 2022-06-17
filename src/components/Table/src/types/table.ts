@@ -43,8 +43,10 @@ export type GetRowKey<T = Recordable> = (record: T, index?: number) => Key
 
 export interface TableRowSelection {
   selectedRowKeys?: Key[]
+  // 多选 / 单选
   type?: 'checkbox' | 'radio'
   fixed?: boolean
+  // 隐藏全选，多选下启用
   hideSelectAll?: boolean
   columnWidth?: string | number
   clearOnPageChange?: boolean

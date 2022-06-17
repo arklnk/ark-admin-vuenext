@@ -3,6 +3,12 @@
     <!-- Table -->
     <div class="flex-1">
       <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
+        <!-- selection -->
+        <ElTableColumn :resizable="false" :width="50" align="center">
+          <template #default="{ row }">
+            <ElCheckbox v-bind="getCheckboxProps(row)" />
+          </template>
+        </ElTableColumn>
         <!-- default slot -->
         <slot></slot>
       </ElTable>
@@ -31,6 +37,7 @@ import { usePagination } from './composables/usePagination'
 import { useDataSource } from './composables/useDataSource'
 import { useDesign } from '/@/composables/core/useDesign'
 import { createTableContext } from './composables/useTableContext'
+import { useRowSelection } from './composables/useRowSelection'
 
 export default defineComponent({
   name: 'BasicTable',
@@ -53,6 +60,8 @@ export default defineComponent({
     const { getPaginationInfo, setPagination, getShowPagination, setShowPagination } =
       usePagination(getProps)
 
+    const { getCheckboxProps, clearSelectedKeys } = useRowSelection(getProps, tableDataRef, emit)
+
     const {
       getDataSourceRef,
       getDataSource,
@@ -60,7 +69,7 @@ export default defineComponent({
       reload,
     } = useDataSource(
       getProps,
-      { getPaginationInfo, setPagination, setLoading, tableDataRef },
+      { getPaginationInfo, setPagination, setLoading, tableDataRef, clearSelectedKeys },
       emit
     )
 
@@ -124,6 +133,7 @@ export default defineComponent({
       getLoading,
       getShowPagination,
       handleTableChange,
+      getCheckboxProps,
     }
   },
 })
