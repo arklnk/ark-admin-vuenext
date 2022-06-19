@@ -10,9 +10,10 @@
       }"
       row-key="id"
       :row-selection="{
-        selectedRowKeys: [2, 3, 5],
-        type: 'checkbox',
-        clearOnPageChange: true,
+        type: 'radio',
+        clearOnPageChange: false,
+        selectable,
+        selectedRowKeys: [1],
       }"
       size="small"
       class="h-full"
@@ -33,6 +34,10 @@ const tableRef = ref(null)
 
 const total = 1000
 
+function selectable(record: Recordable): boolean {
+  return record.id % 2 === 0
+}
+
 function mockData(params: Recordable) {
   return new Promise((resolve: Fn) => {
     setTimeout(() => {
@@ -51,7 +56,7 @@ function mockData(params: Recordable) {
           total,
         },
       })
-    }, 2000)
+    }, 1000)
   })
 }
 </script>

@@ -6,7 +6,10 @@
         <!-- selection -->
         <ElTableColumn :resizable="false" :width="50" align="center">
           <template #default="{ row }">
-            <ElCheckbox v-bind="getCheckboxProps(row)" />
+            <ElCheckbox v-bind="getCellCheckboxProps(row)" />
+          </template>
+          <template v-if="getIsCheckboxType" #header>
+            <ElCheckbox v-bind="getHeaderCheckboxProps()" />
           </template>
         </ElTableColumn>
         <!-- default slot -->
@@ -60,7 +63,8 @@ export default defineComponent({
     const { getPaginationInfo, setPagination, getShowPagination, setShowPagination } =
       usePagination(getProps)
 
-    const { getCheckboxProps, clearSelectedKeys } = useRowSelection(getProps, tableDataRef, emit)
+    const { getCellCheckboxProps, getHeaderCheckboxProps, getIsCheckboxType, clearSelectedKeys } =
+      useRowSelection(getProps, tableDataRef, emit)
 
     const {
       getDataSourceRef,
@@ -133,7 +137,9 @@ export default defineComponent({
       getLoading,
       getShowPagination,
       handleTableChange,
-      getCheckboxProps,
+      getCellCheckboxProps,
+      getHeaderCheckboxProps,
+      getIsCheckboxType,
     }
   },
 })

@@ -73,6 +73,10 @@ export const basicProps = {
     type: Boolean,
     default: false,
   },
+  /**
+   * 自定义的多选功能，支持单选模式，不允许与原有的type="selection"共用，因为自定义的也是使用了原定义的事件
+   * 默认为null则不启用
+   */
   rowSelection: {
     type: Object as PropType<BasicTableProps<any>['rowSelection']>,
     default: null,
