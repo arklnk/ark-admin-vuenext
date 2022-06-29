@@ -17,9 +17,9 @@
       </ElTable>
     </div>
     <!-- Pagination -->
-    <div v-if="getShowPagination()" class="flex justify-end">
+    <div v-if="getShowPaginationRef" class="flex justify-end">
       <ElPagination
-        v-bind="getPagingProps"
+        v-bind="getPaginationRef"
         @update:current-page="(currentPage: number) => handleTableChange('currentPage', currentPage)"
         @update:page-size="(pageSize: number) => handleTableChange('pageSize', pageSize)"
       />
@@ -29,11 +29,10 @@
 
 <script lang="ts">
 import type { BasicTableActionType, BasicTableProps } from './types/table'
-import type { PaginationProps } from './types/pagination'
 import type { SizeType } from '/#/config'
 
 import { computed, defineComponent, ref, unref } from 'vue'
-import { isBoolean, omit } from 'lodash-es'
+import { omit } from 'lodash-es'
 import { useLoading } from './composables/useLoading'
 import { basicProps } from './props'
 import { usePagination } from './composables/usePagination'
@@ -60,8 +59,13 @@ export default defineComponent({
     })
 
     const { setLoading, getLoading } = useLoading(getProps)
-    const { getPaginationInfo, setPagination, getShowPagination, setShowPagination } =
-      usePagination(getProps)
+    const {
+      getPaginationRef,
+      setPagination,
+      getShowPagination,
+      setShowPagination,
+      getShowPaginationRef,
+    } = usePagination(getProps)
 
     const { getCellCheckboxProps, getHeaderCheckboxProps, getIsCheckboxType, clearSelectedKeys } =
       useRowSelection(getProps, tableDataRef, emit)
@@ -73,7 +77,7 @@ export default defineComponent({
       reload,
     } = useDataSource(
       getProps,
-      { getPaginationInfo, setPagination, setLoading, tableDataRef, clearSelectedKeys },
+      { getPaginationRef, setPagination, setLoading, tableDataRef, clearSelectedKeys },
       emit
     )
 
@@ -89,13 +93,6 @@ export default defineComponent({
       return propsData
     })
 
-    const getPagingProps = computed((): PaginationProps => {
-      const pagination = unref(getPaginationInfo)
-      if (isBoolean(pagination) && !pagination) {
-        return {}
-      }
-      return pagination as PaginationProps
-    })
     function handleTableChange(type: string, val: number) {
       const args = {
         [type]: val,
@@ -133,9 +130,9 @@ export default defineComponent({
       tableRef,
       getWrapperClass,
       getBindValues,
-      getPagingProps,
+      getPaginationRef,
+      getShowPaginationRef,
       getLoading,
-      getShowPagination,
       handleTableChange,
       getCellCheckboxProps,
       getHeaderCheckboxProps,

@@ -3,11 +3,11 @@ import type { PaginationProps } from '../types/pagination'
 import type { BasicTableProps, FetchParams } from '../types/table'
 
 import { watch, unref, ref, onMounted, watchEffect, computed } from 'vue'
-import { get, isBoolean, isFunction } from 'lodash-es'
+import { get, isFunction } from 'lodash-es'
 import { DEFAULT_PAGINATION, FETCH_SETTING } from '../const'
 
 interface ActionType {
-  getPaginationInfo: ComputedRef<boolean | PaginationProps>
+  getPaginationRef: ComputedRef<Nullable<PaginationProps>>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
   clearSelectedKeys: () => void
@@ -16,7 +16,7 @@ interface ActionType {
 
 export function useDataSource(
   getProps: ComputedRef<BasicTableProps>,
-  { setLoading, getPaginationInfo, setPagination, tableDataRef, clearSelectedKeys }: ActionType,
+  { setLoading, getPaginationRef, setPagination, tableDataRef, clearSelectedKeys }: ActionType,
   emit: EmitFn
 ) {
   const dataSourceRef = ref<Recordable[]>([])
@@ -53,7 +53,7 @@ export function useDataSource(
   })
 
   async function fetch(opt?: FetchParams) {
-    const { api, fetchSetting, pagination, beforeFetch, afterFetch } = unref(getProps)
+    const { api, fetchSetting, beforeFetch, afterFetch } = unref(getProps)
     if (!api || !isFunction(api)) return
 
     try {
@@ -68,10 +68,10 @@ export function useDataSource(
       const pageParams: Recordable = {}
 
       const { currentPage = 1, pageSize = DEFAULT_PAGINATION.pageSize } = unref(
-        getPaginationInfo
+        getPaginationRef
       ) as PaginationProps
 
-      if (!isBoolean(pagination) || !isBoolean(unref(getPaginationInfo))) {
+      if (unref(getPaginationRef)) {
         pageParams[pageField] = (opt && opt.page) || currentPage
         pageParams[sizeField] = pageSize
       }

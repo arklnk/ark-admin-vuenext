@@ -21,15 +21,20 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
       } else if (!pagination) {
         showRef.value = false
       }
+    },
+    {
+      immediate: true,
+      deep: true,
     }
   )
 
-  const getPaginationInfo = computed((): PaginationProps | boolean => {
+  const getPaginationRef = computed((): Nullable<PaginationProps> => {
     const { pagination } = unref(getProps)
 
     if (!unref(showRef) || (isBoolean(pagination) && !pagination)) {
-      return false
+      return
     }
+
     const info: PaginationProps = {
       total: 0,
       currentPage: 1,
@@ -47,7 +52,7 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   })
 
   function setPagination(pagination: Partial<PaginationProps>) {
-    const prev = unref(getPaginationInfo)
+    const prev = unref(getPaginationRef)
 
     configRef.value = {
       ...(!isBoolean(prev) ? prev : {}),
@@ -56,7 +61,7 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   }
 
   function getPagination() {
-    return unref(getPaginationInfo)
+    return unref(getPaginationRef)
   }
 
   function setShowPagination(show: boolean) {
@@ -70,9 +75,10 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   return {
     setShowPagination,
     getShowPagination,
+    getShowPaginationRef: showRef,
 
     setPagination,
     getPagination,
-    getPaginationInfo,
+    getPaginationRef,
   }
 }
