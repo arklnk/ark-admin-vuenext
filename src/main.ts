@@ -5,14 +5,13 @@ import 'virtual:windi.css'
 import 'virtual:svg-icons-register'
 
 import '/@/styles/index.scss'
-
 import { createApp } from 'vue'
-import App from './App.vue'
-
-import { registerGlobalComp } from '/@/core/registerGlobalComp'
-import { initAppConfig } from '/@/core/initAppConfig'
-import { setupStore } from './stores'
+import { registerGlobalComp } from '/@/logics/registerGlobalComp'
+import { initAppConfig } from '/@/logics/initAppConfig'
+import { setupStore } from '/@/stores'
 import { setupRouter } from '/@/router'
+
+import App from './App.vue'
 
 async function bootstrap() {
   const app = createApp(App)

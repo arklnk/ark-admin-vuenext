@@ -9,8 +9,8 @@
 import { unref } from 'vue'
 import IcBaselineWbSunny from '~icons/ic/baseline-wb-sunny'
 import IcOutlineDarkMode from '~icons/ic/outline-dark-mode'
-import { updateHeaderBgColor, updateSidebarBgColor } from '/@/core/theme/updateBackground'
-import { updateDarkMode } from '/@/core/theme/updateDarkMode'
+import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground'
+import { updateDarkMode } from '/@/logics/theme/updateDarkMode'
 import { ThemeEnum } from '/@/enums/appEnum'
 import { useRootSetting } from '/@/composables/setting/useRootSetting'
 
