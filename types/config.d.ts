@@ -1,5 +1,10 @@
-import { ContentEnum, PermissionModeEnum, RouterTransitionEnum, ThemeEnum } from '/@/enums/appEnum'
-import { MenuModeEnum } from '/@/enums/menuEnum'
+import type {
+  ContentEnum,
+  PermissionModeEnum,
+  RouterTransitionEnum,
+  ThemeEnum,
+} from '/@/enums/appEnum'
+import type { MenuModeEnum } from '/@/enums/menuEnum'
 
 export type TopMenuAlign = 'flex-start' | 'center' | 'flex-end'
 
@@ -8,8 +13,12 @@ export type SizeType = 'small' | 'default' | 'large'
 export interface ElementUISetting {
   size: SizeType
   zIndex: number
-  autoInsertSpace: boolean
-  maxMessage: number
+  button: {
+    autoInsertSpace: boolean
+  }
+  message: {
+    max: number
+  }
 }
 
 export interface MenuSetting {

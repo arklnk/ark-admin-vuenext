@@ -39,8 +39,12 @@ const setting: ProjectConfig = {
   elementUISetting: {
     size: 'default',
     zIndex: 2000,
-    autoInsertSpace: true,
-    maxMessage: 5,
+    button: {
+      autoInsertSpace: true,
+    },
+    message: {
+      max: 5,
+    },
   },
   transitionSetting: {
     enable: true,

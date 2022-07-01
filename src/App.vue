@@ -1,11 +1,5 @@
 <template>
-  <ElConfigProvider
-    :size="getSize"
-    :locale="locale"
-    :button="{ autoInsertSpace: getAutoInsertSpace }"
-    :message="{ max: getMaxMessage }"
-    :z-index="getZIndex"
-  >
+  <ElConfigProvider v-bind="getElConfig">
     <AppProvider>
       <RouterView />
     </AppProvider>
@@ -15,14 +9,17 @@
 <script setup lang="ts">
 import { AppProvider } from '/@/components/Application'
 import localeZh from 'element-plus/lib/locale/lang/zh-cn'
-import { useElementUISetting } from './composables/setting/useElementUISetting'
 import { useTitle } from './composables/web/useTitle'
+import ProjectConfig from './settings/projectSetting'
+import { computed } from 'vue'
 
 // default zh locale
-const locale = localeZh
-
-// ui setting config
-const { getSize, getAutoInsertSpace, getZIndex, getMaxMessage } = useElementUISetting()
+const getElConfig = computed(() => {
+  return {
+    ...ProjectConfig.elementUISetting,
+    locale: localeZh,
+  }
+})
 
 // page title
 useTitle()
