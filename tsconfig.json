@@ -19,7 +19,6 @@
     "isolatedModules": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "experimentalDecorators": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
     "lib": [
