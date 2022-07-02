@@ -34,6 +34,9 @@ export interface MenuSetting {
   // 背景主题
   theme: ThemeEnum
 
+  // 菜单栏宽度
+  menuWidth: number
+
   /**
    * 菜单模式
    */

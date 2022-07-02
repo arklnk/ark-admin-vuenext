@@ -4,6 +4,7 @@ import { computed, unref } from 'vue'
 import { useAppStore } from '/@/stores/modules/app'
 import { useFullContent } from '../web/useFullContent'
 import { MenuModeEnum } from '/@/enums/menuEnum'
+import { SIDE_BAR_COLLAPSED_WIDTH } from '/@/enums/appEnum'
 
 export function useMenuSetting() {
   const { getFullContent } = useFullContent()
@@ -21,13 +22,24 @@ export function useMenuSetting() {
 
   const getMenuTheme = computed(() => appStore.getMenuSetting.theme)
 
+  const getMenuWidth = computed(() => appStore.getMenuSetting.menuWidth)
+
   const getShowSideBar = computed(
     () => unref(getMenuMode) !== MenuModeEnum.TOP_MENU && !unref(getFullContent)
   )
 
-  const getIsSidebarType = computed(() => unref(getMenuMode) === MenuModeEnum.SIDEBAR)
+  const getIsSidebar = computed(() => unref(getMenuMode) === MenuModeEnum.SIDEBAR)
 
-  const getIsTopMenuType = computed(() => unref(getMenuMode) === MenuModeEnum.TOP_MENU)
+  const getIsTopMenu = computed(() => unref(getMenuMode) === MenuModeEnum.TOP_MENU)
+
+  const getRealWidth = computed(() =>
+    unref(getCollapsed) ? SIDE_BAR_COLLAPSED_WIDTH : unref(getMenuWidth)
+  )
+
+  const getCalcContentWidth = computed(() => {
+    const width = unref(getIsTopMenu) ? 0 : unref(getRealWidth)
+    return `calc(100% - ${width}px)`
+  })
 
   function setMenuSetting(menuSetting: Partial<MenuSetting>) {
     appStore.setProjectConfig({ menuSetting })
@@ -50,7 +62,10 @@ export function useMenuSetting() {
     getCollapsed,
     getUniqueOpened,
     getMenuTheme,
-    getIsSidebarType,
-    getIsTopMenuType,
+    getIsSidebar,
+    getIsTopMenu,
+    getMenuWidth,
+    getRealWidth,
+    getCalcContentWidth,
   }
 }
