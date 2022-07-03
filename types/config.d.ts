@@ -114,6 +114,9 @@ export interface ProjectConfig {
   // 切换页面时关闭上一页所有消息
   closeMessageOnSwitch: boolean
 
+  // 开启返回顶部
+  useOpenBackTop: boolean
+
   // 菜单设置
   menuSetting: MenuSetting
 

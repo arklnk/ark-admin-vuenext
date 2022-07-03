@@ -28,18 +28,18 @@ export function useMenuSetting() {
     () => unref(getMenuMode) !== MenuModeEnum.TOP_MENU && !unref(getFullContent)
   )
 
-  const getIsSidebar = computed(() => unref(getMenuMode) === MenuModeEnum.SIDEBAR)
-
-  const getIsTopMenu = computed(() => unref(getMenuMode) === MenuModeEnum.TOP_MENU)
+  const getShowTopMenu = computed(() => unref(getMenuMode) === MenuModeEnum.TOP_MENU)
 
   const getRealWidth = computed(() =>
     unref(getCollapsed) ? SIDE_BAR_COLLAPSED_WIDTH : unref(getMenuWidth)
   )
 
-  const getCalcContentWidth = computed(() => {
-    const width = unref(getIsTopMenu) ? 0 : unref(getRealWidth)
+  const getCalcHeaderWidth = computed(() => {
+    const width = unref(getShowTopMenu) ? 0 : unref(getRealWidth)
     return `calc(100% - ${width}px)`
   })
+
+  const getShowHeaderTrigger = computed(() => unref(getMenuMode) !== MenuModeEnum.TOP_MENU)
 
   function setMenuSetting(menuSetting: Partial<MenuSetting>) {
     appStore.setProjectConfig({ menuSetting })
@@ -55,17 +55,17 @@ export function useMenuSetting() {
     setMenuSetting,
     toggleCollapse,
 
-    getShowSideBar,
     getTopMenuAlign,
     getMenuMode,
     getBgColor,
     getCollapsed,
     getUniqueOpened,
     getMenuTheme,
-    getIsSidebar,
-    getIsTopMenu,
     getMenuWidth,
     getRealWidth,
-    getCalcContentWidth,
+    getCalcHeaderWidth,
+    getShowSideBar,
+    getShowTopMenu,
+    getShowHeaderTrigger,
   }
 }

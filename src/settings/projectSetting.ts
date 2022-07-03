@@ -16,6 +16,7 @@ const setting: ProjectConfig = {
   showLogo: true,
   showSettingButton: true,
   fullContent: false,
+  useOpenBackTop: true,
   themeColor: APP_PRESET_COLOR_LIST[3],
   theme: ThemeEnum.LIGHT,
   contentMode: ContentEnum.FULL,

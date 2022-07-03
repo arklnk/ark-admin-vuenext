@@ -1,10 +1,14 @@
 import type { HeaderSetting } from '/#/config'
 
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 import { useAppStore } from '/@/stores/modules/app'
+import { useMenuSetting } from './useMenuSetting'
+import { useRootSetting } from './useRootSetting'
 
 export function useHeaderSetting() {
   const appStore = useAppStore()
+  const { getShowTopMenu } = useMenuSetting()
+  const { getShowLogo } = useRootSetting()
 
   const getFixed = computed(() => appStore.getHeaderSetting.fixed)
 
@@ -13,6 +17,8 @@ export function useHeaderSetting() {
   const getShowFullScreen = computed(() => appStore.getHeaderSetting.showFullScreen)
 
   const getHeaderTheme = computed(() => appStore.getHeaderSetting.theme)
+
+  const getShowHeaderLogo = computed(() => unref(getShowLogo) && unref(getShowTopMenu))
 
   /* set header */
   function setHeaderSetting(headerSetting: Partial<HeaderSetting>) {
@@ -26,5 +32,6 @@ export function useHeaderSetting() {
     getBgColor,
     getFixed,
     getHeaderTheme,
+    getShowHeaderLogo,
   }
 }

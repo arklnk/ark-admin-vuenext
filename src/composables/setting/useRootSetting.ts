@@ -34,6 +34,8 @@ export function useRootSetting() {
 
   const getTheme = computed(() => appStore.getProjectConfig.theme)
 
+  const getUseOpenBackTop = computed(() => appStore.getProjectConfig.useOpenBackTop)
+
   function setRootSetting(setting: Partial<RootSetting>) {
     appStore.setProjectConfig(setting)
   }
@@ -57,5 +59,6 @@ export function useRootSetting() {
     getShowBreadCrumb,
     getShowFooter,
     getTheme,
+    getUseOpenBackTop,
   }
 }
