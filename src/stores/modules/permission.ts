@@ -10,8 +10,10 @@ import { useUserStore } from './user'
 import { toRaw } from 'vue'
 import { filter, listToTree } from '/@/utils/helper/tree'
 import { roleRoutes } from '/@/router/routes'
-import { MenuTypeEnum } from '/@/enums/menuEnum'
+import { IframePrefix, MenuTypeEnum } from '/@/enums/menuEnum'
 import { transformMenuToRoute } from '/@/router/helper/routeHelper'
+import { warn } from '/@/utils/log'
+import { isUrl } from '/@/utils/is'
 
 interface PermissionState {
   /**
@@ -88,8 +90,25 @@ export const usePermissionStore = defineStore({
         return roleList.some((role) => roles.includes(role))
       }
 
+      const backRouteFilter = (menu: Menu): boolean => {
+        if (menu.type === MenuTypeEnum.Permission) {
+          return false
+        }
+
+        if (
+          !menu.router?.startsWith('/') &&
+          !isUrl(menu.router) &&
+          !menu.router?.startsWith(IframePrefix)
+        ) {
+          warn(`此路由${menu.router}不合法，需以/开头。`)
+          return false
+        }
+
+        return true
+      }
+
       // 后端权限路由过滤，过滤权限
-      const menuFilter = (menu: Menu): boolean => menu.type !== MenuTypeEnum.Permission
+      // const menuFilter = (menu: Menu): boolean => menu.type !== MenuTypeEnum.Permission
 
       // 判断权限路由模式
       switch (permissionMode) {
@@ -97,7 +116,7 @@ export const usePermissionStore = defineStore({
         case PermissionModeEnum.BACK:
           const { menus, perms } = await getPermAndMenu()
           // 过滤权限
-          let menusTree = filter(menus, menuFilter)
+          let menusTree = filter(menus, backRouteFilter)
 
           // 转换成真实的vue-router对象
           menusTree = listToTree(menusTree, { pid: 'parentId' })
