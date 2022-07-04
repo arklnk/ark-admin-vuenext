@@ -35,6 +35,7 @@ $prefixCls: #{var.$namespace}-app-feature;
   &__setting-drawer {
     position: absolute;
     cursor: pointer;
+    z-index: 99;
     right: 0;
     top: 120px;
     width: 40px;
