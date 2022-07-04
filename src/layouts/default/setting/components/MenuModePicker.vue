@@ -48,7 +48,7 @@ function handleClick(cur: MenuModeEnum) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/var.scss';
 
 $prefixCls: #{var.$namespace}-setting-menu-mode-picker;

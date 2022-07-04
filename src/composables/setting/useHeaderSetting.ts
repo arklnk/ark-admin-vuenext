@@ -4,11 +4,15 @@ import { computed, unref } from 'vue'
 import { useAppStore } from '/@/stores/modules/app'
 import { useMenuSetting } from './useMenuSetting'
 import { useRootSetting } from './useRootSetting'
+import { useFullContent } from '../web/useFullContent'
 
 export function useHeaderSetting() {
   const appStore = useAppStore()
+  const { getFullContent } = useFullContent()
   const { getShowTopMenu } = useMenuSetting()
   const { getShowLogo } = useRootSetting()
+
+  const getShowHeader = computed(() => !unref(getFullContent))
 
   const getFixed = computed(() => appStore.getHeaderSetting.fixed)
 
@@ -28,6 +32,7 @@ export function useHeaderSetting() {
   return {
     setHeaderSetting,
 
+    getShowHeader,
     getShowFullScreen,
     getBgColor,
     getFixed,

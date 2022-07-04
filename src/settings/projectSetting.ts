@@ -26,7 +26,7 @@ const setting: ProjectConfig = {
   menuSetting: {
     collapsed: false,
     uniqueOpened: false,
-    menuWidth: 230,
+    menuWidth: 256,
     bgColor: SIDE_BAR_BG_COLOR_LIST[2],
     theme: ThemeEnum.DARK,
     menuMode: MenuModeEnum.SIDEBAR,

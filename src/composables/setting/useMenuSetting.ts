@@ -36,7 +36,7 @@ export function useMenuSetting() {
 
   const getCalcHeaderWidth = computed(() => {
     const width = unref(getShowTopMenu) ? 0 : unref(getRealWidth)
-    return `calc(100% - ${width}px)`
+    return `calc(100vw - ${width}px)`
   })
 
   const getShowHeaderTrigger = computed(() => unref(getMenuMode) !== MenuModeEnum.TOP_MENU)

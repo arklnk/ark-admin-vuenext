@@ -1,11 +1,11 @@
 <template>
-  <div :class="[prefixCls, mode, getLightOrDarkClass]" class="relative" :style="topMenuALignStyle">
+  <div :class="[prefixCls, mode, getInnerMenuTheme]" class="relative" :style="getWrapperStyle">
     <ElMenu
       class="border-none"
       :mode="mode"
       :default-active="activeMenu"
       :unique-opened="getUniqueOpened"
-      :collapse="isCollapsed"
+      :collapse="getCollapsed"
       :collapse-transition="false"
     >
       <MenuItem v-for="route in routes" :key="route.path" :route="route" />
@@ -16,15 +16,12 @@
 <script setup lang="ts">
 import { computed, unref } from 'vue'
 import { useRoute } from 'vue-router'
-
 import { useDesign } from '/@/composables/core/useDesign'
 import { basicRoutes } from '/@/router/routes/basic'
 import { usePermissionStore } from '/@/stores/modules/permission'
-
 import MenuItem from './components/MenuItem.vue'
 import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
 import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
-import { MenuModeEnum } from '/@/enums/menuEnum'
 
 const props = defineProps({
   isHorizontal: {
@@ -44,29 +41,20 @@ const activeMenu = computed(() => {
   return $route.path
 })
 
-const {
-  getUniqueOpened,
-  getCollapsed,
-  getMenuTheme,
-  getMenuMode,
-  getTopMenuAlign,
-} = useMenuSetting()
+const { getUniqueOpened, getCollapsed, getMenuTheme, getTopMenuAlign } = useMenuSetting()
 const { getHeaderTheme } = useHeaderSetting()
 const mode = computed<'vertical' | 'horizontal'>(() =>
   props.isHorizontal ? 'horizontal' : 'vertical'
 )
 
-const getLightOrDarkClass = computed<'light' | 'dark'>(() => {
+const getInnerMenuTheme = computed<'light' | 'dark'>(() => {
   return unref(mode) === 'vertical' ? getMenuTheme.value : getHeaderTheme.value
 })
 
-const isTopMenuMode = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
-const isCollapsed = computed(() => (isTopMenuMode.value ? false : getCollapsed.value))
-
-const topMenuALignStyle = computed(() => `--top-menu-align: ${getTopMenuAlign.value}`)
+const getWrapperStyle = computed(() => `--top-menu-align: ${getTopMenuAlign.value}`)
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 
@@ -79,10 +67,9 @@ $menu-hover-text-color: #ffffffa6;
   // 水平菜单，置于Header中
   @include when(horizontal) {
     --top-menu-align: flex-start;
-
     height: 100%;
 
-    :deep(.el-menu) {
+    .el-menu {
       --el-menu-item-font-size: #{$menu-font-size};
       --el-menu-item-height: 100%;
       --el-menu-bg-color: var(--header-bg-color);
@@ -99,7 +86,7 @@ $menu-hover-text-color: #ffffffa6;
     }
 
     @include when(dark) {
-      :deep(.el-menu) {
+      .el-menu {
         --el-menu-text-color: #{$menu-hover-text-color};
         --el-menu-hover-text-color: #{var.$color-white};
 
@@ -129,7 +116,7 @@ $menu-hover-text-color: #ffffffa6;
     }
 
     @include when(light) {
-      :deep(.el-menu) {
+      .el-menu {
         --el-menu-text-color: #{var.$color-black};
         --el-menu-hover-text-color: var(--el-color-primary);
 
@@ -141,7 +128,7 @@ $menu-hover-text-color: #ffffffa6;
 
   // 垂直菜单， 置于Sidebar中
   @include when(vertical) {
-    :deep(.el-menu) {
+    .el-menu {
       --el-menu-item-font-size: #{$menu-font-size};
       --el-menu-item-height: #{var.$header-height};
       --el-menu-bg-color: var(--sidebar-bg-color);
@@ -155,7 +142,7 @@ $menu-hover-text-color: #ffffffa6;
     }
 
     @include when(light) {
-      :deep(.el-menu) {
+      .el-menu {
         --el-menu-text-color: #{var.$color-black};
         --el-menu-hover-text-color: var(--el-color-primary);
 
@@ -176,7 +163,7 @@ $menu-hover-text-color: #ffffffa6;
     }
 
     @include when(dark) {
-      :deep(.el-menu) {
+      .el-menu {
         --el-menu-text-color: #{var.$color-white};
         --el-menu-hover-text-color: #{$menu-hover-text-color};
 

@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper content-full-height fixed-height>
+  <PageWrapper>
     <BasicTable
       ref="tableRef"
       :data-source="[]"
@@ -17,7 +17,6 @@
       }"
       size="small"
       class="h-full"
-      height="100%"
     >
       <ElTableColumn label="参数名称" prop="name" align="center" />
       <ElTableColumn label="参数值" prop="value" align="center" />
@@ -41,7 +40,7 @@ function selectable(record: Recordable): boolean {
 function mockData(params: Recordable) {
   return new Promise((resolve: Fn) => {
     setTimeout(() => {
-      const result = []
+      const result: any[] = []
       const lastSize = (params.page - 1) * params.size
       for (let i = 0; i < params.size; i++) {
         result.push({

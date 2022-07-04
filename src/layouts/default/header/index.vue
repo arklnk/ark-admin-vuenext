@@ -1,22 +1,22 @@
 <template>
+  <div v-if="getShowPlaceholderDom" :style="getPlaceholderDomStyle"><!-- placeholder --></div>
   <header
     ref="appHeaderRef"
-    :class="[
-      prefixCls,
-      getFixed ? 'is-fixed' : '',
-      isCollapsed ? 'is-collapsed' : '',
-      getHeaderTheme,
-      isTopMenuMode ? 'not-has-sidebar' : '',
-    ]"
+    :style="getWrapStyle"
+    :class="[prefixCls, getHeaderTheme, getFixed ? 'is-fixed' : '']"
     class="flex flex-row justify-between box-border relative overflow-hidden"
   >
-    <nav class="item items-center text-lg !px-4" @click="toggleCollapse" v-if="!isTopMenuMode">
+    <nav
+      class="item items-center text-lg !px-4"
+      @click="toggleCollapse"
+      v-if="getShowHeaderTrigger"
+    >
       <Hamburger :collapsed="getCollapsed" />
     </nav>
-    <nav class="item !px-8" v-if="showHeaderLogo">
+    <nav class="item !px-8" v-if="getShowHeaderLogo">
       <AppLogo :theme="getHeaderTheme" show-title />
     </nav>
-    <nav v-if="isTopMenuMode" class="flex-1">
+    <nav v-if="getShowTopMenu" class="flex-1">
       <Menu is-horizontal />
     </nav>
     <nav class="flex h-full text-lg">
@@ -28,37 +28,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import type { CSSProperties } from 'vue'
+
+import { ref, onMounted, computed, unref } from 'vue'
 import { AppLogo } from '/@/components/Application'
 import { FullScreen, Hamburger, UserDropdown } from './components'
 import ProjectConfig from '../setting/index.vue'
-
+import Menu from '../menu/index.vue'
 import { useLayoutHeight } from '../content/useLayoutHeight'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
 import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
-import { MenuModeEnum } from '/@/enums/menuEnum'
-import Menu from '../menu/index.vue'
 import { useRootSetting } from '/@/composables/setting/useRootSetting'
 
 const { prefixCls } = useDesign('app-header')
-const { setAppHeaderHeight } = useLayoutHeight()
+const { setAppHeaderHeight, appHeaderHeightRef } = useLayoutHeight()
 
 const appHeaderRef = ref<HTMLElement>()
 onMounted(() => {
   setAppHeaderHeight(appHeaderRef.value!.offsetHeight)
 })
 
-const { getFixed, getShowFullScreen, getHeaderTheme } = useHeaderSetting()
-const { getCollapsed, getMenuMode, toggleCollapse } = useMenuSetting()
-const { getShowLogo, getShowSettingButton } = useRootSetting()
+const { getFixed, getShowFullScreen, getHeaderTheme, getShowHeaderLogo, getShowHeader } =
+  useHeaderSetting()
+const { getCollapsed, toggleCollapse, getShowHeaderTrigger, getShowTopMenu, getCalcHeaderWidth } =
+  useMenuSetting()
+const { getShowSettingButton } = useRootSetting()
 
-const isTopMenuMode = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
-const isCollapsed = computed(() => (isTopMenuMode.value ? false : getCollapsed.value))
-const showHeaderLogo = computed(() => getShowLogo.value && isTopMenuMode.value)
+const getShowPlaceholderDom = computed(() => unref(getFixed) && unref(getShowHeader))
+const getPlaceholderDomStyle = computed(() => {
+  return {
+    height: `${unref(appHeaderHeightRef)}px`,
+  }
+})
+
+const getWrapStyle = computed((): CSSProperties => {
+  return {
+    width: unref(getCalcHeaderWidth),
+  }
+})
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 
@@ -69,27 +80,17 @@ $prefixCls: #{var.$namespace}-app-header;
   line-height: var.$header-height;
   transition: width var.$transition-duration;
   background-color: var(--header-bg-color);
+  box-shadow: 0 8px 24px -2px rgb(0 0 0 / 5%);
+  z-index: 9;
 
   @include when(is-fixed) {
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 9;
-    width: calc(100% - var.$sidebar-width);
-
-    @include when(is-collapsed) {
-      width: calc(100% - var.$sidebar-collapsed-width);
-    }
-  }
-
-  @include when(not-has-sidebar) {
-    width: 100%;
-    transition: none;
   }
 
   @include when(light) {
     color: var.$color-black;
-    box-shadow: 0 8px 24px -2px rgb(0 0 0 / 5%);
   }
 
   @include when(dark) {

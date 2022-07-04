@@ -27,7 +27,7 @@ const getIsShowFooter = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/var.scss';
 
 $prefixCls: #{var.$namespace}-app-footer;

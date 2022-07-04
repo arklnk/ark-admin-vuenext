@@ -1,8 +1,5 @@
 <template>
-  <aside
-    :class="[prefixCls, getCollapsed ? 'is-collapsed' : '', getMenuTheme]"
-    class="h-full box-border"
-  >
+  <aside :style="getWrapperStyle" :class="[prefixCls, getMenuTheme]" class="h-full box-border">
     <ElScrollbar>
       <div class="overflow-x-hidden">
         <AppLogo
@@ -18,28 +15,32 @@
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from 'vue'
+
 import { useDesign } from '/@/composables/core/useDesign'
 import { AppLogo } from '/@/components/Application'
 import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
 import { useRootSetting } from '/@/composables/setting/useRootSetting'
-
 import Menu from '../menu/index.vue'
+import { computed, unref } from 'vue'
 
 const { prefixCls } = useDesign('app-sidebar')
-
-const { getCollapsed, getMenuTheme } = useMenuSetting()
-
+const { getCollapsed, getMenuTheme, getRealWidth } = useMenuSetting()
 const { getShowLogo } = useRootSetting()
+const getWrapperStyle = computed((): CSSProperties => {
+  return {
+    width: `${unref(getRealWidth)}px`,
+  }
+})
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 
 $prefixCls: #{var.$namespace}-app-sidebar;
 
 .#{$prefixCls} {
-  width: var.$sidebar-width;
   background-color: var(--sidebar-bg-color);
   transition: width var.$transition-duration;
   box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
@@ -48,11 +49,7 @@ $prefixCls: #{var.$namespace}-app-sidebar;
   &__menu-logo {
     width: var.$sidebar-width;
     height: var.$header-height;
-    padding-left: calc(#{var.$sidebar-collapsed-width} / 2 - 16px);
-  }
-
-  @include when(is-collapsed) {
-    width: var.$sidebar-collapsed-width;
+    padding-left: calc(64px / 2 - 16px);
   }
 
   @include when(dark) {
