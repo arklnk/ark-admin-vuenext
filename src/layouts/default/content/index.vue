@@ -45,7 +45,7 @@ $prefixCls: #{var.$namespace}-app-content;
   min-height: 0;
 
   @include when(fixed) {
-    width: var.$app-main-fixed-width;
+    width: var.$app-content-fixed-width;
     margin: 0 auto;
   }
 }
