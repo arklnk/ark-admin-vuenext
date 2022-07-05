@@ -81,8 +81,17 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
       return {
         path: `/external-link/${menu.id}`,
         name: menu.router,
-        redirect: menu.router,
-        meta,
+        component: ParentLayout,
+        meta: {
+          single: true,
+        },
+        children: [
+          {
+            path: menu.router,
+            component: ParentLayout,
+            meta,
+          },
+        ],
       }
     }
 

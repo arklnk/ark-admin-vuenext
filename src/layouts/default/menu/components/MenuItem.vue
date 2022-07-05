@@ -1,5 +1,9 @@
 <template>
-  <ElMenuItem v-if="!menuHasChildren(getRoute) && getShowMenu" :index="getRoute.path" @click="handleMenuClick">
+  <ElMenuItem
+    v-if="!menuHasChildren(getRoute) && getShowMenu"
+    :index="getRoute.path"
+    @click="handleMenuClick"
+  >
     <ElIcon>
       <SvgIcon v-if="getRoute.meta?.icon" :icon="getRoute.meta.icon" />
     </ElIcon>
@@ -27,8 +31,12 @@ export default {
 <script setup lang="ts">
 import type { RouteRecordRaw } from 'vue-router'
 import type { PropType } from 'vue'
+import type { MenuItemRegistered } from 'element-plus/lib/components/menu/src/types'
 
 import { computed, unref } from 'vue'
+import { isUrl } from '/@/utils/is'
+import { openWindow } from '/@/utils'
+import { useGo } from '/@/composables/web/useGo'
 
 const props = defineProps({
   route: {
@@ -45,7 +53,13 @@ function menuHasChildren(route: RouteRecordRaw): boolean {
   return Reflect.has(route, 'children') && !!route.children && route.children.length > 0
 }
 
-function handleMenuClick(params) {
-  console.log(params)
+const go = useGo()
+
+function handleMenuClick({ index }: MenuItemRegistered) {
+  if (isUrl(index)) {
+    openWindow(index)
+  } else {
+    go(index)
+  }
 }
 </script>
