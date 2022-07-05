@@ -75,7 +75,7 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
     if (isUrl(menu.router)) {
       // const query = qs.parse(menu.router, { ignoreQueryPrefix: true })
       // if (Reflect.has(query, '__iframe__')) {
-        
+
       // }
 
       return {
@@ -104,6 +104,9 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
         name: menu.router,
         component: ParentLayout,
         redirect: `${path}/index`,
+        meta: {
+          single: true,
+        },
         children: [
           {
             path: `${path}/index`,

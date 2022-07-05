@@ -38,7 +38,7 @@ const routes = computed(() => {
 })
 const $route = useRoute()
 const activeMenu = computed(() => {
-  return $route.path
+  return $route.meta?.currentActiveMenu || $route.path
 })
 
 const { getUniqueOpened, getCollapsed, getMenuTheme, getTopMenuAlign } = useMenuSetting()

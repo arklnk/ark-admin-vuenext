@@ -78,5 +78,15 @@ declare module 'vue-router' {
      * @description role info
      */
     roles?: RoleEnum[]
+
+    /**
+     * @description current active menu
+     */
+    currentActiveMenu?: string
+
+    /**
+     * @description used internally to mark single-level menus
+     */
+    single?: boolean
   }
 }

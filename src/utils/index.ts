@@ -18,7 +18,7 @@ export function getPageTitle(subTitle: string | undefined | null) {
  * / _ - 符号转换成驼峰
  */
 export function toHump(name: string) {
-  return name.replace(/[\-\/\_](\w)/g, function (all, letter) {
+  return name.replace(/[\-\/\_](\w)/g, function (_all, letter) {
     return letter.toUpperCase()
   })
 }
@@ -60,6 +60,19 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
   }
   parameters = parameters.replace(/&$/, '')
   return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters
+}
+
+export function openWindow(
+  url: string,
+  opt?: { target?: WindowTargetContext | string; noopener?: boolean; noreferrer?: boolean }
+) {
+  const { target = '__blank', noopener = true, noreferrer = true } = opt || {}
+  const feature: string[] = []
+
+  noopener && feature.push('noopener=yes')
+  noreferrer && feature.push('noreferrer=yes')
+
+  window.open(url, target, feature.join(','))
 }
 
 /**

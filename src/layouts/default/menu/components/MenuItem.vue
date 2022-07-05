@@ -1,61 +1,51 @@
 <template>
-  <template v-if="!showRoute?.meta?.hidden">
-    <MenuLink v-if="showRoute" :to="showRoute.path" :redirect="showRoute.redirect?.toString()">
-      <ElMenuItem :index="showRoute.path">
-        <ElIcon>
-          <SvgIcon v-if="showRoute.meta?.icon" :icon="showRoute.meta.icon" />
-        </ElIcon>
-        <template #title>
-          <span class="ml-2">{{ showRoute.meta?.title }}</span>
-        </template>
-      </ElMenuItem>
-    </MenuLink>
-    <ElSubMenu v-else :index="route.path">
-      <template #title>
-        <ElIcon>
-          <SvgIcon v-if="route.meta?.icon" :icon="route.meta.icon" />
-        </ElIcon>
-        <span class="ml-2">{{ route.meta?.title }}</span>
-      </template>
-      <MenuItem v-for="child in route.children" :key="child.path" :route="child" />
-    </ElSubMenu>
-  </template>
+  <ElMenuItem v-if="!menuHasChildren(getRoute) && getShowMenu" :index="getRoute.path" @click="handleMenuClick">
+    <ElIcon>
+      <SvgIcon v-if="getRoute.meta?.icon" :icon="getRoute.meta.icon" />
+    </ElIcon>
+    <template #title>
+      <span class="ml-2">{{ getRoute.meta?.title }}</span>
+    </template>
+  </ElMenuItem>
+  <ElSubMenu v-if="menuHasChildren(getRoute) && getShowMenu" :index="getRoute.path">
+    <template #title>
+      <ElIcon>
+        <SvgIcon v-if="getRoute.meta?.icon" :icon="getRoute.meta.icon" />
+      </ElIcon>
+      <span class="ml-2">{{ getRoute.meta?.title }}</span>
+    </template>
+    <MenuItem v-for="child in getRoute.children" :key="child.path" :route="child" />
+  </ElSubMenu>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'MenuItem'
+  name: 'MenuItem',
 }
 </script>
 
 <script setup lang="ts">
 import type { RouteRecordRaw } from 'vue-router'
-import type { ComputedRef } from 'vue'
+import type { PropType } from 'vue'
 
-import { computed, PropType } from 'vue'
-
-import MenuLink from './MenuLink.vue'
-import { EmptyLayout, ParentLayout } from '/@/router/contants'
+import { computed, unref } from 'vue'
 
 const props = defineProps({
   route: {
     type: Object as PropType<RouteRecordRaw>,
-    required: true
-  }
+    required: true,
+  },
 })
 
-const showRoute: ComputedRef<Nullable<RouteRecordRaw>> = computed(() => {
-  // 根菜单
-  if (!props.route.meta) {
-    return props.route.children?.[0]
-  }
+const getRoute = computed(() => (props.route.meta?.single ? props.route.children![0] : props.route))
 
-  // 目录或次级目录
-  if (props.route.component?.name === ParentLayout.name || props.route.component?.name === EmptyLayout.name) {
-    return null
-  }
+const getShowMenu = computed(() => !unref(getRoute).meta?.hidden)
 
-  // 菜单
-  return props.route
-})
+function menuHasChildren(route: RouteRecordRaw): boolean {
+  return Reflect.has(route, 'children') && !!route.children && route.children.length > 0
+}
+
+function handleMenuClick(params) {
+  console.log(params)
+}
 </script>

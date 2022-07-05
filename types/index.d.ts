@@ -4,6 +4,8 @@ declare interface Fn<T = any, R = T> {
 
 declare type EmitFn = (event: any, ...args: any[]) => void
 
+declare type WindowTargetContext = '_self' | '_blank'
+
 declare type LabelValueOptions = {
   label: string
   value: any

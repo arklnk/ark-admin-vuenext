@@ -49,6 +49,9 @@ const DashboardRoute: RouteRecordRaw = {
   name: toHump(PageEnum.Dashboard),
   component: ParentLayout,
   redirect: PageEnum.Dashboard,
+  meta: {
+    single: true,
+  },
   children: [
     {
       path: PageEnum.Dashboard,
@@ -68,13 +71,15 @@ const RedirectRoute: RouteRecordRaw = {
   path: '/redirect',
   name: 'RedirectTo',
   component: ParentLayout,
+  meta: {
+    hidden: true,
+  },
   children: [
     {
       path: '/redirect/:path(.*)',
       name: 'Redirect',
       component: () => import('/@/views/redirect/Redirect.vue'),
       meta: {
-        hidden: true,
         title: '页面跳转中...',
       },
     },
