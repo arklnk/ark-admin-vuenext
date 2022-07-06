@@ -6,7 +6,7 @@
 
 <script lang="ts">
 export default {
-  name: 'SvgIcon'
+  name: 'SvgIcon',
 }
 </script>
 
@@ -21,12 +21,16 @@ const props = defineProps({
   },
   icon: {
     type: String,
-    required: true
+    required: true,
   },
   spin: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
+  strict: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const { prefixCls } = useDesign('svg-icon')
