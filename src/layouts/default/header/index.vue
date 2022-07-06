@@ -13,8 +13,8 @@
     >
       <Hamburger :collapsed="getCollapsed" />
     </nav>
-    <nav class="item !px-8" v-if="getShowHeaderLogo">
-      <AppLogo :theme="getHeaderTheme" show-title />
+    <nav class="item !px-8">
+      <AppLogo :theme="getHeaderTheme" show-title v-if="getShowHeaderLogo" />
     </nav>
     <nav v-if="getShowTopMenu" class="flex-1">
       <Menu is-horizontal />
