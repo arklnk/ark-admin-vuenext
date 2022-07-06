@@ -1,4 +1,5 @@
 @use './var.scss';
+@use './public.scss';
 @use './transition.scss';
 @use './element-ui.scss';
 @use './mixins.scss';
@@ -43,34 +44,4 @@ svg,
 span {
   outline: none !important;
   text-decoration: none !important;
-}
-
-#app {
-  width: 100%;
-  height: 100%;
-  background-color: var.$app-bg-color;
-}
-
-html.dark {
-  #app {
-    background-color: #2a2c2c;
-  }
-}
-
-// =================================
-// ==============nprogress==========
-// =================================
-#nprogress {
-  pointer-events: none;
-
-  .bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 99999;
-    width: 100%;
-    height: 2px;
-    background-color: var(--el-color-primary);
-    opacity: 80%;
-  }
 }
