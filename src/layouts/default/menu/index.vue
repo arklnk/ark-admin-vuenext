@@ -65,7 +65,6 @@ $menu-hover-text-color: #ffffffa6;
 .#{$prefixCls} {
   // 水平菜单，置于Header中
   @include when(horizontal) {
-    width: 100%;
     height: 100%;
     --el-menu-item-font-size: #{$menu-font-size};
     --el-menu-item-height: 100%;
