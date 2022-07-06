@@ -5,7 +5,7 @@
     @click="go('/')"
   >
     <img :class="`${prefixCls}__logo`" src="../../../assets/images/logo.png" />
-    <span v-show="showTitle" :class="`${prefixCls}__title`">{{ title }}</span>
+    <div v-show="showTitle" :class="`${prefixCls}__title`" class="truncate">{{ title }}</div>
   </div>
 </template>
 
