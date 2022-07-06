@@ -1,15 +1,13 @@
 <template>
-  <aside :style="getWrapperStyle" :class="[prefixCls, getMenuTheme]" class="h-full box-border">
-    <ElScrollbar>
-      <div class="overflow-x-hidden">
-        <AppLogo
-          v-if="getShowLogo"
-          :show-title="!getCollapsed"
-          :theme="getMenuTheme"
-          :class="`${prefixCls}__menu-logo`"
-        />
-        <Menu :is-horizontal="false" />
-      </div>
+  <aside :style="getWrapperStyle" :class="[prefixCls, getMenuTheme]" class="h-full box-border flex flex-col">
+    <AppLogo
+      v-if="getShowLogo"
+      :show-title="!getCollapsed"
+      :theme="getMenuTheme"
+      :class="`${prefixCls}__menu-logo`"
+    />
+    <ElScrollbar class="flex-1">
+      <Menu :is-horizontal="false" />
     </ElScrollbar>
   </aside>
 </template>
@@ -47,9 +45,8 @@ $prefixCls: #{var.$namespace}-app-sidebar;
   z-index: 10;
 
   &__menu-logo {
-    width: var.$sidebar-width;
     height: var.$header-height;
-    padding-left: calc(64px / 2 - 16px);
+    padding: 10px 4px 10px 16px;
   }
 
   @include when(dark) {

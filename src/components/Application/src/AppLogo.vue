@@ -4,8 +4,8 @@
     :class="[prefixCls, theme, $attrs.class]"
     @click="go('/')"
   >
-    <img class="w-8 h-8" src="../../../assets/images/logo.png" />
-    <span v-show="showTitle" class="ml-2">{{ title }}</span>
+    <img :class="`${prefixCls}__logo`" src="../../../assets/images/logo.png" />
+    <span v-show="showTitle" :class="`${prefixCls}__title`">{{ title }}</span>
   </div>
 </template>
 
@@ -39,20 +39,29 @@ const go = useGo()
 $prefixCls: #{var.$namespace}-app-logo;
 
 .#{$prefixCls} {
-  transition: all var.$transition-duration;
-  letter-spacing: 2px;
-  font-weight: 600;
-  font-size: 18px;
+  transition: all var.$transition-duration ease;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 
   @include when(light) {
     color: var(--el-color-primary);
+    border-bottom: 1px solid var.$border-color-base;
   }
 
   @include when(dark) {
     color: var.$color-white;
   }
 
-  img {
+  &__title {
+    transition: all 0.5s;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 18px;
+    margin-left: 8px;
+  }
+
+  &__logo {
     height: 32px;
     width: 32px;
   }
