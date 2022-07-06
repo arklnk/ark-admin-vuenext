@@ -4,7 +4,7 @@ import type { Menu } from '/#/vue-router'
 enum Api {
   info = 'account/info',
   permmenu = 'account/permmenu',
-  logout = '/account/logout',
+  logout = 'account/logout',
 }
 
 interface AccountInfoResult {
