@@ -10,7 +10,7 @@ import { useUserStore } from './user'
 import { toRaw } from 'vue'
 import { filter, listToTree } from '/@/utils/helper/tree'
 import { roleRoutes } from '/@/router/routes'
-import { IframePrefix, MenuTypeEnum } from '/@/enums/menuEnum'
+import { MenuTypeEnum } from '/@/enums/menuEnum'
 import { transformMenuToRoute } from '/@/router/helper/routeHelper'
 import { warn } from '/@/utils/log'
 import { isUrl } from '/@/utils/is'
@@ -95,20 +95,13 @@ export const usePermissionStore = defineStore({
           return false
         }
 
-        if (
-          !menu.router?.startsWith('/') &&
-          !isUrl(menu.router) &&
-          !menu.router?.startsWith(IframePrefix)
-        ) {
-          warn(`此路由${menu.router}不合法，需以/开头。`)
+        if (!menu.router?.startsWith('/') && !isUrl(menu.router)) {
+          warn(`此路由${menu.router}不合法，需以/或者合法的url开头。`)
           return false
         }
 
         return true
       }
-
-      // 后端权限路由过滤，过滤权限
-      // const menuFilter = (menu: Menu): boolean => menu.type !== MenuTypeEnum.Permission
 
       // 判断权限路由模式
       switch (permissionMode) {

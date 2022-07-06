@@ -3,11 +3,12 @@ import type { Component, Menu } from '/#/vue-router'
 import { EmptyLayout, IFrameLayout, ParentLayout, ViewNotFound } from '../contants'
 import { RouteMeta, RouteRecordRaw } from 'vue-router'
 import { warn } from '/@/utils/log'
-import { IframePrefix, MenuTypeEnum } from '/@/enums/menuEnum'
+import { MenuTypeEnum } from '/@/enums/menuEnum'
 import { isUrl } from '/@/utils/is'
-// import qs from 'qs'
 
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>
+
+const IFRAME_PARAM = '__iframe__'
 
 export function dynamicImport(component?: string): Component {
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/index.{vue,tsx}')
@@ -71,36 +72,38 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
       return route
     }
 
+    let needIframe = false
+
     // 外链
     if (isUrl(menu.router)) {
-      // const query = qs.parse(menu.router, { ignoreQueryPrefix: true })
-      // if (Reflect.has(query, '__iframe__')) {
-
-      // }
-
-      return {
-        path: `/external-link/${menu.id}`,
-        name: menu.router,
-        component: ParentLayout,
-        meta: {
-          single: true,
-        },
-        children: [
-          {
-            path: menu.router,
-            component: ParentLayout,
-            meta,
+      // url中存在__iframe__参数时则内嵌显示，规则可自行定义
+      if (menu.router.indexOf(IFRAME_PARAM) !== -1) {
+        needIframe = true
+      } else {
+        return {
+          path: `/external-link/${menu.id}`,
+          name: menu.router,
+          component: ParentLayout,
+          meta: {
+            single: true,
           },
-        ],
+          children: [
+            {
+              path: menu.router,
+              component: ParentLayout,
+              meta,
+            },
+          ],
+        }
       }
     }
 
     // 内嵌页面
     let component: Component | null = null
     let path = menu.router
-    if (menu.router.startsWith(IframePrefix)) {
-      path = `/iframe/${menu.id}`
-      meta.iframeSrc = menu.router.substring(IframePrefix.length, menu.router.length)
+    if (needIframe) {
+      path = `/internal-link/${menu.id}`
+      meta.iframeSrc = menu.router
       component = IFrameLayout
     } else {
       component = dynamicImport(menu.viewPath)

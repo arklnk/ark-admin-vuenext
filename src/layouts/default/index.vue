@@ -24,5 +24,6 @@ import { useDesign } from '/@/composables/core/useDesign'
 const { getShowSideBar } = useMenuSetting()
 const { getShowHeader } = useHeaderSetting()
 
+// 用于el-backtop查找元素
 const { prefixCls } = useDesign('layout-default-main')
 </script>
