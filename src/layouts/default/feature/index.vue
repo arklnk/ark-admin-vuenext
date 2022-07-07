@@ -15,7 +15,7 @@ const { getFullContent } = useFullContent()
 const { getShowSettingButton, getUseOpenBackTop } = useRootSetting()
 
 const { prefixCls: layoutDefaultMainCls } = useDesign('layout-default-main')
-const getTarget = computed(() => `.${layoutDefaultMainCls}  .el-scrollbar__wrap`)
+const getTarget = computed(() => `.${layoutDefaultMainCls}`)
 
 const getShowFixedSettingDrawer = computed(() => {
   if (!unref(getShowSettingButton)) {

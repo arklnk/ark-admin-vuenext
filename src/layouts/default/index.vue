@@ -1,12 +1,12 @@
 <template>
-  <div class="h-full w-full relative flex flex-row overflow-hidden">
+  <div class="w-full h-full relative flex flex-row overflow-hidden" :class="prefixCls">
     <AppFeature />
     <AppSidebar v-if="getShowSideBar" />
-    <ElScrollbar class="flex-1" :class="prefixCls" :native="false">
+    <div class="flex-1 overflow-hidden overflow-y-auto" :class="`${prefixCls}-main`">
       <AppHeader v-if="getShowHeader" />
       <AppMain />
       <AppFooter />
-    </ElScrollbar>
+    </div>
   </div>
 </template>
 
@@ -25,5 +25,25 @@ const { getShowSideBar } = useMenuSetting()
 const { getShowHeader } = useHeaderSetting()
 
 // 用于el-backtop查找元素
-const { prefixCls } = useDesign('layout-default-main')
+const { prefixCls } = useDesign('layout-default')
 </script>
+
+<style lang="scss">
+@use '/@/styles/var.scss';
+
+$prefixCls: #{var.$namespace}-layout-default;
+
+.#{$prefixCls} {
+  background-color: var.$app-bg-color;
+
+  &-main {
+    min-height: 100%;
+  }
+}
+
+html.dark {
+  .#{$prefixCls} {
+    background-color: var.$app-dark-bg-color;
+  }
+}
+</style>
