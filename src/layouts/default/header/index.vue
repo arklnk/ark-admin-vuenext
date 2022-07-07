@@ -16,7 +16,7 @@
     <nav class="item !px-8">
       <AppLogo :theme="getHeaderTheme" show-title v-if="getShowHeaderLogo" />
     </nav>
-    <nav v-if="getShowTopMenu" class="flex-1">
+    <nav v-if="getShowTopMenu" class="flex-1 flex" :style="getTopMenuAlignStyle">
       <Menu is-horizontal />
     </nav>
     <nav class="flex h-full text-lg">
@@ -51,8 +51,14 @@ onMounted(() => {
 
 const { getFixed, getShowFullScreen, getHeaderTheme, getShowHeaderLogo, getShowHeader } =
   useHeaderSetting()
-const { getCollapsed, toggleCollapse, getShowHeaderTrigger, getShowTopMenu, getCalcHeaderWidth } =
-  useMenuSetting()
+const {
+  getCollapsed,
+  toggleCollapse,
+  getShowHeaderTrigger,
+  getShowTopMenu,
+  getCalcHeaderWidth,
+  getTopMenuAlign,
+} = useMenuSetting()
 const { getShowSettingButton } = useRootSetting()
 
 const getShowPlaceholderDom = computed(() => unref(getFixed) && unref(getShowHeader))
@@ -65,6 +71,12 @@ const getPlaceholderDomStyle = computed(() => {
 const getWrapStyle = computed((): CSSProperties => {
   return {
     width: unref(getCalcHeaderWidth),
+  }
+})
+
+const getTopMenuAlignStyle = computed((): CSSProperties => {
+  return {
+    'justify-content': unref(getTopMenuAlign),
   }
 })
 </script>
