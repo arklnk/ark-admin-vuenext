@@ -4,22 +4,31 @@
     ref="appHeaderRef"
     :style="getWrapStyle"
     :class="[prefixCls, getHeaderTheme, getFixed ? 'is-fixed' : '']"
-    class="flex flex-row justify-between box-border relative overflow-hidden"
+    class="flex flex-row justify-between items-center box-border relative overflow-hidden"
   >
-    <nav
-      class="item items-center text-lg !px-4"
-      @click="toggleCollapse"
-      v-if="getShowHeaderTrigger"
-    >
-      <Hamburger :collapsed="getCollapsed" />
+    <!-- left -->
+    <nav :class="`${prefixCls}-left`" class="flex h-full text-lg">
+      <AppLogo
+        v-if="getShowHeaderLogo || getIsMobile"
+        class="item !px-2"
+        :theme="getHeaderTheme"
+        :show-title="!getIsMobile"
+      />
+      <Hamburger
+        class="item !px-3"
+        v-if="getShowHeaderTrigger || getIsMobile"
+        :collapsed="getCollapsed"
+        @click="toggleCollapse"
+      />
     </nav>
-    <nav class="item !px-8">
-      <AppLogo :theme="getHeaderTheme" show-title v-if="getShowHeaderLogo" />
-    </nav>
-    <nav v-if="getShowTopMenu" class="flex-1 flex" :style="getTopMenuAlignStyle">
+
+    <!-- top menu -->
+    <nav v-if="getShowTopMenu && !getIsMobile" class="flex-1 flex" :style="getTopMenuAlignStyle">
       <Menu is-horizontal />
     </nav>
-    <nav class="flex h-full text-lg">
+
+    <!-- action -->
+    <nav class="flex h-full text-lg" :class="`${prefixCls}-action`">
       <FullScreen v-if="getShowFullScreen" class="item" />
       <UserDropdown class="item" />
       <ProjectConfig v-if="getShowSettingButton" class="item" />
@@ -40,6 +49,7 @@ import { useDesign } from '/@/composables/core/useDesign'
 import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
 import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
 import { useRootSetting } from '/@/composables/setting/useRootSetting'
+import { useAppInject } from '/@/composables/core/useAppInject'
 
 const { prefixCls } = useDesign('app-header')
 const { setAppHeaderHeight, appHeaderHeightRef } = useLayoutHeight()
@@ -51,6 +61,7 @@ onMounted(() => {
 
 const { getFixed, getShowFullScreen, getHeaderTheme, getShowHeaderLogo, getShowHeader } =
   useHeaderSetting()
+
 const {
   getCollapsed,
   toggleCollapse,
@@ -59,8 +70,18 @@ const {
   getCalcHeaderWidth,
   getTopMenuAlign,
 } = useMenuSetting()
+
+const { getIsMobile } = useAppInject()
+
+const getWrapStyle = computed((): CSSProperties => {
+  return {
+    width: unref(getIsMobile) ? '100%' : unref(getCalcHeaderWidth),
+  }
+})
+
 const { getShowSettingButton } = useRootSetting()
 
+// placeholder
 const getShowPlaceholderDom = computed(() => unref(getFixed) && unref(getShowHeader))
 const getPlaceholderDomStyle = computed(() => {
   return {
@@ -68,12 +89,7 @@ const getPlaceholderDomStyle = computed(() => {
   }
 })
 
-const getWrapStyle = computed((): CSSProperties => {
-  return {
-    width: unref(getCalcHeaderWidth),
-  }
-})
-
+// top menu
 const getTopMenuAlignStyle = computed((): CSSProperties => {
   return {
     'justify-content': unref(getTopMenuAlign),

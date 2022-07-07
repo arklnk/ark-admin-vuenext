@@ -1,5 +1,5 @@
 <template>
-  <IconHamburger :class="[prefixCls, collapsed ? 'is-collapsed' : '']" />
+  <span :class="[prefixCls, collapsed ? 'is-collapsed' : '']"><IconHamburger /></span>
 </template>
 
 <script setup lang="ts">
@@ -9,8 +9,8 @@ import { useDesign } from '/@/composables/core/useDesign'
 defineProps({
   collapsed: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { prefixCls } = useDesign('app-hamburger')

@@ -20,18 +20,17 @@ export default defineComponent({
     const isMobile = ref(false)
     const { prefixCls } = toRefs(props)
 
-    function windowSizeListener() {
-      const rect = document.body.getBoundingClientRect()
-      isMobile.value = rect.width - 1 < MOBILE_WIDTH
-    }
-
-    useWindowSizeFn(windowSizeListener)
+    useWindowSizeFn(
+      () => {
+        const width = document.body.clientWidth
+        isMobile.value = width - 1 < MOBILE_WIDTH
+      },
+      150,
+      { immediate: true }
+    )
 
     // Inject variables into the global
-    createAppProviderContext({
-      isMobile,
-      prefixCls,
-    })
+    createAppProviderContext({ isMobile, prefixCls })
 
     return () => slots.default?.()
   },

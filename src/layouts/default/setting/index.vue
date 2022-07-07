@@ -42,13 +42,13 @@
           title="折叠菜单"
           :def="getCollapsed"
           @change="handleMenuCollapsedChange"
-          :disabled="disableSidebarRelSetting"
+          :disabled="disableSidebarRelSetting && !getIsMobile"
         />
         <SwitchItem
           title="侧边菜单手风琴模式"
           :def="getUniqueOpened"
           @change="handleMenuUniqueOpenChange"
-          :disabled="disableSidebarRelSetting"
+          :disabled="disableSidebarRelSetting && !getIsMobile"
         />
         <SwitchItem title="固定顶栏" :def="getFixed" @change="handleHeaderFixedChange" />
         <SelectItem
@@ -118,14 +118,12 @@ import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground'
 import { useTransitionSetting } from '/@/composables/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
-import {
-  ContentEnum,
-  contentMap,
-  RouterTransitionEnum,
-  topMenuAlignMap,
-} from '/@/enums/appEnum'
+import { ContentEnum, contentMap, RouterTransitionEnum, topMenuAlignMap } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import { TopMenuAlign } from '/#/config'
+import { useAppInject } from '/@/composables/core/useAppInject'
+
+const { getIsMobile } = useAppInject()
 
 const visibleRef = ref(false)
 function handleClick() {
