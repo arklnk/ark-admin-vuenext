@@ -118,7 +118,7 @@ export default defineComponent({
     const getFooterOffsetHeight = computed(() => {
       return props.includeFooter ? unref(appFooterHeightRef) : 0
     })
-    const { contentHeight, recalcHeight } = useContentHeight(
+    const { contentHeight, redoHeight } = useContentHeight(
       getContentFullHeight,
       wrapperRef,
       [headerRef],
@@ -135,7 +135,7 @@ export default defineComponent({
         }
       }
 
-      let height = `${contentHeight.value}px`
+      const height = `${contentHeight.value}px`
       return {
         ...contentStyle,
         minHeight: height,
@@ -155,11 +155,11 @@ export default defineComponent({
     })
 
     // 是否需要重新计算content height
-    const { getFullContent, getShowFooter } = useRootSetting()
+    const { getFullContent } = useRootSetting()
     watch(
-      [getFullContent, getShowFooter],
+      () => getFullContent.value,
       () => {
-        recalcHeight()
+        redoHeight()
       },
       {
         flush: 'post',
@@ -187,8 +187,6 @@ $prefixCls: #{var.$namespace}-page-wrapper;
 
 .#{$prefixCls} {
   position: relative;
-  // 解决content margin高度塌陷 BFC
-  overflow: hidden;
 
   &--dense {
     .#{$prefixCls}-content {

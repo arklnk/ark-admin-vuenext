@@ -1,20 +1,21 @@
 <template>
   <div :class="[prefixCls, getIsContentFixed ? 'fixed' : '']">
-    <RouterView v-slot="{ Component, route }">
-      <transition
-        :name="
-          getTransitionName({
-            def: getRouterTransition,
-            enableTransition: getEnableTransition,
-            route,
-          })
-        "
-        mode="out-in"
-      >
-        <main :key="route.fullPath">
-          <component :is="Component" />
-        </main>
-      </transition>
+    <RouterView>
+      <template #default="{ Component, route }">
+        <transition
+          :name="
+            getTransitionName({
+              def: getRouterTransition,
+              enableTransition: getEnableTransition,
+              route,
+            })
+          "
+          mode="out-in"
+          appear
+        >
+          <component :is="Component" :key="route.fullPath" />
+        </transition>
+      </template>
     </RouterView>
   </div>
 </template>
@@ -41,7 +42,6 @@ $prefixCls: #{var.$namespace}-app-content;
 
 .#{$prefixCls} {
   position: relative;
-  flex: 1 1 auto;
   min-height: 0;
 
   @include when(fixed) {

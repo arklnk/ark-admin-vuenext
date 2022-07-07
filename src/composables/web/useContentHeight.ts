@@ -1,7 +1,10 @@
+import type { ComputedRef } from 'vue'
+
 import { isString, isNumber } from 'lodash-es'
-import { ComputedRef, nextTick, Ref, ref, unref } from 'vue'
+import { nextTick, Ref, ref, unref, watch, isRef } from 'vue'
 import { onMountedOrActivated } from '../core/onMountedOrActivated'
 import { useWindowSizeFn } from '../event/useWindowSizeFn'
+import { useLayoutHeight } from '/@/layouts/default/content/useLayoutHeight'
 import { numberUnit } from '/@/utils'
 import { getViewportOffset } from '/@/utils/dom'
 
@@ -29,9 +32,10 @@ export function useContentHeight(
   offsetHeightRef: Ref<number> = ref(0)
 ) {
   const contentHeight: Ref<number> = ref(0)
+  const { appFooterHeightRef: layoutFooterHeightRef } = useLayoutHeight()
 
   function getEl(element: any): Nullable<HTMLDivElement> {
-    if (!element) return null
+    if (element === null) return null
     return (element instanceof HTMLDivElement ? element : element.$el) as HTMLDivElement
   }
 
@@ -93,7 +97,7 @@ export function useContentHeight(
 
     // 向上递归减去空闲空间的 层级 或 直到指定class为止
     let upwardSpaceHeight = 0
-    function upward(element: Element | null, lvOrClass: Upward) {
+    function upward(element: Element | null, lvOrClass: number | string | null | undefined) {
       if (element && lvOrClass) {
         const parent = element.parentElement
         if (parent) {
@@ -114,7 +118,11 @@ export function useContentHeight(
         }
       }
     }
-    upward(anchorEl, unref(upwardSpace))
+    if (isRef(upwardSpace)) {
+      upward(anchorEl, unref(upwardSpace))
+    } else {
+      upward(anchorEl, upwardSpace)
+    }
 
     const height =
       bottomIncludeBody -
@@ -126,14 +134,16 @@ export function useContentHeight(
     contentHeight.value = height
   }
 
-  function recalcHeight() {
+  function redoHeight() {
     nextTick(() => {
       calcContentHeight()
     })
   }
 
   onMountedOrActivated(() => {
-    recalcHeight()
+    nextTick(() => {
+      calcContentHeight()
+    })
   })
 
   useWindowSizeFn(
@@ -144,8 +154,19 @@ export function useContentHeight(
     { immediate: true }
   )
 
+  watch(
+    () => [layoutFooterHeightRef.value],
+    () => {
+      calcContentHeight()
+    },
+    {
+      flush: 'post',
+      immediate: true,
+    }
+  )
+
   return {
     contentHeight,
-    recalcHeight,
+    redoHeight,
   }
 }
