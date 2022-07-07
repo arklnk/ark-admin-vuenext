@@ -34,7 +34,7 @@ $prefixCls: #{var.$namespace}-app-footer;
 
 .#{$prefixCls} {
   color: #57606a;
-  padding: 24px 50px;
+  padding: 12px 50px;
   color: #57606a;
 }
 </style>
