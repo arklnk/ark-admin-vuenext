@@ -32,7 +32,7 @@ export function useRootSetting() {
 
   const getRemoveAllHttpPending = computed(() => appStore.getProjectConfig.removeAllHttpPending)
 
-  const getTheme = computed(() => appStore.getProjectConfig.theme)
+  const getTheme = computed(() => appStore.getDarkMode)
 
   const getUseOpenBackTop = computed(() => appStore.getProjectConfig.useOpenBackTop)
 
@@ -42,8 +42,8 @@ export function useRootSetting() {
     appStore.setProjectConfig(setting)
   }
 
-  function setDarkMode(theme: ThemeEnum) {
-    appStore.setProjectConfig({ theme })
+  function setDarkMode(mode: ThemeEnum) {
+    appStore.setDarkMode(mode)
   }
 
   return {

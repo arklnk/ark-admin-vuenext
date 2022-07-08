@@ -1,4 +1,8 @@
+import { ThemeEnum } from '../enums/appEnum'
+
 export const prefixCls = 'sf'
+
+export const themeMode = ThemeEnum.LIGHT
 
 // app theme preset color
 export const APP_PRESET_COLOR_LIST: string[] = [

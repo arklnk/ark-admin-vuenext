@@ -12,31 +12,23 @@ import defaultSetting from '/@/settings/projectSetting'
 import { useMessage } from '/@/composables/web/useMessage'
 import { updateGrayMode } from '/@/logics/theme/updateGrayMode'
 import { updateColorWeak } from '/@/logics/theme/updateColorWeak'
-import { updateTheme } from '/@/logics/theme/updateTheme'
-import { updateSidebarBgColor, updateHeaderBgColor } from '/@/logics/theme/updateBackground'
 
 const appStore = useAppStore()
 const { createMessage } = useMessage()
 function handleResetSetting() {
   try {
     appStore.setProjectConfig(defaultSetting)
-    const {
-      grayMode,
-      colorWeak,
-      themeColor,
-      headerSetting: { bgColor: headerBgColor },
-      menuSetting: { bgColor: sidebarBgColor },
-    } = defaultSetting
+    const { grayMode, colorWeak } = defaultSetting
 
     updateGrayMode(grayMode)
     updateColorWeak(colorWeak)
-    updateTheme(themeColor)
-    updateHeaderBgColor(headerBgColor)
-    updateSidebarBgColor(sidebarBgColor)
+    // updateTheme(themeColor)
+    // updateHeaderBgColor(headerBgColor)
+    // updateSidebarBgColor(sidebarBgColor)
 
     createMessage({
       type: 'success',
-      message: '重置成功',
+      message: '重置成功,需刷新生效',
     })
   } catch (e) {
     createMessage({

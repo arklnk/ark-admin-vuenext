@@ -83,9 +83,6 @@ export interface ProjectConfig {
   // 网站主题色
   themeColor: string
 
-  // 夜间模式
-  theme: ThemeEnum
-
   // 是否显示面包屑
   showBreadCrumb: boolean
 

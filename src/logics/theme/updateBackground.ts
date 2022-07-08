@@ -9,7 +9,7 @@ const SIDEBAR_DARKEN_BG_COLOR = '--sidebar-darken-bg-color'
 
 export function updateSidebarBgColor(color?: string) {
   const appStore = useAppStore()
-  const darkMode = appStore.getProjectConfig.theme === ThemeEnum.DARK
+  const darkMode = appStore.getDarkMode === ThemeEnum.DARK
 
   if (!color) {
     if (darkMode) {
@@ -43,7 +43,7 @@ const HEADER_HOVER_BG_COLOR = '--header-hover-bg-color'
 
 export function updateHeaderBgColor(color?: string) {
   const appStore = useAppStore()
-  const darkMode = appStore.getProjectConfig.theme === ThemeEnum.DARK
+  const darkMode = appStore.getDarkMode === ThemeEnum.DARK
 
   if (!color) {
     if (darkMode) {

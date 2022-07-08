@@ -1,110 +1,105 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
+<html lang="zh_CN" id="htmlRoot">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="renderer" content="webkit" />
-    <link rel="icon" href="/favicon.ico" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
     />
     <title><%- title %></title>
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <script>
+      ;(function () {
+        var __htmlRoot = document.getElementById('htmlRoot')
+        var __theme = window.localStorage.getItem('APP_DARK_MODE__')
+        if (__htmlRoot && __theme) {
+          __originalCls = __htmlRoot.className.replace(__theme, '')
+          __htmlRoot.className = (__originalCls + ' ' + __theme).trim()
+          __theme = __htmlRoot = null
+        }
+      })()
+    </script>
     <style type="text/css">
-      .gp-loading-box {
-        position: absolute;
-        top: 50%;
-        left: 40%;
-        margin-left: 10%;
-        transform: translate3d(-50%, -50%, 0);
+      html,
+      body {
+        padding: 0;
+        margin: 0;
       }
-      .gp-loading-dot {
-        width: 24px;
-        height: 24px;
-        background: #3ac;
-        border-radius: 100%;
-        display: inline-block;
-        animation: gp-loading-slide 1s infinite;
+      html.dark .app-pre-loading {
+        background-color: #27272b;
       }
-      .gp-loading-dot:nth-child(1) {
-        animation-delay: 0.1s;
-        background: #32aacc;
+      .app-pre-loading {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
       }
-      .gp-loading-dot:nth-child(2) {
-        animation-delay: 0.2s;
-        background: #64aacc;
+
+      .app-pre-loading svg {
+        transform: scale(2.5);
       }
-      .gp-loading-dot:nth-child(3) {
-        animation-delay: 0.3s;
-        background: #96aacc;
+
+      .app-pre-loading svg polyline {
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
-      .gp-loading-dot:nth-child(4) {
-        animation-delay: 0.4s;
-        background: #c8aacc;
+      .app-pre-loading svg polyline#back {
+        stroke: rgba(110, 123, 242, 0.3);
       }
-      .gp-loading-dot:nth-child(5) {
-        animation-delay: 0.5s;
-        background: #faaacc;
+      .app-pre-loading svg polyline#front {
+        stroke: #6e7bf2;
+        stroke-dasharray: 12, 36;
+        stroke-dashoffset: 48;
+        animation: appPreLoadingDash 1s linear infinite;
       }
-      @-moz-keyframes gp-loading-slide {
-        0% {
-          transform: scale(1);
+      @-moz-keyframes appPreLoadingDash {
+        62.5% {
+          opacity: 0;
         }
-        50% {
-          opacity: 0.3;
-          transform: scale(2);
-        }
-        100% {
-          transform: scale(1);
+        to {
+          stroke-dashoffset: 0;
         }
       }
-      @-webkit-keyframes gp-loading-slide {
-        0% {
-          transform: scale(1);
+      @-webkit-keyframes appPreLoadingDash {
+        62.5% {
+          opacity: 0;
         }
-        50% {
-          opacity: 0.3;
-          transform: scale(2);
-        }
-        100% {
-          transform: scale(1);
+        to {
+          stroke-dashoffset: 0;
         }
       }
-      @-o-keyframes gp-loading-slide {
-        0% {
-          transform: scale(1);
+      @-o-keyframes appPreLoadingDash {
+        62.5% {
+          opacity: 0;
         }
-        50% {
-          opacity: 0.3;
-          transform: scale(2);
-        }
-        100% {
-          transform: scale(1);
+        to {
+          stroke-dashoffset: 0;
         }
       }
-      @keyframes gp-loading-slide {
-        0% {
-          transform: scale(1);
+      @keyframes appPreLoadingDash {
+        62.5% {
+          opacity: 0;
         }
-        50% {
-          opacity: 0.3;
-          transform: scale(2);
-        }
-        100% {
-          transform: scale(1);
+        to {
+          stroke-dashoffset: 0;
         }
       }
     </style>
-  </head>
-  <body>
     <div id="app">
       <!-- pre loading -->
-      <div class="gp-loading-box">
-        <div class="gp-loading-dot"></div>
-        <div class="gp-loading-dot"></div>
-        <div class="gp-loading-dot"></div>
-        <div class="gp-loading-dot"></div>
-        <div class="gp-loading-dot"></div>
+      <div class="app-pre-loading">
+        <svg width="16px" height="12px">
+          <polyline id="back" points="1 6 4 6 6 11 10 1 12 6 15 6"></polyline>
+          <polyline id="front" points="1 6 4 6 6 11 10 1 12 6 15 6"></polyline>
+        </svg>
       </div>
     </div>
     <!-- built files will be auto injected -->

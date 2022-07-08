@@ -28,10 +28,11 @@ export function initAppConfig() {
     appStore.setProjectConfig(defaultSetting)
   }
 
+  const darkMode = appStore.getDarkMode
+
   const {
     grayMode,
     colorWeak,
-    theme,
     themeColor,
     menuSetting: { bgColor },
     headerSetting: { bgColor: headerbgColor },
@@ -40,9 +41,9 @@ export function initAppConfig() {
   // update primary theme color
   updateTheme(themeColor)
 
-  if (theme === ThemeEnum.DARK) {
+  if (darkMode === ThemeEnum.DARK) {
     // 夜间模式
-    updateDarkMode(theme)
+    updateDarkMode(darkMode)
 
     // 更新夜间模式下的配置，以防被手动修改了非夜间模式不支持的背景设置
     updateSidebarBgColor()

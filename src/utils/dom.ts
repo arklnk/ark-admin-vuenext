@@ -9,6 +9,10 @@ export interface ViewportOffsetResult {
 
 const rootEle = document.documentElement
 
+function trim(string: string) {
+  return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '')
+}
+
 export function setCssVar(prop: string, val: any, dom = rootEle) {
   dom.style.setProperty(prop, val)
 }
@@ -19,11 +23,7 @@ export function toggleClass(flag: boolean, clsName: string, target?: HTMLElement
   let { className } = targetEl
   className = className.replace(clsName, '')
 
-  targetEl.className = flag ? `${className} ${clsName}` : className
-}
-
-function trim(string: string) {
-  return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '')
+  targetEl.className = flag ? `${className} ${clsName}`.trim() : className
 }
 
 /* istanbul ignore next */
