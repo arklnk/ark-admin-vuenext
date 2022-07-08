@@ -50,7 +50,7 @@ declare module 'vue-router' {
      * @description keep alive
      * @default true
      */
-    noCache?: boolean
+    keepalive?: boolean
 
     /**
      * @description if false, not show in breadcrumb

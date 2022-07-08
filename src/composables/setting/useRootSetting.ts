@@ -36,6 +36,8 @@ export function useRootSetting() {
 
   const getUseOpenBackTop = computed(() => appStore.getProjectConfig.useOpenBackTop)
 
+  const getOpenKeepAlive = computed(() => appStore.getProjectConfig.openKeepAlive)
+
   function setRootSetting(setting: Partial<RootSetting>) {
     appStore.setProjectConfig(setting)
   }
@@ -60,5 +62,6 @@ export function useRootSetting() {
     getShowFooter,
     getTheme,
     getUseOpenBackTop,
+    getOpenKeepAlive,
   }
 }

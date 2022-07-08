@@ -91,24 +91,26 @@
           @change="handleRouterTransitionChange"
         />
       </div>
+
+      <SettingFooter v-if="isDevMode()" />
     </ElDrawer>
   </span>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue'
 import IconSettings from '~icons/icon-park-outline/setting-two'
+import ThemeColorPicker from './components/ThemeColorPicker.vue'
+import SwitchItem from './components/SwitchItem.vue'
+import MenuModePicker from './components/MenuModePicker.vue'
+import SettingFooter from './components/SettingFooter.vue'
+
+import { ref, computed, nextTick } from 'vue'
 import {
   APP_PRESET_COLOR_LIST,
   HEADER_PRESET_BG_COLOR_LIST,
   SIDE_BAR_BG_COLOR_LIST,
 } from '/@/settings/designSetting'
-
-import ThemeColorPicker from './components/ThemeColorPicker.vue'
-import SwitchItem from './components/SwitchItem.vue'
-import MenuModePicker from './components/MenuModePicker.vue'
 import { AppDarkModeToggle } from '/@/components/Application'
-
 import { useRootSetting } from '/@/composables/setting/useRootSetting'
 import { updateTheme } from '/@/logics/theme/updateTheme'
 import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
@@ -122,6 +124,7 @@ import { ContentEnum, contentMap, RouterTransitionEnum, topMenuAlignMap } from '
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import { TopMenuAlign } from '/#/config'
 import { useAppInject } from '/@/composables/core/useAppInject'
+import { isDevMode } from '/@/utils/env'
 
 const { getIsMobile } = useAppInject()
 

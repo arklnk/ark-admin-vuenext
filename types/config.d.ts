@@ -98,6 +98,9 @@ export interface ProjectConfig {
   // 显示设置按钮
   showSettingButton: boolean
 
+  // 显示夜间模式开关
+  showDarkModeToggle: boolean
+
   // 内容区域宽度
   contentMode: ContentEnum
 
@@ -116,6 +119,9 @@ export interface ProjectConfig {
 
   // 开启返回顶部
   useOpenBackTop: boolean
+
+  // keepalive 缓存页面
+  openKeepAlive: boolean
 
   // 菜单设置
   menuSetting: MenuSetting

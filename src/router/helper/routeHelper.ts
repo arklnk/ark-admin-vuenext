@@ -52,7 +52,7 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
       title: menu.name,
       icon: menu.icon,
       hidden: !menu.isShow,
-      noCache: !menu.keepalive,
+      keepalive: menu.keepalive,
     }
 
     // 目录
