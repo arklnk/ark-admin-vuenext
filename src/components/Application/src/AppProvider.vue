@@ -1,9 +1,8 @@
 <script lang="tsx">
 import { defineComponent, ref, toRefs } from 'vue'
 import { createAppProviderContext } from './useAppContext'
-import { MOBILE_WIDTH } from '/@/enums/appEnum'
-import { useWindowSizeFn } from '/@/composables/event/useWindowSizeFn'
 import { prefixCls as PrefixClsValue } from '/@/settings/designSetting'
+import { createBreakpointListen } from '/@/composables/event/useBreakpoint'
 
 const props = {
   prefixCls: {
@@ -20,14 +19,12 @@ export default defineComponent({
     const isMobile = ref(false)
     const { prefixCls } = toRefs(props)
 
-    useWindowSizeFn(
-      () => {
-        const width = document.body.clientWidth
-        isMobile.value = width - 1 < MOBILE_WIDTH
-      },
-      150,
-      { immediate: true }
-    )
+    createBreakpointListen(({ screenMap, sizeEnum, widthRef }) => {
+      const lgWidth = screenMap.get(sizeEnum.LG)
+      if (lgWidth) {
+        isMobile.value = widthRef.value - 1 < lgWidth
+      }
+    })
 
     // Inject variables into the global
     createAppProviderContext({ isMobile, prefixCls })

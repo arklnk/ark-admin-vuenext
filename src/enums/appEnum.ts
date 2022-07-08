@@ -1,8 +1,6 @@
 import type { TopMenuAlign } from '/#/config'
 
 export const SIDE_BAR_COLLAPSED_WIDTH = 64
-// refer to Bootstrap's responsive design
-export const MOBILE_WIDTH = 992
 
 // menu theme enum
 export enum ThemeEnum {
