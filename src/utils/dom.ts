@@ -122,9 +122,6 @@ export function getViewportOffset(element: Element): ViewportOffsetResult {
 
   const clientWidth = window.document.documentElement.clientWidth
   const clientHeight = window.document.documentElement.clientHeight
-  console.log(
-    `clientHeight: ${clientHeight}, top: ${top}, offsetTop: ${offsetTop}, rectTop: ${rectTop}, pageYOffset: ${pageYOffset}`
-  )
 
   return {
     left: left,

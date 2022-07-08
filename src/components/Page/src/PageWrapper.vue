@@ -187,6 +187,9 @@ $prefixCls: #{var.$namespace}-page-wrapper;
 
 .#{$prefixCls} {
   position: relative;
+  // https://juejin.cn/post/7086740810238509070
+  // fix margin塌陷
+  overflow: hidden;
 
   &--dense {
     .#{$prefixCls}-content {
