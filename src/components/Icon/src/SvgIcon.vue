@@ -27,10 +27,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  strict: {
-    type: Boolean,
-    default: true,
-  },
 })
 
 const { prefixCls } = useDesign('svg-icon')
