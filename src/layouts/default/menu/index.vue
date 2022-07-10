@@ -98,7 +98,7 @@ $menu-hover-text-color: #ffffffa6;
 
       .el-menu-item.is-active {
         background-color: var(--el-menu-hover-bg-color);
-        color: var(--el-menu-hover-text-color);
+        color: var(--el-menu-hover-text-color) !important;
       }
 
       .el-sub-menu.is-active {

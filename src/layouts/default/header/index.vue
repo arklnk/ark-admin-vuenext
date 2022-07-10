@@ -23,7 +23,11 @@
     </nav>
 
     <!-- top menu -->
-    <nav v-if="getShowTopMenu && !getIsMobile" class="flex-1 flex" :style="getTopMenuAlignStyle">
+    <nav
+      v-if="getShowTopMenu && !getIsMobile"
+      class="flex-1 flex h-full"
+      :style="getTopMenuAlignStyle"
+    >
       <Menu is-horizontal />
     </nav>
 
