@@ -1,4 +1,4 @@
-export {}
+import type { VNodeChild } from 'vue'
 
 declare global {
   const __APP_INFO__: {
@@ -9,6 +9,8 @@ declare global {
     }
     lastBuildTime: string
   }
+
+  declare type VueNode = VNodeChild | JSX.Element
 
   interface ViteEnv {
     VITE_PORT: number
