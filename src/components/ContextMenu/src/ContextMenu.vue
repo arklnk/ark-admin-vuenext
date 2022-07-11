@@ -1,6 +1,6 @@
 <script lang="tsx">
-import type { PropType, CSSProperties } from 'vue'
-import type { Axis, ContextMenuItem } from './typing'
+import type { PropType, CSSProperties, FunctionalComponent } from 'vue'
+import type { Axis, ContextMenuItem, ItemContentProps } from './typing'
 
 import {
   defineComponent,
@@ -13,6 +13,8 @@ import {
   computed,
 } from 'vue'
 
+const prefixCls = 'context-menu'
+
 const props = {
   width: {
     type: Number,
@@ -21,6 +23,10 @@ const props = {
   showIcon: {
     type: Boolean,
     default: true,
+  },
+  customEvent: {
+    type: Object as PropType<Event>,
+    default: null,
   },
   customStyle: {
     type: Object as PropType<CSSProperties>,
@@ -40,6 +46,23 @@ const props = {
 
 const ContextMenuItemHeight = 40
 
+const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
+  return (
+    <div onClick={props.handler.bind(null, props.item)}>
+      {props.showIcon && props.item.icon ? (
+        <el-icon>
+          {typeof props.item.icon === 'string' ? (
+            <svg-icon icon={props.item.icon} />
+          ) : (
+            <compoennt is={props.item.icon.name} />
+          )}
+        </el-icon>
+      ) : null}
+      <span class="ml-2">{props.item.label}</span>
+    </div>
+  )
+}
+
 export default defineComponent({
   name: 'ContextMenu',
   props,
@@ -57,7 +80,7 @@ export default defineComponent({
       const top = document.body.clientHeight < y + menuHeight ? y - menuHeight : y
       return {
         ...customStyle.value,
-        position: 'absolute',
+        position: 'fixed',
         width: `${menuWidth}px`,
         left: `${left}px`,
         top: `${top}px`,
@@ -77,6 +100,73 @@ export default defineComponent({
         document.body.removeChild(el)
       }
     })
+
+    function handleItemClick(item: ContextMenuItem, e?: MouseEvent) {
+      const { disabled, handler } = item
+      if (disabled) return
+
+      showRef.value = false
+      e?.stopPropagation()
+      e?.preventDefault()
+      handler?.()
+    }
+
+    function renderMenuItem(items: ContextMenuItem[]) {
+      const visibleItems = items.filter((item) => !item.hidden)
+
+      return visibleItems.map((item) => {
+        const { disabled, label, divider = false, children } = item
+
+        const contentProps: ItemContentProps = {
+          showIcon: props.showIcon,
+          item,
+          handler: handleItemClick,
+        }
+
+        if (!children || children.length === 0) {
+          return (
+            <>
+              <el-menu-item disabled={disabled} index={label!}>
+                <ItemContent {...contentProps} />
+              </el-menu-item>
+              {divider ? <el-divider key={`d-${label}`} /> : null}
+            </>
+          )
+        }
+
+        return (
+          <el-sub-menu
+            disabled={disabled}
+            index={label!}
+            popper-class={`${prefixCls}__popper`}
+            popper-append-to-body={false}
+          >
+            {{
+              default: () => renderMenuItem(children),
+              title: () => <ItemContent {...contentProps} />,
+            }}
+          </el-sub-menu>
+        )
+      })
+    }
+
+    return () => {
+      if (!unref(showRef)) return null
+
+      return (
+        <div class={prefixCls}>
+          <el-menu
+            style={unref(getStyle)}
+            ref={wrapperRef}
+            mode="vertical"
+            collapse={true}
+            collapse-transition={false}
+          >
+            {renderMenuItem(props.items)}
+          </el-menu>
+        </div>
+      )
+    }
   },
 })
 </script>
@@ -84,9 +174,25 @@ export default defineComponent({
 <style lang="scss">
 @use '/@/styles/var.scss';
 
-$prefixCls: #{var.$namespace}-context-menu;
+$prefixCls: context-menu;
+
+$item-height: 40px;
 
 .#{$prefixCls} {
   position: fixed;
+  left: 0;
+  top: 0;
+
+  .el-menu {
+    --el-menu-item-height: #{$item-height};
+
+    border: none;
+    background-color: var(--el-bg-color-overlay);
+  }
+
+  .el-divider--horizontal {
+    margin: 0;
+    width: 100%;
+  }
 }
 </style>

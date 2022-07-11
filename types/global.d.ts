@@ -10,7 +10,7 @@ declare global {
     lastBuildTime: string
   }
 
-  declare type VueNode = VNodeChild | JSX.Element
+  type VueNode = VNodeChild | JSX.Element
 
   interface ViteEnv {
     VITE_PORT: number
