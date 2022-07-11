@@ -1,4 +1,6 @@
-import { inject, InjectionKey, provide, reactive, readonly as defineReadonly, UnwrapRef } from 'vue'
+import type { InjectionKey, UnwrapRef } from 'vue'
+
+import { inject, provide, reactive, readonly as defineReadonly } from 'vue'
 
 export interface CreateContextOptions {
   readonly?: boolean
@@ -22,7 +24,7 @@ export function createContext<T>(
   !createProvider && provide(key, native ? state : provideData)
 
   return {
-    state,
+    state: provideData,
   }
 }
 
