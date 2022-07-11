@@ -23,18 +23,10 @@ function handleClick(e: PointerEvent) {
       {
         label: 'dashboard2',
         icon: IcBaselineWbSunny,
+        disabled: true,
         handler: () => {
           console.log('dashboard')
         },
-        children: [
-          {
-            label: 'dashboard2',
-            icon: IcBaselineWbSunny,
-            handler: () => {
-              console.log('dashboard')
-            },
-          },
-        ],
       },
     ],
   })

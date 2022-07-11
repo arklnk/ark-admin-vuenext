@@ -2,6 +2,7 @@ import type { ContextMenuProps, CreateContextMenuOptions } from './typing'
 
 import { createVNode, render } from 'vue'
 import ContextMenuVue from './ContextMenu.vue'
+import { globalAppContext } from '/@/logics/registerGlobalComp'
 
 const contextMenuManager: { domList: Element[]; resolve: Fn } = {
   domList: [],
@@ -17,7 +18,6 @@ export function createContextMenu(opt: CreateContextMenuOptions) {
     const body = document.body
 
     const container = document.createElement('div')
-    container.setAttribute('class', 'context-menu-container')
 
     const propsData: Partial<ContextMenuProps> = {}
     if (opt.width) {
@@ -39,7 +39,7 @@ export function createContextMenu(opt: CreateContextMenuOptions) {
 
     const vm = createVNode(ContextMenuVue, propsData)
     // https://github.com/element-plus/element-plus/blob/dev/packages/components/message-box/src/messageBox.ts#L41
-    vm.appContext = ContextMenuVue._context
+    vm.appContext = globalAppContext
 
     render(vm, container)
 

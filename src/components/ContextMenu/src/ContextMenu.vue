@@ -11,9 +11,9 @@ import {
   unref,
   toRefs,
   computed,
+  h,
 } from 'vue'
-
-const prefixCls = 'context-menu'
+import { useDesign } from '/@/composables/core/useDesign'
 
 const props = {
   width: {
@@ -54,7 +54,7 @@ const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
           {typeof props.item.icon === 'string' ? (
             <svg-icon icon={props.item.icon} />
           ) : (
-            <compoennt is={props.item.icon.name} />
+            h(props.item.icon)
           )}
         </el-icon>
       ) : null}
@@ -69,6 +69,8 @@ export default defineComponent({
   setup(props) {
     const wrapperRef = ref(null)
     const showRef = ref(false)
+
+    const { prefixCls } = useDesign('context-menu')
 
     const getStyle = computed((): CSSProperties => {
       const { axis, width, items, customStyle } = toRefs(props)
@@ -174,7 +176,7 @@ export default defineComponent({
 <style lang="scss">
 @use '/@/styles/var.scss';
 
-$prefixCls: context-menu;
+$prefixCls: #{var.$namespace}-context-menu;
 
 $item-height: 40px;
 
