@@ -3,7 +3,7 @@
     <span class="inline-block flex-1 text-left text-black dark:text-white">{{ title }}</span>
     <ElSwitch
       :disabled="disabled"
-      :value="def"
+      :model-value="def"
       inline-prompt
       active-text="开"
       inactive-text="关"
