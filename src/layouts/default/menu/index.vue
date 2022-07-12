@@ -1,10 +1,9 @@
 <template>
   <ElMenu
-    ref="menuRef"
-    :class="[prefixCls, mode, getInnerMenuTheme]"
+    :class="getMenuClass"
     class="border-none"
     :style="getTopMenuAlignStyle"
-    :mode="mode"
+    :mode="getMode"
     :default-active="activeMenu"
     :unique-opened="getUniqueOpened"
     :collapse="getIsCollapsed"
@@ -18,7 +17,7 @@
 <script setup lang="ts">
 import { CSSProperties } from 'vue'
 
-import { computed, unref, ref, onMounted } from 'vue'
+import { computed, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDesign } from '/@/composables/core/useDesign'
 import { DashboardRoute } from '/@/router/routes/basic'
@@ -50,12 +49,16 @@ const activeMenu = computed(() => {
 const { getUniqueOpened, getCollapsed, getMenuTheme, getShowTopMenu, getTopMenuAlign } =
   useMenuSetting()
 const { getHeaderTheme } = useHeaderSetting()
-const mode = computed<'vertical' | 'horizontal'>(() =>
+const getMode = computed<'vertical' | 'horizontal'>(() =>
   props.isHorizontal ? 'horizontal' : 'vertical'
 )
 
-const getInnerMenuTheme = computed<'light' | 'dark'>(() => {
-  return unref(mode) === 'vertical' ? getMenuTheme.value : getHeaderTheme.value
+const getMenuClass = computed(() => {
+  return [
+    prefixCls,
+    unref(getMode),
+    unref(getMode) === 'vertical' ? getMenuTheme.value : getHeaderTheme.value,
+  ]
 })
 
 const getIsCollapsed = computed(() => (unref(getShowTopMenu) ? false : unref(getCollapsed)))
@@ -65,11 +68,6 @@ const getTopMenuAlignStyle = computed((): CSSProperties => {
   return {
     'justify-content': unref(getTopMenuAlign),
   }
-})
-
-const menuRef = ref<any>(null)
-onMounted(() => {
-  console.log(menuRef.value.$el.clientWidth)
 })
 </script>
 
@@ -84,6 +82,17 @@ $menu-hover-text-color: #ffffffa6;
 
 .#{$prefixCls} {
   width: 100%;
+  .el-sub-menu,
+  .el-sub-menu.is-active {
+    .el-sub-menu__title {
+      border-bottom: none;
+    }
+  }
+
+  .el-menu-item,
+  .el-menu-item.is-active {
+    border-bottom: none;
+  }
 
   // 水平菜单，置于Header中
   @include when(horizontal) {
@@ -93,18 +102,6 @@ $menu-hover-text-color: #ffffffa6;
     --el-menu-bg-color: var(--header-bg-color);
 
     @include when(dark) {
-      .el-sub-menu,
-      .el-sub-menu.is-active {
-        .el-sub-menu__title {
-          border-bottom: none;
-        }
-      }
-
-      .el-menu-item,
-      .el-menu-item.is-active {
-        border-bottom: none;
-      }
-
       --el-menu-text-color: #{$menu-hover-text-color};
       --el-menu-hover-text-color: #{var.$color-white};
 

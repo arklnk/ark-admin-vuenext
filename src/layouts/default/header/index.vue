@@ -25,7 +25,7 @@
     <!-- top menu -->
     <nav
       v-if="getShowTopMenu && !getIsMobile"
-      class="relative flex-1 h-full min-w-0 box-border pr-5"
+      :class="`${prefixCls}-menu`"
     >
       <Menu is-horizontal />
     </nav>
@@ -113,6 +113,14 @@ $prefixCls: #{var.$namespace}-app-header;
 
   @include when(dark) {
     color: var.$color-white;
+  }
+
+  &-menu {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 14px;
   }
 
   .item {
