@@ -17,7 +17,7 @@
     "@vueuse/core": "^8.6.0",
     "axios": "^0.24.0",
     "dayjs": "^1.11.1",
-    "element-plus": "^2.2.5",
+    "element-plus": "^2.2.9",
     "lodash-es": "^4.17.21",
     "mitt": "^3.0.0",
     "normalize.css": "^8.0.1",
