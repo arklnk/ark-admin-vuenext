@@ -4,7 +4,7 @@
     ref="appHeaderRef"
     :style="getWrapStyle"
     :class="[prefixCls, getHeaderTheme, getFixed ? 'is-fixed' : '']"
-    class="flex flex-row justify-between items-center box-border relative overflow-hidden"
+    class="flex flex-row justify-between items-center box-border relative"
   >
     <!-- left -->
     <nav :class="`${prefixCls}-left`" class="flex h-full text-lg">
@@ -25,8 +25,7 @@
     <!-- top menu -->
     <nav
       v-if="getShowTopMenu && !getIsMobile"
-      class="flex-1 flex h-full"
-      :style="getTopMenuAlignStyle"
+      class="relative flex-1 h-full min-w-0 box-border pr-5"
     >
       <Menu is-horizontal />
     </nav>
@@ -66,14 +65,8 @@ onMounted(() => {
 const { getFixed, getShowFullScreen, getHeaderTheme, getShowHeaderLogo, getShowHeader } =
   useHeaderSetting()
 
-const {
-  getCollapsed,
-  toggleCollapse,
-  getShowHeaderTrigger,
-  getShowTopMenu,
-  getCalcHeaderWidth,
-  getTopMenuAlign,
-} = useMenuSetting()
+const { getCollapsed, toggleCollapse, getShowHeaderTrigger, getShowTopMenu, getCalcHeaderWidth } =
+  useMenuSetting()
 
 const { getIsMobile } = useAppInject()
 
@@ -90,13 +83,6 @@ const getShowPlaceholderDom = computed(() => unref(getFixed) && unref(getShowHea
 const getPlaceholderDomStyle = computed(() => {
   return {
     height: `${unref(appHeaderHeightRef)}px`,
-  }
-})
-
-// top menu
-const getTopMenuAlignStyle = computed((): CSSProperties => {
-  return {
-    'justify-content': unref(getTopMenuAlign),
   }
 })
 </script>

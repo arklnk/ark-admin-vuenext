@@ -50,6 +50,7 @@ const getRoute = computed(() => (props.route.meta?.single ? props.route.children
 const getShowMenu = computed(() => !unref(getRoute).meta?.hidden)
 
 function menuHasChildren(route: RouteRecordRaw): boolean {
+  // NOTE: 如果目录下没有子菜单或者子目录，则会被渲染成菜单
   return Reflect.has(route, 'children') && !!route.children && route.children.length > 0
 }
 

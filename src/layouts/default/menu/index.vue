@@ -1,22 +1,27 @@
 <template>
   <ElMenu
+    ref="menuRef"
     :class="[prefixCls, mode, getInnerMenuTheme]"
     class="border-none"
+    :style="getTopMenuAlignStyle"
     :mode="mode"
     :default-active="activeMenu"
     :unique-opened="getUniqueOpened"
     :collapse="getIsCollapsed"
     :collapse-transition="false"
+    ellipsis
   >
     <MenuItem v-for="route in routes" :key="route.path" :route="route" />
   </ElMenu>
 </template>
 
 <script setup lang="ts">
-import { computed, unref } from 'vue'
+import { CSSProperties } from 'vue'
+
+import { computed, unref, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDesign } from '/@/composables/core/useDesign'
-import { basicRoutes } from '/@/router/routes/basic'
+import { DashboardRoute } from '/@/router/routes/basic'
 import { usePermissionStore } from '/@/stores/modules/permission'
 import MenuItem from './components/MenuItem.vue'
 import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
@@ -33,14 +38,17 @@ const { prefixCls } = useDesign('app-menu')
 
 const permissionStore = usePermissionStore()
 const routes = computed(() => {
-  return basicRoutes.concat(permissionStore.getMenuList)
+  // 与显示无关的路由不可关联注册，否则会导致顶部菜单模式时ellipsis计算不正确
+  return [DashboardRoute, ...permissionStore.getMenuList]
 })
+
 const $route = useRoute()
 const activeMenu = computed(() => {
   return $route.meta?.currentActiveMenu || $route.path
 })
 
-const { getUniqueOpened, getCollapsed, getMenuTheme, getShowTopMenu } = useMenuSetting()
+const { getUniqueOpened, getCollapsed, getMenuTheme, getShowTopMenu, getTopMenuAlign } =
+  useMenuSetting()
 const { getHeaderTheme } = useHeaderSetting()
 const mode = computed<'vertical' | 'horizontal'>(() =>
   props.isHorizontal ? 'horizontal' : 'vertical'
@@ -51,6 +59,18 @@ const getInnerMenuTheme = computed<'light' | 'dark'>(() => {
 })
 
 const getIsCollapsed = computed(() => (unref(getShowTopMenu) ? false : unref(getCollapsed)))
+
+// top menu
+const getTopMenuAlignStyle = computed((): CSSProperties => {
+  return {
+    'justify-content': unref(getTopMenuAlign),
+  }
+})
+
+const menuRef = ref<any>(null)
+onMounted(() => {
+  console.log(menuRef.value.$el.clientWidth)
+})
 </script>
 
 <style lang="scss">
@@ -63,6 +83,8 @@ $menu-font-size: 12px;
 $menu-hover-text-color: #ffffffa6;
 
 .#{$prefixCls} {
+  width: 100%;
+
   // 水平菜单，置于Header中
   @include when(horizontal) {
     height: 100%;
@@ -70,19 +92,19 @@ $menu-hover-text-color: #ffffffa6;
     --el-menu-item-height: 100%;
     --el-menu-bg-color: var(--header-bg-color);
 
-    .el-sub-menu,
-    .el-sub-menu.is-active {
-      .el-sub-menu__title {
+    @include when(dark) {
+      .el-sub-menu,
+      .el-sub-menu.is-active {
+        .el-sub-menu__title {
+          border-bottom: none;
+        }
+      }
+
+      .el-menu-item,
+      .el-menu-item.is-active {
         border-bottom: none;
       }
-    }
 
-    .el-menu-item,
-    .el-menu-item.is-active {
-      border-bottom: none;
-    }
-
-    @include when(dark) {
       --el-menu-text-color: #{$menu-hover-text-color};
       --el-menu-hover-text-color: #{var.$color-white};
 
