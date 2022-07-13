@@ -50,6 +50,11 @@ export function createContextMenu(opt: CreateContextMenuOptions) {
     const remove = function () {
       contextMenuManager.domList.forEach((dom) => {
         try {
+          // since the element is destroy, then the VNode should be collected by GC as well
+          // we do not want cause any mem leak because we have returned vm as a reference to users
+          // so that we manually set it to false.
+          render(null, dom)
+          // remove container
           body.removeChild(dom)
         } catch (e) {}
       })
@@ -58,14 +63,15 @@ export function createContextMenu(opt: CreateContextMenuOptions) {
       body.removeEventListener('scroll', handleClick)
     }
 
+    // remove pre
+    remove()
+
+    // add
     contextMenuManager.domList.push(container)
     contextMenuManager.resolve = function (arg) {
       remove()
       resove(arg)
     }
-
-    // remove pre
-    remove()
 
     body.appendChild(container)
     body.addEventListener('click', handleClick)

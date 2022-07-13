@@ -137,12 +137,7 @@ export default defineComponent({
         }
 
         return (
-          <el-sub-menu
-            disabled={disabled}
-            index={label!}
-            popper-class={`${prefixCls}__popper`}
-            popper-append-to-body={false}
-          >
+          <el-sub-menu disabled={disabled} index={label!} popper-class={`${prefixCls}__popper`}>
             {{
               default: () => renderMenuItem(children),
               title: () => <ItemContent {...contentProps} />,
@@ -184,17 +179,27 @@ $item-height: 40px;
   position: fixed;
   left: 0;
   top: 0;
+  width: 0;
+  height: 0;
 
-  .el-menu {
-    --el-menu-item-height: #{$item-height};
+  @mixin cover-el-menu {
+    .el-menu {
+      --el-menu-item-height: #{$item-height};
+      border: none;
+      background-color: var(--el-bg-color-overlay);
 
-    border: none;
-    background-color: var(--el-bg-color-overlay);
+      .el-divider--horizontal {
+        margin: 0;
+        width: 100%;
+      }
+    }
   }
 
-  .el-divider--horizontal {
-    margin: 0;
-    width: 100%;
+  @include cover-el-menu();
+
+  // popper
+  &__popper {
+    @include cover-el-menu();
   }
 }
 </style>

@@ -23,10 +23,20 @@ function handleClick(e: PointerEvent) {
       {
         label: 'dashboard2',
         icon: IcBaselineWbSunny,
-        disabled: true,
+        disabled: false,
         handler: () => {
           console.log('dashboard')
         },
+        children: [
+          {
+            label: 'dashboard2',
+            icon: 'netdisk',
+            disabled: true,
+            handler: () => {
+              console.log('dashboard')
+            },
+          },
+        ],
       },
     ],
   })
