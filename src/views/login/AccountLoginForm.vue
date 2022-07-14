@@ -61,8 +61,8 @@ import { PageEnum } from '/@/enums/pageEnum'
 import { useGo } from '/@/composables/web/useGo'
 
 const formData = reactive({
-  username: 'openadmin',
-  password: '123456',
+  username: '',
+  password: '',
   verifyCode: '',
   captchaId: '',
 })
