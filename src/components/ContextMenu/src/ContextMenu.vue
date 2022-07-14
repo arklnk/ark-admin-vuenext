@@ -4,6 +4,7 @@ import type { Axis, ContextMenuItem, ItemContentProps } from './typing'
 
 import { defineComponent, ref, onMounted, nextTick, unref, toRefs, computed, h } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
+import { ArrowRight } from '@element-plus/icons-vue'
 
 const props = {
   width: {
@@ -96,7 +97,7 @@ export default defineComponent({
       handler?.()
     }
 
-    function renderMenuItem(items: ContextMenuItem[]) {
+    function renderMenuItem(items: ContextMenuItem[], level: number) {
       const visibleItems = items.filter((item) => !item.hidden)
 
       return visibleItems.map((item) => {
@@ -122,8 +123,17 @@ export default defineComponent({
         return (
           <el-sub-menu disabled={disabled} index={label!} popper-class={`${prefixCls}__popper`}>
             {{
-              default: () => renderMenuItem(children),
-              title: () => <ItemContent {...contentProps} />,
+              default: () => renderMenuItem(children, level + 1),
+              title: () => (
+                <div class="flex flex-row items-center w-full">
+                  <ItemContent {...contentProps} class="flex-1" />
+                  {level === 0 ? (
+                    <el-icon class="root-sub-menu__arrow">
+                      <ArrowRight />
+                    </el-icon>
+                  ) : null}
+                </div>
+              ),
             }}
           </el-sub-menu>
         )
@@ -141,8 +151,9 @@ export default defineComponent({
             mode="vertical"
             collapse={true}
             collapse-transition={false}
+            unique-opened={true}
           >
-            {renderMenuItem(props.items)}
+            {renderMenuItem(props.items, 0)}
           </el-menu>
         </div>
       )
@@ -168,6 +179,9 @@ $item-height: 40px;
   @mixin cover-el-menu {
     .el-menu {
       --el-menu-item-height: #{$item-height};
+      --el-menu-sub-item-height: #{$item-height};
+
+      user-select: none;
       border: none;
       background-color: var(--el-bg-color-overlay);
 
@@ -178,9 +192,25 @@ $item-height: 40px;
     }
   }
 
+  .el-menu {
+    .el-sub-menu {
+      .root-sub-menu__arrow {
+        transform: var(--el-menu-icon-transform-closed);
+        transition: transform var(--el-transition-duration);
+        font-size: 12px;
+        margin-right: -var(--el-menu-base-level-padding);
+      }
+
+      &.is-opened {
+        .root-sub-menu__arrow {
+          transform: var(--el-menu-icon-transform-open);
+        }
+      }
+    }
+  }
+
   @include cover-el-menu();
 
-  // popper
   &__popper {
     @include cover-el-menu();
 
