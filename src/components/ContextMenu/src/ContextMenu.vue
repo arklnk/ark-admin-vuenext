@@ -2,17 +2,7 @@
 import type { PropType, CSSProperties, FunctionalComponent } from 'vue'
 import type { Axis, ContextMenuItem, ItemContentProps } from './typing'
 
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  nextTick,
-  onUnmounted,
-  unref,
-  toRefs,
-  computed,
-  h,
-} from 'vue'
+import { defineComponent, ref, onMounted, nextTick, unref, toRefs, computed, h } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
 
 const props = {
@@ -94,13 +84,6 @@ export default defineComponent({
       nextTick(() => {
         showRef.value = true
       })
-    })
-
-    onUnmounted(() => {
-      const el = unref(wrapperRef)
-      if (el) {
-        document.body.removeChild(el)
-      }
     })
 
     function handleItemClick(item: ContextMenuItem, e?: MouseEvent) {
@@ -200,6 +183,10 @@ $item-height: 40px;
   // popper
   &__popper {
     @include cover-el-menu();
+
+    .el-menu--popup {
+      padding: 0;
+    }
   }
 }
 </style>

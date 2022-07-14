@@ -40,13 +40,13 @@ export function createContextMenu(opt: CreateContextMenuOptions) {
     const vm = createVNode(ContextMenuVue, propsData)
     // https://github.com/element-plus/element-plus/blob/dev/packages/components/message-box/src/messageBox.ts#L41
     vm.appContext = globalAppContext
-
     render(vm, container)
 
     const handleClick = function () {
       contextMenuManager.resolve('')
     }
 
+    // remove dom each
     const remove = function () {
       contextMenuManager.domList.forEach((dom) => {
         try {
