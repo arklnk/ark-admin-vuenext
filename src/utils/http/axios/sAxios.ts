@@ -89,7 +89,9 @@ export class SAxios {
     // response catch
     responseInterceptorsCatch &&
       isFunction(responseInterceptorsCatch) &&
-      this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch)
+      this.axiosInstance.interceptors.response.use(undefined, (error) => {
+        return responseInterceptorsCatch(this.axiosInstance, error)
+      })
   }
 
   /**

@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { RequestOptions, Result } from '/#/axios'
 
 export abstract class AxiosTransform {
@@ -38,5 +38,5 @@ export abstract class AxiosTransform {
   /**
    * 响应拦截器错误处理
    */
-  responseInterceptorsCatch?: (e: Error) => void
+  responseInterceptorsCatch?: (res: AxiosInstance, e: Error) => void
 }

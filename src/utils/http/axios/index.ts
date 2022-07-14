@@ -1,16 +1,17 @@
-import type { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios'
+import type { AxiosResponse, AxiosRequestConfig, AxiosError, AxiosInstance } from 'axios'
 import type { AxiosTransform } from './axiosTransform'
 import type { CreateAxiosOptions } from './sAxios'
 import type { RequestOptions, Result } from '/#/axios'
 
 import { isString, merge } from 'lodash-es'
-import { ContentTypeEnum, ResultEnum } from '/@/enums/httpEnum'
+import { ContentTypeEnum, RequestEnum, ResultEnum } from '/@/enums/httpEnum'
 import { useMessage } from '/@/composables/web/useMessage'
 import { SAxios } from './sAxios'
 import { formatRequestDate, joinTimestamp as joinTimestampHelper } from './helper'
 import { getToken } from '../../auth'
 import { useUserStore } from '/@/stores/modules/user'
 import { usePermissionStore } from '/@/stores/modules/permission'
+import { AxiosRetry } from './axiosRetry'
 
 const UnknownErrorMsg = '未知错误,请稍候重试!'
 const ErrorTip = '错误提示'
@@ -138,7 +139,7 @@ const transform: AxiosTransform = {
   /**
    * 响应错误处理拦截器
    */
-  responseInterceptorsCatch: (error: any) => {
+  responseInterceptorsCatch: (axiosInstance: AxiosInstance, error: any) => {
     const { config, response, message, code } = (error as AxiosError) || {}
 
     const errorMessageMode =
@@ -188,6 +189,14 @@ const transform: AxiosTransform = {
       createMessage.error(errMessage)
     }
 
+    // 请求重试
+    const useRetry = (config as CreateAxiosOptions)?.requestOptions?.retryRequest?.useRetry
+    if (useRetry) {
+      const retryRequest = new AxiosRetry()
+      // 安全起见只尝试GET请求重试
+      config.method?.toUpperCase() === RequestEnum.GET && retryRequest.retry(axiosInstance, error)
+    }
+
     return Promise.reject(error)
   },
 }
@@ -212,6 +221,11 @@ function createAxios(opt?: Partial<CreateAxiosOptions>): SAxios {
           joinTimestamp: false,
           ignoreCancelToken: true,
           withToken: true,
+          retryRequest: {
+            useRetry: true,
+            waitTime: 100,
+            count: 3,
+          },
         },
       } as CreateAxiosOptions,
       opt || {}

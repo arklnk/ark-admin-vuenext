@@ -47,6 +47,28 @@ export interface RequestOptions {
    * 是否需要token验证
    */
   withToken?: boolean
+
+  /**
+   * 请求重试配置
+   */
+  retryRequest?: RetryRequest
+}
+
+export interface RetryRequest {
+  /**
+   * 开启失败请求重试
+   */
+  useRetry: boolean
+
+  /**
+   * 失败重试次数
+   */
+  count: number
+
+  /**
+   * 等待时间
+   */
+  waitTime: number
 }
 
 // multipart/form-data: upload file
