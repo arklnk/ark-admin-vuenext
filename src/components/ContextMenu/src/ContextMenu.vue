@@ -11,6 +11,10 @@ const props = {
     type: Number,
     default: 156,
   },
+  offset: {
+    type: Number,
+    default: 10,
+  },
   showIcon: {
     type: Boolean,
     default: true,
@@ -39,7 +43,7 @@ const ContextMenuItemHeight = 40
 
 const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
   return (
-    <div onClick={props.handler.bind(null, props.item)}>
+    <div onClick={props.handler.bind(null, props.item)} class="flex flex-row items-center">
       {props.showIcon && props.item.icon ? (
         <el-icon>
           {typeof props.item.icon === 'string' ? (
@@ -49,7 +53,7 @@ const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
           )}
         </el-icon>
       ) : null}
-      <span class="ml-2">{props.item.label}</span>
+      <span class="ml-2 flex-1">{props.item.label}</span>
     </div>
   )
 }
@@ -64,16 +68,21 @@ export default defineComponent({
     const { prefixCls } = useDesign('context-menu')
 
     const getStyle = computed((): CSSProperties => {
-      const { axis, width, items, customStyle } = toRefs(props)
+      const { axis, width, items, customStyle, offset } = toRefs(props)
       const { x, y } = unref(axis) || { x: 0, y: 0 }
       const menuHeight = (unref(items) || []).length * ContextMenuItemHeight
       const menuWidth = unref(width)
+      const offsetV = unref(offset)
 
-      const left = document.body.clientWidth < x + menuWidth ? x - menuWidth : x
-      const top = document.body.clientHeight < y + menuHeight ? y - menuHeight : y
+      const left =
+        document.body.clientWidth < x + menuWidth + offsetV ? x - menuWidth - offsetV : x + offsetV
+      const top =
+        document.body.clientHeight < y + menuHeight + offsetV
+          ? y - menuHeight - offsetV
+          : y + offsetV
       return {
         ...customStyle.value,
-        position: 'fixed',
+        position: 'absolute',
         width: `${menuWidth}px`,
         left: `${left}px`,
         top: `${top}px`,

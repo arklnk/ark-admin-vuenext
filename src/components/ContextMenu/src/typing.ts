@@ -17,6 +17,7 @@ export interface ContextMenuItem {
 
 export interface ContextMenuProps {
   width?: number
+  offset?: number
   showIcon?: boolean
   customStyle?: CSSProperties
   customEvent?: MouseEvent
@@ -27,6 +28,7 @@ export interface ContextMenuProps {
 export interface CreateContextMenuOptions {
   event: MouseEvent
   style?: CSSProperties
+  offset?: number
   items?: ContextMenuItem[]
   showIcon?: boolean
   width?: number

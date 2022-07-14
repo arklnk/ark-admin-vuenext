@@ -28,6 +28,10 @@ export function createContextMenu(opt: CreateContextMenuOptions) {
       propsData.width = opt.width
     }
 
+    if (opt.offset !== undefined) {
+      propsData.offset = opt.offset
+    }
+
     if (opt.style) {
       propsData.customStyle = opt.style
     }
