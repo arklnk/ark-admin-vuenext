@@ -67,7 +67,8 @@ export function createPermissionGuard(router: Router) {
         return nextData
       }
     } catch (e) {
-      // 菜单权限接口异常则尝试重新登录
+      // clear userinfo, need relogin
+      userStore.resetState()
       return {
         path: PageEnum.Login,
         query: {
