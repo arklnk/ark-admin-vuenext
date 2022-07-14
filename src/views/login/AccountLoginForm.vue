@@ -27,13 +27,14 @@
           placeholder="验证码"
           @keyup.enter="handleLogin"
         />
-        <ElImage
-          class="h-8 w-20 ml-2 cursor-pointer"
-          style="background-color: var(--el-fill-color-dark)"
-          :src="captchaData"
-          fit="fill"
-          @click="handleGetImageCaptcha"
-        />
+        <div class="h-8 w-20 ml-2 cursor-pointer select-none" @click="handleGetImageCaptcha">
+          <ElImage
+            class="w-full h-full"
+            style="background-color: var(--el-fill-color-dark)"
+            :src="captchaData"
+            fit="fill"
+          />
+        </div>
       </div>
     </ElFormItem>
     <ElFormItem>
