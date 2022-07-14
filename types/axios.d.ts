@@ -58,17 +58,17 @@ export interface RetryRequest {
   /**
    * 开启失败请求重试
    */
-  useRetry: boolean
+  useRetry?: boolean
 
   /**
    * 失败重试次数
    */
-  count: number
+  count?: number
 
   /**
    * 等待时间
    */
-  waitTime: number
+  waitTime?: number
 }
 
 // multipart/form-data: upload file

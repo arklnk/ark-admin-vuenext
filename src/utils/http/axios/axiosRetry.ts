@@ -8,11 +8,14 @@ export class AxiosRetry {
     // init
     config.__retryCount = config.__retryCount || 0
 
-    if (config.__retryCount >= count) {
-      return Promise.reject(error)
+    if (config.__retryCount < count) {
+      config.__retryCount += 1
+
+      // ignore promise error
+      return this.delay(waitTime)
+        .then(() => axiosInstance(config))
+        .catch(() => {})
     }
-    config.__retryCount += 1
-    return this.delay(waitTime).then(() => axiosInstance(config))
   }
 
   private delay(waitTime: number) {
