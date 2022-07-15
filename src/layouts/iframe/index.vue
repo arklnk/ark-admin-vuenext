@@ -1,11 +1,22 @@
 <template>
-  <PageWrapper v-loading="loadingRef" fixed-height content-full-height :content-background="false" dense>
-    <iframe
-      :src="frameSrc"
-      ref="frameRef"
-      class="w-full h-full overflow-hidden border-0 box-border relative"
-      @load="hideLoading"
-    ></iframe>
+  <PageWrapper
+    v-loading="loadingRef"
+    fixed-height
+    content-full-height
+    :content-background="false"
+    dense
+  >
+    <div class="w-full h-full overflow-hidden border-0 box-border relative">
+      <!-- iframe默认有一个2px宽度的border -->
+      <iframe
+        :src="frameSrc"
+        ref="frameRef"
+        @load="hideLoading"
+        frameborder="0"
+        width="100%"
+        height="100%"
+      ></iframe>
+    </div>
   </PageWrapper>
 </template>
 
