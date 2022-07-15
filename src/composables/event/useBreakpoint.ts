@@ -39,7 +39,6 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParam) => void) 
     const sm = screenMap.get(SizeEnum.SM)!
     const md = screenMap.get(SizeEnum.MD)!
     const lg = screenMap.get(SizeEnum.LG)!
-    const xl = screenMap.get(SizeEnum.XL)!
 
     if (width < xs) {
       screenRef.value = SizeEnum.XS
@@ -49,10 +48,8 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParam) => void) 
       screenRef.value = SizeEnum.MD
     } else if (width < lg) {
       screenRef.value = SizeEnum.LG
-    } else if (width < xl) {
-      screenRef.value = SizeEnum.XL
     } else {
-      screenRef.value = SizeEnum.XXL
+      screenRef.value = SizeEnum.XL
     }
 
     realWidthRef.value = width
