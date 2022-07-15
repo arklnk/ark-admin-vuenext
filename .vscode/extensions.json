@@ -1,10 +1,12 @@
 {
   "recommendations": [
     "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "mrmlnc.vscode-scss",
     "antfu.iconify",
+    "antfu.unocss",
     "voorjaar.windicss-intellisense",
     "mikestead.dotenv"
   ]
