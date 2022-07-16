@@ -71,7 +71,7 @@ html.dark {
     overflow: hidden;
     cursor: pointer;
     border-radius: 4px;
-    // box-sizing: content-box;
+    box-sizing: border-box;
     background-color: var.$app-bg-color;
     box-shadow: 0 1px 2.5px #0000002e;
     // border: 2px solid transparent;
