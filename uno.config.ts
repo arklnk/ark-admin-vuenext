@@ -15,6 +15,7 @@ export default defineConfig({
       warning: 'var(--el-color-warning)',
       danger: 'var(--el-color-danger)',
       error: 'var(--el-color-error)',
+      info: 'var(--el-color-info)',
       overlay: 'var(--el-bg-color-overlay)',
       page: 'var(--el-bg-color-page)',
     },
