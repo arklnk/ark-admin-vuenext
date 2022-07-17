@@ -13,7 +13,6 @@ export interface BasicDialogProps {
   closeDelay?: number
   closeOnClickModal?: boolean
   closeOnPressEscape?: boolean
-  beforeClose?: Fn
   destroyOnClose?: boolean
 
   // extra props
@@ -23,8 +22,15 @@ export interface BasicDialogProps {
   canClose?: boolean
   showConfirmBtn?: boolean
   showCancelBtn?: boolean
+  confirmText?: string
+  cancelText?: string
   confirmBtnProps?: ButtonProps
   cancelBtnProps?: ButtonProps
   title?: string
   helpMessage?: string
+  closeFunc?: () => Promise<boolean>
+}
+
+export interface BasicDialogActionType {
+  setDialogProps: (props: Partial<BasicDialogProps>) => void
 }
