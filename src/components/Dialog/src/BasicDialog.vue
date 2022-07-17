@@ -19,7 +19,12 @@
 
     <!-- footer -->
     <template #footer>
-      <DialogFooter v-if="!$slots.footer" v-bind="getMergeProps" />
+      <DialogFooter
+        v-if="!$slots.footer"
+        v-bind="getMergeProps"
+        @cancel="handleCancel"
+        @confirm="handleConfirm"
+      />
       <slot v-else name="footer"></slot>
     </template>
 
@@ -113,6 +118,10 @@ export default defineComponent({
       emit('cancel', e)
     }
 
+    function handleConfirm(e: Event) {
+      emit('confirm', e)
+    }
+
     function handleFullscreen(_e: Event) {
       fullscreenRef.value = !unref(fullscreenRef)
     }
@@ -137,6 +146,7 @@ export default defineComponent({
       getCloseIconBindValue,
       getHeaderBindValue,
       handleCancel,
+      handleConfirm,
       handleFullscreen,
     }
   },
@@ -181,7 +191,9 @@ $prefixCls: #{var.$namespace}-basic-dialog;
   }
 
   .el-dialog__body {
+    position: relative;
     padding: 20px;
+    flex: 1;
   }
 
   .el-dialog__footer {
