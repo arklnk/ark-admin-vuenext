@@ -92,20 +92,20 @@ export default defineComponent({
 
     // el-dialog props
     const getBindValue = computed((): Recordable => {
-      const props = unref(getMergeProps)
+      const mergeProps = unref(getMergeProps)
 
       const opt: Recordable = {
-        draggable: props.draggable,
-        top: props.top,
-        width: props.width,
-        modal: props.modal,
-        appendToBody: props.appendToBody,
-        lockScroll: props.lockScroll,
-        openDelay: props.openDelay,
-        closeDelay: props.closeDelay,
-        closeOnClickModal: props.closeOnClickModal,
-        closeOnPressEscape: props.closeOnPressEscape,
-        destroyOnClose: props.destroyOnClose,
+        draggable: mergeProps.draggable,
+        top: mergeProps.top,
+        width: mergeProps.width,
+        modal: mergeProps.modal,
+        appendToBody: mergeProps.appendToBody,
+        lockScroll: mergeProps.lockScroll,
+        openDelay: mergeProps.openDelay,
+        closeDelay: mergeProps.closeDelay,
+        closeOnClickModal: mergeProps.closeOnClickModal,
+        closeOnPressEscape: mergeProps.closeOnPressEscape,
+        destroyOnClose: mergeProps.destroyOnClose,
         modelValue: unref(visibleRef),
         fullscreen: unref(fullscreenRef),
         beforeClose: handleCancel,
@@ -142,15 +142,15 @@ export default defineComponent({
       fullscreenRef.value = !unref(fullscreenRef)
     }
 
-    function setProps(props: Partial<BasicDialogProps>) {
-      innerPropsRef.value = merge(unref(innerPropsRef), props)
+    function setProps(modProps: Partial<BasicDialogProps>) {
+      innerPropsRef.value = merge(unref(innerPropsRef), modProps)
 
-      if (Reflect.has(props, 'visible')) {
-        visibleRef.value = !!props.visible
+      if (Reflect.has(modProps, 'visible')) {
+        visibleRef.value = !!modProps.visible
       }
 
-      if (Reflect.has(props, 'defaultFullScreen')) {
-        fullscreenRef.value = !!props.defaultFullScreen
+      if (Reflect.has(modProps, 'defaultFullScreen')) {
+        fullscreenRef.value = !!modProps.defaultFullscreen
       }
     }
 
@@ -165,7 +165,7 @@ export default defineComponent({
 
     watchEffect(() => {
       visibleRef.value = !!props.visible
-      fullscreenRef.value = !!props.defaultFullScreen
+      fullscreenRef.value = !!props.defaultFullscreen
     })
 
     watch(

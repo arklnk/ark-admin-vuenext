@@ -17,7 +17,7 @@ export interface BasicDialogProps {
 
   // extra props
   visible?: boolean
-  defaultFullScreen?: boolean
+  defaultFullscreen?: boolean
   loading?: boolean
   loadingTip?: string
   canFullscreen?: boolean

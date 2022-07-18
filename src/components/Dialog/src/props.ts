@@ -17,7 +17,7 @@ export const basicProps = {
 
   // extra props
   visible: { type: Boolean },
-  defaultFullScreen: { type: Boolean },
+  defaultFullscreen: { type: Boolean },
   loading: { type: Boolean },
   loadingTip: { type: String },
   canFullscreen: { type: Boolean, default: true },
