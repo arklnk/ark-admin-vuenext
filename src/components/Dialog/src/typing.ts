@@ -17,6 +17,7 @@ export interface BasicDialogProps {
 
   // extra props
   visible?: boolean
+  defaultFullScreen?: boolean
   loading?: boolean
   canFullscreen?: boolean
   canClose?: boolean
@@ -24,13 +25,18 @@ export interface BasicDialogProps {
   showCancelBtn?: boolean
   confirmText?: string
   cancelText?: string
-  confirmBtnProps?: ButtonProps
-  cancelBtnProps?: ButtonProps
+  confirmBtnProps?: Writeable<Partial<ButtonProps>>
+  cancelBtnProps?: Writeable<Partial<ButtonProps>>
   title?: string
   helpMessage?: string
   closeFunc?: () => Promise<boolean>
 }
 
 export interface BasicDialogActionType {
-  setDialogProps: (props: Partial<BasicDialogProps>) => void
+  setProps: (props: Partial<BasicDialogProps>) => void
+}
+
+export interface UseDialogDialogActionType extends BasicDialogActionType {
+  openDialog: <T = any>(data?: T) => void
+  closeDialog: () => void
 }

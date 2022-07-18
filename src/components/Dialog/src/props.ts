@@ -25,8 +25,8 @@ export const basicProps = {
   showCancelBtn: { type: Boolean, default: true },
   confirmText: { type: String, default: '确定' },
   cancelText: { type: String, default: '取消' },
-  confirmBtnProps: { type: Object as PropType<ButtonProps> },
-  cancelBtnProps: { type: Object as PropType<ButtonProps> },
+  confirmBtnProps: { type: Object as PropType<Writeable<Partial<ButtonProps>>> },
+  cancelBtnProps: { type: Object as PropType<Writeable<Partial<ButtonProps>>> },
   title: { type: String },
   helpMessage: { type: String },
   closeFunc: { type: Function as PropType<() => Promise<boolean>> }

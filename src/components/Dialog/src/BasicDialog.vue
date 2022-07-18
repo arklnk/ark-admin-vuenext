@@ -3,7 +3,11 @@
     <!-- header -->
     <template #header="{ titleId, titleClass }">
       <div :id="titleId" :class="titleClass">
-        <DialogHeader v-if="!$slots.title" v-bind="getHeaderBindValue" />
+        <DialogHeader
+          v-if="!$slots.title"
+          :title="getMergeProps.title"
+          :help-message="getMergeProps.helpMessage"
+        />
         <slot v-else name="title"></slot>
       </div>
       <div :class="`${prefixCls}-close`">
@@ -19,30 +23,43 @@
 
     <!-- footer -->
     <template #footer>
-      <DialogFooter
-        v-if="!$slots.footer"
-        v-bind="getMergeProps"
-        @cancel="handleCancel"
-        @confirm="handleConfirm"
-      />
-      <slot v-else name="footer"></slot>
+      <div :class="`${prefixCls}-footer`">
+        <DialogFooter
+          v-if="!$slots.footer"
+          :confirm-text="getMergeProps.confirmText"
+          :confirm-btn-props="getMergeProps.confirmBtnProps"
+          :cancel-text="getMergeProps.cancelText"
+          :cancel-btn-props="getMergeProps.cancelBtnProps"
+          :show-confirm-btn="getMergeProps.showConfirmBtn"
+          :show-cancel-btn="getMergeProps.showCancelBtn"
+          @cancel="handleCancel"
+          @confirm="handleConfirm"
+        >
+          <template #prepend><slot name="prependFooter"></slot></template>
+          <template #center><slot name="centerFooter"></slot></template>
+          <template #append><slot name="appendFooter"></slot></template>
+        </DialogFooter>
+        <slot v-else name="footer"></slot>
+      </div>
     </template>
 
     <!-- content -->
-    <slot></slot>
+    <div :class="`${prefixCls}-wrapper`">
+      <slot></slot>
+    </div>
   </ElDialog>
 </template>
 
 <script lang="ts">
-import type { BasicDialogProps } from './typing'
+import type { BasicDialogActionType, BasicDialogProps } from './typing'
 
-import { computed, defineComponent, ref, unref, watch, watchEffect } from 'vue'
+import { computed, defineComponent, ref, unref, watch, watchEffect, getCurrentInstance } from 'vue'
 import { basicProps } from './props'
 import { useDesign } from '/@/composables/core/useDesign'
 import DialogHeader from './components/DialogHeader.vue'
 import DialogFooter from './components/DialogFooter.vue'
 import DialogClose from './components/DialogClose.vue'
-import { isFunction } from 'lodash-es'
+import { isFunction, merge } from 'lodash-es'
 
 export default defineComponent({
   name: 'BasicDialog',
@@ -98,15 +115,6 @@ export default defineComponent({
       }
     })
 
-    const getHeaderBindValue = computed((): Recordable => {
-      const props = unref(getMergeProps)
-
-      return {
-        helpMessage: props.helpMessage,
-        title: props.title,
-      }
-    })
-
     async function handleCancel(e: Event) {
       if (props.closeFunc && isFunction(props.closeFunc)) {
         const isClose: boolean = await props.closeFunc()
@@ -126,6 +134,27 @@ export default defineComponent({
       fullscreenRef.value = !unref(fullscreenRef)
     }
 
+    function setProps(props: Partial<BasicDialogProps>) {
+      innerPropsRef.value = merge(unref(innerPropsRef), props)
+
+      if (Reflect.has(props, 'visible')) {
+        visibleRef.value = !!props.visible
+      }
+
+      if (Reflect.has(props, 'defaultFullScreen')) {
+        fullscreenRef.value = !!props.defaultFullScreen
+      }
+    }
+
+    const dialogAction: BasicDialogActionType = {
+      setProps,
+    }
+
+    const instance = getCurrentInstance()
+    if (instance) {
+      emit('register', dialogAction, instance.uid)
+    }
+
     watchEffect(() => {
       visibleRef.value = !!props.visible
       fullscreenRef.value = !!props.defaultFullScreen
@@ -142,9 +171,8 @@ export default defineComponent({
     return {
       prefixCls,
       getBindValue,
-      getMergeProps,
       getCloseIconBindValue,
-      getHeaderBindValue,
+      getMergeProps,
       handleCancel,
       handleConfirm,
       handleFullscreen,
@@ -191,13 +219,20 @@ $prefixCls: #{var.$namespace}-basic-dialog;
   }
 
   .el-dialog__body {
-    position: relative;
     padding: 20px;
     flex: 1;
+
+    .#{$prefixCls}-wrapper {
+      position: relative;
+    }
   }
 
   .el-dialog__footer {
-    padding: 14px;
+    padding: 0;
+
+    .#{$prefixCls}-footer {
+      padding: 10px 14px;
+    }
   }
 }
 </style>

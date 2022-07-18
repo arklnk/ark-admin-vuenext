@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import IconFullScreen from '~icons/radix-icons/enter-full-screen'
 import IconExitFullScreen from '~icons/radix-icons/exit-full-screen'
-import IconClose from '~icons/clarity/close-line'
+import IconClose from '~icons/ci/close-big'
 
 defineProps({
   canFullscreen: {
