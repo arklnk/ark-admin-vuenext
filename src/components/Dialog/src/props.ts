@@ -19,8 +19,8 @@ export const basicProps = {
   visible: { type: Boolean },
   defaultFullScreen: { type: Boolean },
   loading: { type: Boolean },
+  loadingTip: { type: String },
   canFullscreen: { type: Boolean, default: true },
-  closable: { type: Boolean, default: true },
   showConfirmBtn: { type: Boolean, default: true },
   showCancelBtn: { type: Boolean, default: true },
   confirmText: { type: String, default: '确定' },
@@ -29,5 +29,5 @@ export const basicProps = {
   cancelBtnProps: { type: Object as PropType<Writeable<Partial<ButtonProps>>> },
   title: { type: String },
   helpMessage: { type: String },
-  closeFunc: { type: Function as PropType<() => Promise<boolean>> }
+  closeFunc: { type: Function as PropType<() => Promise<boolean>> },
 }

@@ -19,8 +19,8 @@ export interface BasicDialogProps {
   visible?: boolean
   defaultFullScreen?: boolean
   loading?: boolean
+  loadingTip?: string
   canFullscreen?: boolean
-  canClose?: boolean
   showConfirmBtn?: boolean
   showCancelBtn?: boolean
   confirmText?: string

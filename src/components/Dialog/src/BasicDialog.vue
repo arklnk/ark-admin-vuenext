@@ -13,7 +13,8 @@
       <div :class="`${prefixCls}-close`">
         <DialogClose
           v-if="!$slots.closeIcon"
-          v-bind="getCloseIconBindValue"
+          :fullscreen="fullscreenRef"
+          :can-fullscreen="getMergeProps.canFullscreen"
           @cancel="handleCancel"
           @fullscreen="handleFullscreen"
         />
@@ -44,7 +45,11 @@
     </template>
 
     <!-- content -->
-    <div :class="`${prefixCls}-wrapper`">
+    <div
+      :class="`${prefixCls}-wrapper`"
+      v-loading="getMergeProps.loading"
+      :element-loading-text="getMergeProps.loadingTip"
+    >
       <slot></slot>
     </div>
   </ElDialog>
@@ -85,34 +90,37 @@ export default defineComponent({
       } as BasicDialogProps
     })
 
+    // el-dialog props
     const getBindValue = computed((): Recordable => {
       const props = unref(getMergeProps)
 
       const opt: Recordable = {
-        center: false,
         draggable: props.draggable,
+        top: props.top,
         width: props.width,
-        showClose: false,
-        customClass: prefixCls,
+        modal: props.modal,
+        appendToBody: props.appendToBody,
+        lockScroll: props.lockScroll,
+        openDelay: props.openDelay,
+        closeDelay: props.closeDelay,
+        closeOnClickModal: props.closeOnClickModal,
+        closeOnPressEscape: props.closeOnPressEscape,
+        destroyOnClose: props.destroyOnClose,
         modelValue: unref(visibleRef),
         fullscreen: unref(fullscreenRef),
         beforeClose: handleCancel,
+        // do not change
+        customClass: prefixCls,
+        center: false,
+        showClose: false,
       }
 
+      // 当 modal 的值为 false 时，请一定要确保 append-to-body 属性为 true
       if (props.modal === false) {
         opt.appendToBody = true
       }
 
       return opt
-    })
-
-    const getCloseIconBindValue = computed((): Recordable => {
-      const props = unref(getMergeProps)
-
-      return {
-        canFullscreen: props.canFullscreen,
-        fullscreen: fullscreenRef.value,
-      }
     })
 
     async function handleCancel(e: Event) {
@@ -170,8 +178,8 @@ export default defineComponent({
 
     return {
       prefixCls,
+      fullscreenRef,
       getBindValue,
-      getCloseIconBindValue,
       getMergeProps,
       handleCancel,
       handleConfirm,
