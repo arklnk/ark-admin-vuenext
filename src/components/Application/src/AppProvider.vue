@@ -20,9 +20,9 @@ export default defineComponent({
     const { prefixCls } = toRefs(props)
 
     createBreakpointListen(({ screenMap, sizeEnum, widthRef }) => {
-      const lgWidth = screenMap.get(sizeEnum.LG)
-      if (lgWidth) {
-        isMobile.value = widthRef.value - 1 < lgWidth
+      const smWidth = screenMap.get(sizeEnum.SM)
+      if (smWidth) {
+        isMobile.value = widthRef.value - 1 < smWidth
       }
     })
 
