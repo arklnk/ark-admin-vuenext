@@ -22,10 +22,10 @@ defineProps({
     type: String,
   },
   confirmBtnProps: {
-    type: Object as PropType<Writeable<Partial<ButtonProps>>>,
+    type: Object as PropType<Writable<Partial<ButtonProps>>>,
   },
   cancelBtnProps: {
-    type: Object as PropType<Writeable<Partial<ButtonProps>>>,
+    type: Object as PropType<Writable<Partial<ButtonProps>>>,
   },
   showConfirmBtn: {
     type: Boolean,

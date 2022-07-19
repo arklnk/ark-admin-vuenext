@@ -23,11 +23,17 @@ declare global {
   }
 
   type Nullable<T> = T | null | undefined
+  type NonNullable<T> = T extends null | undefined ? never : T
   type Recordable<T = any> = Record<string, T>
   type ReadonlyRecordable<T = any> = {
     readonly [key: string]: T
   }
-  type Writeable<T> = { [P in keyof T]: T[P] }
+  type ReadonlyRecordable<T = any> = {
+    readonly [key: string]: T
+  }
+  export type Writable<T> = {
+    -readonly [P in keyof T]: T[P]
+  }
 
   /**
    * Recursive `Partial<T>`.

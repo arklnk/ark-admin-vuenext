@@ -1,29 +1,5 @@
-import type { defineComponent } from 'vue'
 import type { RouterTransitionEnum } from '/@/enums/appEnum'
 import type { RoleEnum } from '/@/enums/roleEnum'
-
-export type Component<T = any> =
-  | ReturnType<typeof defineComponent>
-  | (() => Promise<typeof import('*.vue')>)
-  | (() => Promise<T>)
-
-// backend menu obj type
-export interface Menu {
-  createdAt: string
-  updatedAt: string
-  id: number
-  parentId?: number
-  name: string
-  router: string
-  // perms: string
-  type: number
-  icon: string
-  orderNum?: number
-  viewPath?: string
-  keepalive?: boolean
-  isShow?: boolean
-  children?: Menu[]
-}
 
 /**
  * 扩展RouteMeta属性

@@ -1,4 +1,4 @@
-import type { Component, Menu } from '/#/vue-router'
+import type { Menu, Component } from '../typing'
 
 import { EmptyLayout, IFrameLayout, ParentLayout, ViewNotFound } from '../contants'
 import { RouteMeta, RouteRecordRaw } from 'vue-router'

@@ -1,5 +1,5 @@
 import { defHttp } from '../utils/http/axios'
-import type { Menu } from '/#/vue-router'
+import type { Menu } from '/@/router/typing'
 
 enum Api {
   info = 'account/info',

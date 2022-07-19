@@ -2,7 +2,7 @@
 import type { PropType, CSSProperties, FunctionalComponent } from 'vue'
 import type { Axis, ContextMenuItem, ItemContentProps } from './typing'
 
-import { defineComponent, ref, onMounted, nextTick, unref, toRefs, computed, h } from 'vue'
+import { defineComponent, ref, onMounted, nextTick, unref, toRefs, computed } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
 import { ArrowRight } from '@element-plus/icons-vue'
 
@@ -42,15 +42,12 @@ const props = {
 const ContextMenuItemHeight = 40
 
 const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
+  const Icon = props.item.icon as string | any
   return (
     <div onClick={props.handler.bind(null, props.item)} class="flex flex-row items-center">
-      {props.showIcon && props.item.icon ? (
+      {props.showIcon && Icon ? (
         <el-icon>
-          {typeof props.item.icon === 'string' ? (
-            <svg-icon icon={props.item.icon} />
-          ) : (
-            h(props.item.icon)
-          )}
+          {typeof Icon === 'string' ? <svg-icon icon={props.item.icon} /> : <Icon />}
         </el-icon>
       ) : null}
       <span class="ml-2 flex-1">{props.item.label}</span>

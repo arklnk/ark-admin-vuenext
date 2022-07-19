@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import type { Component } from '/#/vue-router'
+import type { Component } from '../typing'
 
 import { warn } from '/@/utils/log'
 

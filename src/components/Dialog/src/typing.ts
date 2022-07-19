@@ -25,8 +25,8 @@ export interface BasicDialogProps {
   showCancelBtn?: boolean
   confirmText?: string
   cancelText?: string
-  confirmBtnProps?: Writeable<Partial<ButtonProps>>
-  cancelBtnProps?: Writeable<Partial<ButtonProps>>
+  confirmBtnProps?: Writable<Partial<ButtonProps>>
+  cancelBtnProps?: Writable<Partial<ButtonProps>>
   title?: string
   helpMessage?: string
   closeFunc?: () => Promise<boolean>
