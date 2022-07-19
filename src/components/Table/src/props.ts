@@ -3,8 +3,6 @@ import type { SizeType } from '/#/config'
 import type { PaginationProps } from './types/pagination'
 import type { TableSetting, BasicTableProps, FetchSetting } from './types/table'
 
-import { DEFAULT_SIZE } from './const'
-
 /**
  * 二次封装表格，由于需要TS只能提示，需要手动编写原ElTable的props
  * node_modules/element-plus/es/components/table/index.d.ts
@@ -107,7 +105,6 @@ export const basicProps = {
    */
   size: {
     type: String as PropType<SizeType>,
-    default: DEFAULT_SIZE,
   },
   /**
    * 列的宽度是否自撑开
