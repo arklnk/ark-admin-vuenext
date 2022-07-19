@@ -242,10 +242,17 @@ $prefixCls: #{var.$namespace}-basic-dialog;
 
   .el-dialog__body {
     padding: 20px;
-    flex: 1;
 
     .#{$prefixCls}-wrapper {
       position: relative;
+    }
+  }
+
+  // el-dialog fullscreen class
+  &.is-fullscreen {
+    .el-dialog__body {
+      flex: 1;
+      overflow-y: auto;
     }
   }
 
