@@ -31,9 +31,10 @@ declare global {
   type ReadonlyRecordable<T = any> = {
     readonly [key: string]: T
   }
-  export type Writable<T> = {
+  type Writable<T> = {
     -readonly [P in keyof T]: T[P]
   }
+  type Arrayable<T> = T | T[]
 
   /**
    * Recursive `Partial<T>`.
