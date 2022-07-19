@@ -3,4 +3,5 @@ import { withInstall } from '/@/utils'
 
 export const BasicDialog = withInstall(BasicDialogComp)
 
-export { useDialog } from './src/composables/useDialog'
+export { useDialog, useDialogInner } from './src/composables/useDialog'
+export * from './src/typing'

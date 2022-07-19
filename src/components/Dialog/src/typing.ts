@@ -39,4 +39,7 @@ export interface BasicDialogActionType {
 export interface UseDialogDialogActionType extends BasicDialogActionType {
   openDialog: <T = any>(data?: T) => void
   closeDialog: () => void
+  setLoading: (loading?: boolean) => void
 }
+
+export type RegisterFn = (action: BasicDialogActionType, uid: number) => void
