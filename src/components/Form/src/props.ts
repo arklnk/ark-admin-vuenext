@@ -1,10 +1,11 @@
-import type { FormRules } from 'element-plus'
+import type { ButtonProps, FormRules, RowProps, ColProps } from 'element-plus'
+import type { FormSchema } from './typing'
 import type { SizeType } from '/#/config'
 
 export const basicProps = {
   model: {
     type: Object as PropType<Recordable>,
-    default: {},
+    default: null,
   },
   rules: {
     type: Object as PropType<FormRules>,
@@ -51,4 +52,43 @@ export const basicProps = {
   },
 
   //------------ extend props
+  // 表单项配置
+  schemas: {
+    type: Array as PropType<FormSchema[]>,
+    default: () => [],
+  },
+  // 是否显示操作按钮栏
+  showActionButtonGroup: {
+    type: Boolean,
+    default: true,
+  },
+  // 操作按钮栏el-col props
+  actionColProps: {
+    type: Object as PropType<Partial<Writable<ColProps>>>,
+  },
+  // 是否显示重置按钮
+  showResetButton: {
+    type: Boolean,
+    default: true,
+  },
+  // 是否显示提交按钮
+  showSubmitButton: {
+    type: Boolean,
+    default: true,
+  },
+  // 重置按钮props
+  resetButtonProps: {
+    type: Object as PropType<Partial<Writable<ButtonProps>>>,
+  },
+  // 提交按钮props
+  submitButtonProps: {
+    type: Object as PropType<Partial<Writable<ButtonProps>>>,
+  },
+  // el-row props
+  rowProps: {
+    type: Object as PropType<Partial<Writable<RowProps>>>,
+  },
+  // 重置、提交按钮函数
+  resetFunc: Function as PropType<() => Promise<void>>,
+  submitFunc: Function as PropType<() => Promise<void>>,
 }
