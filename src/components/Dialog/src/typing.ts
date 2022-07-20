@@ -1,4 +1,4 @@
-import { ButtonProps } from 'element-plus'
+import type { ButtonProps } from 'element-plus'
 
 export interface BasicDialogProps {
   draggable?: boolean
