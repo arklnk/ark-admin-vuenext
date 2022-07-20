@@ -126,22 +126,31 @@ export default defineComponent({
           )
         }
 
-        return (
-          <el-sub-menu disabled={disabled} index={label!} popper-class={`${prefixCls}__popper`}>
-            {{
-              default: () => renderMenuItem(children, level + 1),
-              title: () => (
-                <div class="flex flex-row items-center w-full">
-                  <ItemContent {...contentProps} class="flex-1" />
-                  {level === 0 ? (
-                    <el-icon class="root-sub-menu__arrow">
-                      <ArrowRight />
-                    </el-icon>
-                  ) : null}
+        // sub-menu slot
+        const slots = {
+          default: () => renderMenuItem(children, level + 1),
+          title: () => (
+            <>
+              <div class="flex flex-row items-center w-full">
+                <div class="flex-1">
+                  <ItemContent {...contentProps} />
                 </div>
-              ),
-            }}
-          </el-sub-menu>
+                {level === 0 ? (
+                  <el-icon class="root-sub-menu__arrow">
+                    <ArrowRight />
+                  </el-icon>
+                ) : null}
+              </div>
+            </>
+          ),
+        }
+        return (
+          <el-sub-menu
+            v-slots={slots}
+            disabled={disabled}
+            index={label!}
+            popper-class={`${prefixCls}__popper`}
+          />
         )
       })
     }
