@@ -1,4 +1,4 @@
-import type { ColProps, FormItemRule } from 'element-plus'
+import type { ColProps, FormItemRule, FormItemProp } from 'element-plus'
 import type { VNodeChild, Component, ExtractPropTypes } from 'vue'
 import { basicProps } from './props'
 import type { SizeType } from '/#/config'
@@ -16,7 +16,7 @@ export type BasicFormProps = ExtractPropTypes<typeof basicProps>
 
 export interface FormSchema {
   // prop name
-  prop?: string
+  prop?: FormItemProp
   // label
   label?: string
   // label width
@@ -40,7 +40,7 @@ export interface FormSchema {
   // default value
   defaultValue?: any
   // form item hidden
-  hidden?: boolean
+  hidden?: boolean | ((params: RenderCallbackParams) => boolean)
   // component string will be using resolveComponent handle, need global register component
   component?: string | RenderFunction | Component
   // component props
@@ -49,4 +49,15 @@ export interface FormSchema {
   slot?: string
   // el-col props
   colProps?: Partial<Writable<ColProps>>
+}
+
+export interface BasicFormActionType {
+  validate: (callback?: (isValid: boolean, invalidFields?: Recordable) => void) => Promise<void>
+  validateField: (
+    props?: Arrayable<FormItemProp>,
+    callback?: (isValid: boolean, invalidFields?: Recordable) => void
+  ) => Promise<void>
+  resetFields: (props?: Arrayable<FormItemProp>) => void
+  scrollToField: (prop: FormItemProp) => void
+  clearValidate: (props?: Arrayable<FormItemProp>) => void
 }

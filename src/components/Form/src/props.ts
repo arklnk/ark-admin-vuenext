@@ -1,4 +1,5 @@
 import type { ButtonProps, FormRules, RowProps, ColProps } from 'element-plus'
+import type { CSSProperties } from 'vue'
 import type { FormSchema } from './typing'
 import type { SizeType } from '/#/config'
 
@@ -52,6 +53,10 @@ export const basicProps = {
   },
 
   //------------ extend props
+  // 紧凑
+  compact: {
+    type: Boolean,
+  },
   // 表单项配置
   schemas: {
     type: Array as PropType<FormSchema[]>,
@@ -87,6 +92,9 @@ export const basicProps = {
   // el-row props
   rowProps: {
     type: Object as PropType<Partial<Writable<RowProps>>>,
+  },
+  rowStyle: {
+    type: Object as PropType<CSSProperties>
   },
   // 重置、提交按钮函数
   resetFunc: Function as PropType<() => Promise<void>>,
