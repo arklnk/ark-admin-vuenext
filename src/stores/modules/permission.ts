@@ -1,5 +1,5 @@
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
-import type { Menu } from '/#/vue-router'
+import type { Menu } from '/@/router/typing'
 
 import { defineStore } from 'pinia'
 import { getPermAndMenu } from '/@/api/account'
