@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useGo } from '/@/composables/web/useGo'
 const title = import.meta.env.VITE_APP_TITLE

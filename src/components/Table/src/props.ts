@@ -1,4 +1,3 @@
-import type { PropType } from 'vue'
 import type { SizeType } from '/#/config'
 import type { PaginationProps } from './types/pagination'
 import type { TableSetting, BasicTableProps, FetchSetting } from './types/table'

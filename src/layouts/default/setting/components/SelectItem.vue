@@ -19,8 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 const emit = defineEmits<{ (e: 'change', value: any): void }>()
 
 defineProps({

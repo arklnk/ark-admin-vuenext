@@ -12,7 +12,6 @@
 
 <script setup lang="ts">
 import type { ButtonProps } from 'element-plus'
-import type { PropType } from 'vue'
 
 defineProps({
   confirmText: {

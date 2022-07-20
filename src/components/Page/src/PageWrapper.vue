@@ -20,9 +20,9 @@
 </template>
 
 <script lang="ts">
-import { CSSProperties, PropType, provide, unref } from 'vue'
+import { CSSProperties } from 'vue'
 
-import { defineComponent, computed, ref, watch } from 'vue'
+import { defineComponent, computed, ref, watch, provide, unref } from 'vue'
 import { PageWrapperFixedHeightKey } from '..'
 import PageHeader from './PageHeader.vue'
 import { useDesign } from '/@/composables/core/useDesign'

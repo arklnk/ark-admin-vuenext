@@ -13,8 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import IconCheck from '~icons/ic/twotone-check'
 
 const emit = defineEmits<{ (e: 'change', color: string): void }>()

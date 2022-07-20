@@ -1,4 +1,3 @@
-import type { PropType } from 'vue'
 import { ButtonProps } from 'element-plus'
 
 export const basicProps = {

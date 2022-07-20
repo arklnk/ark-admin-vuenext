@@ -1,5 +1,5 @@
 <script lang="tsx">
-import type { PropType, CSSProperties, FunctionalComponent } from 'vue'
+import type { CSSProperties, FunctionalComponent } from 'vue'
 import type { Axis, ContextMenuItem, ItemContentProps } from './typing'
 
 import { defineComponent, ref, onMounted, nextTick, unref, toRefs, computed } from 'vue'

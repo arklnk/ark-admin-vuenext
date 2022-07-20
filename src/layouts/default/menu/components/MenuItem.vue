@@ -30,7 +30,6 @@ export default {
 
 <script setup lang="ts">
 import type { RouteRecordRaw } from 'vue-router'
-import type { PropType } from 'vue'
 import type { MenuItemRegistered } from 'element-plus/lib/components/menu/src/types'
 
 import { computed, unref } from 'vue'

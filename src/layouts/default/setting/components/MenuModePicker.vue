@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import { useDesign } from '/@/composables/core/useDesign'
 

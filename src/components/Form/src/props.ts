@@ -1,5 +1,4 @@
 import type { FormRules } from 'element-plus'
-import type { PropType } from 'vue'
 import type { SizeType } from '/#/config'
 
 export const basicProps = {

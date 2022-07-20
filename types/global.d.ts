@@ -1,4 +1,4 @@
-import type { VNodeChild } from 'vue'
+import type { PropType as VuePropType, VNodeChild } from 'vue'
 
 declare global {
   const __APP_INFO__: {
@@ -10,9 +10,7 @@ declare global {
     lastBuildTime: string
   }
 
-  type VueNode = VNodeChild | JSX.Element
-
-  interface ViteEnv {
+  declare interface ViteEnv {
     VITE_PORT: number
     VITE_APP_BASE_API: string
     VITE_APP_BASE_SOCKET_PATH: string
@@ -22,24 +20,27 @@ declare global {
     VITE_PROXY_WS_TARGET: string
   }
 
-  type Nullable<T> = T | null | undefined
-  type NonNullable<T> = T extends null | undefined ? never : T
-  type Recordable<T = any> = Record<string, T>
-  type ReadonlyRecordable<T = any> = {
+  declare type PropType<T> = VuePropType<T>
+  declare type VueNode = VNodeChild | JSX.Element
+
+  declare type Nullable<T> = T | null | undefined
+  declare type NonNullable<T> = T extends null | undefined ? never : T
+  declare type Recordable<T = any> = Record<string, T>
+  declare type ReadonlyRecordable<T = any> = {
     readonly [key: string]: T
   }
-  type ReadonlyRecordable<T = any> = {
+  declare type ReadonlyRecordable<T = any> = {
     readonly [key: string]: T
   }
-  type Writable<T> = {
+  declare type Writable<T> = {
     -readonly [P in keyof T]: T[P]
   }
-  type Arrayable<T> = T | T[]
+  declare type Arrayable<T> = T | T[]
 
   /**
    * Recursive `Partial<T>`.
    */
-  type DeepPartial<T> = {
+  declare type DeepPartial<T> = {
     [P in keyof T]?: DeepPartial<T[P]>
   }
 }
