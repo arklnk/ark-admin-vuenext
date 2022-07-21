@@ -16,7 +16,7 @@ export type BasicFormProps = ExtractPropTypes<typeof basicProps>
 
 export interface FormSchema {
   // prop name
-  prop?: FormItemProp
+  prop: FormItemProp
   // label
   label?: string
   // label width
@@ -52,12 +52,12 @@ export interface FormSchema {
 }
 
 export interface BasicFormActionType {
-  validate: (callback?: (isValid: boolean, invalidFields?: Recordable) => void) => Promise<void>
-  validateField: (
-    props?: Arrayable<FormItemProp>,
-    callback?: (isValid: boolean, invalidFields?: Recordable) => void
-  ) => Promise<void>
+  validate: () => Promise<boolean>
+  validateField: (props?: Arrayable<FormItemProp>) => Promise<void>
   resetFields: (props?: Arrayable<FormItemProp>) => void
   scrollToField: (prop: FormItemProp) => void
   clearValidate: (props?: Arrayable<FormItemProp>) => void
+
+  // extra
+  getFieldsValue: () => Recordable
 }
