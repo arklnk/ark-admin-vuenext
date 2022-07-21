@@ -3,7 +3,7 @@ import type { BasicFormProps, FormSchema } from '../typing'
 import type { FormInstance, FormItemProp } from 'element-plus'
 
 import { unref, toRaw, nextTick } from 'vue'
-import { cloneDeep, get, hasIn, isFunction, set } from 'lodash-es'
+import { cloneDeep, get, hasIn, isFunction, isObject, set } from 'lodash-es'
 
 interface UseFormEventsParams {
   emit: EmitFn
@@ -22,18 +22,25 @@ export function useFormEvents({
   formElRef,
   getSchema,
   formModel,
+  schemaRef,
   defaultValueRef,
   processFormValues,
 }: UseFormEventsParams) {
-  function setFieldsValue(value: Recordable) {
+  function setFieldsValue(values: Recordable) {
     const props = unref(getSchema).map((e) => e.prop)
+    const validProps: FormItemProp[] = []
 
     props.forEach((field: FormItemProp) => {
       // check
-      if (hasIn(value, field)) {
-        set(formModel, field, get(value, field))
+      const fieldValue = get(values, field)
+
+      if (hasIn(values, field)) {
+        set(formModel, field, fieldValue)
+        validProps.push(field)
       }
     })
+
+    validateField(validProps)
   }
 
   async function resetFields(props?: Arrayable<FormItemProp>): Promise<void> {
@@ -59,6 +66,18 @@ export function useFormEvents({
     nextTick(() => clearValidate())
 
     emit('reset', toRaw(formModel))
+  }
+
+  function resetSchema(schema: Arrayable<Partial<FormSchema>>) {
+    let updatedSchema: Partial<FormSchema>[] = []
+
+    if (isObject(schema)) {
+      updatedSchema.push(schema as FormSchema)
+    } else {
+      updatedSchema = [...schema]
+    }
+
+    schemaRef.value = updatedSchema as FormSchema[]
   }
 
   function clearValidate(props?: Arrayable<FormItemProp>) {
@@ -88,20 +107,20 @@ export function useFormEvents({
     const formEl = unref(formElRef)
     if (!formEl) return
 
-    const isValid = await validate()
-    if (!isValid) {
-      emit('submit-failed')
-      return
-    }
+    try {
+      await validate()
 
-    const { submitFunc } = unref(getProps)
-    if (submitFunc && isFunction(submitFunc)) {
-      await submitFunc()
-      return
-    }
+      const { submitFunc } = unref(getProps)
+      if (submitFunc && isFunction(submitFunc)) {
+        await submitFunc()
+        return
+      }
 
-    const res = processFormValues(formModel)
-    emit('submit', res)
+      const res = processFormValues(formModel)
+      emit('submit', res)
+    } catch (e) {
+      emit('submit-failed', e)
+    }
   }
 
   return {
@@ -113,5 +132,6 @@ export function useFormEvents({
     validateField,
     scrollToField,
     handleSubmit,
+    resetSchema,
   }
 }

@@ -5,9 +5,7 @@ import type { SizeType } from '/#/config'
 
 export interface RenderCallbackParams {
   schema: FormSchema
-  values: Recordable
   model: Recordable
-  prop: string
 }
 
 export type RenderFunction = (params: RenderCallbackParams) => VNodeChild
@@ -52,8 +50,8 @@ export interface FormSchema {
 }
 
 export interface BasicFormActionType {
-  validate: () => Promise<boolean>
-  validateField: (props?: Arrayable<FormItemProp>) => Promise<void>
+  validate: () => Promise<boolean | never>
+  validateField: (props?: Arrayable<FormItemProp>) => Promise<boolean | never>
   resetFields: (props?: Arrayable<FormItemProp>) => void
   scrollToField: (prop: FormItemProp) => void
   clearValidate: (props?: Arrayable<FormItemProp>) => void
