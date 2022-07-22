@@ -1,11 +1,12 @@
 import type { ColProps, FormItemRule, FormItemProp } from 'element-plus'
-import type { VNodeChild, Component, ExtractPropTypes } from 'vue'
+import type { VNodeChild, ExtractPropTypes } from 'vue'
 import { basicProps } from './props'
 import type { SizeType } from '/#/config'
 
 export interface RenderCallbackParams {
   schema: FormSchema
   model: Recordable
+  prop: FormItemProp
 }
 
 export type RenderFunction = (params: RenderCallbackParams) => VNodeChild
@@ -22,7 +23,7 @@ export interface FormSchema {
   // required
   required?: boolean | ((params: RenderCallbackParams) => boolean)
   // validate rules
-  rules?: Arrayable<FormItemRule>
+  rules?: Arrayable<FormItemRule> | ((params: RenderCallbackParams) => Arrayable<FormItemRule>)
   // error tips
   error?: string
   // show validate error message
@@ -40,7 +41,7 @@ export interface FormSchema {
   // form item hidden
   hidden?: boolean | ((params: RenderCallbackParams) => boolean)
   // component string will be using resolveComponent handle, need global register component
-  component?: string | RenderFunction | Component
+  component?: string | RenderFunction
   // component props
   componentProps?: Recordable | ((params: RenderCallbackParams) => Recordable)
   // slot in basic form
@@ -57,5 +58,6 @@ export interface BasicFormActionType {
   clearValidate: (props?: Arrayable<FormItemProp>) => void
 
   // extra
+  setProps: (formProps: Partial<BasicFormProps>) => void
   getFieldsValue: () => Recordable
 }

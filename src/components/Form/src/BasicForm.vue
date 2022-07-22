@@ -2,25 +2,37 @@
   <ElForm ref="formElRef" :class="getFormClass" :model="formModel">
     <ElRow v-bind="getRowBindValue">
       <slot name="formHeader"></slot>
+      <template v-for="schema in getSchema" :key="`${schema.props}`">
+        <BasicFormItem :schema="schema" :form-model="formModel" :form-props="getProps">
+          <template #[item]="data" v-for="item in Object.keys($slots)">
+            <slot :name="item" v-bind="data || {}"></slot>
+          </template>
+        </BasicFormItem>
+      </template>
       <slot name="formFooter"></slot>
     </ElRow>
   </ElForm>
 </template>
 
 <script lang="ts">
-import type { BasicFormProps, FormSchema } from './typing'
+import type { BasicFormActionType, BasicFormProps, FormSchema } from './typing'
 import type { FormInstance } from 'element-plus'
+import type { Ref } from 'vue'
 
-import { computed, defineComponent, onMounted, reactive, ref, unref } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref, unref, watch } from 'vue'
 import { basicProps } from './props'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useFormValues } from './composables/useFormValues'
+import BasicFormItem from './components/FormItem'
+import { useFormEvents } from './composables/useFormEvents'
+import { merge } from 'lodash-es'
 
 export default defineComponent({
   name: 'BasicForm',
+  components: { BasicFormItem },
   props: basicProps,
   emits: ['register', 'reset', 'submit', 'submit-failed'],
-  setup(props) {
+  setup(props, { emit }) {
     const innerPropsRef = ref<Partial<BasicFormProps>>()
     const schemaRef = ref<Nullable<FormSchema[]>>(null)
     const formModel = reactive<Recordable>({})
@@ -55,17 +67,79 @@ export default defineComponent({
       return schemas
     })
 
-    const { initDefault } = useFormValues({ getSchema, formModel, defaultValueRef, getProps })
+    const { initDefault, processFormValues } = useFormValues({
+      getSchema,
+      formModel,
+      defaultValueRef,
+      getProps,
+    })
+
+    const {
+      setFieldsValue,
+      resetFields,
+      clearValidate,
+      getFieldsValue,
+      validate,
+      validateField,
+      scrollToField,
+      resetSchema,
+    } = useFormEvents({
+      emit,
+      getProps,
+      formElRef: formElRef as Ref<FormInstance>,
+      getSchema,
+      formModel,
+      schemaRef: schemaRef as Ref<FormSchema[]>,
+      defaultValueRef,
+      processFormValues,
+    })
+
+    function setProps(formProps: Partial<BasicFormProps>) {
+      innerPropsRef.value = merge(unref(innerPropsRef), formProps)
+    }
+
+    watch(
+      () => unref(getProps).model,
+      () => {
+        const { model } = unref(getProps)
+        if (!model) return
+        setFieldsValue(model)
+      },
+      {
+        immediate: true,
+      }
+    )
+
+    watch(
+      () => unref(getProps).schemas,
+      (schemas) => {
+        resetSchema(schemas ?? [])
+      }
+    )
+
+    const formActionType: BasicFormActionType = {
+      scrollToField,
+      resetFields,
+      validate,
+      validateField,
+      clearValidate,
+
+      getFieldsValue,
+      setProps,
+    }
 
     onMounted(() => {
       initDefault()
+      emit('register', formActionType)
     })
 
     return {
       getFormClass,
       formModel,
       formElRef,
+      getProps,
       getRowBindValue,
+      getSchema,
     }
   },
 })
