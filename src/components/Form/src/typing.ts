@@ -34,8 +34,10 @@ export interface FormSchema {
   size?: SizeType
 
   // extend config
-  // variable name bound to v-model default value
-  valueProp?: string
+  // variable name bound to v-model default value, default modelValue
+  modelField?: string
+  // event name triggered by internal value change, default change
+  changeEvent?: string
   // default value
   defaultValue?: any
   // form item hidden

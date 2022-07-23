@@ -1,8 +1,8 @@
 import type { BasicFormProps, FormSchema, RenderCallbackParams } from '../typing'
-import type { FormItemRule } from 'element-plus'
+import type { FormItemProp, FormItemRule } from 'element-plus'
 
 import { computed, defineComponent, unref, resolveComponent } from 'vue'
-import { isBoolean, isFunction } from 'lodash-es'
+import { get, isBoolean, isFunction, upperFirst } from 'lodash-es'
 import { getSlot } from '/@/utils/helper/tsx'
 import { error } from '/@/utils/log'
 
@@ -21,6 +21,10 @@ export default defineComponent({
     formModel: {
       type: Object as PropType<Recordable>,
       default: () => ({}),
+    },
+    setPropValue: {
+      type: Function as PropType<(prop: FormItemProp, value: any) => void>,
+      default: null,
     },
   },
   setup(props, { slots }) {
@@ -67,11 +71,17 @@ export default defineComponent({
     }
 
     function renderComponent() {
-      const { component, slot: slotName, size } = props.schema
+      const {
+        component,
+        slot: slotName,
+        size,
+        modelField = 'modelValue',
+        changeEvent = 'change',
+        prop,
+      } = props.schema
 
       // 插槽
       if (slotName) {
-        console.log(slots)
         return getSlot(slots, slotName, unref(getParams))
       }
 
@@ -85,7 +95,7 @@ export default defineComponent({
         return component(unref(getParams))
       }
 
-      // global component name
+      // global component
       const Comp = resolveComponent(component) as any
 
       if (typeof Comp === 'string') {
@@ -98,7 +108,27 @@ export default defineComponent({
         size,
       }
 
-      return <Comp {...propsData}></Comp>
+      // like v-model support
+      const eventKey = `on${upperFirst(changeEvent)}`
+      const on = {
+        [eventKey]: (...args: Nullable<Recordable>[]) => {
+          if (propsData[eventKey] && isFunction(propsData[eventKey])) {
+            propsData[eventKey](...args)
+          }
+          const [v] = args || []
+          props.setPropValue(prop, v)
+        },
+      }
+      const bindValue: Recordable = {
+        [modelField]: get(props.formModel, prop),
+      }
+
+      const compAttr: Recordable = {
+        ...propsData,
+        ...on,
+        ...bindValue,
+      }
+      return <Comp {...compAttr}></Comp>
     }
 
     // render form item

@@ -2,13 +2,20 @@
   <ElForm ref="formElRef" :class="getFormClass" :model="formModel">
     <ElRow v-bind="getRowBindValue">
       <slot name="formHeader"></slot>
+      <!-- schema form item generate -->
       <template v-for="schema in getSchema" :key="`${schema.props}`">
-        <BasicFormItem :schema="schema" :form-model="formModel" :form-props="getProps">
+        <BasicFormItem
+          :schema="schema"
+          :form-model="formModel"
+          :form-props="getProps"
+          :set-prop-value="setPropValue"
+        >
           <template #[item]="data" v-for="item in Object.keys($slots)">
             <slot :name="item" v-bind="data || {}"></slot>
           </template>
         </BasicFormItem>
       </template>
+      <!-- form action -->
       <slot name="formFooter"></slot>
     </ElRow>
   </ElForm>
@@ -16,7 +23,7 @@
 
 <script lang="ts">
 import type { BasicFormActionType, BasicFormProps, FormSchema } from './typing'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance, FormItemProp } from 'element-plus'
 import type { Ref } from 'vue'
 
 import { computed, defineComponent, onMounted, reactive, ref, unref, watch } from 'vue'
@@ -25,13 +32,13 @@ import { useDesign } from '/@/composables/core/useDesign'
 import { useFormValues } from './composables/useFormValues'
 import BasicFormItem from './components/FormItem'
 import { useFormEvents } from './composables/useFormEvents'
-import { merge } from 'lodash-es'
+import { cloneDeep, merge, set } from 'lodash-es'
 
 export default defineComponent({
   name: 'BasicForm',
   components: { BasicFormItem },
   props: basicProps,
-  emits: ['register', 'reset', 'submit', 'submit-failed'],
+  emits: ['register', 'reset', 'submit', 'submit-failed', 'prop-value-change'],
   setup(props, { emit }) {
     const innerPropsRef = ref<Partial<BasicFormProps>>()
     const schemaRef = ref<Nullable<FormSchema[]>>(null)
@@ -64,7 +71,7 @@ export default defineComponent({
 
     const getSchema = computed((): FormSchema[] => {
       const schemas: FormSchema[] = unref(schemaRef) || unref(getProps).schemas
-      return schemas
+      return cloneDeep(schemas)
     })
 
     const { initDefault, processFormValues } = useFormValues({
@@ -75,7 +82,7 @@ export default defineComponent({
     })
 
     const {
-      setFieldsValue,
+      setFormModel,
       resetFields,
       clearValidate,
       getFieldsValue,
@@ -98,12 +105,17 @@ export default defineComponent({
       innerPropsRef.value = merge(unref(innerPropsRef), formProps)
     }
 
+    function setPropValue(prop: FormItemProp, value: any) {
+      set(formModel, prop, value)
+      emit('prop-value-change', prop, value)
+    }
+
     watch(
       () => unref(getProps).model,
       () => {
         const { model } = unref(getProps)
         if (!model) return
-        setFieldsValue(model)
+        setFormModel(model)
       },
       {
         immediate: true,
@@ -140,6 +152,7 @@ export default defineComponent({
       getProps,
       getRowBindValue,
       getSchema,
+      setPropValue,
     }
   },
 })

@@ -26,7 +26,7 @@ export function useFormEvents({
   defaultValueRef,
   processFormValues,
 }: UseFormEventsParams) {
-  function setFieldsValue(values: Recordable) {
+  function setFormModel(values: Recordable) {
     const props = unref(getSchema).map((e) => e.prop)
     const validProps: FormItemProp[] = []
 
@@ -124,7 +124,7 @@ export function useFormEvents({
   }
 
   return {
-    setFieldsValue,
+    setFormModel,
     resetFields,
     clearValidate,
     getFieldsValue,
