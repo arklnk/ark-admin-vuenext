@@ -3,7 +3,7 @@ import type { BasicFormProps, FormSchema } from '../typing'
 import type { FormInstance, FormItemProp } from 'element-plus'
 
 import { unref, toRaw, nextTick } from 'vue'
-import { cloneDeep, get, hasIn, isFunction, isObject, set } from 'lodash-es'
+import { cloneDeep, get, hasIn, isFunction, set } from 'lodash-es'
 
 interface UseFormEventsParams {
   emit: EmitFn
@@ -71,10 +71,10 @@ export function useFormEvents({
   function resetSchema(schema: Arrayable<FormSchema>) {
     let updatedSchema: FormSchema[] = []
 
-    if (isObject(schema)) {
-      updatedSchema.push(schema as FormSchema)
-    } else {
+    if (Array.isArray(schema)) {
       updatedSchema = [...schema]
+    } else {
+      updatedSchema.push(schema as FormSchema)
     }
 
     schemaRef.value = updatedSchema as FormSchema[]
