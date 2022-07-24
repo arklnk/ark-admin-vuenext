@@ -1,5 +1,5 @@
 import type { ColProps, FormItemRule, FormItemProp } from 'element-plus'
-import type { VNodeChild, ExtractPropTypes } from 'vue'
+import type { VNodeChild, ExtractPropTypes, Component } from 'vue'
 import { basicProps } from './props'
 import type { SizeType } from '/#/config'
 
@@ -8,8 +8,6 @@ export interface RenderCallbackParams {
   model: Recordable
   prop: FormItemProp
 }
-
-export type RenderFunction = (params: RenderCallbackParams) => VNodeChild
 
 export type BasicFormProps = ExtractPropTypes<typeof basicProps>
 
@@ -43,7 +41,9 @@ export interface FormSchema {
   // form item hidden
   hidden?: boolean | ((params: RenderCallbackParams) => boolean)
   // component string will be using resolveComponent handle, need global register component
-  component?: string | RenderFunction
+  component?: string | Component
+  // render function
+  render?: (params: RenderCallbackParams) => VNodeChild
   // component props
   componentProps?: Recordable | ((params: RenderCallbackParams) => Recordable)
   // slot in basic form

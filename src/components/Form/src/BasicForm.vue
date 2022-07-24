@@ -16,6 +16,7 @@
         </BasicFormItem>
       </template>
       <!-- form action -->
+      <BasicFormAction />
       <slot name="formFooter"></slot>
     </ElRow>
   </ElForm>
@@ -33,10 +34,11 @@ import { useFormValues } from './composables/useFormValues'
 import BasicFormItem from './components/FormItem'
 import { useFormEvents } from './composables/useFormEvents'
 import { cloneDeep, merge, set } from 'lodash-es'
+import BasicFormAction from './components/FormAction.vue'
 
 export default defineComponent({
   name: 'BasicForm',
-  components: { BasicFormItem },
+  components: { BasicFormItem, BasicFormAction },
   props: basicProps,
   emits: ['register', 'reset', 'submit', 'submit-failed', 'prop-value-change'],
   setup(props, { emit }) {
@@ -102,7 +104,7 @@ export default defineComponent({
     })
 
     function setProps(formProps: Partial<BasicFormProps>) {
-      innerPropsRef.value = merge(unref(innerPropsRef), formProps)
+      innerPropsRef.value = merge(unref(innerPropsRef) || {}, formProps)
     }
 
     function setPropValue(prop: FormItemProp, value: any) {
@@ -135,7 +137,6 @@ export default defineComponent({
       validate,
       validateField,
       clearValidate,
-
       getFieldsValue,
       setProps,
     }

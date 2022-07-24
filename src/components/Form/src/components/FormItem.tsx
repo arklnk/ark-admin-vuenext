@@ -70,34 +70,38 @@ export default defineComponent({
       return false
     }
 
-    function renderComponent() {
+    /**
+     * render content
+     * slot > render > component
+     */
+    function renderContent() {
       const {
         component,
         slot: slotName,
+        render,
         size,
         modelField = 'modelValue',
         changeEvent = 'change',
         prop,
       } = props.schema
 
-      // 插槽
+      // slot
       if (slotName) {
         return getSlot(slots, slotName, unref(getParams))
       }
 
+      // render function
+      if (isFunction(render)) {
+        return render(unref(getParams))
+      }
+
+      // render component
       if (!component) {
-        error('component or slot is empty')
         return null
       }
+      const Comp: any = typeof component === 'string' ? resolveComponent(component) : component
 
-      // render function
-      if (isFunction(component)) {
-        return component(unref(getParams))
-      }
-
-      // global component
-      const Comp = resolveComponent(component) as any
-
+      // is not a global component
       if (typeof Comp === 'string') {
         error(`could not resolve component name: ${Comp}`)
         return null
@@ -148,7 +152,7 @@ export default defineComponent({
           inlineMessage={inlineMessage}
           size={size}
         >
-          {renderComponent()}
+          {renderContent()}
         </el-form-item>
       )
     }

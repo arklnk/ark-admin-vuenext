@@ -68,8 +68,8 @@ export function useFormEvents({
     emit('reset', toRaw(formModel))
   }
 
-  function resetSchema(schema: Arrayable<Partial<FormSchema>>) {
-    let updatedSchema: Partial<FormSchema>[] = []
+  function resetSchema(schema: Arrayable<FormSchema>) {
+    let updatedSchema: FormSchema[] = []
 
     if (isObject(schema)) {
       updatedSchema.push(schema as FormSchema)
