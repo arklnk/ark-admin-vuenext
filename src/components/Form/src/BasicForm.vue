@@ -2,8 +2,9 @@
   <ElForm ref="formElRef" :class="getFormClass" :model="formModel">
     <ElRow v-bind="getRowBindValue">
       <slot name="formHeader"></slot>
+
       <!-- schema form item generate -->
-      <template v-for="schema in getSchema" :key="`${schema.props}`">
+      <template v-for="schema in getSchema" :key="`${schema.prop}`">
         <BasicFormItem
           :schema="schema"
           :form-model="formModel"
@@ -15,8 +16,10 @@
           </template>
         </BasicFormItem>
       </template>
+
       <!-- form action -->
       <BasicFormAction />
+
       <slot name="formFooter"></slot>
     </ElRow>
   </ElForm>
