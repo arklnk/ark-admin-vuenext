@@ -53,13 +53,17 @@ export interface FormSchema {
 }
 
 export interface BasicFormActionType {
-  validate: () => Promise<boolean | never>
-  validateField: (props?: Arrayable<FormItemProp>) => Promise<boolean | never>
-  resetFields: () => void
-  scrollToField: (prop: FormItemProp) => void
-  clearValidate: (props?: Arrayable<FormItemProp>) => void
+  validate: () => Promise<boolean>
+  validateField: (props?: Arrayable<FormItemProp>) => Promise<boolean>
+  resetFields: () => Promise<void>
+  scrollToField: (prop: FormItemProp) => Promise<void>
+  clearValidate: (props?: Arrayable<FormItemProp>) => Promise<void>
 
   // extra
   setProps: (formProps: Partial<BasicFormProps>) => void
   getFieldsValue: () => Recordable
 }
+
+export type RegisterFn = (formInstance: BasicFormActionType) => void
+
+export type UseFormReturnType = [RegisterFn, BasicFormActionType]

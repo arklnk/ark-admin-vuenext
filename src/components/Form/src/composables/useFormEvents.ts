@@ -70,6 +70,15 @@ export function useFormEvents({
       updated.push(schema as FormSchema)
     }
 
+    const allValidProp = updated.every((item) => Reflect.has(item, 'prop') && item.prop)
+
+    if (!allValidProp) {
+      error(
+        'all children of the form Schema array that need to be updated must contain the `prop` field'
+      )
+      return
+    }
+
     schemaRef.value = updated as FormSchema[]
   }
 
@@ -116,9 +125,9 @@ export function useFormEvents({
       updated.push(schema)
     }
 
-    const isValidProp = updated.every((item) => Reflect.has(item, 'prop') && item.prop)
+    const allValidProp = updated.every((item) => Reflect.has(item, 'prop') && item.prop)
 
-    if (!isValidProp) {
+    if (!allValidProp) {
       error(
         'all children of the form Schema array that need to be updated must contain the `prop` field'
       )
@@ -151,7 +160,7 @@ export function useFormEvents({
     })
   }
 
-  function clearValidate(props?: Arrayable<FormItemProp>) {
+  async function clearValidate(props?: Arrayable<FormItemProp>) {
     unref(formElRef)?.clearValidate(props)
   }
 
@@ -163,7 +172,7 @@ export function useFormEvents({
     return unref(formElRef)?.validateField(props)
   }
 
-  function scrollToField(prop: FormItemProp) {
+  async function scrollToField(prop: FormItemProp) {
     unref(formElRef)?.scrollToField(prop)
   }
 

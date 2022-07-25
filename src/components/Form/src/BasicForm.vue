@@ -168,6 +168,13 @@ export default defineComponent({
       }
     )
 
+    watch(
+      () => getSchema.value,
+      () => {
+        initDefault()
+      }
+    )
+
     const formActionType: BasicFormActionType = {
       scrollToField,
       resetFields,

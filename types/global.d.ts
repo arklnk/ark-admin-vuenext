@@ -1,4 +1,4 @@
-import type { PropType as VuePropType, VNodeChild } from 'vue'
+import type { PropType as VuePropType, VNodeChild, ComputedRef, Ref } from 'vue'
 
 declare global {
   const __APP_INFO__: {
@@ -22,6 +22,9 @@ declare global {
 
   declare type PropType<T> = VuePropType<T>
   declare type VueNode = VNodeChild | JSX.Element
+  declare type RefableProps<T> = {
+    [P in keyof T]: Ref<T[P]> | T[P] | ComputedRef<T[P]>
+  }
 
   declare type Nullable<T> = T | null | undefined
   declare type NonNullable<T> = T extends null | undefined ? never : T
