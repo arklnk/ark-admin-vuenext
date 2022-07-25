@@ -62,6 +62,10 @@ export const basicProps = {
     type: Array as PropType<FormSchema[]>,
     default: () => [],
   },
+  dateFormat: {
+    type: String,
+    default: 'YYYY-MM-DD HH:mm:ss',
+  },
   // 是否显示操作按钮栏
   showActionButtonGroup: {
     type: Boolean,
@@ -94,7 +98,7 @@ export const basicProps = {
     type: Object as PropType<Partial<Writable<RowProps>>>,
   },
   rowStyle: {
-    type: Object as PropType<CSSProperties>
+    type: Object as PropType<CSSProperties>,
   },
   // 重置、提交按钮函数
   resetFunc: Function as PropType<() => Promise<void>>,

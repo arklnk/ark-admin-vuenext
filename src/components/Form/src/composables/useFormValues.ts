@@ -2,7 +2,8 @@ import { ComputedRef, Ref } from 'vue'
 import type { BasicFormProps, FormSchema } from '../typing'
 
 import { unref } from 'vue'
-import { cloneDeep, get, isFunction, isNil, isObject, isString, set } from 'lodash-es'
+import { cloneDeep, get, isFunction, isNil, isPlainObject, isString, set } from 'lodash-es'
+import { formatToDateTime, isDateObject } from '/@/utils/date'
 
 interface UseFormValuesParams {
   defaultValueRef: Ref<any>
@@ -11,9 +12,14 @@ interface UseFormValuesParams {
   getProps: ComputedRef<BasicFormProps>
 }
 
-export function useFormValues({ getSchema, formModel, defaultValueRef }: UseFormValuesParams) {
+export function useFormValues({
+  getSchema,
+  formModel,
+  defaultValueRef,
+  getProps,
+}: UseFormValuesParams) {
   function processFormValues(values: Recordable) {
-    if (!isObject(values)) {
+    if (!isPlainObject(values)) {
       return {}
     }
     const res: Recordable = {}
@@ -24,10 +30,23 @@ export function useFormValues({ getSchema, formModel, defaultValueRef }: UseForm
         continue
       }
 
+      const dateFormat = unref(getProps).dateFormat
+      // transform
       if (isString(v)) {
+        // string remove spaces
         v = v.trim()
+      } else if (isDateObject(v)) {
+        // date object
+        v = formatToDateTime(v, dateFormat)
+      } else if (Array.isArray(v) && v.length === 2 && isDateObject(v[0]) && isDateObject(v[1])) {
+        // date range array
+        v = v.map((e) => formatToDateTime(e, dateFormat))
+      } else if (isPlainObject(v)) {
+        // deep transform
+        v = processFormValues(v)
       }
 
+      // 其他值则不再处理
       set(res, k, v)
     }
     return res
