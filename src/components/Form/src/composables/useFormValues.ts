@@ -62,6 +62,7 @@ export function useFormValues({
       if (!isNil(defaultValue)) {
         set(def, item.prop, defaultValue)
 
+        // update form model
         if (get(formModel, item.prop) === undefined) {
           set(formModel, item.prop, defaultValue)
         }

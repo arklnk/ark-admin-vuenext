@@ -55,7 +55,7 @@ export interface FormSchema {
 export interface BasicFormActionType {
   validate: () => Promise<boolean | never>
   validateField: (props?: Arrayable<FormItemProp>) => Promise<boolean | never>
-  resetFields: (props?: Arrayable<FormItemProp>) => void
+  resetFields: () => void
   scrollToField: (prop: FormItemProp) => void
   clearValidate: (props?: Arrayable<FormItemProp>) => void
 

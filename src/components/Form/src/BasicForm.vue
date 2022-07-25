@@ -1,5 +1,11 @@
 <template>
-  <ElForm ref="formElRef" :class="getFormClass" :model="formModel">
+  <ElForm
+    ref="formElRef"
+    v-bind="getFormBindValue"
+    :class="getFormClass"
+    :model="formModel"
+    @keypress.enter="handleEnterPress"
+  >
     <ElRow v-bind="getRowBindValue">
       <slot name="formHeader"></slot>
 
@@ -18,7 +24,7 @@
       </template>
 
       <!-- form action -->
-      <BasicFormAction />
+      <BasicFormAction v-bind="getProps" />
 
       <slot name="formFooter"></slot>
     </ElRow>
@@ -38,13 +44,14 @@ import BasicFormItem from './components/FormItem'
 import { useFormEvents } from './composables/useFormEvents'
 import { cloneDeep, merge, set } from 'lodash-es'
 import BasicFormAction from './components/FormAction.vue'
+import { createFormContext } from './composables/useFormContext'
 
 export default defineComponent({
   name: 'BasicForm',
   components: { BasicFormItem, BasicFormAction },
   props: basicProps,
   emits: ['register', 'reset', 'submit', 'submit-failed', 'prop-value-change'],
-  setup(props, { emit }) {
+  setup(props, { emit, attrs }) {
     const innerPropsRef = ref<Partial<BasicFormProps>>()
     const schemaRef = ref<Nullable<FormSchema[]>>(null)
     const formModel = reactive<Recordable>({})
@@ -55,6 +62,10 @@ export default defineComponent({
 
     const getProps = computed((): BasicFormProps => {
       return { ...props, ...unref(innerPropsRef) } as BasicFormProps
+    })
+
+    const getFormBindValue = computed((): Recordable => {
+      return { ...attrs, ...unref(getProps) }
     })
 
     const getFormClass = computed(() => {
@@ -95,6 +106,7 @@ export default defineComponent({
       validateField,
       scrollToField,
       resetSchema,
+      handleSubmit,
     } = useFormEvents({
       emit,
       getProps,
@@ -114,6 +126,24 @@ export default defineComponent({
       set(formModel, prop, value)
       emit('prop-value-change', prop, value)
     }
+
+    function handleEnterPress(e: KeyboardEvent) {
+      const { submitOnEnterPress } = unref(getProps)
+      if (!submitOnEnterPress) return
+
+      if (e.key === 'Enter' && e.target && e.target instanceof HTMLElement) {
+        // target为输入框时处理回车事件
+        const target: HTMLElement = e.target as HTMLElement
+        if (target.tagName && target.tagName.toUpperCase() === 'INPUT') {
+          handleSubmit()
+        }
+      }
+    }
+
+    createFormContext({
+      resetAction: resetFields,
+      submitAction: handleSubmit,
+    })
 
     watch(
       () => unref(getProps).model,
@@ -154,9 +184,11 @@ export default defineComponent({
       formModel,
       formElRef,
       getProps,
+      getFormBindValue,
       getRowBindValue,
       getSchema,
       setPropValue,
+      handleEnterPress,
     }
   },
 })

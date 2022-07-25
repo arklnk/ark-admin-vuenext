@@ -41,7 +41,7 @@ export function useFormEvents({
     validateField(props)
   }
 
-  async function resetFields(props?: Arrayable<FormItemProp>): Promise<void> {
+  async function resetFields(): Promise<void> {
     const { resetFunc } = unref(getProps)
     resetFunc && isFunction(resetFunc) && (await resetFunc())
 
@@ -50,12 +50,7 @@ export function useFormEvents({
     if (!formEl) return
     // formEl?.resetFields(props)
 
-    const resetProps: FormItemProp[] =
-      props === undefined
-        ? unref(getSchema).map((e) => e.prop)
-        : Array.isArray(props)
-        ? props
-        : [props]
+    const resetProps: FormItemProp[] = unref(getSchema).map((e) => e.prop)
 
     resetProps.forEach((item: FormItemProp) => {
       const defaultValue = cloneDeep(get(defaultValueRef.value, item))
@@ -186,13 +181,12 @@ export function useFormEvents({
     try {
       await validate()
 
+      const res = processFormValues(toRaw(unref(formModel)))
+
       const { submitFunc } = unref(getProps)
       if (submitFunc && isFunction(submitFunc)) {
-        await submitFunc()
-        return
+        await submitFunc(res)
       }
-
-      const res = processFormValues(formModel)
       emit('submit', res)
     } catch (e) {
       emit('submit-failed', e)

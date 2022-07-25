@@ -99,11 +99,11 @@ export default defineComponent({
       if (!component) {
         return null
       }
-      const Comp: any = typeof component === 'string' ? resolveComponent(component) : component
 
+      const Comp: any = typeof component === 'string' ? resolveComponent(component) : component
       // is not a global component
       if (typeof Comp === 'string') {
-        error(`could not resolve component name: ${Comp}`)
+        error('could not resolve component')
         return null
       }
 

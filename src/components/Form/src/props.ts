@@ -66,7 +66,7 @@ export const basicProps = {
     type: String,
     default: 'YYYY-MM-DD HH:mm:ss',
   },
-  // 是否显示操作按钮栏
+  // 是否显示操作按钮组
   showActionButtonGroup: {
     type: Boolean,
     default: true,
@@ -93,6 +93,15 @@ export const basicProps = {
   submitButtonProps: {
     type: Object as PropType<Partial<Writable<ButtonProps>>>,
   },
+  submitButtonText: {
+    type: String,
+    default: '查询',
+  },
+  // 按下回车后自动提交
+  submitOnEnterPress: {
+    type: Boolean,
+    default: false,
+  },
   // el-row props
   rowProps: {
     type: Object as PropType<Partial<Writable<RowProps>>>,
@@ -102,5 +111,5 @@ export const basicProps = {
   },
   // 重置、提交按钮函数
   resetFunc: Function as PropType<() => Promise<void>>,
-  submitFunc: Function as PropType<() => Promise<void>>,
+  submitFunc: Function as PropType<(res: Recordable) => Promise<void>>,
 }
