@@ -24,7 +24,11 @@
       </template>
 
       <!-- form action -->
-      <BasicFormAction v-bind="getProps" />
+      <BasicFormAction v-bind="getProps">
+        <template #[item]="data" v-for="item in ['resetBefore', 'submitBefore']">
+          <slot :name="item" v-bind="data || {}"></slot>
+        </template>
+      </BasicFormAction>
 
       <slot name="formFooter"></slot>
     </ElRow>
