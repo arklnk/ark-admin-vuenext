@@ -13,6 +13,9 @@ import { useTitle } from './composables/web/useTitle'
 import ProjectConfig from './settings/projectSetting'
 import { computed } from 'vue'
 
+// dayjs lacale
+import 'dayjs/locale/zh-cn'
+
 // default zh locale
 const getElConfig = computed(() => {
   return {
