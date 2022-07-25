@@ -3,7 +3,8 @@ import type { BasicFormProps, FormSchema } from '../typing'
 import type { FormInstance, FormItemProp } from 'element-plus'
 
 import { unref, toRaw, nextTick } from 'vue'
-import { cloneDeep, get, hasIn, isFunction, set } from 'lodash-es'
+import { cloneDeep, get, hasIn, isEqual, isFunction, isNil, merge, set, unset } from 'lodash-es'
+import { error } from '/@/utils/log'
 
 interface UseFormEventsParams {
   emit: EmitFn
@@ -27,20 +28,17 @@ export function useFormEvents({
   processFormValues,
 }: UseFormEventsParams) {
   function setFormModel(values: Recordable) {
-    const props = unref(getSchema).map((e) => e.prop)
-    const validProps: FormItemProp[] = []
+    const props = unref(getSchema)
+      .map((e) => e.prop)
+      .filter((e) => hasIn(values, e))
 
-    props.forEach((field: FormItemProp) => {
+    props.forEach((item: FormItemProp) => {
       // check
-      const fieldValue = get(values, field)
-
-      if (hasIn(values, field)) {
-        set(formModel, field, fieldValue)
-        validProps.push(field)
-      }
+      const fieldValue = get(values, item)
+      set(formModel, item, fieldValue)
     })
 
-    validateField(validProps)
+    validateField(props)
   }
 
   async function resetFields(props?: Arrayable<FormItemProp>): Promise<void> {
@@ -69,15 +67,93 @@ export function useFormEvents({
   }
 
   function resetSchema(schema: Arrayable<FormSchema>) {
-    let updatedSchema: FormSchema[] = []
+    let updated: FormSchema[] = []
 
     if (Array.isArray(schema)) {
-      updatedSchema = [...schema]
+      updated = [...schema]
     } else {
-      updatedSchema.push(schema as FormSchema)
+      updated.push(schema as FormSchema)
     }
 
-    schemaRef.value = updatedSchema as FormSchema[]
+    schemaRef.value = updated as FormSchema[]
+  }
+
+  function removeSchemaByProp(props: FormItemProp[]) {
+    if (!props || props.length === 0) {
+      return
+    }
+
+    const schemas = cloneDeep(unref(getSchema))
+    props.forEach((item) => {
+      const findIndex = schemas.findIndex((e) => isEqual(e.prop, item))
+      if (findIndex !== -1) {
+        unset(formModel, item)
+        schemas.splice(findIndex, 1)
+      }
+    })
+
+    schemaRef.value = schemas
+  }
+
+  function appendSchemaByProp(schema: FormSchema, prop?: FormItemProp, first = false) {
+    if (!schema) return
+
+    const schemasClone = cloneDeep(unref(getSchema))
+
+    // inset
+    if (first) {
+      schemasClone.unshift(schema)
+    } else {
+      const index = schemasClone.findIndex((e) => isEqual(e.prop, prop))
+      index === -1 ? schemasClone.push(schema) : schemasClone.splice(index + 1, 0, schema)
+    }
+    _setDefaultValue([schema])
+
+    schemaRef.value = schemasClone
+  }
+
+  function updateSchema(schema: Arrayable<Partial<FormSchema>>) {
+    let updated: Partial<FormSchema>[] = []
+
+    if (Array.isArray(schema)) {
+      updated = [...schema]
+    } else {
+      updated.push(schema)
+    }
+
+    const isValidProp = updated.every((item) => Reflect.has(item, 'prop') && item.prop)
+
+    if (!isValidProp) {
+      error(
+        'all children of the form Schema array that need to be updated must contain the `prop` field'
+      )
+      return
+    }
+
+    // 只会更新存在的，不存在的不会新增
+    const newSchema: FormSchema[] = cloneDeep(unref(getSchema))
+    updated.forEach((item) => {
+      unref(getSchema).forEach((entry, index) => {
+        // find same prop replace
+        if (isEqual(item.prop, entry.prop)) {
+          const newItem = merge(entry, item)
+          newSchema[index] = newItem
+        }
+      })
+    })
+
+    _setDefaultValue(newSchema)
+
+    schemaRef.value = newSchema
+  }
+
+  function _setDefaultValue(schemas: FormSchema[]) {
+    const obj: Recordable = {}
+    schemas.forEach((item) => {
+      if (item.prop && !isNil(item.defaultValue)) {
+        set(obj, item.prop, item.defaultValue)
+      }
+    })
   }
 
   function clearValidate(props?: Arrayable<FormItemProp>) {
@@ -99,7 +175,7 @@ export function useFormEvents({
   function getFieldsValue(): Recordable {
     const formEl = unref(formElRef)
     if (!formEl) return {}
-    return processFormValues(formModel)
+    return processFormValues(toRaw(unref(formModel)))
   }
 
   async function handleSubmit(e?: Event): Promise<void> {
@@ -133,5 +209,8 @@ export function useFormEvents({
     scrollToField,
     handleSubmit,
     resetSchema,
+    updateSchema,
+    removeSchemaByProp,
+    appendSchemaByProp,
   }
 }
