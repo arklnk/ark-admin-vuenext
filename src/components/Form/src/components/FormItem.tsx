@@ -103,8 +103,7 @@ export default defineComponent({
       const Comp: any = typeof component === 'string' ? resolveComponent(component) : component
       // is not a global component
       if (typeof Comp === 'string') {
-        error('could not resolve component')
-        return null
+        error(`could not resolve component: ${Comp}`)
       }
 
       const propsData: Recordable = {
