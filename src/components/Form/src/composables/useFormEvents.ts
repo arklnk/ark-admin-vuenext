@@ -2,7 +2,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { BasicFormProps, FormSchema } from '../typing'
 import type { FormInstance, FormItemProp } from 'element-plus'
 
-import { unref, toRaw, nextTick } from 'vue'
+import { unref, toRaw } from 'vue'
 import { cloneDeep, get, hasIn, isEqual, isFunction, isNil, merge, set, unset } from 'lodash-es'
 import { error } from '/@/utils/log'
 
@@ -38,7 +38,8 @@ export function useFormEvents({
       set(formModel, item, fieldValue)
     })
 
-    validateField(props)
+    // try validate prop
+    validateField(props).catch((_) => {})
   }
 
   async function resetFields(): Promise<void> {
@@ -158,42 +159,50 @@ export function useFormEvents({
         set(obj, item.prop, item.defaultValue)
       }
     })
+
+    setFormModel(obj)
   }
 
-  async function clearValidate(props?: Arrayable<FormItemProp>) {
-    nextTick(() => unref(formElRef)?.clearValidate(props))
+  function clearValidate(props?: Arrayable<FormItemProp>) {
+    unref(formElRef)?.clearValidate(props)
   }
 
   async function validate(): Promise<void> {
     return new Promise((resolve, reject) => {
-      nextTick(() => {
-        unref(formElRef)?.validate((isValid: boolean, invalidFields?: Recordable) => {
-          if (isValid) {
-            resolve()
-          } else {
-            reject(invalidFields)
-          }
-        })
+      const formEl = unref(formElRef)
+      if (!formEl) {
+        reject()
+        return
+      }
+      formEl.validate((isValid: boolean, invalidFields?: Recordable) => {
+        if (isValid) {
+          resolve()
+        } else {
+          reject(invalidFields)
+        }
       })
     })
   }
 
   async function validateField(props?: Arrayable<FormItemProp>): Promise<void> {
     return new Promise((resolve, reject) => {
-      nextTick(() => {
-        unref(formElRef)?.validateField(props, (isValid: boolean, invalidFields?: Recordable) => {
-          if (isValid) {
-            resolve()
-          } else {
-            reject(invalidFields)
-          }
-        })
+      const formEl = unref(formElRef)
+      if (!formEl) {
+        reject()
+        return
+      }
+      formEl.validateField(props, (isValid: boolean, invalidFields?: Recordable) => {
+        if (isValid) {
+          resolve()
+        } else {
+          reject(invalidFields)
+        }
       })
     })
   }
 
   function scrollToField(prop: FormItemProp) {
-    nextTick(() => unref(formElRef)?.scrollToField(prop))
+    unref(formElRef)?.scrollToField(prop)
   }
 
   function getFieldsValue(): Recordable {

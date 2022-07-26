@@ -60,6 +60,7 @@ export interface BasicFormActionType {
   clearValidate: (props?: Arrayable<FormItemProp>) => void
 
   // extra
+  setFormModel: (values: Recordable) => void
   setProps: (formProps: Partial<BasicFormProps>) => void
   getFieldsValue: () => Recordable
   resetSchema: (schema: Arrayable<FormSchema>) => void

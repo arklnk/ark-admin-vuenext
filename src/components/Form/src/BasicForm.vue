@@ -38,7 +38,7 @@
 <script lang="ts">
 import type { BasicFormActionType, BasicFormProps, FormSchema } from './typing'
 import type { FormInstance, FormItemProp } from 'element-plus'
-import type { Ref } from 'vue'
+import { onMounted, Ref } from 'vue'
 
 import { computed, defineComponent, reactive, ref, unref, watch } from 'vue'
 import { basicProps } from './props'
@@ -185,6 +185,7 @@ export default defineComponent({
       validateField,
       clearValidate,
       getFieldsValue,
+      setFormModel,
       setProps,
       resetSchema,
       updateSchema,
@@ -193,7 +194,9 @@ export default defineComponent({
       submit: handleSubmit,
     }
 
-    initDefault()
+    onMounted(() => {
+      initDefault()
+    })
 
     expose(formActionType)
     emit('register', formActionType)

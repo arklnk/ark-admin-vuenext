@@ -50,6 +50,10 @@ export function useForm(_formProps?: Partial<RefableProps<BasicFormProps>>): Use
       getForm().clearValidate(props)
     },
 
+    setFormModel(values: Recordable) {
+      getForm().setFormModel(values)
+    },
+
     setProps(formProps: Partial<BasicFormProps>) {
       getForm().setProps(formProps)
     },
