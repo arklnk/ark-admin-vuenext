@@ -56,7 +56,7 @@ export function useFormEvents({
       const defaultValue = cloneDeep(get(defaultValueRef.value, item))
       set(formModel, item, defaultValue)
     })
-    nextTick(() => clearValidate())
+    clearValidate()
 
     emit('reset', toRaw(formModel))
   }
@@ -80,40 +80,6 @@ export function useFormEvents({
     }
 
     schemaRef.value = updated as FormSchema[]
-  }
-
-  function removeSchemaByProp(props: FormItemProp[]) {
-    if (!props || props.length === 0) {
-      return
-    }
-
-    const schemas = cloneDeep(unref(getSchema))
-    props.forEach((item) => {
-      const findIndex = schemas.findIndex((e) => isEqual(e.prop, item))
-      if (findIndex !== -1) {
-        unset(formModel, item)
-        schemas.splice(findIndex, 1)
-      }
-    })
-
-    schemaRef.value = schemas
-  }
-
-  function appendSchemaByProp(schema: FormSchema, prop?: FormItemProp, first = false) {
-    if (!schema) return
-
-    const schemasClone = cloneDeep(unref(getSchema))
-
-    // inset
-    if (first) {
-      schemasClone.unshift(schema)
-    } else {
-      const index = schemasClone.findIndex((e) => isEqual(e.prop, prop))
-      index === -1 ? schemasClone.push(schema) : schemasClone.splice(index + 1, 0, schema)
-    }
-    _setDefaultValue([schema])
-
-    schemaRef.value = schemasClone
   }
 
   function updateSchema(schema: Arrayable<Partial<FormSchema>>) {
@@ -151,6 +117,40 @@ export function useFormEvents({
     schemaRef.value = newSchema
   }
 
+  function removeSchemaByProp(props: FormItemProp[]) {
+    if (!props || props.length === 0) {
+      return
+    }
+
+    const schemas = cloneDeep(unref(getSchema))
+    props.forEach((item) => {
+      const findIndex = schemas.findIndex((e) => isEqual(e.prop, item))
+      if (findIndex !== -1) {
+        unset(formModel, item)
+        schemas.splice(findIndex, 1)
+      }
+    })
+
+    schemaRef.value = schemas
+  }
+
+  function appendSchemaByProp(schema: FormSchema, prop?: FormItemProp, first = false) {
+    if (!schema) return
+
+    const schemasClone = cloneDeep(unref(getSchema))
+
+    // inset
+    if (first) {
+      schemasClone.unshift(schema)
+    } else {
+      const index = schemasClone.findIndex((e) => isEqual(e.prop, prop))
+      index === -1 ? schemasClone.push(schema) : schemasClone.splice(index + 1, 0, schema)
+    }
+    _setDefaultValue([schema])
+
+    schemaRef.value = schemasClone
+  }
+
   function _setDefaultValue(schemas: FormSchema[]) {
     const obj: Recordable = {}
     schemas.forEach((item) => {
@@ -161,19 +161,39 @@ export function useFormEvents({
   }
 
   async function clearValidate(props?: Arrayable<FormItemProp>) {
-    unref(formElRef)?.clearValidate(props)
+    nextTick(() => unref(formElRef)?.clearValidate(props))
   }
 
-  async function validate() {
-    return unref(formElRef)?.validate()
+  async function validate(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      nextTick(() => {
+        unref(formElRef)?.validate((isValid: boolean, invalidFields?: Recordable) => {
+          if (isValid) {
+            resolve()
+          } else {
+            reject(invalidFields)
+          }
+        })
+      })
+    })
   }
 
-  async function validateField(props?: Arrayable<FormItemProp>) {
-    return unref(formElRef)?.validateField(props)
+  async function validateField(props?: Arrayable<FormItemProp>): Promise<void> {
+    return new Promise((resolve, reject) => {
+      nextTick(() => {
+        unref(formElRef)?.validateField(props, (isValid: boolean, invalidFields?: Recordable) => {
+          if (isValid) {
+            resolve()
+          } else {
+            reject(invalidFields)
+          }
+        })
+      })
+    })
   }
 
-  async function scrollToField(prop: FormItemProp) {
-    unref(formElRef)?.scrollToField(prop)
+  function scrollToField(prop: FormItemProp) {
+    nextTick(() => unref(formElRef)?.scrollToField(prop))
   }
 
   function getFieldsValue(): Recordable {

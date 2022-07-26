@@ -1,21 +1,19 @@
-import type { BasicFormProps, BasicFormActionType } from '../typing'
+import type { BasicFormProps, BasicFormActionType, UseFormReturnType, FormSchema } from '../typing'
 import type { FormItemProp } from 'element-plus'
 
-import { onUnmounted, ref, unref, nextTick } from 'vue'
+import { onUnmounted, ref, unref } from 'vue'
 import { error } from '/@/utils/log'
 
-export function useForm(_props?: Partial<RefableProps<BasicFormProps>>) {
+export function useForm(_formProps?: Partial<RefableProps<BasicFormProps>>): UseFormReturnType {
   const formRef = ref<Nullable<BasicFormActionType>>(null)
   const loadedRef = ref<Nullable<boolean>>(false)
 
-  async function getForm() {
+  function getForm() {
     const form = unref(formRef)
     if (!form) {
       error(
         'form instance has not been obtained, please make sure that the form has been rendered when performing the form operation!'
       )
-    } else {
-      await nextTick()
     }
     return form as BasicFormActionType
   }
@@ -31,18 +29,53 @@ export function useForm(_props?: Partial<RefableProps<BasicFormProps>>) {
     loadedRef.value = true
   }
 
-  const methods = {
-    async validate(): Promise<boolean> {
-      const form = await getForm()
-      return await form.validate()
+  const methods: BasicFormActionType = {
+    async validate(): Promise<void> {
+      await getForm().validate()
     },
-    async validateField(fields?: Arrayable<FormItemProp>): Promise<boolean> {
-      const form = await getForm()
-      return await form.validateField(fields)
+
+    async validateField(fields?: Arrayable<FormItemProp>): Promise<void> {
+      await getForm().validateField(fields)
     },
-    async resetFields() {
-      const form = await getForm()
-      await form.resetFields()
+
+    async resetFields(): Promise<void> {
+      await getForm().resetFields()
+    },
+
+    scrollToField(prop: FormItemProp) {
+      getForm().scrollToField(prop)
+    },
+
+    clearValidate(props?: Arrayable<FormItemProp>) {
+      getForm().clearValidate(props)
+    },
+
+    setProps(formProps: Partial<BasicFormProps>) {
+      getForm().setProps(formProps)
+    },
+
+    getFieldsValue(): Recordable {
+      return getForm().getFieldsValue()
+    },
+
+    resetSchema(schema: Arrayable<FormSchema>) {
+      getForm().resetSchema(schema)
+    },
+
+    updateSchema(schema: Arrayable<Partial<FormSchema>>) {
+      getForm().updateSchema(schema)
+    },
+
+    removeSchemaByProp(props: FormItemProp[]) {
+      getForm().removeSchemaByProp(props)
+    },
+
+    appendSchemaByProp(schema: FormSchema, prop?: FormItemProp, first?: boolean) {
+      getForm().appendSchemaByProp(schema, prop, first)
+    },
+
+    submit(): Promise<void> {
+      return getForm().submit()
     },
   }
 

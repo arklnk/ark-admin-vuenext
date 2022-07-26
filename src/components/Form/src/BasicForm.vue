@@ -40,7 +40,7 @@ import type { BasicFormActionType, BasicFormProps, FormSchema } from './typing'
 import type { FormInstance, FormItemProp } from 'element-plus'
 import type { Ref } from 'vue'
 
-import { computed, defineComponent, onMounted, reactive, ref, unref, watch } from 'vue'
+import { computed, defineComponent, reactive, ref, unref, watch } from 'vue'
 import { basicProps } from './props'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useFormValues } from './composables/useFormValues'
@@ -55,7 +55,7 @@ export default defineComponent({
   components: { BasicFormItem, BasicFormAction },
   props: basicProps,
   emits: ['register', 'reset', 'submit', 'submit-failed', 'prop-value-change'],
-  setup(props, { emit, attrs }) {
+  setup(props, { emit, attrs, expose }) {
     const innerPropsRef = ref<Partial<BasicFormProps>>()
     const schemaRef = ref<Nullable<FormSchema[]>>(null)
     const formModel = reactive<Recordable>({})
@@ -110,6 +110,9 @@ export default defineComponent({
       validateField,
       scrollToField,
       resetSchema,
+      updateSchema,
+      removeSchemaByProp,
+      appendSchemaByProp,
       handleSubmit,
     } = useFormEvents({
       emit,
@@ -183,12 +186,17 @@ export default defineComponent({
       clearValidate,
       getFieldsValue,
       setProps,
+      resetSchema,
+      updateSchema,
+      removeSchemaByProp,
+      appendSchemaByProp,
+      submit: handleSubmit,
     }
 
-    onMounted(() => {
-      initDefault()
-      emit('register', formActionType)
-    })
+    initDefault()
+
+    expose(formActionType)
+    emit('register', formActionType)
 
     return {
       getFormClass,
