@@ -13,5 +13,5 @@ export function warn(message: string) {
 }
 
 export function error(message: string) {
-  console.error(`[${projectName} error]: ${message}`)
+  throw new Error(`[${projectName} error]: ${message}`)
 }
