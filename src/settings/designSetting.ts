@@ -7,14 +7,14 @@ export const themeMode = ThemeEnum.LIGHT
 // app theme preset color
 export const APP_PRESET_COLOR_LIST: string[] = [
   '#1c8efe',
-  '#0095b6',
-  '#009688',
-  '#536dfe',
-  '#ff5c93',
-  '#ee4f12',
-  '#870015',
-  '#9c27b0',
-  '#f4bc45',
+  '#00558d',
+  '#d16474',
+  '#7b2621',
+  '#016471',
+  '#b89b55',
+  '#e09f02',
+  '#142a31',
+  '#628f71',
 ]
 
 // header preset color
