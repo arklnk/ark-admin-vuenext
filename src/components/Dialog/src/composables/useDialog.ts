@@ -1,8 +1,8 @@
 import type {
   BasicDialogActionType,
   BasicDialogProps,
-  UseDialogDialogActionType,
-  RegisterFn,
+  ExtraBasicDialogActionType,
+  UseDialogReturnType,
 } from '../typing'
 
 import {
@@ -22,7 +22,7 @@ import { tryOnUnmounted } from '@vueuse/shared'
 // store the parameters passed when opening the pop-up window
 const store = reactive<any>({})
 
-export function useDialog(): [RegisterFn, UseDialogDialogActionType] {
+export function useDialog(): UseDialogReturnType {
   const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
   const loadedRef = ref<boolean>(false)
   const uidRef = ref<number>(-1)
@@ -49,7 +49,7 @@ export function useDialog(): [RegisterFn, UseDialogDialogActionType] {
     return instance
   }
 
-  const methods: UseDialogDialogActionType = {
+  const methods: ExtraBasicDialogActionType = {
     setProps: (props: Partial<BasicDialogProps>) => {
       getInstance()?.setProps(props)
     },
@@ -73,7 +73,7 @@ export function useDialog(): [RegisterFn, UseDialogDialogActionType] {
   return [register, methods]
 }
 
-export function useDialogInner(callbackFn?: Fn): [RegisterFn, UseDialogDialogActionType] {
+export function useDialogInner(callbackFn?: Fn): UseDialogReturnType {
   const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
   const uidRef = ref<number>(-1)
   const currentInstance = getCurrentInstance()
@@ -106,7 +106,7 @@ export function useDialogInner(callbackFn?: Fn): [RegisterFn, UseDialogDialogAct
     })
   })
 
-  const methods: UseDialogDialogActionType = {
+  const methods: ExtraBasicDialogActionType = {
     setProps: (props: Partial<BasicDialogProps>) => {
       getInstance()?.setProps(props)
     },
