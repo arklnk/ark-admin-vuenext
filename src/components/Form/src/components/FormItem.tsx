@@ -5,6 +5,7 @@ import { computed, defineComponent, unref, resolveComponent } from 'vue'
 import { get, isBoolean, isFunction, upperFirst } from 'lodash-es'
 import { getSlot } from '/@/utils/helper/tsx'
 import { error } from '/@/utils/log'
+import { Warning } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'BasicFormItem',
@@ -134,6 +135,25 @@ export default defineComponent({
       return <Comp {...compAttr}></Comp>
     }
 
+    function renderLabel() {
+      const { label, helpMessage } = props.schema
+
+      const helpMessageStr = isFunction(helpMessage) ? helpMessage(unref(getParams)) : helpMessage
+
+      return (
+        <span class="inline-flex flex-row items-center">
+          {label}
+          {helpMessageStr ? (
+            <el-tooltip content={helpMessageStr} placement="bottom">
+              <el-icon class="mx-1">
+                <Warning />
+              </el-icon>
+            </el-tooltip>
+          ) : null}
+        </span>
+      )
+    }
+
     // render form item
     function renderItem() {
       const { prop, label, labelWidth, required, error, showMessage, inlineMessage, size } =
@@ -151,7 +171,10 @@ export default defineComponent({
           inlineMessage={inlineMessage}
           size={size}
         >
-          {renderContent()}
+          {{
+            default: () => renderContent(),
+            label: () => renderLabel(),
+          }}
         </el-form-item>
       )
     }

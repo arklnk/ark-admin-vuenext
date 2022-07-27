@@ -32,6 +32,7 @@ export interface FormSchema {
   size?: SizeType
 
   // extend config
+  helpMessage?: string | ((params: RenderCallbackParams) => string)
   // variable name bound to v-model default value, default modelValue
   modelField?: string
   // event name triggered by internal value change, default change
