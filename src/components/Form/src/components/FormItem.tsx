@@ -144,7 +144,7 @@ export default defineComponent({
         <span class="inline-flex flex-row items-center">
           {label}
           {helpMessageStr ? (
-            <el-tooltip content={helpMessageStr} placement="bottom">
+            <el-tooltip content={helpMessageStr} placement="right">
               <el-icon class="mx-1">
                 <Warning />
               </el-icon>
