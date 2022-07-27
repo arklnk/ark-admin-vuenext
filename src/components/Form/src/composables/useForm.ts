@@ -4,7 +4,7 @@ import type { FormItemProp } from 'element-plus'
 import { onUnmounted, ref, unref } from 'vue'
 import { error } from '/@/utils/log'
 
-export function useForm(_formProps?: Partial<RefableProps<BasicFormProps>>): UseFormReturnType {
+export function useForm(): UseFormReturnType {
   const formRef = ref<Nullable<BasicFormActionType>>(null)
   const loadedRef = ref<Nullable<boolean>>(false)
 
