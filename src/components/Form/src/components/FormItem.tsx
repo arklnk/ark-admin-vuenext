@@ -82,7 +82,7 @@ export default defineComponent({
         render,
         size,
         modelField = 'modelValue',
-        changeEvent = 'change',
+        changeEvent = 'update:modelValue',
         prop,
       } = props.schema
 
