@@ -38,9 +38,8 @@
 <script lang="ts">
 import type { BasicFormActionType, BasicFormProps, FormSchema } from './typing'
 import type { FormInstance, FormItemProp } from 'element-plus'
-import { onMounted, Ref } from 'vue'
 
-import { computed, defineComponent, reactive, ref, unref, watch } from 'vue'
+import { computed, defineComponent, reactive, ref, unref, watch, onMounted } from 'vue'
 import { basicProps } from './props'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useFormValues } from './composables/useFormValues'
@@ -117,10 +116,10 @@ export default defineComponent({
     } = useFormEvents({
       emit,
       getProps,
-      formElRef: formElRef as Ref<FormInstance>,
+      formElRef: formElRef,
       getSchema,
       formModel,
-      schemaRef: schemaRef as Ref<FormSchema[]>,
+      schemaRef,
       defaultValueRef,
       processFormValues,
     })

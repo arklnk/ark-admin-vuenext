@@ -12,8 +12,8 @@ interface UseFormEventsParams {
   getSchema: ComputedRef<FormSchema[]>
   formModel: Recordable
   defaultValueRef: Ref<Recordable>
-  formElRef: Ref<FormInstance>
-  schemaRef: Ref<FormSchema[]>
+  formElRef: Ref<Nullable<FormInstance>>
+  schemaRef: Ref<Nullable<FormSchema[]>>
   processFormValues: Fn
 }
 
@@ -171,7 +171,7 @@ export function useFormEvents({
     return new Promise((resolve, reject) => {
       const formEl = unref(formElRef)
       if (!formEl) {
-        reject()
+        reject(new Error('form instance has not been obtained'))
         return
       }
       formEl.validate((isValid: boolean, invalidFields?: Recordable) => {
@@ -188,7 +188,7 @@ export function useFormEvents({
     return new Promise((resolve, reject) => {
       const formEl = unref(formElRef)
       if (!formEl) {
-        reject()
+        reject(new Error('form instance has not been obtained'))
         return
       }
       formEl.validateField(props, (isValid: boolean, invalidFields?: Recordable) => {
