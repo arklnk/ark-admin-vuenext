@@ -1,36 +1,7 @@
-import type { ButtonProps } from 'element-plus'
+import type { ExtractPropTypes } from 'vue'
+import { basicProps } from './props'
 
-export interface BasicDialogProps {
-  draggable?: boolean
-  fullscreen?: boolean
-  top?: string
-  width?: string | number
-  modal?: boolean
-  appendToBody?: boolean
-  lockScroll?: boolean
-  customClass?: string
-  openDelay?: number
-  closeDelay?: number
-  closeOnClickModal?: boolean
-  closeOnPressEscape?: boolean
-  destroyOnClose?: boolean
-
-  // extra props
-  visible?: boolean
-  defaultFullscreen?: boolean
-  loading?: boolean
-  loadingTip?: string
-  canFullscreen?: boolean
-  showConfirmBtn?: boolean
-  showCancelBtn?: boolean
-  confirmText?: string
-  cancelText?: string
-  confirmBtnProps?: Writable<Partial<ButtonProps>>
-  cancelBtnProps?: Writable<Partial<ButtonProps>>
-  title?: string
-  helpMessage?: string
-  closeFunc?: () => Promise<boolean>
-}
+export type BasicDialogProps = ExtractPropTypes<typeof basicProps>
 
 export interface BasicDialogActionType {
   setProps: (props: Partial<BasicDialogProps>) => void
