@@ -6,6 +6,7 @@
 - 演示地址：[http://next.admin.si-yee.com](http://next.admin.si-yee.com/)
 
 > 目前只完成了整体框架（登录校验以及权限菜单渲染），业务功能并未实现，纯基础功能。
+> 如果需要体验完整功能请使用vue2版本：[传送门](https://github.com/hackycy/sf-vue-admin)
 
 演示环境账号密码：
 
