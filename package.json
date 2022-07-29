@@ -17,6 +17,7 @@
     "@element-plus/icons-vue": "^2.0.6",
     "@vueuse/core": "^8.6.0",
     "axios": "^0.24.0",
+    "cropperjs": "^1.5.12",
     "dayjs": "^1.11.1",
     "element-plus": "^2.2.9",
     "lodash-es": "^4.17.21",
