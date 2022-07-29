@@ -22,6 +22,7 @@
 # 致谢
 
 - [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+- [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
 
 # 浏览器支持
 
