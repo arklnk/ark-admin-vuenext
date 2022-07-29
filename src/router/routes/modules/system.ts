@@ -7,6 +7,9 @@ export default defineRoleModule([
     path: '/docs',
     name: 'docs',
     component: ParentLayout,
+    meta: {
+      single: true,
+    },
     children: [
       {
         path: '/docs/typeorm',
