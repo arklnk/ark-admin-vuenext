@@ -46,6 +46,7 @@
 
     <!-- content -->
     <div
+      :style="getWrapperStyle"
       :class="`${prefixCls}-wrapper`"
       v-loading="getMergeProps.loading"
       :element-loading-text="getMergeProps.loadingTip"
@@ -57,6 +58,7 @@
 
 <script lang="ts">
 import type { BasicDialogActionType, BasicDialogProps } from './typing'
+import type { CSSProperties } from 'vue'
 
 import { computed, defineComponent, ref, unref, watch, watchEffect, getCurrentInstance } from 'vue'
 import { basicProps } from './props'
@@ -90,6 +92,22 @@ export default defineComponent({
         ...props,
         ...unref(innerPropsRef),
       } as BasicDialogProps
+    })
+
+    const getWrapperStyle = computed((): CSSProperties => {
+      const { height, minHeight } = unref(getMergeProps)
+      const style: CSSProperties = {}
+
+      if (minHeight) {
+        style.minHeight = typeof minHeight === 'string' ? minHeight : `${minHeight}px`
+      }
+
+      // not fullscreen state and invalid height will set
+      if (height && !unref(fullscreenRef)) {
+        style.height = typeof height === 'string' ? height : `${height}px`
+      }
+
+      return style
     })
 
     // el-dialog props
@@ -195,6 +213,7 @@ export default defineComponent({
       fullscreenRef,
       getBindValue,
       getMergeProps,
+      getWrapperStyle,
       handleCancel,
       handleConfirm,
       handleFullscreen,
@@ -252,6 +271,7 @@ $prefixCls: #{var.$namespace}-basic-dialog;
   &.is-fullscreen {
     .el-dialog__body {
       flex: 1;
+      height: 0;
       overflow-y: auto;
     }
   }

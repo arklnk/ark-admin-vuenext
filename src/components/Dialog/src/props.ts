@@ -17,6 +17,7 @@ export const basicProps = {
   // extra props
   visible: { type: Boolean },
   defaultFullscreen: { type: Boolean },
+  minHeight: { type: [String, Number] as PropType<string | number> },
   // 在全屏下该值无效，会直接占满容器剩余高度
   height: { type: [String, Number] as PropType<string | number> },
   loading: { type: Boolean },
