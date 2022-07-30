@@ -7,67 +7,69 @@ import { TransitionPresets, useTransition } from '@vueuse/core'
 import { computed, defineComponent, onMounted, ref, unref, watchEffect, watch } from 'vue'
 import { isNumber } from 'lodash-es'
 
-export default defineComponent({
-  name: 'CountTo',
-  props: {
-    startVal: {
-      type: Number,
-      default: 0,
-    },
-    endVal: {
-      type: Number,
-      default: 100,
-    },
-    duration: {
-      type: Number,
-      default: 1500,
-    },
-    autoplay: {
-      type: Boolean,
-      default: true,
-    },
-    prefix: {
-      type: String,
-      default: '',
-    },
-    suffix: {
-      type: String,
-      default: '',
-    },
-    /**
-     * the number of decimal places to show
-     */
-    decimals: {
-      type: Number,
-      default: 0,
-      validator(v: number) {
-        return v >= 0
-      },
-    },
-    /**
-     * the split decimal
-     */
-    decimal: {
-      type: String,
-      default: '.',
-    },
-    separator: {
-      type: String,
-      default: '.',
-    },
-    useEasing: {
-      type: Boolean,
-      default: true,
-    },
-    /**
-     * https://vueuse.org/core/usetransition/#usage
-     * like TransitionPresets constants
-     */
-    transition: {
-      type: String,
-      default: 'linear',
+const props = {
+  startVal: {
+    type: Number,
+    default: 0,
+  },
+  endVal: {
+    type: Number,
+    default: 100,
+  },
+  duration: {
+    type: Number,
+    default: 1500,
+  },
+  autoplay: {
+    type: Boolean,
+    default: true,
+  },
+  prefix: {
+    type: String,
+    default: '',
+  },
+  suffix: {
+    type: String,
+    default: '',
+  },
+  /**
+   * the number of decimal places to show
+   */
+  decimals: {
+    type: Number,
+    default: 0,
+    validator(v: number) {
+      return v >= 0
     },
   },
+  /**
+   * the split decimal
+   */
+  decimal: {
+    type: String,
+    default: '.',
+  },
+  separator: {
+    type: String,
+    default: '.',
+  },
+  useEasing: {
+    type: Boolean,
+    default: true,
+  },
+  /**
+   * https://vueuse.org/core/usetransition/#usage
+   * like TransitionPresets constants
+   */
+  transition: {
+    type: String,
+    default: 'linear',
+  },
+}
+
+export default defineComponent({
+  name: 'CountTo',
+  props,
   emits: ['onStarted', 'onFinished'],
   setup(props, { emit }) {
     const sourceRef = ref(props.startVal)
