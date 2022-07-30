@@ -22,11 +22,11 @@ export function useDataSource(
   const dataSourceRef = ref<Recordable[]>([])
 
   watch(
-    () => unref(getProps).dataSource,
+    () => unref(getProps).data,
     () => {
-      const { dataSource, api } = unref(getProps)
-      if (!api && dataSource) {
-        dataSourceRef.value = dataSource
+      const { data, api } = unref(getProps)
+      if (!api && data) {
+        dataSourceRef.value = data
       }
     },
     {

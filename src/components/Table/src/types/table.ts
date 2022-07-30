@@ -1,5 +1,5 @@
-import type { TableProps } from 'element-plus/lib/components/table/src/table/defaults'
-import type { PaginationProps } from './pagination'
+import type { basicProps } from '../props'
+import type { ExtractPropTypes } from 'vue'
 import type { SizeType } from '/#/config'
 
 export interface TableSetting {
@@ -23,19 +23,7 @@ export interface FetchParams {
   page?: number
 }
 
-export interface BasicTableProps<T = any> extends TableProps<T> {
-  dataSource?: Recordable[]
-  api?: (...arg: any[]) => Promise<any>
-  beforeFetch?: Fn
-  afterFetch?: Fn
-  immediate?: boolean
-  tableSetting?: TableSetting
-  fetchSetting?: FetchSetting
-  showTableSetting?: boolean
-  pagination?: PaginationProps | boolean
-  loading?: boolean
-  rowSelection?: TableRowSelection
-}
+export type BasicTableProps = ExtractPropTypes<typeof basicProps>
 
 export type Key = string | number
 
