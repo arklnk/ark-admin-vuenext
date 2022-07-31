@@ -15,23 +15,39 @@
         selectable,
         selectedRowKeys: [1],
       }"
-      size="small"
       class="h-full"
-    >
-      <ElTableColumn label="参数名称" prop="name" align="center" />
-      <ElTableColumn label="参数值" prop="value" align="center" />
-    </BasicTable>
+      :columns="columns"
+    />
   </PageWrapper>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { PageWrapper } from '/@/components/Page'
-import { BasicTable } from '/@/components/Table'
+import { BasicTable, Column } from '/@/components/Table'
 
 const tableRef = ref(null)
 
 const total = 1000
+
+const columns: Column[] = [
+  {
+    label: '多级表头',
+    align: 'center',
+    children: [
+      {
+        label: '参数名称',
+        prop: 'name',
+        align: 'center',
+      },
+      {
+        label: '参数值',
+        prop: 'value',
+        align: 'center',
+      },
+    ],
+  },
+]
 
 function selectable(record: Recordable): boolean {
   return record.id % 2 === 0
