@@ -1,1 +1,8 @@
-export { default as BasicTable } from './src/BasicTable.vue'
+import BasicTableComp from './src/BasicTable.vue'
+import { withInstall } from '/@/utils'
+
+export const BasicTable = withInstall(BasicTableComp)
+
+export * from './src/types/column'
+export * from './src/types/pagination'
+export * from './src/types/table'

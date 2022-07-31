@@ -3,25 +3,17 @@
     <!-- Table -->
     <div class="flex-1">
       <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
-        <!-- selection -->
-        <ElTableColumn :resizable="false" :width="50" align="center">
-          <template #default="{ row }">
-            <ElCheckbox v-bind="getCellCheckboxProps(row)" />
-          </template>
-          <template v-if="getIsCheckboxType" #header>
-            <ElCheckbox v-bind="getHeaderCheckboxProps()" />
-          </template>
-        </ElTableColumn>
         <!-- default slot -->
-        <slot></slot>
+        <BasicTableColumn v-if="getBindValues.columns" :columns="getBindValues.columns" />
+        <slot v-else></slot>
       </ElTable>
     </div>
     <!-- Pagination -->
     <div v-if="getShowPaginationRef" class="flex justify-end">
       <ElPagination
         v-bind="getPaginationRef"
-        @update:current-page="(currentPage: number) => handleTableChange('currentPage', currentPage)"
-        @update:page-size="(pageSize: number) => handleTableChange('pageSize', pageSize)"
+        @update:current-page="handlePageChange"
+        @update:page-size="handleSizeChange"
       />
     </div>
   </div>
@@ -40,11 +32,15 @@ import { useDataSource } from './composables/useDataSource'
 import { useDesign } from '/@/composables/core/useDesign'
 import { createTableContext } from './composables/useTableContext'
 import { useRowSelection } from './composables/useRowSelection'
+import BasicTableColumn from './components/Column'
 
 export default defineComponent({
   name: 'BasicTable',
+  components: {
+    BasicTableColumn,
+  },
   props: basicProps,
-  emits: ['register', 'fetch-success', 'fetch-error', 'change'],
+  emits: ['register', 'fetch-success', 'fetch-error', 'page-change', 'size-change'],
   setup(props, { emit, attrs, expose }) {
     const wrapRef = ref(null)
     const tableRef = ref(null)
@@ -67,8 +63,7 @@ export default defineComponent({
       getShowPaginationRef,
     } = usePagination(getProps)
 
-    const { getCellCheckboxProps, getHeaderCheckboxProps, getIsCheckboxType, clearSelectedKeys } =
-      useRowSelection(getProps, tableDataRef, emit)
+    const { clearSelectedKeys } = useRowSelection(getProps, tableDataRef, emit)
 
     const {
       getDataSourceRef,
@@ -93,12 +88,18 @@ export default defineComponent({
       return propsData
     })
 
-    function handleTableChange(type: string, val: number) {
-      const args = {
-        [type]: val,
-      }
-      onTableChange(args)
-      emit('change', args)
+    function handlePageChange(currentPage: number) {
+      onTableChange({
+        currentPage,
+      })
+      emit('page-change')
+    }
+
+    function handleSizeChange(size: number) {
+      onTableChange({
+        pageSize: size,
+      })
+      emit('size-change', size)
     }
 
     const getWrapperClass = computed(() => {
@@ -133,10 +134,8 @@ export default defineComponent({
       getPaginationRef,
       getShowPaginationRef,
       getLoading,
-      handleTableChange,
-      getCellCheckboxProps,
-      getHeaderCheckboxProps,
-      getIsCheckboxType,
+      handlePageChange,
+      handleSizeChange,
     }
   },
 })

@@ -1,5 +1,6 @@
 import type { PaginationProps } from './types/pagination'
 import type { TableSetting, FetchSetting, TableRowSelection } from './types/table'
+import type { BasicColumn } from './types/column'
 
 import defaultProps from 'element-plus/lib/components/table/src/table/defaults'
 
@@ -71,6 +72,13 @@ export const basicProps = {
    */
   rowSelection: {
     type: Object as PropType<TableRowSelection>,
+    default: null,
+  },
+  /**
+   * 支持代码方式传入column属性渲染
+   */
+  columns: {
+    type: Array as PropType<BasicColumn[]>,
     default: null,
   },
   /**
