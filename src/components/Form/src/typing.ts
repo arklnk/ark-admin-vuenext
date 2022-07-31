@@ -9,7 +9,7 @@ export interface RenderCallbackParams {
   prop: FormItemProp
 }
 
-export type BasicFormProps = ExtractPropTypes<typeof basicProps>
+export type BasicFormProps = Partial<ExtractPropTypes<typeof basicProps>>
 
 export interface FormSchema {
   // prop name

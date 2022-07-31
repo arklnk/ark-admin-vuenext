@@ -1,7 +1,7 @@
 import type { ExtractPropTypes } from 'vue'
 import { basicProps } from './props'
 
-export type BasicDialogProps = ExtractPropTypes<typeof basicProps>
+export type BasicDialogProps = Partial<ExtractPropTypes<typeof basicProps>>
 
 export interface BasicDialogActionType {
   setProps: (props: Partial<BasicDialogProps>) => void
