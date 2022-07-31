@@ -23,7 +23,7 @@ export interface FetchParams {
   page?: number
 }
 
-export type BasicTableProps = ExtractPropTypes<typeof basicProps>
+export type BasicTableProps = Partial<ExtractPropTypes<typeof basicProps>>
 
 export type Key = string | number
 
