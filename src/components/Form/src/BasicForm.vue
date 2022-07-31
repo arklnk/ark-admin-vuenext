@@ -89,7 +89,7 @@ export default defineComponent({
     })
 
     const getSchema = computed((): FormSchema[] => {
-      const schemas: FormSchema[] = unref(schemaRef) || unref(getProps).schemas
+      const schemas: FormSchema[] = unref(schemaRef) || unref(getProps).schemas || []
       return cloneDeep(schemas)
     })
 

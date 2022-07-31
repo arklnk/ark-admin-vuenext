@@ -24,13 +24,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { PageWrapper } from '/@/components/Page'
-import { BasicTable, Column } from '/@/components/Table'
+import { BasicTable, BasicColumn } from '/@/components/Table'
 
 const tableRef = ref(null)
 
 const total = 1000
 
-const columns: Column[] = [
+const columns: BasicColumn[] = [
   {
     label: '多级表头',
     align: 'center',
