@@ -1,15 +1,15 @@
 <template>
   <div ref="wrapRef" :class="getWrapperClass">
     <!-- Table -->
-    <div class="flex-1">
-      <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
-        <!-- default slot -->
-        <BasicTableColumn v-if="getBindValues.columns" :columns="getBindValues.columns" />
-        <slot v-else></slot>
-      </ElTable>
-    </div>
+    <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
+      <!-- default slot -->
+      <BasicTableColumn :columns="getColumnsRef" />
+      <template #[item]="data" v-for="item in Object.keys($slots)">
+        <slot :name="item" v-bind="data || {}"></slot>
+      </template>
+    </ElTable>
     <!-- Pagination -->
-    <div v-if="getShowPaginationRef" class="flex justify-end">
+    <div v-if="getShowPaginationRef" :class="`${prefixCls}__footer`">
       <ElPagination
         v-bind="getPaginationRef"
         @update:current-page="handlePageChange"
@@ -30,8 +30,9 @@ import { basicProps } from './props'
 import { usePagination } from './composables/usePagination'
 import { useDataSource } from './composables/useDataSource'
 import { useDesign } from '/@/composables/core/useDesign'
-import { createTableContext } from './composables/useTableContext'
 import { useRowSelection } from './composables/useRowSelection'
+import { useColumns } from './composables/useColumns'
+import { createTableContext } from './composables/useTableContext'
 import BasicTableColumn from './components/Column'
 
 export default defineComponent({
@@ -76,9 +77,12 @@ export default defineComponent({
       emit
     )
 
+    const { getColumnsRef } = useColumns(getProps)
+
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
       let propsData: Recordable = {
+        ...attrs,
         ...unref(getProps),
         data,
       }
@@ -129,10 +133,12 @@ export default defineComponent({
     return {
       wrapRef,
       tableRef,
+      prefixCls,
       getWrapperClass,
       getBindValues,
       getPaginationRef,
       getShowPaginationRef,
+      getColumnsRef,
       getLoading,
       handlePageChange,
       handleSizeChange,
@@ -155,8 +161,13 @@ $prefixCls: #{var.$namespace}-basic-table;
     background-color: #707277;
   }
 
-  .el-pagination {
-    margin: 6px 0;
+  &__footer {
+    display: flex;
+    justify-content: end;
+
+    .el-pagination {
+      margin: 8px 0;
+    }
   }
 }
 
