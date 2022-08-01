@@ -154,28 +154,16 @@ $prefixCls: #{var.$namespace}-basic-table;
 
 .#{$prefixCls} {
   position: relative;
-  display: flex;
-  flex-direction: column;
-
-  &__header {
-    background-color: #707277;
-  }
 
   &__footer {
     display: flex;
     justify-content: end;
     align-items: center;
+    background-color: var(--el-table-bg-color);
+    overflow: hidden;
 
     .el-pagination {
       margin: 8px 0;
-    }
-  }
-}
-
-html.dark {
-  .#{$prefixCls} {
-    &__header {
-      background-color: #eceef3;
     }
   }
 }

@@ -39,11 +39,14 @@ export const basicProps = {
    */
   tableSetting: {
     type: Object as PropType<TableSetting>,
-    default: () => {},
+    default: () => ({}),
   },
+  /**
+   * 分页字段设置
+   */
   fetchSetting: {
     type: Object as PropType<FetchSetting>,
-    default: () => {},
+    default: () => ({}),
   },
   /**
    * 是否需要显示表格设置
@@ -80,6 +83,13 @@ export const basicProps = {
   columns: {
     type: Array as PropType<BasicColumn[]>,
     default: null,
+  },
+  /**
+   * 自适应高度
+   */
+  canResize: {
+    type: Boolean,
+    default: true,
   },
   /**
    * ElTable原有的属性
