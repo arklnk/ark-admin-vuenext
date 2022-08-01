@@ -9,7 +9,7 @@
       </template>
     </ElTable>
     <!-- Pagination -->
-    <div v-if="getShowPaginationRef" :class="`${prefixCls}__footer`">
+    <div ref="footerRef" v-if="getShowPaginationRef" :class="`${prefixCls}__footer`">
       <ElPagination
         v-bind="getPaginationRef"
         @update:current-page="handlePageChange"
@@ -164,6 +164,7 @@ $prefixCls: #{var.$namespace}-basic-table;
   &__footer {
     display: flex;
     justify-content: end;
+    align-items: center;
 
     .el-pagination {
       margin: 8px 0;
