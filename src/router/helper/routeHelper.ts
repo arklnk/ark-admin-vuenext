@@ -1,7 +1,7 @@
 import type { Menu, Component } from '../typing'
+import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 
 import { EmptyLayout, IFrameLayout, ParentLayout, ViewNotFound } from '../contants'
-import { RouteMeta, RouteRecordRaw } from 'vue-router'
 import { warn } from '/@/utils/log'
 import { MenuTypeEnum } from '/@/enums/menuEnum'
 import { isUrl } from '/@/utils/is'
@@ -62,6 +62,7 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
         path: menu.router,
         component: isRoot ? ParentLayout : EmptyLayout,
         meta,
+        children: [],
       }
 
       if (menu.children && menu.children.length > 0) {
