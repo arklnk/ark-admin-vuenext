@@ -34,6 +34,7 @@ import { useRowSelection } from './composables/useRowSelection'
 import { useColumns } from './composables/useColumns'
 import { createTableContext } from './composables/useTableContext'
 import BasicTableColumn from './components/Column'
+import { useTableHeight } from './composables/useTableHeight'
 
 export default defineComponent({
   name: 'BasicTable',
@@ -45,6 +46,7 @@ export default defineComponent({
   setup(props, { emit, attrs, expose }) {
     const wrapRef = ref(null)
     const tableRef = ref(null)
+    const footerRef = ref(null)
 
     const innerPropsRef = ref<Partial<BasicTableProps>>()
     const tableDataRef = ref<Recordable[]>([])
@@ -79,11 +81,14 @@ export default defineComponent({
 
     const { getColumnsRef } = useColumns(getProps)
 
+    const { getTableHeight } = useTableHeight(getProps, tableRef, footerRef, wrapRef)
+
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
       let propsData: Recordable = {
         ...attrs,
         ...unref(getProps),
+        ...(unref(getTableHeight) ? { height: unref(getTableHeight) } : {}),
         data,
       }
 
@@ -133,6 +138,7 @@ export default defineComponent({
     return {
       wrapRef,
       tableRef,
+      footerRef,
       prefixCls,
       getWrapperClass,
       getBindValues,
@@ -157,7 +163,7 @@ $prefixCls: #{var.$namespace}-basic-table;
 
   &__footer {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     background-color: var(--el-table-bg-color);
     overflow: hidden;

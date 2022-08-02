@@ -92,6 +92,20 @@ export const basicProps = {
     default: true,
   },
   /**
+   * 整个table的容器高度是否固定，当给容器设置了高度又开启了自适应高度时可设置该值为true
+   */
+  wrapHeightFixed: {
+    type: Boolean,
+    default: false,
+  },
+  /**
+   * 自适应高度偏移， 计算结果-偏移量
+   */
+  resizeHeightOffset: {
+    type: Number,
+    default: 0,
+  },
+  /**
    * ElTable原有的属性
    */
   ...defaultProps,

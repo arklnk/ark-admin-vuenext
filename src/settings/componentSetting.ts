@@ -5,6 +5,7 @@ export default {
       pageSize: 10,
       layout: 'total, sizes, prev, pager, next',
       background: true,
+      small: true,
     },
     fetchSetting: {
       pageField: 'page',
