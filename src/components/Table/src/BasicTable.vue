@@ -33,7 +33,7 @@ import { useDesign } from '/@/composables/core/useDesign'
 import { useRowSelection } from './composables/useRowSelection'
 import { useColumns } from './composables/useColumns'
 import { createTableContext } from './composables/useTableContext'
-import BasicTableColumn from './components/Column'
+import BasicTableColumn from './components/TableColumn'
 import { useTableHeight } from './composables/useTableHeight'
 
 export default defineComponent({
