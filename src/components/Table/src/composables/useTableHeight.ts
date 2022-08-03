@@ -20,13 +20,15 @@ export function useTableHeight(
    * 动态计算table高度，以方便固定表头进行数据滚动
    */
   async function calcTableHeight() {
-    const { canResize, wrapHeightFixed, resizeHeightOffset, pagination } = unref(getProps)
+    const { canResize, canResizeWrap, resizeHeightOffset, pagination } = unref(getProps)
 
     const table = unref(tableElRef)
     if (!table) return
 
+    // wrap and table real dom
     const tableEl: HTMLElement = table.$el
-    if (!tableEl) return
+    const wrapEl: HTMLElement = unref(wrapElRef)
+    if (!tableEl || !wrapEl) return
 
     // can' t resize
     if (!canResize) return
@@ -43,34 +45,32 @@ export function useTableHeight(
       footerHeight += (unref(footerElRef) as HTMLElement)?.offsetHeight || 0
     }
 
+    // table height from bottom height-custom offset
+    let paddingHeight = 0
+    const ZERO_PX = '0px'
+    const wrapStyle = getComputedStyle(wrapEl)
+
     let bottomIncludeBody = 0
 
-    if (unref(wrapElRef) && wrapHeightFixed) {
-      // table容器定高
-      const wrapHeight = (unref(wrapElRef) as HTMLElement)?.offsetHeight || 0
+    // 判断两种情况，一种情况为wrap容器固定高度，第二种情况则自动定高
+    // 如果外部可定高情况下尽量使用定高，自动定高情况下在使用Page包裹可能底部高度计算不精准
+    if (canResizeWrap) {
+      // 防止wrap容器被设置padding导致计算错误
+      paddingHeight +=
+        numberUnit(wrapStyle.paddingBottom ?? ZERO_PX) + numberUnit(wrapStyle.paddingTop ?? ZERO_PX)
+
+      // table容器定高时，则直接使用wrap的高度，offsetHeight会包括padding高度
+      const wrapHeight = wrapEl.offsetHeight || 0
 
       bottomIncludeBody = wrapHeight
     } else {
-      let bottomSpace = 0
-      const ZERO_PX = '0px'
-
-      // 尝试查找包裹table的父容器的底部占用高度，避免底部margin或者padding导致高度计算不准确
-      // BasicTable不应被多层容器嵌套，如果被多层容器嵌套，则应该将wrap容器定高并开启wrapHeightFixed
-      const parentEl = (unref(wrapElRef) as HTMLElement)?.parentElement
-      if (parentEl) {
-        const style = getComputedStyle(parentEl)
-        const marginBottom = numberUnit(style.marginBottom ?? ZERO_PX)
-        const paddingBottom = numberUnit(style.paddingBottom ?? ZERO_PX)
-
-        bottomSpace = marginBottom + paddingBottom
-      }
-
-      // 容器不定高，则计算el-table-header剩余高度
-      bottomIncludeBody = getViewportOffset(headEl).bottomIncludeBody - bottomSpace
+      // 容器不定高，则计算从el-table-header剩余高度
+      bottomIncludeBody = getViewportOffset(headEl).bottomIncludeBody
     }
 
-    const height = bottomIncludeBody - (resizeHeightOffset || 0) - footerHeight
-
+    // calc remaining height
+    const height = bottomIncludeBody - (resizeHeightOffset || 0) - paddingHeight - footerHeight
+    // set height
     tableHeightRef.value = height
   }
 

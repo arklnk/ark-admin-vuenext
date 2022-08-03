@@ -160,12 +160,13 @@ $prefixCls: #{var.$namespace}-basic-table;
 
 .#{$prefixCls} {
   position: relative;
+  padding: 6px;
+  background-color: var(--el-fill-color-blank);
 
   &__footer {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    background-color: var(--el-table-bg-color);
     overflow: hidden;
 
     .el-pagination {

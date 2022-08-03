@@ -85,16 +85,16 @@ export const basicProps = {
     default: null,
   },
   /**
-   * 自适应高度
+   * table是否自适应高度
    */
   canResize: {
     type: Boolean,
     default: true,
   },
   /**
-   * 整个table的容器高度是否固定，当给容器设置了高度又开启了自适应高度时可设置该值为true
+   * 容器高度是否固定，当给容器设置了高度又开启了自适应高度时可设置该值为true
    */
-  wrapHeightFixed: {
+  canResizeWrap: {
     type: Boolean,
     default: false,
   },
