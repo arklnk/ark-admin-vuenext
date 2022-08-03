@@ -51,4 +51,5 @@ export interface BasicTableActionType {
   getShowPagination: () => boolean
   getDataSource: <T = Recordable>() => T[]
   getSize: () => SizeType
+  redoHeight: () => void
 }

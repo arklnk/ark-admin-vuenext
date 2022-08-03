@@ -53,7 +53,6 @@ export function useTableHeight(
     let bottomIncludeBody = 0
 
     // 判断两种情况，一种情况为wrap容器固定高度，第二种情况则自动定高
-    // 如果外部可定高情况下尽量使用定高，自动定高情况下在使用Page包裹可能底部高度计算不精准
     if (canResizeWrap) {
       // 防止wrap容器被设置padding导致计算错误
       paddingHeight +=
@@ -64,6 +63,15 @@ export function useTableHeight(
 
       bottomIncludeBody = wrapHeight
     } else {
+      // 当不定高情况时计算padding bottom，padding top不参与计算
+      paddingHeight += numberUnit(wrapStyle.paddingBottom ?? ZERO_PX)
+
+      // 尝试获取wrap的父容器是否存在padding或margin的bottom值，例如使用Page容器包裹
+      const parentStyle = getComputedStyle(wrapEl.parentElement!)
+      paddingHeight +=
+        numberUnit(parentStyle.paddingBottom ?? ZERO_PX) +
+        numberUnit(parentStyle.marginBottom ?? ZERO_PX)
+
       // 容器不定高，则计算从el-table-header剩余高度
       bottomIncludeBody = getViewportOffset(headEl).bottomIncludeBody
     }

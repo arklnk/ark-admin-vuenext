@@ -81,7 +81,7 @@ export default defineComponent({
 
     const { getColumnsRef } = useColumns(getProps)
 
-    const { getTableHeight } = useTableHeight(getProps, tableRef, footerRef, wrapRef)
+    const { getTableHeight, redoHeight } = useTableHeight(getProps, tableRef, footerRef, wrapRef)
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -127,6 +127,7 @@ export default defineComponent({
       reload,
       getDataSource,
       getSize: () => unref(getProps).size as SizeType,
+      redoHeight,
     }
 
     createTableContext({ ...tableAction, wrapRef, tableRef, getBindValues })
@@ -160,7 +161,6 @@ $prefixCls: #{var.$namespace}-basic-table;
 
 .#{$prefixCls} {
   position: relative;
-  padding: 6px;
   background-color: var(--el-fill-color-blank);
 
   &__footer {
