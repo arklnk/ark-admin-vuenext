@@ -5,7 +5,7 @@ import type { SizeType } from '/#/config'
 export interface TableSetting {
   redo?: boolean
   size?: boolean
-  setting?: boolean
+  fullscreen?: boolean
 }
 
 export interface FetchSetting {

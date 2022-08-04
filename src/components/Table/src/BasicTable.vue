@@ -1,10 +1,8 @@
 <template>
   <div ref="wrapRef" :class="getWrapperClass">
-    <div v-if="getShowToolbar" ref="toolbarRef" :class="`${prefixCls}__toolbar`">
-      <slot name="toolbar"></slot>
-      <ElDivider v-if="$slots.toolbar" direction="vertical" />
-      <BasicTableToolbar class="settings" />
-    </div>
+    <!-- header -->
+    <BasicTableHeader />
+
     <!-- Table -->
     <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
       <!-- default slot -->
@@ -13,7 +11,8 @@
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </ElTable>
-    <!-- Pagination -->
+
+    <!-- footer -->
     <div ref="footerRef" v-if="getShowPaginationRef" :class="`${prefixCls}__footer`">
       <ElPagination
         v-bind="getPaginationRef"
@@ -39,14 +38,14 @@ import { useRowSelection } from './composables/useRowSelection'
 import { useColumns } from './composables/useColumns'
 import { createTableContext } from './composables/useTableContext'
 import BasicTableColumn from './components/TableColumn'
-import BasicTableToolbar from './components/settings/index.vue'
+import BasicTableHeader from './components/TableHeader.vue'
 import { useTableHeight } from './composables/useTableHeight'
 
 export default defineComponent({
   name: 'BasicTable',
   components: {
     BasicTableColumn,
-    BasicTableToolbar,
+    BasicTableHeader,
   },
   props: basicProps,
   emits: ['register', 'fetch-success', 'fetch-error', 'page-change', 'size-change'],
@@ -186,23 +185,6 @@ $prefixCls: #{var.$namespace}-basic-table;
   max-width: 100%;
   position: relative;
   background-color: var(--el-fill-color-blank);
-
-  &__toolbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px 10px;
-
-    .settings {
-      svg {
-        color: var(--el-text-color-regular);
-        font-size: 20px;
-        margin: 0 6px;
-        cursor: pointer;
-      }
-    }
-  }
 
   &__footer {
     display: flex;

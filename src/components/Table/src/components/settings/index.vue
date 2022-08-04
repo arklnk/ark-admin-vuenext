@@ -13,7 +13,7 @@ import RedoSetting from './RedoSetting.vue'
 import SizeSetting from './SizeSetting.vue'
 
 export default defineComponent({
-  name: 'BasicTableToolbar',
+  name: 'BasicTableSetting',
   components: {
     FullscreenSetting,
     RedoSetting,

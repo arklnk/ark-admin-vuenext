@@ -65,7 +65,7 @@ export function useTableHeight(
       // 计算toolbar高度
       let toolbarHeight = 0
       if (unref(toolbarRef)) {
-        toolbarHeight = (unref(toolbarRef) as HTMLElement).offsetHeight
+        toolbarHeight = (unref(toolbarRef) as HTMLElement).offsetHeight || 0
       }
 
       bottomIncludeBody = wrapHeight - toolbarHeight
