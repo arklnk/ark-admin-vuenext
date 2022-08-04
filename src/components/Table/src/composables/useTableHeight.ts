@@ -12,7 +12,8 @@ export function useTableHeight(
   getProps: ComputedRef<BasicTableProps>,
   tableElRef: Ref,
   footerElRef: Ref,
-  wrapElRef: Ref
+  wrapElRef: Ref,
+  toolbarRef: Ref
 ) {
   const tableHeightRef = ref<number>(120)
 
@@ -61,7 +62,13 @@ export function useTableHeight(
       // table容器定高时，则直接使用wrap的高度，offsetHeight会包括padding高度
       const wrapHeight = wrapEl.offsetHeight || 0
 
-      bottomIncludeBody = wrapHeight
+      // 计算toolbar高度
+      let toolbarHeight = 0
+      if (unref(toolbarRef)) {
+        toolbarHeight = (unref(toolbarRef) as HTMLElement).offsetHeight
+      }
+
+      bottomIncludeBody = wrapHeight - toolbarHeight
     } else {
       // 当不定高情况时计算padding bottom，padding top不参与计算
       paddingHeight += numberUnit(wrapStyle.paddingBottom ?? ZERO_PX)

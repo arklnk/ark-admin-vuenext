@@ -1,5 +1,10 @@
 <template>
   <div ref="wrapRef" :class="getWrapperClass">
+    <div v-if="getShowToolbar" ref="toolbarRef" :class="`${prefixCls}__toolbar`">
+      <slot name="toolbar"></slot>
+      <ElDivider v-if="$slots.toolbar" direction="vertical" />
+      <BasicTableToolbar class="settings" />
+    </div>
     <!-- Table -->
     <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
       <!-- default slot -->
@@ -34,17 +39,20 @@ import { useRowSelection } from './composables/useRowSelection'
 import { useColumns } from './composables/useColumns'
 import { createTableContext } from './composables/useTableContext'
 import BasicTableColumn from './components/TableColumn'
+import BasicTableToolbar from './components/settings/index.vue'
 import { useTableHeight } from './composables/useTableHeight'
 
 export default defineComponent({
   name: 'BasicTable',
   components: {
     BasicTableColumn,
+    BasicTableToolbar,
   },
   props: basicProps,
   emits: ['register', 'fetch-success', 'fetch-error', 'page-change', 'size-change'],
-  setup(props, { emit, attrs, expose }) {
+  setup(props, { emit, attrs, expose, slots }) {
     const wrapRef = ref(null)
+    const toolbarRef = ref(null)
     const tableRef = ref(null)
     const footerRef = ref(null)
 
@@ -81,7 +89,13 @@ export default defineComponent({
 
     const { getColumnsRef } = useColumns(getProps)
 
-    const { getTableHeight, redoHeight } = useTableHeight(getProps, tableRef, footerRef, wrapRef)
+    const { getTableHeight, redoHeight } = useTableHeight(
+      getProps,
+      tableRef,
+      footerRef,
+      wrapRef,
+      toolbarRef
+    )
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -95,6 +109,13 @@ export default defineComponent({
       propsData = omit(propsData, ['class'])
 
       return propsData
+    })
+
+    const getShowToolbar = computed((): boolean => {
+      if (unref(getProps).showTableSetting) return true
+
+      // toolbar插槽无内容时则自动隐藏
+      return !!slots['toolbar']
     })
 
     function handlePageChange(currentPage: number) {
@@ -140,6 +161,7 @@ export default defineComponent({
       wrapRef,
       tableRef,
       footerRef,
+      toolbarRef,
       prefixCls,
       getWrapperClass,
       getBindValues,
@@ -147,6 +169,7 @@ export default defineComponent({
       getShowPaginationRef,
       getColumnsRef,
       getLoading,
+      getShowToolbar,
       handlePageChange,
       handleSizeChange,
     }
@@ -160,8 +183,26 @@ export default defineComponent({
 $prefixCls: #{var.$namespace}-basic-table;
 
 .#{$prefixCls} {
+  max-width: 100%;
   position: relative;
   background-color: var(--el-fill-color-blank);
+
+  &__toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 10px;
+
+    .settings {
+      svg {
+        color: var(--el-text-color-regular);
+        font-size: 20px;
+        margin: 0 6px;
+        cursor: pointer;
+      }
+    }
+  }
 
   &__footer {
     display: flex;
