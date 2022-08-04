@@ -1,5 +1,5 @@
 import type { ColProps, FormItemRule, FormItemProp } from 'element-plus'
-import type { VNodeChild, ExtractPropTypes, Component } from 'vue'
+import type { ExtractPropTypes, Component } from 'vue'
 import { basicProps } from './props'
 import type { SizeType } from '/#/config'
 
@@ -44,7 +44,7 @@ export interface FormSchema {
   // component string will be using resolveComponent handle, need global register component
   component?: string | Component
   // render function
-  render?: (params: RenderCallbackParams) => VNodeChild
+  render?: (params: RenderCallbackParams) => VueNode
   // component props
   componentProps?: Recordable | ((params: RenderCallbackParams) => Recordable)
   // slot in basic form
