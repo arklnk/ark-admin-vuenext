@@ -1,5 +1,3 @@
-import SvgIcon from '/@/components/Icon'
-
 /**
  * @see https://github.com/johnsoncodehk/volar/tree/master/extensions/vscode-vue-language-features#usage
  * Define Global Components
@@ -9,6 +7,8 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
 
-    SvgIcon: typeof SvgIcon
+    SvgIcon: typeof import('/@/components/Icon')['SvgIcon']
   }
 }
+
+export {}

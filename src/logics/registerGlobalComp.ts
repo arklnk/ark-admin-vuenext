@@ -1,7 +1,7 @@
 import type { App, AppContext } from 'vue'
 import ElementPlus from 'element-plus'
 
-import SvgIcon from '/@/components/Icon'
+import { SvgIcon } from '/@/components/Icon'
 
 export let globalAppContext: AppContext | null = null
 
