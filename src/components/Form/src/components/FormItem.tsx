@@ -159,12 +159,15 @@ export default defineComponent({
       const { prop, label, labelWidth, required, error, showMessage, inlineMessage, size } =
         props.schema
 
+      // process
+      const isRequired = isFunction(required) ? required(unref(getParams)) : required
+
       return (
         <el-form-item
           prop={prop}
           label={label}
           labelWidth={labelWidth}
-          required={required}
+          required={isRequired}
           rules={processRules()}
           error={error}
           showMessage={showMessage}
