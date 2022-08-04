@@ -56,6 +56,7 @@
     "build/**/*.ts",
     "build/**/*.d.ts",
     "mock/**/*.ts",
+    "uno.config.ts",
     "vite.config.ts"
   ],
   "exclude": [
