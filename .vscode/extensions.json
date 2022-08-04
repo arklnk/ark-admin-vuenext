@@ -2,8 +2,9 @@
   "recommendations": [
     "Vue.volar",
     "Vue.vscode-typescript-vue-plugin",
-    "esbenp.prettier-vscode",
+    "stylelint.vscode-stylelint",
     "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
     "mrmlnc.vscode-scss",
     "antfu.iconify",
     "antfu.unocss",

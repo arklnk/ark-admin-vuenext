@@ -1,8 +1,8 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
-  //===========================================
-  //============= Editor ======================
-  //===========================================
+  "volar.tsPlugin": true,
+  "volar.tsPluginStatus": false,
+  "npm.packageManager": "pnpm",
   "files.eol": "\n",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -31,9 +31,6 @@
     "yarn-error.log": true,
     "**/.yarn": true
   },
-  //===========================================
-  //============= Format ======================
-  //===========================================
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
