@@ -7,7 +7,6 @@ import unocss from 'unocss/vite'
 import { configHtmlPlugin } from './html'
 import { configIconsPlugin } from './icons'
 import { configCompressionPlugin } from './compress'
-import { configImageminPlugin } from './imagemin'
 
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [vue(), vueJsx()]
@@ -25,9 +24,6 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   if (isBuild) {
     // gzip
     vitePlugins.push(configCompressionPlugin('gzip', false))
-
-    // imagemin
-    vitePlugins.push(configImageminPlugin())
   }
 
   return vitePlugins
