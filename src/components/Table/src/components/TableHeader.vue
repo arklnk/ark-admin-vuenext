@@ -3,7 +3,7 @@
     <div v-if="$slots.headerTop && $slots.headerTop?.length > 0" class="m-1.25">
       <slot name="headerTop"></slot>
     </div>
-    <div class="flex items-center flex-row px-3">
+    <div class="flex items-center flex-row px-3 py-1">
       <div class="flex-1 relative w-0">
         <slot name="toolbar"></slot>
       </div>

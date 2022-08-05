@@ -17,7 +17,11 @@
       }"
       class="h-full"
       :columns="columns"
-    />
+    >
+      <template #toolbar>
+        <ElButton type="primary">测试</ElButton>
+      </template>
+    </BasicTable>
   </PageWrapper>
 </template>
 

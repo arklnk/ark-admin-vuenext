@@ -9,9 +9,11 @@
 
     <!-- Table -->
     <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
-      <!-- default slot -->
+      <!-- column -->
       <BasicTableColumn :columns="getColumnsRef" />
-      <template #[item]="data" v-for="item in Object.keys($slots)">
+
+      <!-- slot -->
+      <template #[item]="data" v-for="item in Object.keys(omit($slots, ['headerTop', 'toolbar']))">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </ElTable>
@@ -182,6 +184,7 @@ export default defineComponent({
       getShowPaginationRef,
       getColumnsRef,
       getLoading,
+      omit,
       handlePageChange,
       handleSizeChange,
     }
