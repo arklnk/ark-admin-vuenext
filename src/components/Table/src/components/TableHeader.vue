@@ -1,24 +1,32 @@
 <template>
   <div :class="prefixCls">
-    <div v-if="$slots.headerTop" class="m-1.25">
+    <div v-if="$slots.headerTop && $slots.headerTop?.length > 0" class="m-1.25">
       <slot name="headerTop"></slot>
     </div>
-    <div :class="`${prefixCls}__toolbar`">
-      <div class="flex-1">
+    <div class="flex items-center flex-row px-3">
+      <div class="flex-1 relative w-0">
         <slot name="toolbar"></slot>
       </div>
       <ElDivider v-if="$slots.toolbar && showTableSetting" direction="vertical" />
-      <BasicTableSetting />
+      <div v-if="showTableSetting" :class="`${prefixCls}__toolbar`">
+        <RedoSetting v-if="getSetting.redo" />
+        <SizeSetting v-if="getSetting.size" />
+        <FullscreenSetting v-if="getSetting.fullscreen" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { TableSetting } from '../types/table'
-import { useDesign } from '/@/composables/core/useDesign'
-import BasicTableSetting from './settings/index.vue'
 
-defineProps({
+import { useDesign } from '/@/composables/core/useDesign'
+import RedoSetting from './settings/RedoSetting.vue'
+import SizeSetting from './settings/SizeSetting.vue'
+import FullscreenSetting from './settings/FullscreenSetting.vue'
+import { computed } from 'vue'
+
+const props = defineProps({
   showTableSetting: {
     type: Boolean,
   },
@@ -28,6 +36,15 @@ defineProps({
 })
 
 const { prefixCls } = useDesign('basic-table-header')
+
+const getSetting = computed((): TableSetting => {
+  return {
+    size: true,
+    redo: true,
+    fullscreen: true,
+    ...(props.tableSetting || {}),
+  }
+})
 </script>
 
 <style lang="scss">
@@ -42,6 +59,7 @@ $prefixCls: #{var.$namespace}-basic-table-header;
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 12px 0;
 
     svg {
       color: var(--el-text-color-regular);

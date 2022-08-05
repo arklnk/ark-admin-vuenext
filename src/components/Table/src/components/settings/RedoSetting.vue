@@ -1,11 +1,11 @@
 <template>
   <ElTooltip placement="top" content="刷新">
-    <IconRiRestartLine @click="redo" />
+    <IconParkRefresh @click="redo" />
   </ElTooltip>
 </template>
 
 <script setup lang="ts">
-import IconRiRestartLine from '~icons/ri/restart-line'
+import IconParkRefresh from '~icons/icon-park/refresh'
 import { useTableContext } from '../../composables/useTableContext'
 
 const table = useTableContext()

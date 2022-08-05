@@ -1,7 +1,7 @@
 <template>
   <ElTooltip content="密度" placement="top">
     <ElDropdown @command="handleCommand">
-      <IconRiLineHeight />
+      <IconParkRowHeight />
       <template #dropdown>
         <el-dropdown-item :disabled="isDisable('small')" command="small">紧凑</el-dropdown-item>
         <el-dropdown-item :disabled="isDisable('default')" command="default">默认</el-dropdown-item>
@@ -14,13 +14,15 @@
 <script setup lang="ts">
 import type { SizeType } from '/#/config'
 
-import IconRiLineHeight from '~icons/ri/line-height'
+import IconParkRowHeight from '~icons/icon-park/row-height'
 import { useTableContext } from '../../composables/useTableContext'
+import projectSetting from '/@/settings/projectSetting'
 
 const table = useTableContext()
 
 function isDisable(size: SizeType) {
-  return table.getSize() === size
+  const tableSize = table.getSize() || projectSetting.elementUISetting.size
+  return tableSize === size
 }
 
 function handleCommand(command: SizeType) {

@@ -35,7 +35,7 @@ export const basicProps = {
     default: true,
   },
   /**
-   * 显示需要的表格设置
+   * 显示需要的表格设置，当showTableSetting启用时，需要隐藏需要各自设置为false，否则默认显示
    */
   tableSetting: {
     type: Object as PropType<TableSetting>,

@@ -1,7 +1,11 @@
 <template>
   <div ref="wrapRef" :class="getWrapperClass">
     <!-- header -->
-    <BasicTableHeader />
+    <BasicTableHeader ref="headerRef" v-if="getShowTableHeader" v-bind="getHeaderBindValues">
+      <template #[item]="data" v-for="item in ['headerTop', 'toolbar']">
+        <slot :name="item" v-bind="data || {}"></slot>
+      </template>
+    </BasicTableHeader>
 
     <!-- Table -->
     <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
@@ -50,10 +54,10 @@ export default defineComponent({
   props: basicProps,
   emits: ['register', 'fetch-success', 'fetch-error', 'page-change', 'size-change'],
   setup(props, { emit, attrs, expose, slots }) {
-    const wrapRef = ref(null)
-    const toolbarRef = ref(null)
-    const tableRef = ref(null)
-    const footerRef = ref(null)
+    const wrapRef = ref()
+    const headerRef = ref()
+    const tableRef = ref()
+    const footerRef = ref()
 
     const innerPropsRef = ref<Partial<BasicTableProps>>()
     const tableDataRef = ref<Recordable[]>([])
@@ -93,7 +97,7 @@ export default defineComponent({
       tableRef,
       footerRef,
       wrapRef,
-      toolbarRef
+      headerRef
     )
 
     const getBindValues = computed(() => {
@@ -110,11 +114,19 @@ export default defineComponent({
       return propsData
     })
 
-    const getShowToolbar = computed((): boolean => {
+    const getHeaderBindValues = computed(() => {
+      const props = unref(getProps)
+      return {
+        showTableSetting: props.showTableSetting,
+        tableSetting: props.tableSetting,
+      }
+    })
+
+    // headerTop toolbar插槽均不存在或不显示表格设置时则隐藏header
+    const getShowTableHeader = computed((): boolean => {
       if (unref(getProps).showTableSetting) return true
 
-      // toolbar插槽无内容时则自动隐藏
-      return !!slots['toolbar']
+      return !!slots['headerTop'] || !!slots['toolbar']
     })
 
     function handlePageChange(currentPage: number) {
@@ -160,15 +172,16 @@ export default defineComponent({
       wrapRef,
       tableRef,
       footerRef,
-      toolbarRef,
+      headerRef,
       prefixCls,
       getWrapperClass,
       getBindValues,
+      getHeaderBindValues,
+      getShowTableHeader,
       getPaginationRef,
       getShowPaginationRef,
       getColumnsRef,
       getLoading,
-      getShowToolbar,
       handlePageChange,
       handleSizeChange,
     }

@@ -1,13 +1,13 @@
 <template>
-  <ElTooltip content="全屏" placement="top">
-    <IconRiFullscreenExitFill @click="toggle" v-if="isFullscreen" />
-    <IconRiFullscreenFill @click="toggle" v-else />
+  <ElTooltip content="全屏内容" placement="top">
+    <IconParkOffScreenTwo @click="toggle" v-if="isFullscreen" />
+    <IconParkFullScreenTwo @click="toggle" v-else />
   </ElTooltip>
 </template>
 
 <script setup lang="ts">
-import IconRiFullscreenExitFill from '~icons/ri/fullscreen-exit-fill'
-import IconRiFullscreenFill from '~icons/ri/fullscreen-fill'
+import IconParkOffScreenTwo from '~icons/icon-park/off-screen-two'
+import IconParkFullScreenTwo from '~icons/icon-park/full-screen-two'
 import { useFullscreen } from '@vueuse/core'
 import { useTableContext } from '../../composables/useTableContext'
 

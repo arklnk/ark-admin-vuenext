@@ -11,3 +11,7 @@ declare type LabelValueOptions = {
   value: any
   [key: string]: string | number | boolean
 }[]
+
+declare interface ComponentEl<T extends HTMLElement = HTMLDivElement> {
+  $el: T
+}
