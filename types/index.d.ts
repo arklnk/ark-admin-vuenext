@@ -13,5 +13,5 @@ declare type LabelValueOptions = {
 }[]
 
 declare interface ComponentEl<T extends HTMLElement = HTMLDivElement> {
-  $el: T
+  $el?: T
 }

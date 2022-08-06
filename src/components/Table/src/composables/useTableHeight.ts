@@ -11,9 +11,9 @@ import { numberUnit } from '/@/utils'
 export function useTableHeight(
   getProps: ComputedRef<BasicTableProps>,
   tableElRef: Ref<ComponentEl>,
-  footerElRef: Ref<HTMLElement>,
-  wrapElRef: Ref<HTMLElement>,
-  headerElRef: Ref<ComponentEl>
+  footerElRef: Ref<ComponentEl>,
+  headerElRef: Ref<ComponentEl>,
+  wrapElRef: Ref<HTMLElement>
 ) {
   const tableHeightRef = ref<number>(120)
 
@@ -27,8 +27,8 @@ export function useTableHeight(
     if (!table) return
 
     // wrap and table real dom
-    const tableEl: HTMLElement = table.$el
-    const wrapEl: HTMLElement = unref(wrapElRef)
+    const tableEl = table.$el
+    const wrapEl = unref(wrapElRef)
     if (!tableEl || !wrapEl) return
 
     // can' t resize
@@ -43,7 +43,10 @@ export function useTableHeight(
     // 启用分页时，计算footer高度
     let footerHeight = 0
     if (!isBoolean(pagination)) {
-      footerHeight += (unref(footerElRef) as HTMLElement)?.offsetHeight || 0
+      const footerEl = unref(footerElRef)?.$el
+      if (footerEl) {
+        footerHeight += footerEl.offsetHeight || 0
+      }
     }
 
     // table height from bottom height-custom offset

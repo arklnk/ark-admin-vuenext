@@ -7,7 +7,7 @@
       </template>
     </BasicTableHeader>
 
-    <!-- Table -->
+    <!-- table -->
     <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
       <!-- column -->
       <BasicTableColumn :columns="getColumnsRef" />
@@ -19,13 +19,13 @@
     </ElTable>
 
     <!-- footer -->
-    <div ref="footerRef" v-if="getShowPaginationRef" :class="`${prefixCls}__footer`">
-      <ElPagination
-        v-bind="getPaginationRef"
-        @update:current-page="handlePageChange"
-        @update:page-size="handleSizeChange"
-      />
-    </div>
+    <BasicTableFooter
+      ref="footerRef"
+      v-if="getShowPaginationRef"
+      :pagination="getPaginationRef!"
+      @current-page="handlePageChange"
+      @page-size="handleSizeChange"
+    />
   </div>
 </template>
 
@@ -43,15 +43,17 @@ import { useDesign } from '/@/composables/core/useDesign'
 import { useRowSelection } from './composables/useRowSelection'
 import { useColumns } from './composables/useColumns'
 import { createTableContext } from './composables/useTableContext'
+import { useTableHeight } from './composables/useTableHeight'
 import BasicTableColumn from './components/TableColumn'
 import BasicTableHeader from './components/TableHeader.vue'
-import { useTableHeight } from './composables/useTableHeight'
+import BasicTableFooter from './components/TableFooter.vue'
 
 export default defineComponent({
   name: 'BasicTable',
   components: {
     BasicTableColumn,
     BasicTableHeader,
+    BasicTableFooter,
   },
   props: basicProps,
   emits: ['register', 'fetch-success', 'fetch-error', 'page-change', 'size-change'],
@@ -98,8 +100,8 @@ export default defineComponent({
       getProps,
       tableRef,
       footerRef,
-      wrapRef,
-      headerRef
+      headerRef,
+      wrapRef
     )
 
     const getBindValues = computed(() => {
@@ -201,16 +203,5 @@ $prefixCls: #{var.$namespace}-basic-table;
   max-width: 100%;
   position: relative;
   background-color: var(--el-fill-color-blank);
-
-  &__footer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    overflow: hidden;
-
-    .el-pagination {
-      margin: 8px 0;
-    }
-  }
 }
 </style>
