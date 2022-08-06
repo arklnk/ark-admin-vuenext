@@ -17,7 +17,7 @@ import {
 } from 'vue'
 import { error } from '/@/utils/log'
 import { isFunction, isNil } from 'lodash-es'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnUnmounted } from '@vueuse/core'
 
 // store the parameters passed when opening the pop-up window
 const store = reactive<any>({})
