@@ -21,7 +21,8 @@ export function useTableHeight(
    * 动态计算table高度，以方便固定表头进行数据滚动
    */
   async function calcTableHeight() {
-    const { canResize, canResizeWrap, resizeHeightOffset, pagination } = unref(getProps)
+    const { adaptiveHeight, containerHeightFixed, adaptiveHeightOffset, pagination } =
+      unref(getProps)
 
     const table = unref(tableElRef)
     if (!table) return
@@ -31,14 +32,14 @@ export function useTableHeight(
     const wrapEl = unref(wrapElRef)
     if (!tableEl || !wrapEl) return
 
-    // can' t resize
-    if (!canResize) return
+    // don' t need adaptive height
+    if (!adaptiveHeight) return
 
     // add a delay to get the correct bottomIncludeBody paginationHeight footerHeight headerHeight
     await nextTick()
 
-    const headEl = tableEl.querySelector('.el-table__header')
-    if (!headEl) return
+    // const headEl = tableEl.querySelector('.el-table__header')
+    // if (!headEl) return
 
     // 启用分页时，计算footer高度
     let footerHeight = 0
@@ -57,7 +58,7 @@ export function useTableHeight(
     let bottomIncludeBody = 0
 
     // 判断两种情况，一种情况为wrap容器固定高度，第二种情况则自动定高
-    if (canResizeWrap) {
+    if (containerHeightFixed) {
       // 防止wrap容器被设置padding导致计算错误
       paddingHeight +=
         numberUnit(wrapStyle.paddingBottom ?? ZERO_PX) + numberUnit(wrapStyle.paddingTop ?? ZERO_PX)
@@ -83,26 +84,26 @@ export function useTableHeight(
         numberUnit(parentStyle.paddingBottom ?? ZERO_PX) +
         numberUnit(parentStyle.marginBottom ?? ZERO_PX)
 
-      // 容器不定高，则计算从el-table-header剩余高度
-      bottomIncludeBody = getViewportOffset(headEl).bottomIncludeBody
+      // 容器不定高，则计算从el-table的剩余高度
+      bottomIncludeBody = getViewportOffset(tableEl).bottomIncludeBody
     }
 
     // calc remaining height
-    const height = bottomIncludeBody - (resizeHeightOffset || 0) - paddingHeight - footerHeight
+    const height = bottomIncludeBody - (adaptiveHeightOffset || 0) - paddingHeight - footerHeight
     // set height
     tableHeightRef.value = height
   }
 
   const getTableHeight = computed((): number | null => {
-    const { canResize } = unref(getProps)
+    const { adaptiveHeight } = unref(getProps)
 
-    return canResize ? unref(tableHeightRef) : null
+    return adaptiveHeight ? unref(tableHeightRef) : null
   })
 
   useWindowSizeFn(calcTableHeight, 280)
 
   watch(
-    () => unref(getProps).canResize,
+    () => unref(getProps).adaptiveHeight,
     () => {
       redoHeight()
     },
