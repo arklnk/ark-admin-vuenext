@@ -1,7 +1,7 @@
 <template>
   <ElTooltip content="密度" placement="top">
     <ElDropdown @command="handleCommand">
-      <IconParkRowHeight />
+      <IconMdiFormatLineSpacing />
       <template #dropdown>
         <el-dropdown-item :disabled="isDisable('small')" command="small">紧凑</el-dropdown-item>
         <el-dropdown-item :disabled="isDisable('default')" command="default">默认</el-dropdown-item>
@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import type { SizeType } from '/#/config'
 
-import IconParkRowHeight from '~icons/icon-park/row-height'
+import IconMdiFormatLineSpacing from '~icons/mdi/format-line-spacing'
 import { useTableContext } from '../../composables/useTableContext'
 import projectSetting from '/@/settings/projectSetting'
 
