@@ -203,5 +203,12 @@ $prefixCls: #{var.$namespace}-basic-table;
   max-width: 100%;
   position: relative;
   background-color: var(--el-fill-color-blank);
+
+  // fix mask over header in fiexd mode
+  .el-table {
+    .el-loading-mask {
+      z-index: 8;
+    }
+  }
 }
 </style>
