@@ -11,7 +11,7 @@
       <span class="ml-2">{{ getRoute.meta?.title }}</span>
     </template>
   </ElMenuItem>
-  <ElSubMenu v-if="menuHasChildren(getRoute) && getShowMenu" :index="getRoute.path">
+  <ElSubMenu v-else-if="menuHasChildren(getRoute) && getShowMenu" :index="getRoute.path">
     <template #title>
       <ElIcon>
         <SvgIcon v-if="getRoute.meta?.icon" :icon="getRoute.meta.icon" />
