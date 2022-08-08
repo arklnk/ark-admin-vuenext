@@ -1,5 +1,5 @@
 <template>
-  <aside :style="getWrapperStyle" :class="[prefixCls, getMenuTheme]" class="h-full box-border flex flex-col">
+  <aside :style="getWrapStyle" :class="getWrapClass">
     <AppLogo
       v-if="getShowLogo"
       :show-title="!getCollapsed"
@@ -25,11 +25,12 @@ import { computed, unref } from 'vue'
 const { prefixCls } = useDesign('app-sidebar')
 const { getCollapsed, getMenuTheme, getRealWidth } = useMenuSetting()
 const { getShowLogo } = useRootSetting()
-const getWrapperStyle = computed((): CSSProperties => {
+const getWrapStyle = computed((): CSSProperties => {
   return {
     width: `${unref(getRealWidth)}px`,
   }
 })
+const getWrapClass = computed(() => [prefixCls, unref(getMenuTheme)])
 </script>
 
 <style lang="scss">
@@ -39,6 +40,10 @@ const getWrapperStyle = computed((): CSSProperties => {
 $prefixCls: #{var.$namespace}-app-sidebar;
 
 .#{$prefixCls} {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   background-color: var(--sidebar-bg-color);
   transition: width var.$transition-duration;
   box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);

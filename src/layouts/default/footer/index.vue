@@ -1,5 +1,5 @@
 <template>
-  <footer v-if="getIsShowFooter" ref="footerRef" :class="prefixCls" class="w-full text-center text-sm">
+  <footer v-if="getIsShowFooter" ref="footerRef" :class="prefixCls">
     <div>Copyright © 2021 SF Admin</div>
   </footer>
 </template>
@@ -33,8 +33,10 @@ const getIsShowFooter = computed(() => {
 $prefixCls: #{var.$namespace}-app-footer;
 
 .#{$prefixCls} {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
   color: #57606a;
   padding: 12px 50px;
-  color: #57606a;
 }
 </style>

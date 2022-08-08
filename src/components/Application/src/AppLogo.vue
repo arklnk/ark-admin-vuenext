@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex flex-row items-center box-border cursor-pointer"
-    :class="[prefixCls, theme, $attrs.class]"
+    :class="getWrapClass"
     @click="go('/')"
   >
     <img :class="`${prefixCls}__logo`" src="../../../assets/images/logo.png" />
@@ -10,11 +10,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed, useAttrs } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useGo } from '/@/composables/web/useGo'
+const attrs = useAttrs()
 const title = import.meta.env.VITE_APP_TITLE
 
-defineProps({
+const props = defineProps({
   showTitle: {
     type: Boolean,
     default: true,
@@ -27,6 +29,8 @@ defineProps({
 })
 
 const { prefixCls } = useDesign('app-logo')
+
+const getWrapClass = computed(() => [prefixCls, props.theme, attrs.class])
 
 const go = useGo()
 </script>

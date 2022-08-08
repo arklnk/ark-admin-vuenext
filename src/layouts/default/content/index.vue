@@ -1,5 +1,5 @@
 <template>
-  <div :class="[prefixCls, getIsContentFixed ? 'fixed' : '']">
+  <div :class="getWrapClass">
     <RouterView>
       <template #default="{ Component, route }">
         <transition
@@ -31,7 +31,15 @@ import { ContentEnum } from '/@/enums/appEnum'
 const { prefixCls } = useDesign('app-content')
 const { getContentMode } = useRootSetting()
 const { getRouterTransition, getEnableTransition } = useTransitionSetting()
-const getIsContentFixed = computed(() => unref(getContentMode) === ContentEnum.FIXED)
+
+const getWrapClass = computed(() => {
+  return [
+    prefixCls,
+    {
+      fixed: unref(getContentMode) === ContentEnum.FIXED,
+    },
+  ]
+})
 </script>
 
 <style lang="scss">

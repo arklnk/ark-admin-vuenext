@@ -1,12 +1,13 @@
 <template>
-  <span :class="[prefixCls, collapsed ? 'is-collapsed' : '']"><IconHamburger /></span>
+  <span :class="getWrapClass"><IconHamburger /></span>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import IconHamburger from '~icons/icon-park-outline/indent-right'
 import { useDesign } from '/@/composables/core/useDesign'
 
-defineProps({
+const props = defineProps({
   collapsed: {
     type: Boolean,
     required: true,
@@ -14,6 +15,15 @@ defineProps({
 })
 
 const { prefixCls } = useDesign('app-hamburger')
+
+const getWrapClass = computed(() => {
+  return [
+    prefixCls,
+    {
+      'is-collapsed': props.collapsed,
+    },
+  ]
+})
 </script>
 
 <style lang="scss" scoped>

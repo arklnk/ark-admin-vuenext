@@ -1,13 +1,8 @@
 <template>
   <div v-if="getShowPlaceholderDom" :style="getPlaceholderDomStyle"><!-- placeholder --></div>
-  <header
-    ref="appHeaderRef"
-    :style="getWrapStyle"
-    :class="[prefixCls, getHeaderTheme, getFixed ? 'is-fixed' : '']"
-    class="flex flex-row justify-between items-center box-border relative"
-  >
+  <header ref="appHeaderRef" :style="getWrapStyle" :class="getWrapClass">
     <!-- left -->
-    <nav :class="`${prefixCls}-left`" class="flex h-full text-lg">
+    <div :class="`${prefixCls}-left`" class="flex h-full text-lg">
       <AppLogo
         v-if="getShowHeaderLogo || getIsMobile"
         class="item !px-2"
@@ -20,22 +15,19 @@
         :collapsed="getCollapsed"
         @click="toggleCollapse"
       />
-    </nav>
+    </div>
 
     <!-- top menu -->
-    <nav
-      v-if="getShowTopMenu && !getIsMobile"
-      :class="`${prefixCls}-menu`"
-    >
+    <div v-if="getShowTopMenu && !getIsMobile" :class="`${prefixCls}-menu`">
       <Menu is-horizontal />
-    </nav>
+    </div>
 
     <!-- action -->
-    <nav class="flex h-full text-lg" :class="`${prefixCls}-action`">
+    <div class="flex h-full text-lg" :class="`${prefixCls}-action`">
       <FullScreen v-if="getShowFullScreen" class="item" />
       <UserDropdown class="item" />
       <ProjectConfig v-if="getShowSettingButton" class="item" />
-    </nav>
+    </div>
   </header>
 </template>
 
@@ -76,6 +68,16 @@ const getWrapStyle = computed((): CSSProperties => {
   }
 })
 
+const getWrapClass = computed(() => {
+  return [
+    prefixCls,
+    unref(getHeaderTheme),
+    {
+      'is-fixed': unref(getFixed),
+    },
+  ]
+})
+
 const { getShowSettingButton } = useRootSetting()
 
 // placeholder
@@ -94,6 +96,12 @@ const getPlaceholderDomStyle = computed(() => {
 $prefixCls: #{var.$namespace}-app-header;
 
 .#{$prefixCls} {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
   height: var.$header-height;
   line-height: var.$header-height;
   transition: width var.$transition-duration;
