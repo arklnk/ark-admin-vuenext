@@ -17,7 +17,6 @@ import {
 } from 'vue'
 import { error } from '/@/utils/log'
 import { isFunction, isNil } from 'lodash-es'
-import { tryOnUnmounted } from '@vueuse/core'
 
 // store the parameters passed when opening the pop-up window
 const store = reactive<any>({})
@@ -79,7 +78,7 @@ export function useDialogInner(callbackFn?: Fn): UseDialogReturnType {
   const currentInstance = getCurrentInstance()
 
   function register(action: BasicDialogActionType, uid: number) {
-    tryOnUnmounted(() => {
+    onUnmounted(() => {
       dialogRef.value = null
     })
 
