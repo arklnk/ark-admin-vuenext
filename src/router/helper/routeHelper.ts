@@ -69,6 +69,9 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
         route.children = transformMenuToRoute(menu.children)
         // 目录时则尝试重定向至默认首个子项路径
         route.redirect = route.children[0].path
+      } else {
+        // invalid catalogue, will ignore
+        route.meta!.ignoreRoute = true
       }
       return route
     }

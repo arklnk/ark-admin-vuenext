@@ -23,12 +23,6 @@ declare module 'vue-router' {
     icon?: string
 
     /**
-     * @description keep alive
-     * @default true
-     */
-    keepalive?: boolean
-
-    /**
      * @description if false, not show in breadcrumb
      * @default true
      */
@@ -64,5 +58,10 @@ declare module 'vue-router' {
      * @description used internally to mark single-level menus
      */
     single?: boolean
+
+    /**
+     * @description ignore route, only build for BACK mode
+     */
+    ignoreRoute?: boolean
   }
 }

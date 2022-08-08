@@ -14,6 +14,7 @@ import { MenuTypeEnum } from '/@/enums/menuEnum'
 import { transformMenuToRoute } from '/@/router/helper/routeHelper'
 import { warn } from '/@/utils/log'
 import { isUrl } from '/@/utils/is'
+import { NotFoundRoute } from '/@/router/routes/basic'
 
 interface PermissionState {
   /**
@@ -79,7 +80,7 @@ export const usePermissionStore = defineStore({
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig
 
       // 角色路由过滤
-      const roleRouteFilter = (route: RouteRecordRaw): boolean => {
+      const routeRoleFilter = (route: RouteRecordRaw): boolean => {
         const { meta } = route
         const { roles } = meta || ({} as RouteMeta)
 
@@ -90,7 +91,7 @@ export const usePermissionStore = defineStore({
         return roleList.some((role) => roles.includes(role))
       }
 
-      const backRouteFilter = (menu: Menu): boolean => {
+      const routeRemoveIllegalFilter = (menu: Menu): boolean => {
         if (menu.type === MenuTypeEnum.Permission) {
           return false
         }
@@ -103,24 +104,38 @@ export const usePermissionStore = defineStore({
         return true
       }
 
-      // 判断权限路由模式
+      const routeRemoveIgnoreFilter = (route: RouteRecordRaw): boolean => {
+        const { meta } = route
+        const { ignoreRoute } = meta || {}
+
+        return !ignoreRoute
+      }
+
       switch (permissionMode) {
         // 后端路由模式
         case PermissionModeEnum.BACK:
           const { menus, perms } = await getPermAndMenu()
-          // 过滤权限
-          let menusTree = filter(menus, backRouteFilter)
+          // 过滤不合法的路由，避免不合法路径导致vue-router进入死循环
+          let menusTree = filter(menus, routeRemoveIllegalFilter)
 
-          // 转换成真实的vue-router对象
+          // list to tree
           menusTree = listToTree(menusTree, { pid: 'parentId' })
-          routes = transformMenuToRoute(menusTree, true)
+
+          // 转换成真实的vue-router对象，动态引入组件
+          let routeList = transformMenuToRoute(menusTree, true)
+
+          // 移除 meta.ignoreRoute 项
+          routeList = filter(routeList, routeRemoveIgnoreFilter)
+
+          routes = [NotFoundRoute, ...routeList]
 
           // 按钮级别权限数据
           this.setPermissionList(perms || [])
           break
+
         // 角色路由模式
         case PermissionModeEnum.ROLE:
-          routes = filter(roleRoutes, roleRouteFilter)
+          routes = filter(roleRoutes, routeRoleFilter)
           break
       }
 

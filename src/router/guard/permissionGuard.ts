@@ -53,8 +53,7 @@ export function createPermissionGuard(router: Router) {
         router.addRoute(route)
       })
 
-      router.addRoute(NotFoundRoute)
-
+      // dynamic route is added
       permissionStore.setDynamicAddedRoute(true)
 
       if (to.name === NotFoundRoute.name) {
@@ -69,6 +68,7 @@ export function createPermissionGuard(router: Router) {
     } catch (e) {
       // clear userinfo, need relogin
       userStore.resetState()
+
       return {
         path: PageEnum.Login,
         query: {
