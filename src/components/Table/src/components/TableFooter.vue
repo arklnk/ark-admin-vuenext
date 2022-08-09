@@ -24,9 +24,7 @@ const emit = defineEmits(['current-page', 'page-size'])
 
 const { prefixCls } = useDesign('basic-table-footer')
 
-const getFooterClass = computed(() => {
-  return [prefixCls, props.pagination?.position || 'right']
-})
+const getFooterClass = computed(() => [prefixCls, props.pagination?.position || 'right'])
 
 function handlePageChange(page: number) {
   emit('current-page', page)
@@ -53,6 +51,10 @@ $prefixCls: #{var.$namespace}-basic-table-footer;
 
   &.right {
     justify-content: flex-end;
+  }
+
+  &.center {
+    justify-content: center;
   }
 
   .el-pagination {
