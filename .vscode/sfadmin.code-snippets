@@ -11,6 +11,18 @@
       "",
       "}"
     ],
-    "description": "base router module template"
+    "description": "namespace scss define"
+  },
+  "sfapi": {
+    "scope": "typescript",
+    "prefix": "sfapi",
+    "body": [
+      "import { defHttp } from '/@/utils/http/axios'",
+      "",
+      "export const Api: Recordable<string> = {",
+      "  $1",
+      "}"
+    ],
+    "description": "permission api define"
   }
 }
