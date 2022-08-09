@@ -1,7 +1,8 @@
-import type { BasicColumn, TableColumnData } from '../types/column'
+import type { BasicColumn, BasicColumnData } from '../types/column'
 
 import { defineComponent } from 'vue'
-import { isFunction, omit } from 'lodash-es'
+import { isEmpty, isFunction, omit } from 'lodash-es'
+import { getSlot } from '/@/utils/helper/tsx'
 
 export default defineComponent({
   name: 'BasicTableColumn',
@@ -11,21 +12,25 @@ export default defineComponent({
       default: () => null,
     },
   },
-  setup(props) {
+  setup(props, { slots }) {
     function renderColumns(columns: BasicColumn[]) {
       return columns.map((col) => {
-        const slots: Recordable = {}
+        const slotsObj: Recordable = {}
+
         if (col.children && col.children.length > 0) {
           // multiple table header
           const childColumns = renderColumns(col.children)
-          slots.default = () => childColumns
+          slotsObj.default = () => childColumns
+        } else if (!isEmpty(col.slot)) {
+          // slot 渲染默认内容
+          slotsObj.default = (scope: BasicColumnData) => getSlot(slots, col.slot, scope)
         } else if (col.render && isFunction(col.render)) {
-          // render function渲染默认内容（自定义内容需求）
-          slots.default = (scope: TableColumnData) => col.render!(scope)
+          // render function渲染默认内容
+          slotsObj.default = (scope: BasicColumnData) => col.render!(scope)
         }
 
-        const bindValue = omit(col, ['children', 'render'])
-        return <el-table-column v-slots={slots} {...bindValue} />
+        const bindValue = omit(col, ['children', 'render', 'slot'])
+        return <el-table-column v-slots={slotsObj} {...bindValue} />
       })
     }
 

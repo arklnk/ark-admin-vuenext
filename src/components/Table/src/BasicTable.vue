@@ -8,12 +8,41 @@
     </BasicTableHeader>
 
     <!-- table -->
-    <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
+    <ElTable
+      ref="tableRef"
+      v-loading="getLoading"
+      v-bind="getBindValues"
+      @select="handleSelect"
+      @select-all="handleSelectAll"
+      @selection-change="handleSelectionChange"
+      @cell-mouse-enter="handleCellMouseEnter"
+      @cell-mouse-leave="handleCellMouseLeave"
+      @cell-contextmenu="handleCellContextMenu"
+      @cell-click="handleCellClick"
+      @cell-dblclick="handleCellDblclick"
+      @row-click="handleRowClick"
+      @row-contextmenu="handleRowContextmenu"
+      @row-dblclick="handleRowDblclick"
+      @header-click="handleHeaderClick"
+      @header-contextmenu="handleHeaderContextmenu"
+      @sort-change="handleSortChange"
+      @filter-change="handleFilterChange"
+      @current-change="handleCurrentChange"
+      @header-dragend="handleHeaderDragend"
+      @expand-change="handleExpandChange"
+    >
       <!-- column -->
-      <BasicTableColumn :columns="getColumnsRef" />
+      <BasicTableColumn :columns="getColumnsRef">
+        <template
+          #[item]="data"
+          v-for="item in Object.keys(omit($slots, ['headerTop', 'toolbar', 'append', 'empty']))"
+        >
+          <slot :name="item" v-bind="data || {}"></slot>
+        </template>
+      </BasicTableColumn>
 
       <!-- slot -->
-      <template #[item]="data" v-for="item in Object.keys(omit($slots, ['headerTop', 'toolbar']))">
+      <template #[item]="data" v-for="item in ['append', 'empty']">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </ElTable>
@@ -47,6 +76,7 @@ import { useTableHeight } from './composables/useTableHeight'
 import BasicTableColumn from './components/TableColumn'
 import BasicTableHeader from './components/TableHeader.vue'
 import BasicTableFooter from './components/TableFooter.vue'
+import { useTableEvents } from './composables/useTableEvents'
 
 export default defineComponent({
   name: 'BasicTable',
@@ -56,7 +86,31 @@ export default defineComponent({
     BasicTableFooter,
   },
   props: basicProps,
-  emits: ['register', 'fetch-success', 'fetch-error', 'page-change', 'size-change'],
+  emits: [
+    'register',
+    'fetch-success',
+    'fetch-error',
+    'page-change',
+    'size-change',
+    'select',
+    'select-all',
+    'selection-change',
+    'cell-mouse-enter',
+    'cell-mouse-leave',
+    'cell-contextmenu',
+    'cell-click',
+    'cell-dblclick',
+    'row-click',
+    'row-contextmenu',
+    'row-dblclick',
+    'header-click',
+    'header-contextmenu',
+    'sort-change',
+    'filter-change',
+    'current-change',
+    'header-dragend',
+    'expand-change',
+  ],
   setup(props, { emit, attrs, expose, slots }) {
     const wrapRef = ref()
     const headerRef = ref()
@@ -103,6 +157,27 @@ export default defineComponent({
       headerRef,
       wrapRef
     )
+
+    const {
+      handleSelect,
+      handleSelectAll,
+      handleSelectionChange,
+      handleCellMouseEnter,
+      handleCellMouseLeave,
+      handleCellContextMenu,
+      handleCellClick,
+      handleCellDblclick,
+      handleRowClick,
+      handleRowContextmenu,
+      handleRowDblclick,
+      handleHeaderClick,
+      handleHeaderContextmenu,
+      handleSortChange,
+      handleFilterChange,
+      handleCurrentChange,
+      handleHeaderDragend,
+      handleExpandChange,
+    } = useTableEvents(emit)
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -189,6 +264,24 @@ export default defineComponent({
       omit,
       handlePageChange,
       handleSizeChange,
+      handleSelect,
+      handleSelectAll,
+      handleSelectionChange,
+      handleCellMouseEnter,
+      handleCellMouseLeave,
+      handleCellContextMenu,
+      handleCellClick,
+      handleCellDblclick,
+      handleRowClick,
+      handleRowContextmenu,
+      handleRowDblclick,
+      handleHeaderClick,
+      handleHeaderContextmenu,
+      handleSortChange,
+      handleFilterChange,
+      handleCurrentChange,
+      handleHeaderDragend,
+      handleExpandChange,
     }
   },
 })

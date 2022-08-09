@@ -2,9 +2,11 @@ import type columnProps from 'element-plus/es/components/table/src/table-column/
 import type { TableColumnCtx } from 'element-plus/es/components/table/src/table-column/defaults'
 import type { ExtractPropTypes, VNode } from 'vue'
 
-export interface TableColumnData<T = any> {
+export type BasicColumnCtx<T = any> = TableColumnCtx<T>
+
+export interface BasicColumnData<T = any> {
   row: T
-  column: TableColumnCtx<T>
+  column: BasicColumnCtx<T>
   $index: number
 }
 
@@ -13,7 +15,9 @@ export interface TableColumnData<T = any> {
  */
 export interface BasicColumn extends Partial<ExtractPropTypes<typeof columnProps>> {
   // 自定义列的内容
-  render?: (data: TableColumnData) => VNode
+  render?: (data: BasicColumnData) => VNode
+  // 插槽形式自定义列内容
+  slot?: string
   // 多级表头
   children?: BasicColumn[]
 }
