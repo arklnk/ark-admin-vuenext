@@ -7,14 +7,15 @@ export const themeMode = ThemeEnum.LIGHT
 // app theme preset color
 export const APP_PRESET_COLOR_LIST: string[] = [
   '#1c8efe',
-  '#00558d',
-  '#d16474',
-  '#7b2621',
-  '#016471',
-  '#b89b55',
-  '#e09f02',
-  '#142a31',
-  '#628f71',
+  '#0960bd',
+  '#0084f4',
+  '#009688',
+  '#536dfe',
+  '#ff5c93',
+  '#ee4f12',
+  '#0096c7',
+  '#9c27b0',
+  '#ff9800',
 ]
 
 // header preset color
@@ -26,19 +27,23 @@ export const HEADER_PRESET_BG_COLOR_LIST: string[] = [
   '#018ffb',
   '#409eff',
   '#e74c3c',
-  '#482c47',
+  '#24292e',
   '#394664',
+  '#001529',
+  '#383f45',
 ]
 
 // sider preset color
 export const SIDE_BAR_BG_COLOR_LIST: string[] = [
-  '#ffffff',
   '#212121',
-  '#292018',
-  '#482c47',
-  '#2f3a4f',
-  '#343742',
-  '#1d1f26',
+  '#001529',
+  '#273352',
+  '#ffffff',
+  '#191b24',
+  '#191a23',
+  '#304156',
   '#001628',
   '#28333E',
+  '#344058',
+  '#383f45',
 ]
