@@ -38,7 +38,7 @@ const transform: AxiosTransform = {
       throw new Error(UnknownErrorMsg)
     }
 
-    const { data: result, message, code } = data
+    const { data: result, msg: message, code } = data
 
     // 接口数据code判断是否成功
     const isSuccess = code === ResultEnum.SUCCESS
