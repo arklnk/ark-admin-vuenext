@@ -2,7 +2,6 @@ import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { basicRoutes } from './routes/basic'
-import { setupRouterGuard } from './guard'
 
 /**
  * 白名单应该包含基本静态路由
@@ -35,7 +34,4 @@ export function resetRouter() {
 
 export async function setupRouter(app: App<Element>) {
   app.use(router)
-
-  // guard
-  setupRouterGuard(router)
 }
