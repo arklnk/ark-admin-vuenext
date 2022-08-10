@@ -1,7 +1,7 @@
 {
-  "sfcls": {
+  "defns": {
     "scope": "scss",
-    "prefix": "sfcls",
+    "prefix": "defns",
     "body": [
       "@use '/@/styles/var.scss';",
       "",
@@ -13,9 +13,9 @@
     ],
     "description": "namespace scss define"
   },
-  "sfapi": {
+  "defapi": {
     "scope": "typescript",
-    "prefix": "sfapi",
+    "prefix": "defapi",
     "body": [
       "import { defHttp } from '/@/utils/http/axios'",
       "",
