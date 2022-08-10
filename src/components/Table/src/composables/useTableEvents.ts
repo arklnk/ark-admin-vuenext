@@ -74,24 +74,28 @@ export function useTableEvents(emit: EmitFn) {
     emit('expand-change', ...args)
   }
 
+  const onTableEvent: Recordable = {
+    onSelect: handleSelect,
+    onSelectAll: handleSelectAll,
+    onSelectionChange: handleSelectionChange,
+    onCellMouseEnter: handleCellMouseEnter,
+    onCellMouseLeave: handleCellMouseLeave,
+    onCellContextMenu: handleCellContextMenu,
+    onCellClick: handleCellClick,
+    onCellDblclick: handleCellDblclick,
+    onRowClick: handleRowClick,
+    onRowContextmenu: handleRowContextmenu,
+    onRowDblclick: handleRowDblclick,
+    onHeaderClick: handleHeaderClick,
+    onHeaderContextmenu: handleHeaderContextmenu,
+    onSortChange: handleSortChange,
+    onFilterChange: handleFilterChange,
+    onCurrentChange: handleCurrentChange,
+    onHeaderDragend: handleHeaderDragend,
+    onExpandChange: handleExpandChange,
+  }
+
   return {
-    handleSelect,
-    handleSelectAll,
-    handleSelectionChange,
-    handleCellMouseEnter,
-    handleCellMouseLeave,
-    handleCellContextMenu,
-    handleCellClick,
-    handleCellDblclick,
-    handleRowClick,
-    handleRowContextmenu,
-    handleRowDblclick,
-    handleHeaderClick,
-    handleHeaderContextmenu,
-    handleSortChange,
-    handleFilterChange,
-    handleCurrentChange,
-    handleHeaderDragend,
-    handleExpandChange,
+    onTableEvent,
   }
 }

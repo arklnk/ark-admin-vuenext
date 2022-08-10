@@ -8,29 +8,7 @@
     </BasicTableHeader>
 
     <!-- table -->
-    <ElTable
-      ref="tableRef"
-      v-loading="getLoading"
-      v-bind="getBindValues"
-      @select="handleSelect"
-      @select-all="handleSelectAll"
-      @selection-change="handleSelectionChange"
-      @cell-mouse-enter="handleCellMouseEnter"
-      @cell-mouse-leave="handleCellMouseLeave"
-      @cell-contextmenu="handleCellContextMenu"
-      @cell-click="handleCellClick"
-      @cell-dblclick="handleCellDblclick"
-      @row-click="handleRowClick"
-      @row-contextmenu="handleRowContextmenu"
-      @row-dblclick="handleRowDblclick"
-      @header-click="handleHeaderClick"
-      @header-contextmenu="handleHeaderContextmenu"
-      @sort-change="handleSortChange"
-      @filter-change="handleFilterChange"
-      @current-change="handleCurrentChange"
-      @header-dragend="handleHeaderDragend"
-      @expand-change="handleExpandChange"
-    >
+    <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
       <!-- column -->
       <BasicTableColumn :columns="getColumnsRef">
         <template
@@ -158,26 +136,7 @@ export default defineComponent({
       wrapRef
     )
 
-    const {
-      handleSelect,
-      handleSelectAll,
-      handleSelectionChange,
-      handleCellMouseEnter,
-      handleCellMouseLeave,
-      handleCellContextMenu,
-      handleCellClick,
-      handleCellDblclick,
-      handleRowClick,
-      handleRowContextmenu,
-      handleRowDblclick,
-      handleHeaderClick,
-      handleHeaderContextmenu,
-      handleSortChange,
-      handleFilterChange,
-      handleCurrentChange,
-      handleHeaderDragend,
-      handleExpandChange,
-    } = useTableEvents(emit)
+    const { onTableEvent } = useTableEvents(emit)
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -185,6 +144,7 @@ export default defineComponent({
         ...attrs,
         ...unref(getProps),
         ...(unref(getTableHeight) ? { height: unref(getTableHeight) } : {}),
+        ...onTableEvent,
         data,
       }
 
@@ -264,24 +224,6 @@ export default defineComponent({
       omit,
       handlePageChange,
       handleSizeChange,
-      handleSelect,
-      handleSelectAll,
-      handleSelectionChange,
-      handleCellMouseEnter,
-      handleCellMouseLeave,
-      handleCellContextMenu,
-      handleCellClick,
-      handleCellDblclick,
-      handleRowClick,
-      handleRowContextmenu,
-      handleRowDblclick,
-      handleHeaderClick,
-      handleHeaderContextmenu,
-      handleSortChange,
-      handleFilterChange,
-      handleCurrentChange,
-      handleHeaderDragend,
-      handleExpandChange,
     }
   },
 })
