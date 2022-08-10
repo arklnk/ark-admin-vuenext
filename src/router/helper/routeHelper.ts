@@ -20,7 +20,7 @@ export function dynamicImport(component?: string): Component {
   }
 
   const matchKeys = keys.filter((key) => {
-    // support sf-vue-admin: views/system/permission/menu,
+    // support vue2: views/system/permission/menu,
     // but vuenext view path: views/system/permission/menu/index.vue | index.tsx
     const k = key.replace('../../', '')
     const startFlag = component.startsWith('/')

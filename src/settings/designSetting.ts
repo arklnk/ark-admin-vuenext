@@ -1,6 +1,6 @@
 import { ThemeEnum } from '../enums/appEnum'
 
-export const prefixCls = 'sf'
+export const prefixCls = 'ark'
 
 export const themeMode = ThemeEnum.LIGHT
 

@@ -1,6 +1,6 @@
-# sf-vuenext-admin
+# ark-admin-vuenext
 
-![](https://img.shields.io/github/commit-activity/m/hackycy/sf-vuenext-admin) ![](https://img.shields.io/github/license/hackycy/sf-vuenext-admin) ![](https://img.shields.io/github/repo-size/hackycy/sf-vuenext-admin) ![](https://img.shields.io/github/languages/top/hackycy/sf-vuenext-admin)
+![](https://img.shields.io/github/commit-activity/m/hackycy/ark-admin-vuenext) ![](https://img.shields.io/github/license/hackycy/ark-admin-vuenext) ![](https://img.shields.io/github/repo-size/hackycy/ark-admin-vuenext) ![](https://img.shields.io/github/languages/top/hackycy/ark-admin-vuenext)
 
 - 使用文档：[https://blog.si-yee.com/sf-admin-cli/](https://blog.si-yee.com/sf-admin-cli/)
 - 演示地址：[http://next.admin.si-yee.com](http://next.admin.si-yee.com/)

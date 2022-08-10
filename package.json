@@ -1,5 +1,5 @@
 {
-  "name": "sf-vuenext-admin",
+  "name": "ark-admin-vuenext",
   "version": "0.0.0",
   "scripts": {
     "bootstrap": "pnpm install",
