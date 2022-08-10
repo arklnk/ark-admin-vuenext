@@ -32,8 +32,6 @@ async function bootstrap() {
   setupRouter(app)
 
   // setup router guard
-
-  // guard
   setupRouterGuard(router)
 
   // global directive
