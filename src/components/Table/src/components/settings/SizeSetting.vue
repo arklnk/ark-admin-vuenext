@@ -1,6 +1,6 @@
 <template>
   <ElTooltip content="密度" placement="top">
-    <ElDropdown @command="handleCommand">
+    <ElDropdown @command="handleCommand" trigger="click">
       <IconMdiFormatLineSpacing />
       <template #dropdown>
         <el-dropdown-item :disabled="isDisable('small')" command="small">紧凑</el-dropdown-item>
