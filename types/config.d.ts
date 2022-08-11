@@ -10,6 +10,8 @@ export type TopMenuAlign = 'flex-start' | 'center' | 'flex-end'
 
 export type SizeType = 'small' | 'default' | 'large'
 
+export type LocaleType = 'en' | 'zh_CN'
+
 export interface ElementUISetting {
   size: SizeType
   zIndex: number
@@ -71,6 +73,20 @@ export interface TransitionSetting {
 
   // 页面切换动画
   routerTransition: RouterTransitionEnum
+}
+
+export interface LocaleSetting {
+  // 显示语言选择器
+  showPicker: boolean
+
+  // 当前语言环境
+  locale: LocaleType
+
+  // 默认语言
+  fallback: LocaleType
+
+  // 可用的语言环境
+  availableLocales: LocaleType[]
 }
 
 export interface ProjectConfig {
