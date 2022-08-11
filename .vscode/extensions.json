@@ -6,8 +6,8 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "mrmlnc.vscode-scss",
+    "lokalise.i18n-ally",
     "antfu.iconify",
-    "antfu.unocss",
     "voorjaar.windicss-intellisense",
     "mikestead.dotenv"
   ]
