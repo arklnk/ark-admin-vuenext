@@ -12,6 +12,7 @@ import { ProjectConfig } from '/#/config'
 import { merge } from 'lodash-es'
 import { updateDarkMode } from './theme/updateDarkMode'
 import { ThemeEnum } from '../enums/appEnum'
+import { useLocaleStore } from '../stores/modules/locale'
 
 /**
  * Initial project configuration
@@ -19,6 +20,7 @@ import { ThemeEnum } from '../enums/appEnum'
 export function initAppConfig() {
   const appStore = useAppStore()
   const userStore = useUserStore()
+  const localeStore = useLocaleStore()
 
   // setup global config
   try {
@@ -57,6 +59,9 @@ export function initAppConfig() {
   // root class
   grayMode && updateGrayMode(grayMode)
   colorWeak && updateColorWeak(colorWeak)
+
+  // init locale
+  localeStore.initLocale()
 
   // setup user config
   userStore.setToken(getToken())

@@ -8,19 +8,23 @@
 
 <script setup lang="ts">
 import { AppProvider } from '/@/components/Application'
-import localeZh from 'element-plus/lib/locale/lang/zh-cn'
 import { useTitle } from './composables/web/useTitle'
 import ProjectConfig from './settings/projectSetting'
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 
-// dayjs lacale
-import 'dayjs/locale/zh-cn'
+import { useLocale } from './locales/useLocale'
+import { dateUtil } from './utils/date'
+
+const { getEleLocale, getDayjsLocale } = useLocale()
+
+// dayjs locale
+dateUtil.locale(unref(getDayjsLocale))
 
 // default zh locale
 const getElConfig = computed(() => {
   return {
     ...ProjectConfig.elementUISetting,
-    locale: localeZh,
+    locale: unref(getEleLocale),
   }
 })
 

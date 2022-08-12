@@ -13,6 +13,7 @@ import { initAppConfig } from '/@/logics/initAppConfig'
 import { router, setupRouter } from '/@/router'
 import { setupRouterGuard } from '/@/router/guard'
 import { setupStore } from '/@/stores'
+import { setupI18n } from '/@/locales/setupI18n'
 
 import App from './App.vue'
 
@@ -27,6 +28,9 @@ async function bootstrap() {
 
   // register global component and lib
   registerGlobalComp(app)
+
+  // init i18n
+  await setupI18n(app)
 
   // setup router
   setupRouter(app)
