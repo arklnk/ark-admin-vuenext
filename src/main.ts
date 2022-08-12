@@ -8,7 +8,7 @@ import '/@/styles/index.scss'
 import { createApp } from 'vue'
 
 import { registerGlobalComp } from '/@/components/registerGlobalComp'
-import { setupGlobalDirectives } from '/@/logics/setupGlobalDirectives'
+import { setupGlobalDirectives } from '/@/directives/setupGlobalDirectives'
 import { initAppConfig } from '/@/logics/initAppConfig'
 import { router, setupRouter } from '/@/router'
 import { setupRouterGuard } from '/@/router/guard'
