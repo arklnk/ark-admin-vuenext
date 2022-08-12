@@ -20,7 +20,7 @@ const { getEleLocale, getDayjsLocale } = useLocale()
 // dayjs locale
 dateUtil.locale(unref(getDayjsLocale))
 
-// default zh locale
+// ele config
 const getElConfig = computed(() => {
   return {
     ...ProjectConfig.elementUISetting,
