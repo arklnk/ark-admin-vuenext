@@ -2,7 +2,7 @@ import type { ContextMenuProps, CreateContextMenuOptions } from './typing'
 
 import { createVNode, render } from 'vue'
 import ContextMenuConstructor from './ContextMenu.vue'
-import { globalAppContext } from '/@/logics/registerGlobalComp'
+import { globalAppContext } from '../../registerGlobalComp'
 
 const contextMenuManager: { domList: Element[]; resolve: Fn } = {
   domList: [],

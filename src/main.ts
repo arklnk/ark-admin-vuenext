@@ -7,7 +7,7 @@ import '/@/styles/index.scss'
 
 import { createApp } from 'vue'
 
-import { registerGlobalComp } from '/@/logics/registerGlobalComp'
+import { registerGlobalComp } from '/@/components/registerGlobalComp'
 import { setupGlobalDirectives } from '/@/logics/setupGlobalDirectives'
 import { initAppConfig } from '/@/logics/initAppConfig'
 import { router, setupRouter } from '/@/router'
