@@ -3,3 +3,13 @@
     margin-bottom: 0px;
   }
 }
+
+// ==============================================
+// =======移除chrome自动填充form表单的默认值=======
+// ==============================================
+.el-input__inner:-webkit-autofill,
+.el-input__inner:-webkit-autofill:hover,
+.el-input__inner:-webkit-autofill:focus,
+.el-input__inner:-webkit-autofill:active {
+  box-shadow: none !important;
+}
