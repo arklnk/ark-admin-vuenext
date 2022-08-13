@@ -2,6 +2,9 @@ import type { LocaleType } from '/#/config'
 
 import { set } from 'lodash-es'
 
+// loaded locale pool
+export const loadLocalePool: LocaleType[] = []
+
 export function setHtmlPageLang(lang: LocaleType) {
   document.querySelector('html')?.setAttribute('lang', lang)
 }

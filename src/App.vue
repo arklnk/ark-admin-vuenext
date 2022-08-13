@@ -17,11 +17,10 @@ import { dateUtil } from './utils/date'
 
 const { getEleLocale, getDayjsLocale } = useLocale()
 
-// dayjs locale
-dateUtil.locale(unref(getDayjsLocale))
-
-// ele config
 const getElConfig = computed(() => {
+  // dayjs locale
+  dateUtil.locale(unref(getDayjsLocale))
+
   return {
     ...ProjectConfig.elementUISetting,
     locale: unref(getEleLocale),

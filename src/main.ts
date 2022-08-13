@@ -6,7 +6,6 @@ import 'virtual:svg-icons-register'
 import '/@/styles/index.scss'
 
 import { createApp } from 'vue'
-
 import { registerGlobalComp } from '/@/components/registerGlobalComp'
 import { setupGlobalDirectives } from '/@/directives/setupGlobalDirectives'
 import { initAppConfig } from '/@/logics/initAppConfig'
@@ -14,7 +13,6 @@ import { router, setupRouter } from '/@/router'
 import { setupRouterGuard } from '/@/router/guard'
 import { setupStore } from '/@/stores'
 import { setupI18n } from '/@/locales/setupI18n'
-
 import App from './App.vue'
 
 async function bootstrap() {
@@ -29,7 +27,7 @@ async function bootstrap() {
   // register global component and lib
   registerGlobalComp(app)
 
-  // init i18n
+  // setup i18n
   await setupI18n(app)
 
   // setup router
