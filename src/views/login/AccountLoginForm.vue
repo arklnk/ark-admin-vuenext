@@ -7,13 +7,17 @@
     :disabled="isLogging"
   >
     <ElFormItem prop="username">
-      <ElInput size="default" v-model="formData.username" placeholder="用户名" />
+      <ElInput
+        size="default"
+        v-model="formData.username"
+        :placeholder="t('routes.login.username')"
+      />
     </ElFormItem>
     <ElFormItem prop="password">
       <ElInput
         size="default"
         v-model="formData.password"
-        placeholder="密码"
+        :placeholder="t('routes.login.passwd')"
         show-password
         type="password"
       />
@@ -24,7 +28,7 @@
           size="default"
           class="flex-1"
           v-model="formData.verifyCode"
-          placeholder="验证码"
+          :placeholder="t('routes.login.captcha')"
           @keyup.enter="handleLogin"
         />
         <div class="h-8 w-20 ml-2 cursor-pointer select-none" @click="handleGetImageCaptcha">
@@ -44,8 +48,9 @@
         class="w-full mt-3"
         type="primary"
         @click="handleLogin"
-      >登录</ElButton
       >
+        {{ t('routes.login.signin') }}
+      </ElButton>
     </ElFormItem>
   </ElForm>
 </template>
@@ -60,6 +65,7 @@ import { getImageCaptcha, userLogin } from '/@/api/login'
 import { useUserStore } from '/@/stores/modules/user'
 import { PageEnum } from '/@/enums/pageEnum'
 import { useGo } from '/@/composables/web/useGo'
+import { useI18n } from '/@/composables/core/useI18n'
 
 const formData = reactive({
   username: '',
@@ -67,6 +73,8 @@ const formData = reactive({
   verifyCode: '',
   captchaId: '',
 })
+
+const { t } = useI18n()
 
 /**
  * login
