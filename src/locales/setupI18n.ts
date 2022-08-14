@@ -8,8 +8,6 @@ import { loadLocalePool, setHtmlPageLang } from './helper'
 
 const { fallback, availableLocales } = localeSetting
 
-export let i18n: I18n
-
 async function createI18nOptions(): Promise<I18nOptions> {
   const localeStore = useLocaleStore()
 
@@ -22,7 +20,7 @@ async function createI18nOptions(): Promise<I18nOptions> {
   loadLocalePool.push(locale)
 
   return {
-    legacy: false,
+    legacy: false, // must be false
     locale,
     messages: {
       [locale]: message,
@@ -38,6 +36,6 @@ async function createI18nOptions(): Promise<I18nOptions> {
 
 export async function setupI18n(app: App) {
   const options = await createI18nOptions()
-  i18n = createI18n(options)
+  const i18n: I18n = createI18n(options)
   app.use(i18n)
 }

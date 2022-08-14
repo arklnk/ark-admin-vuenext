@@ -2,11 +2,12 @@ import type { LangModule } from './typing'
 import type { LocaleType } from '/#/config'
 
 import { computed, unref } from 'vue'
-import { i18n } from './setupI18n'
 import { useLocaleStore } from '/@/stores/modules/locale'
 import { loadLocalePool, setHtmlPageLang } from './helper'
+import { useI18n } from 'vue-i18n'
 
 export function useLocale() {
+  const { locale: globalLocale, getLocaleMessage, setLocaleMessage } = useI18n()
   const localeStore = useLocaleStore()
 
   const getLocale = computed(() => localeStore.getLocale)
@@ -14,20 +15,16 @@ export function useLocale() {
   const getShowPicker = computed(() => localeStore.getShowPicker)
 
   const getEleLocale = computed((): any => {
-    return i18n.global.getLocaleMessage<LangModule['message']>(unref(getLocale))?.eleLocale ?? {}
+    return getLocaleMessage<LangModule['message']>(unref(getLocale))?.eleLocale ?? {}
   })
 
   const getDayjsLocale = computed((): any => {
-    return i18n.global.getLocaleMessage<LangModule['message']>(unref(getLocale))?.dayjsLocale ?? {}
+    return getLocaleMessage<LangModule['message']>(unref(getLocale))?.dayjsLocale ?? {}
   })
 
   function setI18nLang(locale: LocaleType) {
     // check mode is legacy or composition
-    if (typeof i18n.global.locale === 'string') {
-      i18n.global.locale = locale
-    } else {
-      i18n.global.locale.value = locale
-    }
+    globalLocale.value = locale
 
     // update store
     localeStore.setLocaleInfo({ locale })
@@ -38,8 +35,7 @@ export function useLocale() {
 
   // switch the lang will change the locale of useI18n
   async function changeLocale(locale: LocaleType) {
-    const globalI18n = i18n.global
-    const currentLocale = unref(globalI18n.locale)
+    const currentLocale = unref(globalLocale)
 
     // nothing change
     if (currentLocale === locale) {
@@ -57,7 +53,7 @@ export function useLocale() {
     if (!langModule) return
 
     const { message } = langModule
-    globalI18n.setLocaleMessage(locale, message)
+    setLocaleMessage(locale, message)
     loadLocalePool.push(locale)
 
     setI18nLang(locale)
