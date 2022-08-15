@@ -10,14 +10,14 @@
       <ElInput
         size="default"
         v-model="formData.username"
-        :placeholder="t('routes.login.username')"
+        :placeholder="t('views.login.username')"
       />
     </ElFormItem>
     <ElFormItem prop="password">
       <ElInput
         size="default"
         v-model="formData.password"
-        :placeholder="t('routes.login.passwd')"
+        :placeholder="t('views.login.passwd')"
         show-password
         type="password"
       />
@@ -28,7 +28,7 @@
           size="default"
           class="flex-1"
           v-model="formData.verifyCode"
-          :placeholder="t('routes.login.captcha')"
+          :placeholder="t('views.login.captcha')"
           @keyup.enter="handleLogin"
         />
         <div class="h-8 w-20 ml-2 cursor-pointer select-none" @click="handleGetImageCaptcha">
@@ -49,7 +49,7 @@
         type="primary"
         @click="handleLogin"
       >
-        {{ t('routes.login.signin') }}
+        {{ t('views.login.signin') }}
       </ElButton>
     </ElFormItem>
   </ElForm>
@@ -143,9 +143,9 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       min: 4,
       message: () => {
         if (isEmpty(formData.username)) {
-          return '请输入用户名'
+          return t('component.form.requiredTip', { prop: t('views.login.username') })
         } else {
-          return '输入的用户名不合法'
+          return t('component.form.invalidTip', { prop: t('views.login.username') })
         }
       },
     },
@@ -158,9 +158,9 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       min: 6,
       message: () => {
         if (isEmpty(formData.password)) {
-          return '请输入密码'
+          return t('component.form.requiredTip', { prop: t('views.login.passwd') })
         } else {
-          return '输入的密码不合法'
+          return t('component.form.invalidTip', { prop: t('views.login.passwd') })
         }
       },
     },
@@ -174,9 +174,9 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       max: 4,
       message: () => {
         if (isEmpty(formData.verifyCode)) {
-          return '请输入验证码'
+          return t('component.form.requiredTip', { prop: t('views.login.captcha') })
         } else {
-          return '输入的验证码不合法'
+          return t('component.form.invalidTip', { prop: t('views.login.captcha') })
         }
       },
     },
