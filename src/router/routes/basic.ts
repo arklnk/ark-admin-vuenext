@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { ParentLayout } from '../contants'
-import { NotFoundRouteName, PageEnum, PageTitleEnum } from '/@/enums/pageEnum'
+import { t } from '/@/composables/core/useTransl'
+import { NotFoundRouteName, PageEnum } from '/@/enums/pageEnum'
 import { toHump } from '/@/utils'
 
 /**
@@ -23,7 +24,7 @@ export const LoginRoute: RouteRecordRaw = {
   name: toHump(PageEnum.Login),
   component: () => import('/@/views/login/Login.vue'),
   meta: {
-    title: PageTitleEnum.Login,
+    title: t('routes.login'),
     hidden: true,
   },
 }
@@ -36,7 +37,7 @@ export const Error404Route: RouteRecordRaw = {
   name: toHump(PageEnum.NotFound),
   component: () => import('/@/views/error/Error404.vue'),
   meta: {
-    title: PageTitleEnum.NotFound,
+    title: t('routes.notfound'),
     hidden: true,
   },
 }
@@ -57,7 +58,7 @@ export const DashboardRoute: RouteRecordRaw = {
       path: PageEnum.Dashboard,
       component: () => import('/@/views/dashboard/Dashboard.vue'),
       meta: {
-        title: PageTitleEnum.Dashboard,
+        title: t('routes.dashboard'),
         icon: 'dashboard',
       },
     },
@@ -80,7 +81,7 @@ const RedirectRoute: RouteRecordRaw = {
       name: 'Redirect',
       component: () => import('/@/views/redirect/Redirect.vue'),
       meta: {
-        title: '页面跳转中...',
+        title: t('routes.redirect'),
       },
     },
   ],

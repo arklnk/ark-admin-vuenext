@@ -8,7 +8,7 @@
       <SvgIcon v-if="getRoute.meta?.icon" :icon="getRoute.meta.icon" />
     </ElIcon>
     <template #title>
-      <span class="ml-2">{{ getRoute.meta?.title }}</span>
+      <span class="ml-2">{{ t(getRoute.meta?.title!) }}</span>
     </template>
   </ElMenuItem>
   <ElSubMenu v-else-if="menuHasChildren(getRoute) && getShowMenu" :index="getRoute.path">
@@ -16,7 +16,7 @@
       <ElIcon>
         <SvgIcon v-if="getRoute.meta?.icon" :icon="getRoute.meta.icon" />
       </ElIcon>
-      <span class="ml-2">{{ getRoute.meta?.title }}</span>
+      <span class="ml-2">{{ t(getRoute.meta?.title!) }}</span>
     </template>
     <MenuItem v-for="child in getRoute.children" :key="child.path" :route="child" />
   </ElSubMenu>
@@ -36,6 +36,9 @@ import { computed, unref } from 'vue'
 import { isUrl } from '/@/utils/is'
 import { openWindow } from '/@/utils'
 import { useGo } from '/@/composables/web/useGo'
+import { useTransl } from '/@/composables/core/useTransl'
+
+const { t } = useTransl()
 
 const props = defineProps({
   route: {
