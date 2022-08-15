@@ -19,8 +19,9 @@ function getKey(namespace: string | undefined, key: string) {
   return `${namespace}.${key}`
 }
 
-export function useI18n(namespace?: string) {
-  const { t, ...api } = useVueI18n()
+// useI18n in vue-i18n, prevent to nuptial rename to useTransl
+export function useTransl(namespace?: string) {
+  const { t } = useVueI18n()
 
   const tFn: I18nGlobalTranslation = (key: string, ...args: any[]) => {
     if (!key) return ''
@@ -30,7 +31,6 @@ export function useI18n(namespace?: string) {
   }
 
   return {
-    ...api,
     t: tFn,
   }
 }

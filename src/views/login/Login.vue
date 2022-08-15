@@ -22,10 +22,10 @@
 import AccountLoginForm from './AccountLoginForm.vue'
 import { AppDarkModeToggle, AppLocalePicker } from '/@/components/Application'
 import { useDesign } from '/@/composables/core/useDesign'
-import { useI18n } from '/@/composables/core/useI18n'
+import { useTransl } from '../../composables/core/useTransl'
 
 const { prefixCls } = useDesign('login')
-const { t } = useI18n()
+const { t } = useTransl()
 </script>
 
 <style lang="scss" scoped>

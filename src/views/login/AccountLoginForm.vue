@@ -65,7 +65,7 @@ import { getImageCaptcha, userLogin } from '/@/api/login'
 import { useUserStore } from '/@/stores/modules/user'
 import { PageEnum } from '/@/enums/pageEnum'
 import { useGo } from '/@/composables/web/useGo'
-import { useI18n } from '/@/composables/core/useI18n'
+import { useTransl } from '../../composables/core/useTransl'
 
 const formData = reactive({
   username: '',
@@ -74,7 +74,7 @@ const formData = reactive({
   captchaId: '',
 })
 
-const { t } = useI18n()
+const { t } = useTransl()
 
 /**
  * login
