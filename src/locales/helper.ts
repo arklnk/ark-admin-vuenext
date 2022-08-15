@@ -20,16 +20,20 @@ export function genMessage(modules: Recordable<Recordable>, lang: string) {
     const lastIndex = filename.lastIndexOf('.')
     // remove file suffix
     filename = filename.substring(0, lastIndex)
-    const keyList = filename.split('/')
+    const keyList = filename.split('/') // '/' is not exist will empty array
     const moduleName = keyList.shift()
     const objKey = keyList.join('.')
 
     // module name is not undef
     if (moduleName) {
-      // set namespace
-      set(message, moduleName, message[moduleName] || {})
-      // set ns module
-      set(message[moduleName], objKey, langModule)
+      if (objKey) {
+        // set namespace
+        set(message, moduleName, message[moduleName] || {})
+        // set ns module
+        set(message[moduleName], objKey, langModule)
+      } else {
+        set(message, moduleName, langModule)
+      }
     }
   })
 
