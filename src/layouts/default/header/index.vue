@@ -23,7 +23,8 @@
     </div>
 
     <!-- action -->
-    <div class="flex h-full text-lg" :class="`${prefixCls}-action`">
+    <div class="flex flex-row h-full" :class="`${prefixCls}-action`">
+      <AppLocalePicker class="item" />
       <FullScreen v-if="getShowFullScreen" class="item" />
       <UserDropdown class="item" />
       <ProjectConfig v-if="getShowSettingButton" class="item" />
@@ -45,6 +46,7 @@ import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
 import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
 import { useRootSetting } from '/@/composables/setting/useRootSetting'
 import { useAppInject } from '/@/composables/core/useAppInject'
+import { AppLocalePicker } from '/@/components/Application'
 
 const { prefixCls } = useDesign('app-header')
 const { setAppHeaderHeight, appHeaderHeightRef } = useLayoutHeight()
@@ -138,6 +140,7 @@ $prefixCls: #{var.$namespace}-app-header;
     cursor: pointer;
     align-items: center;
     position: relative;
+    font-size: 18px;
 
     &:hover {
       border-color: var(--header-hover-bg-color);
