@@ -8,29 +8,34 @@
       :class="`${prefixCls}__particle`"
       v-for="i in MAX_RANDOM_SIZE"
       :key="i"
-    >0</span
     >
+      0
+    </span>
     <span
       class="absolute block"
       :class="`${prefixCls}__particle`"
       v-for="i in MAX_RANDOM_SIZE"
       :key="i"
-    >4</span
     >
+      4
+    </span>
     <ElCard
       :class="`${prefixCls}__content`"
       class="relative w-[500px] max-w-full m-5 text-center py-[60px] px-[40px] rounded-sm"
     >
-      <p class="mb-4 text-base text-gray-600 dark:text-white">该页面无法正常打开...</p>
-      <p class="mb-4 text-xs text-gray-400">请检查链接是否输入正确, 或点击按钮返回首页</p>
-      <ElButton class="mt-2" @click="go()">返回首页</ElButton>
+      <p class="mb-4 text-base text-gray-600 dark:text-white">{{ t('views.error404.title') }}</p>
+      <p class="mb-4 text-xs text-gray-400">{{ t('views.error404.subTitle') }}</p>
+      <ElButton class="mt-2" @click="go()">{{ t('views.error404.backHome') }}</ElButton>
     </ElCard>
   </main>
 </template>
 
 <script setup lang="ts">
 import { useDesign } from '/@/composables/core/useDesign'
+import { useTransl } from '/@/composables/core/useTransl'
 import { useGo } from '/@/composables/web/useGo'
+
+const { t } = useTransl()
 
 const MAX_RANDOM_SIZE = Object.freeze(40)
 const go = useGo()
