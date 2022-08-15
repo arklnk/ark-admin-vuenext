@@ -2,7 +2,7 @@
   <ElDropdown trigger="click" @command="handleCommand">
     <span class="cursor-pointer flex items-center">
       <IcRoundGTranslate />
-      <span v-if="showText" class="ml-1">{{ getLocaleText }}</span>
+      <span v-if="showText" class="ml-2">{{ getLocaleText }}</span>
     </span>
     <template #dropdown>
       <el-dropdown-menu>
