@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "useDefineForClassFields": true,
     "module": "esnext",
     "moduleResolution": "node",
     "strict": true,
@@ -13,40 +12,27 @@
     "baseUrl": ".",
     "allowJs": true,
     "sourceMap": true,
-    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "isolatedModules": true,
+    "resolveJsonModule": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "experimentalDecorators": true,
+    "lib": ["dom", "esnext"],
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "removeComments": true,
     "types": [
       "vite/client",
       "element-plus/global",
       "unplugin-icons/types/vue",
       "vite-plugin-svg-icons/client"
     ],
-    "typeRoots": [
-      "./node_modules/@types/",
-      "./types"
-    ],
-    "removeComments": true,
     "paths": {
-      "/@/*": [
-        "./src/*"
-      ],
-      "/#/*": [
-        "./types/*"
-      ]
+      "/@/*": ["./src/*"],
+      "/#/*": ["./types/*"]
     }
   },
   "include": [
-    "tests/**/*.ts",
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
@@ -55,14 +41,8 @@
     "types/**/*.ts",
     "build/**/*.ts",
     "build/**/*.d.ts",
-    "mock/**/*.ts",
     "uno.config.ts",
     "vite.config.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "tests/server/**/*.ts",
-    "dist",
-    "**/*.js"
-  ]
+  "exclude": ["node_modules", "dist", "**/*.js"]
 }
