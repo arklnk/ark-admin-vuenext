@@ -3,12 +3,15 @@
     <ElResult
       class="h-full"
       icon="error"
-      title="页面载入错误"
-      sub-title="请检查对应动态载入页面路径下的文件"
+      :title="t('views.viewnotimpl.title')"
+      :sub-title="t('views.viewnotimpl.subTitle')"
     />
   </PageWrapper>
 </template>
 
 <script setup lang="ts">
 import { PageWrapper } from '/@/components/Page'
+import { useTransl } from '/@/composables/core/useTransl'
+
+const { t } = useTransl()
 </script>

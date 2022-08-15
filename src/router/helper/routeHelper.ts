@@ -1,7 +1,7 @@
 import type { Menu, Component } from '../typing'
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 
-import { EmptyLayout, IFrameLayout, ParentLayout, ViewNotFound } from '../contants'
+import { EmptyLayout, IFrameLayout, ParentLayout, ViewNotImpl } from '../contants'
 import { warn } from '/@/utils/log'
 import { MenuTypeEnum } from '/@/enums/menuEnum'
 import { isUrl } from '/@/utils/is'
@@ -16,7 +16,7 @@ export function dynamicImport(component?: string): Component {
   const keys = Object.keys(dynamicViewsModules)
 
   if (!component) {
-    return ViewNotFound
+    return ViewNotImpl
   }
 
   const matchKeys = keys.filter((key) => {
@@ -39,7 +39,7 @@ export function dynamicImport(component?: string): Component {
     return
   } else {
     warn(`在src/${component}找不到指定的文件,请自行创建!`)
-    return ViewNotFound
+    return ViewNotImpl
   }
 }
 
