@@ -6,7 +6,7 @@ export default {
   redirect: 'Redirecting...',
 
   // system
-  systemManager: 'System manager',
-  permManager: 'Permission manager',
-  menuList: 'Menu list',
+  systemManagement: 'System Management',
+  permManagement: 'Permission Management',
+  menuList: 'Menu List',
 }

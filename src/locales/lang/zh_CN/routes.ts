@@ -6,7 +6,7 @@ export default {
   redirect: '跳转中...',
 
   // system
-  systemManager: '系统管理',
-  permManager: '权限管理',
+  systemManagement: '系统管理',
+  permManagement: '权限管理',
   menuList: '菜单列表',
 }
