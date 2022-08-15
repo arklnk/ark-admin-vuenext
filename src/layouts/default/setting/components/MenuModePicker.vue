@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-wrap justify-around" :class="prefixCls">
-    <ElTooltip placement="bottom" content="左侧菜单模式">
+    <ElTooltip placement="bottom" :content="t('layout.setting.menuTypeSidebar')">
       <div
         :class="[
           `${prefixCls}-item`,
@@ -10,7 +10,7 @@
         @click="handleClick(MenuModeEnum.SIDEBAR)"
       ></div>
     </ElTooltip>
-    <ElTooltip placement="bottom" content="顶部菜单模式">
+    <ElTooltip placement="bottom" :content="t('layout.setting.menuTypeTop')">
       <div
         :class="[
           `${prefixCls}-item`,
@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import { useDesign } from '/@/composables/core/useDesign'
+import { useTransl } from '/@/composables/core/useTransl'
 
 const props = defineProps({
   def: {
@@ -36,6 +37,7 @@ const props = defineProps({
 
 const emit = defineEmits<{ (e: 'change', value: MenuModeEnum): void }>()
 
+const { t } = useTransl()
 const { prefixCls } = useDesign('setting-menu-mode-picker')
 
 function isActive(cur: MenuModeEnum) {

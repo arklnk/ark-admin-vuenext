@@ -6,8 +6,12 @@
     </span>
     <template #dropdown>
       <ElDropdownMenu>
-        <ElDropdownItem command="/account/setting" :icon="IconAccount">账号设置</ElDropdownItem>
-        <ElDropdownItem divided command="/logout" :icon="IconTablerPower">退出系统</ElDropdownItem>
+        <ElDropdownItem command="/account/setting" :icon="IconAccount">
+          {{ t('layout.header.userDropdown.accountSetting') }}
+        </ElDropdownItem>
+        <ElDropdownItem divided command="/logout" :icon="IconTablerPower">
+          {{ t('layout.header.userDropdown.logout') }}
+        </ElDropdownItem>
       </ElDropdownMenu>
     </template>
   </ElDropdown>
@@ -24,6 +28,9 @@ import { useUserStore } from '/@/stores/modules/user'
 import DefaultAvatar from '/@/assets/svg/user-default-avatar.svg'
 import { PageEnum } from '/@/enums/pageEnum'
 import { useGo } from '/@/composables/web/useGo'
+import { useTransl } from '/@/composables/core/useTransl'
+
+const { t } = useTransl()
 
 const userStore = useUserStore()
 

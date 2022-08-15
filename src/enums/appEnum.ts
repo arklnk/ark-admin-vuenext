@@ -1,3 +1,4 @@
+import { t } from '/@/composables/core/useTransl'
 import type { TopMenuAlign } from '/#/config'
 
 export const SIDE_BAR_COLLAPSED_WIDTH = 64
@@ -58,15 +59,15 @@ export enum PermissionModeEnum {
 
 export const contentMap: Map<ContentEnum, string> = (() => {
   const map = new Map<ContentEnum, string>()
-  map.set(ContentEnum.FULL, '流式')
-  map.set(ContentEnum.FIXED, '定宽')
+  map.set(ContentEnum.FULL, t('layout.setting.contentModeFull'))
+  map.set(ContentEnum.FIXED, t('layout.setting.contentModeFixed'))
   return map
 })()
 
 export const topMenuAlignMap: Map<TopMenuAlign, string> = (() => {
   const map = new Map<TopMenuAlign, string>()
-  map.set('flex-start', '居左')
-  map.set('center', '居中')
-  map.set('flex-end', '居右')
+  map.set('flex-start', t('layout.setting.topMenuTypeLeft'))
+  map.set('center', t('layout.setting.topMenuTypeCenter'))
+  map.set('flex-end', t('layout.setting.topMenuTypeRight'))
   return map
 })()

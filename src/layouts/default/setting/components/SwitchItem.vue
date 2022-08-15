@@ -5,8 +5,8 @@
       :disabled="disabled"
       :model-value="def"
       inline-prompt
-      active-text="开"
-      inactive-text="关"
+      :active-text="t('layout.setting.on')"
+      :inactive-text="t('layout.setting.off')"
       @change="handleChange"
       size="default"
     />
@@ -14,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { useTransl } from '/@/composables/core/useTransl'
+
 defineProps({
   title: {
     type: String,
@@ -30,6 +32,8 @@ defineProps({
 })
 
 const emit = defineEmits<{ (e: 'change', value: boolean): void }>()
+
+const { t } = useTransl()
 
 function handleChange(val: string | number | boolean) {
   emit('change', val as boolean)

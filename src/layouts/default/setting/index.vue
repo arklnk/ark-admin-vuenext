@@ -4,87 +4,111 @@
     <ElDrawer
       v-model="visibleRef"
       direction="rtl"
-      title="项目配置"
-      :size="320"
+      :title="t('layout.setting.title')"
+      :size="380"
       append-to-body
       destroy-on-close
     >
       <div class="w-full overflow-hidden text-black flex flex-col">
-        <ElDivider>风格设置</ElDivider>
+        <ElDivider>{{ t('layout.setting.darkMode') }}</ElDivider>
         <AppDarkModeToggle class="text-2xl" />
 
-        <ElDivider>导航模式</ElDivider>
+        <ElDivider>{{ t('layout.setting.navMode') }}</ElDivider>
         <MenuModePicker :def="getMenuMode" @change="handleMenuModeChange" />
 
-        <ElDivider>系统主题</ElDivider>
+        <ElDivider>{{ t('layout.setting.sysTheme') }}</ElDivider>
         <ThemeColorPicker
           :color-list="APP_PRESET_COLOR_LIST"
           :cursor="getThemeColor"
           @change="handleSystemThemeChange"
         />
 
-        <ElDivider>顶栏主题</ElDivider>
+        <ElDivider>{{ t('layout.setting.headerTheme') }}</ElDivider>
         <ThemeColorPicker
           :color-list="HEADER_PRESET_BG_COLOR_LIST"
           :cursor="getHeaderBgColor"
           @change="handleHeaderBgChange"
         />
 
-        <ElDivider>菜单主题</ElDivider>
+        <ElDivider>{{ t('layout.setting.sidebarTheme') }}</ElDivider>
         <ThemeColorPicker
           :color-list="SIDE_BAR_BG_COLOR_LIST"
           :cursor="getSideMenuBgColor"
           @change="handleSideMenuBgChange"
         />
 
-        <ElDivider>界面功能</ElDivider>
+        <ElDivider>{{ t('layout.setting.interfaceFunction') }}</ElDivider>
         <SwitchItem
-          title="折叠菜单"
+          :title="t('layout.setting.menuCollapse')"
           :def="getCollapsed"
           @change="handleMenuCollapsedChange"
           :disabled="disableSidebarRelSetting && !getIsMobile"
         />
         <SwitchItem
-          title="侧边菜单手风琴模式"
+          :title="t('layout.setting.menuAccordion')"
           :def="getUniqueOpened"
           @change="handleMenuUniqueOpenChange"
           :disabled="disableSidebarRelSetting && !getIsMobile"
         />
-        <SwitchItem title="固定顶栏" :def="getFixed" @change="handleHeaderFixedChange" />
+        <SwitchItem
+          :title="t('layout.setting.fixedHeader')"
+          :def="getFixed"
+          @change="handleHeaderFixedChange"
+        />
         <SelectItem
-          title="顶部菜单布局"
+          :title="t('layout.setting.topMenuLayout')"
           :options="topMenuAlignOptions"
           :cursor="getTopMenuAlign"
           :disabled="!disableSidebarRelSetting"
           @change="handleTopMenuAlignModeChange"
         />
         <SelectItem
-          title="内容区域宽度"
+          :title="t('layout.setting.contentAreaWidth')"
           :options="contentModeOptions"
           :cursor="getContentMode"
           @change="handleContentModeChange"
         />
 
-        <ElDivider>界面显示</ElDivider>
-        <SwitchItem title="Logo" :def="getShowLogo" @change="handleLogoChange" />
-        <SwitchItem title="页脚" :def="getShowFooter" @change="handleFooterChange" />
-        <SwitchItem title="全屏内容" :def="getFullContent" @change="handleFullContentChange" />
-        <SwitchItem title="灰色模式" :def="getGrayMode" @change="handleGrayModeChange" />
-        <SwitchItem title="色弱模式" :def="getColorWeak" @change="handleColorWeakChange" />
-
-        <ElDivider>动画</ElDivider>
+        <ElDivider>{{ t('layout.setting.interfaceDisplay') }}</ElDivider>
         <SwitchItem
-          title="顶栏进度条"
+          :title="t('layout.setting.logo')"
+          :def="getShowLogo"
+          @change="handleLogoChange"
+        />
+        <SwitchItem
+          :title="t('layout.setting.footer')"
+          :def="getShowFooter"
+          @change="handleFooterChange"
+        />
+        <SwitchItem
+          :title="t('layout.setting.fullContent')"
+          :def="getFullContent"
+          @change="handleFullContentChange"
+        />
+        <SwitchItem
+          :title="t('layout.setting.grayMode')"
+          :def="getGrayMode"
+          @change="handleGrayModeChange"
+        />
+        <SwitchItem
+          :title="t('layout.setting.colorWeakMode')"
+          :def="getColorWeak"
+          @change="handleColorWeakChange"
+        />
+
+        <ElDivider>{{ t('layout.setting.animation') }}</ElDivider>
+        <SwitchItem
+          :title="t('layout.setting.progress')"
           :def="getEnableNProgress"
           @change="handleEnableNProgressChange"
         />
         <SwitchItem
-          title="切换动画"
+          :title="t('layout.setting.switchAnimation')"
           :def="getEnableTransition"
           @change="handleEnableTransitionChange"
         />
         <SelectItem
-          title="切换动画类型"
+          :title="t('layout.setting.switchAnimationType')"
           :disabled="!getEnableTransition"
           :options="routerTransitionOptions"
           :cursor="getRouterTransition"
@@ -125,7 +149,9 @@ import { MenuModeEnum } from '/@/enums/menuEnum'
 import { TopMenuAlign } from '/#/config'
 import { useAppInject } from '/@/composables/core/useAppInject'
 import { isDevMode } from '/@/utils/env'
+import { useTransl } from '/@/composables/core/useTransl'
 
+const { t } = useTransl()
 const { getIsMobile } = useAppInject()
 
 const visibleRef = ref(false)
@@ -144,7 +170,7 @@ const {
   setRootSetting,
 } = useRootSetting()
 const contentModeOptions: LabelValueOptions = Array.from(contentMap).map(([key, value]) => {
-  return { label: value, value: key }
+  return { label: t(value), value: key }
 })
 function handleSystemThemeChange(themeColor: string) {
   updateTheme(themeColor)
@@ -186,7 +212,7 @@ const {
 } = useMenuSetting()
 const disableSidebarRelSetting = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
 const topMenuAlignOptions: LabelValueOptions = Array.from(topMenuAlignMap).map(([key, value]) => {
-  return { label: value, value: key }
+  return { label: t(value), value: key }
 })
 function handleMenuCollapsedChange(collapsed: boolean) {
   setMenuSetting({ collapsed })

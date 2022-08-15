@@ -1,7 +1,7 @@
 <template>
   <ElDivider />
   <ElButton type="danger" class="w-full" :icon="IconFoundationRefresh" @click="handleResetSetting">
-    重置
+    {{ t('layout.setting.reset') }}
   </ElButton>
 </template>
 
@@ -12,7 +12,9 @@ import defaultSetting from '/@/settings/projectSetting'
 import { useMessage } from '/@/composables/web/useMessage'
 import { updateGrayMode } from '/@/logics/theme/updateGrayMode'
 import { updateColorWeak } from '/@/logics/theme/updateColorWeak'
+import { useTransl } from '/@/composables/core/useTransl'
 
+const { t } = useTransl()
 const appStore = useAppStore()
 const { createMessage } = useMessage()
 function handleResetSetting() {
@@ -28,13 +30,10 @@ function handleResetSetting() {
 
     createMessage({
       type: 'success',
-      message: '重置成功,需刷新生效',
+      message: t('layout.setting.resetSuccess'),
     })
   } catch (e) {
-    createMessage({
-      type: 'error',
-      message: '重置失败',
-    })
+    console.error(e)
   }
 }
 </script>
