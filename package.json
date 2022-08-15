@@ -54,7 +54,6 @@
     "unplugin-icons": "^0.14.8",
     "vite": "^2.9.8",
     "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-html": "^3.0.6",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue-eslint-parser": "^8.0.1",
     "vue-tsc": "^0.29.8"

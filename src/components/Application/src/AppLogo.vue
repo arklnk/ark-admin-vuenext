@@ -5,16 +5,19 @@
     @click="go('/')"
   >
     <img :class="`${prefixCls}__logo`" src="../../../assets/images/logo.png" />
-    <div v-show="showTitle" :class="`${prefixCls}__title`" class="truncate">{{ title }}</div>
+    <div v-show="showTitle" :class="`${prefixCls}__title`" class="truncate">
+      {{ t('common.appName') }}
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue'
+import { computed } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
+import { useTransl } from '/@/composables/core/useTransl'
 import { useGo } from '/@/composables/web/useGo'
-const attrs = useAttrs()
-const title = import.meta.env.VITE_APP_TITLE
+
+const { t } = useTransl()
 
 const props = defineProps({
   showTitle: {
@@ -30,7 +33,7 @@ const props = defineProps({
 
 const { prefixCls } = useDesign('app-logo')
 
-const getWrapClass = computed(() => [prefixCls, props.theme, attrs.class])
+const getWrapClass = computed(() => [prefixCls, props.theme])
 
 const go = useGo()
 </script>

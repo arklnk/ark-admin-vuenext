@@ -1,6 +1,6 @@
 <template>
   <footer v-if="getIsShowFooter" ref="footerRef" :class="prefixCls">
-    <div>Copyright © 2021 方舟互联</div>
+    <div>Copyright © 2021 arklnk</div>
   </footer>
 </template>
 
