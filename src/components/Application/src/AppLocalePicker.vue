@@ -30,7 +30,7 @@ import { localeList } from '/@/settings/localeSetting'
 const props = defineProps({
   reload: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   showText: {
     type: Boolean,
