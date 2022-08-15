@@ -6,12 +6,8 @@
     :rules="formRules"
     :disabled="isLogging"
   >
-    <ElFormItem prop="username">
-      <ElInput
-        size="default"
-        v-model="formData.username"
-        :placeholder="t('views.login.username')"
-      />
+    <ElFormItem prop="account">
+      <ElInput size="default" v-model="formData.account" :placeholder="t('views.login.account')" />
     </ElFormItem>
     <ElFormItem prop="password">
       <ElInput
@@ -61,14 +57,14 @@ import type { ElForm, FormItemRule } from 'element-plus'
 import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { isEmpty, debounce } from 'lodash-es'
-import { getImageCaptcha, userLogin } from '/@/api/login'
+import { getImageCaptcha, userLogin } from '/@/api/user'
 import { useUserStore } from '/@/stores/modules/user'
 import { PageEnum } from '/@/enums/pageEnum'
 import { useGo } from '/@/composables/web/useGo'
-import { useTransl } from '../../composables/core/useTransl'
+import { useTransl } from '/@/composables/core/useTransl'
 
 const formData = reactive({
-  username: '',
+  account: '',
   password: '',
   verifyCode: '',
   captchaId: '',
@@ -120,9 +116,9 @@ const handleLogin = debounce(() => {
 const captchaData = ref('')
 const handleGetImageCaptcha = debounce(async () => {
   try {
-    const { id, img } = await getImageCaptcha()
-    formData.captchaId = id
-    captchaData.value = img
+    const { captchaId, verifyCode } = await getImageCaptcha()
+    formData.captchaId = captchaId
+    captchaData.value = verifyCode
     // 清空文本
     formData.verifyCode = ''
   } catch (err) {}
@@ -135,17 +131,17 @@ handleGetImageCaptcha()
  * form config
  */
 const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>>>({
-  username: [
+  account: [
     {
       required: true,
       trigger: 'blur',
       type: 'string',
       min: 4,
       message: () => {
-        if (isEmpty(formData.username)) {
-          return t('component.form.requiredTip', { prop: t('views.login.username') })
+        if (isEmpty(formData.account)) {
+          return t('component.form.requiredTip', { prop: t('views.login.account') })
         } else {
-          return t('component.form.invalidTip', { prop: t('views.login.username') })
+          return t('component.form.invalidTip', { prop: t('views.login.account') })
         }
       },
     },

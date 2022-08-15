@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { usePermissionStore } from './permission'
-import { getAccountInfo, logout as logoutRequest } from '/@/api/account'
+import { getUserInfo, userLogout as logoutRequest } from '/@/api/user'
 import { RoleEnum } from '/@/enums/roleEnum'
 import { resetRouter } from '/@/router'
 import { setToken as setLocalToken, removeToken } from '/@/utils/auth'
@@ -12,7 +12,7 @@ interface UserState {
 }
 
 interface UserInfo {
-  name: string
+  username: string
   avatar: string
 }
 
@@ -47,10 +47,10 @@ export const useUserStore = defineStore({
       this.roleList = roleList
     },
     async getUserInfoAction(): Promise<void> {
-      const data = await getAccountInfo()
+      const data = await getUserInfo()
       this.userInfo = {
-        name: data!.name,
-        avatar: data!.headImg,
+        username: data!.username,
+        avatar: data!.avatar,
       }
       // 角色列表（远程获取，这里Mock了假数据）
       this.setRoleList([RoleEnum.ROOT])

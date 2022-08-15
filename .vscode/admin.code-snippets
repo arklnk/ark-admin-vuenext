@@ -19,7 +19,7 @@
     "body": [
       "import { defHttp } from '/@/utils/http/axios'",
       "",
-      "export const Api: Recordable<string> = {",
+      "export const Api = {",
       "  $1",
       "}"
     ],

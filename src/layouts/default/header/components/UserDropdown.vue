@@ -38,7 +38,7 @@ const isLoadAvatarError = ref(false)
 const userAvatar = computed(() =>
   unref(isLoadAvatarError) ? DefaultAvatar : userStore.getUserInfo?.avatar || DefaultAvatar
 )
-const userName = computed(() => userStore.getUserInfo?.name)
+const userName = computed(() => userStore.getUserInfo?.username)
 
 const go = useGo()
 function handleItemClick(command: string) {

@@ -6,18 +6,15 @@ export type Component<T = any> =
   | (() => Promise<T>)
 
 export interface Menu {
-  createdAt: string
-  updatedAt: string
   id: number
   parentId?: number
   name: string
   router: string
-  // perms: string
   type: number
   icon: string
   orderNum?: number
   viewPath?: string
-  keepalive?: boolean
   isShow?: boolean
+  activeRouter?: string
   children?: Menu[]
 }
