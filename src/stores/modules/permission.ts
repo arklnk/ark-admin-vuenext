@@ -119,7 +119,7 @@ export const usePermissionStore = defineStore({
           let menusTree = filter(menus, routeRemoveIllegalFilter)
 
           // list to tree
-          menusTree = listToTree(menusTree, { pid: 'parentId' })
+          menusTree = listToTree(menusTree)
 
           // 转换成真实的vue-router对象，动态引入组件
           let routeList = transformMenuToRoute(menusTree, true)
