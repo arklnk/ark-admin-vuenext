@@ -66,12 +66,12 @@ export function useDataSource(
       )
 
       const pageParams: Recordable = {}
-
-      const { currentPage = 1, pageSize = DEFAULT_PAGINATION.pageSize } = unref(
-        getPaginationRef
-      ) as PaginationProps
-
+      // set page params info
       if (unref(getPaginationRef)) {
+        const { currentPage = 1, pageSize = DEFAULT_PAGINATION.pageSize } = unref(
+          getPaginationRef
+        ) as PaginationProps
+
         pageParams[pageField] = (opt && opt.page) || currentPage
         pageParams[sizeField] = pageSize
       }
