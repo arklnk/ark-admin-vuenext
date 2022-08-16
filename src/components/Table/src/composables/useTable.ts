@@ -1,6 +1,5 @@
 // import type { BasicTableProps } from '../types/table'
-import type { BasicTableActionType } from '../types/table'
-import type { WatchStopHandle } from 'vue'
+import type { BasicTableActionType, BasicTableProps, FetchParams } from '../types/table'
 
 import { ref, onUnmounted, unref } from 'vue'
 import { error } from '/@/utils/log'
@@ -10,8 +9,6 @@ type Register = (instance: BasicTableActionType) => void
 export function useTable(): [Register, BasicTableActionType] {
   const tableRef = ref<Nullable<BasicTableActionType>>(null)
   const loadedRef = ref<Nullable<boolean>>(false)
-
-  let stopWatch: WatchStopHandle
 
   function register(instance: BasicTableActionType) {
     onUnmounted(() => {
@@ -23,8 +20,6 @@ export function useTable(): [Register, BasicTableActionType] {
 
     tableRef.value = instance
     loadedRef.value = true
-
-    stopWatch?.()
   }
 
   function getTableInstance(): BasicTableActionType {
@@ -38,5 +33,32 @@ export function useTable(): [Register, BasicTableActionType] {
     return table as BasicTableActionType
   }
 
-  return [register, getTableInstance()]
+  const methods: BasicTableActionType = {
+    reload: async (opt?: FetchParams) => {
+      await getTableInstance().reload(opt)
+    },
+    setLoading: (loading: boolean) => {
+      getTableInstance().setLoading(loading)
+    },
+    setProps: (props: Partial<BasicTableProps>) => {
+      getTableInstance().setProps(props)
+    },
+    setShowPagination: (show: boolean) => {
+      getTableInstance().setShowPagination(show)
+    },
+    getShowPagination: () => {
+      return getTableInstance().getShowPagination()
+    },
+    getDataSource: () => {
+      return getTableInstance().getDataSource()
+    },
+    getSize: () => {
+      return getTableInstance().getSize()
+    },
+    redoHeight: () => {
+      getTableInstance().redoHeight()
+    },
+  }
+
+  return [register, methods]
 }
