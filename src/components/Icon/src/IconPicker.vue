@@ -1,12 +1,10 @@
 <template>
   <ElInput
-    :class="$attrs.class"
-    :style="$attrs.style"
     type="text"
     clearable
     v-model="currentSelectRef"
     readonly
-    placeholder="请选择图标"
+    :placeholder="t('component.icon.placeholder')"
   >
     <template #prepend>{{ getIconPrefixRef }}</template>
 
@@ -17,7 +15,12 @@
         </template>
 
         <div class="flex flex-row px-1 mb-2">
-          <ElInput placeholder="搜索图标" clearable v-model="searchRef" class="flex-1" />
+          <ElInput
+            :placeholder="t('component.icon.searchPlaceholder')"
+            clearable
+            v-model="searchRef"
+            class="flex-1"
+          />
           <ElButton text type="info" class="ml-1" @click="handleClear">清空</ElButton>
         </div>
         <ElScrollbar height="180px">
@@ -46,10 +49,10 @@ import IconHealthiconsUiMenuGrid from '~icons/healthicons/ui-menu-grid'
 import { computed, defineComponent, ref, unref, watch, watchEffect } from 'vue'
 
 import svgIcons from 'virtual:svg-icons-names'
+import { useTransl } from '/@/composables/core/useTransl'
 
 export default defineComponent({
   name: 'IconPicker',
-  inheritAttrs: false,
   props: {
     modelValue: {
       type: String,
@@ -64,6 +67,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const currentSelectRef = ref('')
     const searchRef = ref('')
+
+    const { t } = useTransl()
 
     const getIconPrefixRef = computed((): string => {
       return `${props.prefix}-`
@@ -114,6 +119,7 @@ export default defineComponent({
       getIconPrefixRef,
       handleClick,
       handleClear,
+      t,
     }
   },
 })
