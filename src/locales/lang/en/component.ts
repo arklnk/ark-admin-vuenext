@@ -1,6 +1,6 @@
 export default {
   form: {
-    invalidTip: 'Please enter a valid {prop}',
-    requiredTip: 'Please enter a {prop}',
+    invalid: 'Please enter a valid ',
+    required: 'Please enter a ',
   },
 }

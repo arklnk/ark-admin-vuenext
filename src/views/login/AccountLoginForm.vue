@@ -7,13 +7,13 @@
     :disabled="isLogging"
   >
     <ElFormItem prop="account">
-      <ElInput size="default" v-model="formData.account" :placeholder="t('views.login.account')" />
+      <ElInput size="default" v-model="formData.account" :placeholder="t('common.login.account')" />
     </ElFormItem>
     <ElFormItem prop="password">
       <ElInput
         size="default"
         v-model="formData.password"
-        :placeholder="t('views.login.passwd')"
+        :placeholder="t('common.login.passwd')"
         show-password
         type="password"
       />
@@ -24,7 +24,7 @@
           size="default"
           class="flex-1"
           v-model="formData.verifyCode"
-          :placeholder="t('views.login.captcha')"
+          :placeholder="t('common.login.captcha')"
           @keyup.enter="handleLogin"
         />
         <div class="h-8 w-20 ml-2 cursor-pointer select-none" @click="handleGetImageCaptcha">
@@ -45,7 +45,7 @@
         type="primary"
         @click="handleLogin"
       >
-        {{ t('views.login.signin') }}
+        {{ t('common.login.signin') }}
       </ElButton>
     </ElFormItem>
   </ElForm>
@@ -139,9 +139,9 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       min: 4,
       message: () => {
         if (isEmpty(formData.account)) {
-          return t('component.form.requiredTip', { prop: t('views.login.account') })
+          return t('component.form.required') + t('common.login.account')
         } else {
-          return t('component.form.invalidTip', { prop: t('views.login.account') })
+          return t('component.form.invalid') + t('common.login.account')
         }
       },
     },
@@ -154,9 +154,9 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       min: 6,
       message: () => {
         if (isEmpty(formData.password)) {
-          return t('component.form.requiredTip', { prop: t('views.login.passwd') })
+          return t('component.form.required') + t('common.login.passwd')
         } else {
-          return t('component.form.invalidTip', { prop: t('views.login.passwd') })
+          return t('component.form.invalid') + t('common.login.passwd')
         }
       },
     },
@@ -170,9 +170,9 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       max: 4,
       message: () => {
         if (isEmpty(formData.verifyCode)) {
-          return t('component.form.requiredTip', { prop: t('views.login.captcha') })
+          return t('component.form.required') + t('common.login.captcha')
         } else {
-          return t('component.form.invalidTip', { prop: t('views.login.captcha') })
+          return t('component.form.invalid') + t('common.login.captcha')
         }
       },
     },

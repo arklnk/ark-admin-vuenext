@@ -3,8 +3,8 @@
     <ElResult
       class="h-full"
       icon="error"
-      :title="t('views.viewnotimpl.title')"
-      :sub-title="t('views.viewnotimpl.subTitle')"
+      :title="t('common.exception.dynamicImport')"
+      :sub-title="t('common.exception.dynamicImportDesc')"
     />
   </PageWrapper>
 </template>

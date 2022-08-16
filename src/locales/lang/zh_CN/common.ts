@@ -15,10 +15,40 @@ export default {
     errMsg503: '服务不可用，服务器暂时过载或维护!',
   },
 
+  exception: {
+    // page 404
+    backHome: '返回首页',
+    pageNotFound: '页面没有找到',
+    pageNotFoundDesc: '请检查链接是否输入正确, 或点击按钮返回首页',
+
+    // view not impl
+    dynamicImport: '页面动态载入失败',
+    dynamicImportDesc: '请检查对应动态载入页面路径下的文件是否存在',
+  },
+
+  // login page
+  login: {
+    oslink: '开源地址',
+    signin: '登录',
+    account: '用户名',
+    passwd: '密码',
+    captcha: '验证码',
+  },
+
   basic: {
     create: '新增',
     update: '更新',
     delete: '删除',
     query: '查询',
+    save: '保存',
+    reset: '重置',
+    search: '搜索',
+
+    ok: '确认',
+    cancel: '取消',
+    close: '关闭',
+    redo: '刷新',
+    back: '返回',
+    loading: '加载中...',
   },
 }

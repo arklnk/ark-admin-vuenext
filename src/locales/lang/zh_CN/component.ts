@@ -1,6 +1,6 @@
 export default {
   form: {
-    invalidTip: '请输入有效的{prop}',
-    requiredTip: '请输入{prop}',
+    invalid: '请输入有效的',
+    required: '请输入',
   },
 }

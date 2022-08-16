@@ -4,13 +4,13 @@
     class="relative h-full w-full bg-no-repeat bg-cover bg-gray-100 overflow-y-auto"
   >
     <header class="max-w-[800px] h-20 px-5 m-auto flex justify-end items-center">
-      <AppLocalePicker class="ml-4 text-info text-sm" show-text />
+      <AppLocalePicker class="ml-4 text-info text-sm" />
       <AppDarkModeToggle class="ml-4 text-sm" />
     </header>
     <main class="max-w-[800px] m-auto pt-12 pb-6">
       <div class="relative w-[380px] rounded-lg mt-20 mx-auto p-10 box-border">
         <div class="pb-7 pt-2 text-center text-2xl font-semibold text-black dark:text-gray-400">
-          {{ t('views.login.signin') }}
+          {{ t('common.login.signin') }}
         </div>
         <AccountLoginForm />
       </div>
@@ -22,7 +22,7 @@
 import AccountLoginForm from './AccountLoginForm.vue'
 import { AppDarkModeToggle, AppLocalePicker } from '/@/components/Application'
 import { useDesign } from '/@/composables/core/useDesign'
-import { useTransl } from '../../composables/core/useTransl'
+import { useTransl } from '/@/composables/core/useTransl'
 
 const { prefixCls } = useDesign('login')
 const { t } = useTransl()

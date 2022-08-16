@@ -15,10 +15,42 @@ export default {
     errMsg503: 'The service is unavailable, the server is temporarily overloaded or maintained!',
   },
 
+  exception: {
+    // page 404
+    backHome: 'Back homepage',
+    pageNotFound: 'Page not found',
+    pageNotFoundDesc:
+      'Please check whether the link is entered correctly or click the button to return to the home page',
+
+    // view not impl
+    dynamicImport: 'Page dynamic loading failed',
+    dynamicImportDesc:
+      'Please check whether the file in the corresponding dynamic load page path exists',
+  },
+
+  // login page
+  login: {
+    oslink: 'Github Link',
+    signin: 'Sign in',
+    account: 'Username',
+    passwd: 'Password',
+    captcha: 'Captcha',
+  },
+
   basic: {
     create: 'Create',
     update: 'Update',
     delete: 'Delete',
     query: 'Query',
+    save: 'Save',
+    reset: 'Reset',
+    search: 'Search',
+
+    ok: 'Ok',
+    cancel: 'Cancel',
+    close: 'Close',
+    redo: 'Refresh',
+    back: 'Back',
+    loading: 'Loading...',
   },
 }

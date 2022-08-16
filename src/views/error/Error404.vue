@@ -23,9 +23,11 @@
       :class="`${prefixCls}__content`"
       class="relative w-[500px] max-w-full m-5 text-center py-[60px] px-[40px] rounded-sm"
     >
-      <p class="mb-4 text-base text-gray-600 dark:text-white">{{ t('views.error404.title') }}</p>
-      <p class="mb-4 text-xs text-gray-400">{{ t('views.error404.subTitle') }}</p>
-      <ElButton class="mt-2" @click="go()">{{ t('views.error404.backHome') }}</ElButton>
+      <p class="mb-4 text-base text-gray-600 dark:text-white">
+        {{ t('common.exception.pageNotFound') }}
+      </p>
+      <p class="mb-4 text-xs text-gray-400">{{ t('common.exception.pageNotFoundDesc') }}</p>
+      <ElButton class="mt-2" @click="go()">{{ t('common.exception.backHome') }}</ElButton>
     </ElCard>
   </main>
 </template>
