@@ -23,11 +23,12 @@ function getKey(namespace: string | undefined, key: string) {
 
 // useI18n in vue-i18n, prevent to nuptial rename to useTransl
 export function useTransl(namespace?: string) {
+  const normalT: I18nGlobalTranslation = (key: string) => getKey(namespace, key)
+
+  // i18n not init
   if (!i18n) {
     return {
-      t: (key: string) => {
-        return getKey(namespace, key)
-      },
+      t: normalT,
     }
   }
 
