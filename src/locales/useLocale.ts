@@ -4,10 +4,9 @@ import type { LocaleType } from '/#/config'
 import { computed, unref } from 'vue'
 import { useLocaleStore } from '/@/stores/modules/locale'
 import { loadLocalePool, setHtmlPageLang } from './helper'
-import { useI18n } from 'vue-i18n'
+import { i18n } from './setupI18n'
 
 export function useLocale() {
-  const { locale: globalLocale, getLocaleMessage, setLocaleMessage } = useI18n()
   const localeStore = useLocaleStore()
 
   const getLocale = computed(() => localeStore.getLocale)
@@ -15,16 +14,20 @@ export function useLocale() {
   const getShowPicker = computed(() => localeStore.getShowPicker)
 
   const getEleLocale = computed((): any => {
-    return getLocaleMessage<LangModule['message']>(unref(getLocale))?.eleLocale ?? {}
+    return i18n.global.getLocaleMessage<LangModule['message']>(unref(getLocale))?.eleLocale ?? {}
   })
 
   const getDayjsLocale = computed((): any => {
-    return getLocaleMessage<LangModule['message']>(unref(getLocale))?.dayjsLocale ?? {}
+    return i18n.global.getLocaleMessage<LangModule['message']>(unref(getLocale))?.dayjsLocale ?? {}
   })
 
   function setI18nLang(locale: LocaleType) {
     // check mode is legacy or composition
-    globalLocale.value = locale
+    if (typeof i18n.global.locale === 'string') {
+      i18n.global.locale = locale
+    } else {
+      i18n.global.locale.value = locale
+    }
 
     // update store
     localeStore.setLocaleInfo({ locale })
@@ -35,7 +38,9 @@ export function useLocale() {
 
   // switch the lang will change the locale of useI18n
   async function changeLocale(locale: LocaleType) {
-    const currentLocale = unref(globalLocale)
+    const globalI18n = i18n.global
+
+    const currentLocale = unref(globalI18n.locale)
 
     // nothing change
     if (currentLocale === locale) {
@@ -53,7 +58,7 @@ export function useLocale() {
     if (!langModule) return
 
     const { message } = langModule
-    setLocaleMessage(locale, message)
+    globalI18n.setLocaleMessage(locale, message)
     loadLocalePool.push(locale)
 
     setI18nLang(locale)

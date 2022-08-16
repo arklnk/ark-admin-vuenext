@@ -6,9 +6,11 @@ import { localeSetting } from '../settings/localeSetting'
 import { useLocaleStore } from '../stores/modules/locale'
 import { loadLocalePool, setHtmlPageLang } from './helper'
 
-const { fallback, availableLocales } = localeSetting
+// global i18n instance, replace to useI18n
+export let i18n: I18n
 
 async function createI18nOptions(): Promise<I18nOptions> {
+  const { fallback, availableLocales } = localeSetting
   const localeStore = useLocaleStore()
 
   const locale = localeStore.getLocale
@@ -36,6 +38,6 @@ async function createI18nOptions(): Promise<I18nOptions> {
 
 export async function setupI18n(app: App) {
   const options = await createI18nOptions()
-  const i18n: I18n = createI18n(options)
+  i18n = createI18n(options)
   app.use(i18n)
 }

@@ -144,7 +144,7 @@ import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground'
 import { useTransitionSetting } from '/@/composables/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
-import { ContentEnum, contentMap, RouterTransitionEnum, topMenuAlignMap } from '/@/enums/appEnum'
+import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum'
 import { MenuModeEnum } from '/@/enums/menuEnum'
 import { TopMenuAlign } from '/#/config'
 import { useAppInject } from '/@/composables/core/useAppInject'
@@ -169,9 +169,11 @@ const {
   getFullContent,
   setRootSetting,
 } = useRootSetting()
-const contentModeOptions: LabelValueOptions = Array.from(contentMap).map(([key, value]) => {
-  return { label: t(value), value: key }
-})
+
+const contentModeOptions: LabelValueOptions = [
+  { label: t('layout.setting.contentModeFull'), value: ContentEnum.FULL },
+  { label: t('layout.setting.contentModeFixed'), value: ContentEnum.FIXED },
+]
 function handleSystemThemeChange(themeColor: string) {
   updateTheme(themeColor)
   setRootSetting({ themeColor })
@@ -211,9 +213,11 @@ const {
   setMenuSetting,
 } = useMenuSetting()
 const disableSidebarRelSetting = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
-const topMenuAlignOptions: LabelValueOptions = Array.from(topMenuAlignMap).map(([key, value]) => {
-  return { label: t(value), value: key }
-})
+const topMenuAlignOptions: LabelValueOptions = [
+  { label: t('layout.setting.topMenuTypeLeft'), value: 'flex-start' },
+  { label: t('layout.setting.topMenuTypeCenter'), value: 'center' },
+  { label: t('layout.setting.topMenuTypeRight'), value: 'flex-end' },
+]
 function handleMenuCollapsedChange(collapsed: boolean) {
   setMenuSetting({ collapsed })
 }

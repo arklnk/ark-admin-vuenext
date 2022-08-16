@@ -3,9 +3,9 @@
     :class="prefixCls"
     class="relative h-full w-full bg-no-repeat bg-cover bg-gray-100 overflow-y-auto"
   >
-    <header class="max-w-[800px] h-20 px-5 m-auto flex justify-end items-center text-base">
-      <AppLocalePicker class="ml-4 text-info" show-text />
-      <AppDarkModeToggle class="ml-4" />
+    <header class="max-w-[800px] h-20 px-5 m-auto flex justify-end items-center">
+      <AppLocalePicker class="ml-4 text-info text-sm" show-text />
+      <AppDarkModeToggle class="ml-4 text-sm" />
     </header>
     <main class="max-w-[800px] m-auto pt-12 pb-6">
       <div class="relative w-[380px] rounded-lg mt-20 mx-auto p-10 box-border">

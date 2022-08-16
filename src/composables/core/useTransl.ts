@@ -1,4 +1,6 @@
-import { useI18n as useVueI18n } from 'vue-i18n'
+import type { ComposerTranslation } from 'vue-i18n'
+
+import { i18n } from '/@/locales/setupI18n'
 
 /**
  * https://vue-i18n.intlify.dev/api/injection.html#t-key
@@ -21,13 +23,21 @@ function getKey(namespace: string | undefined, key: string) {
 
 // useI18n in vue-i18n, prevent to nuptial rename to useTransl
 export function useTransl(namespace?: string) {
-  const { t } = useVueI18n()
+  if (!i18n) {
+    return {
+      t: (key: string) => {
+        return getKey(namespace, key)
+      },
+    }
+  }
 
-  const tFn: I18nGlobalTranslation = (key: string, ...args: any[]) => {
+  const { t } = i18n.global
+
+  const tFn: I18nGlobalTranslation = (key: string, ...args: unknown[]) => {
     if (!key) return ''
     if (!key.includes('.') && !namespace) return key
 
-    return t(getKey(namespace, key), ...(args as [string, any]))
+    return (t as ComposerTranslation)(getKey(namespace, key), ...(args as [string, any]))
   }
 
   return {
