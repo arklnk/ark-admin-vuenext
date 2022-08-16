@@ -14,4 +14,11 @@ export default {
     errMsg500: 'Server error, please contact the administrator!',
     errMsg503: 'The service is unavailable, the server is temporarily overloaded or maintained!',
   },
+
+  basic: {
+    create: 'Create',
+    update: 'Update',
+    delete: 'Delete',
+    query: 'Query',
+  },
 }

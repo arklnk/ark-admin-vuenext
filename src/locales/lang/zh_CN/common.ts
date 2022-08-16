@@ -14,4 +14,11 @@ export default {
     errMsg500: '服务器错误,请联系管理员!',
     errMsg503: '服务不可用，服务器暂时过载或维护!',
   },
+
+  basic: {
+    create: '新增',
+    update: '更新',
+    delete: '删除',
+    query: '查询',
+  },
 }
