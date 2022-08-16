@@ -84,6 +84,9 @@ const schemas = ref<FormSchema[]>([
       nodeKey: 'id',
       data: [],
       checkStrictly: true,
+      props: {
+        label: 'name',
+      },
     },
   },
   {
