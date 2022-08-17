@@ -93,10 +93,6 @@ export const basicProps = {
   submitButtonProps: {
     type: Object as PropType<Partial<Writable<ButtonProps>>>,
   },
-  submitButtonText: {
-    type: String,
-    default: '查询',
-  },
   // 按下回车后自动提交
   submitOnEnterPress: {
     type: Boolean,

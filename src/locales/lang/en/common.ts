@@ -48,6 +48,7 @@ export default {
     operation: 'Operation',
     edit: 'Edit',
     confirm: 'Confirm',
+    submit: 'Submit',
 
     show: 'Show',
     hidden: 'Hidden',

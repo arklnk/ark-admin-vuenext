@@ -4,7 +4,7 @@
       <div class="w-full flex justify-end">
         <slot name="resetBefore"></slot>
         <ElButton v-if="showResetButton" v-bind="resetButtonProps" @click="resetAction">
-          重置
+          {{ t('common.basic.reset') }}
         </ElButton>
         <slot name="submitBefore"></slot>
         <ElButton
@@ -13,7 +13,7 @@
           v-bind="submitButtonProps"
           @click="submitAction"
         >
-          {{ submitButtonText }}
+          {{ t('common.basic.submit') }}
         </ElButton>
       </div>
     </ElFormItem>
@@ -25,6 +25,7 @@ import { pick } from 'lodash-es'
 import { defineComponent } from 'vue'
 import { useFormContext } from '../composables/useFormContext'
 import { basicProps } from '../props'
+import { useTransl } from '/@/composables/core/useTransl'
 
 export default defineComponent({
   name: 'BasicFormAction',
@@ -33,12 +34,14 @@ export default defineComponent({
     'actionColProps',
     'showResetButton',
     'showSubmitButton',
-    'submitButtonText',
     'submitButtonProps',
     'resetButtonProps',
   ]),
   setup() {
+    const { t } = useTransl()
+
     return {
+      t,
       ...useFormContext(),
     }
   },

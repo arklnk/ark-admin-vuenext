@@ -46,6 +46,7 @@ export default {
     operation: '操作',
     edit: '编辑',
     confirm: '确定',
+    submit: '提交',
 
     show: '显示',
     hidden: '隐藏',
