@@ -1,7 +1,6 @@
 <template>
   <PageWrapper>
     <BasicTable
-      class="p-1"
       :columns="columns"
       :api="processRequestData"
       :pagination="false"

@@ -106,6 +106,13 @@ export const basicProps = {
     default: 0,
   },
   /**
+   * inset will remove inner padding
+   */
+  inset: {
+    type: Boolean,
+    default: false,
+  },
+  /**
    * ElTable原有的属性
    */
   ...defaultProps,

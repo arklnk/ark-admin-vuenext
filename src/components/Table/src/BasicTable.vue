@@ -183,7 +183,13 @@ export default defineComponent({
     }
 
     const getWrapperClass = computed(() => {
-      return [prefixCls, attrs.class]
+      return [
+        prefixCls,
+        attrs.class,
+        {
+          inset: unref(getProps).inset,
+        },
+      ]
     })
 
     function setProps(props: Partial<BasicTableProps>) {
@@ -236,13 +242,28 @@ $prefixCls: #{var.$namespace}-basic-table;
 
 .#{$prefixCls} {
   max-width: 100%;
+  padding: 4px 8px;
   position: relative;
   background-color: var(--el-fill-color-blank);
 
   // fix mask over header in fiexd mode
   .el-table {
+    --el-table-header-bg-color: var(--el-fill-color-light);
+
     .el-loading-mask {
       z-index: 8;
+    }
+  }
+
+  &.inset {
+    padding: 0;
+  }
+}
+
+html.dark {
+  .#{$prefixCls} {
+    .el-table {
+      --el-table-header-bg-color: var(--el-bg-color);
     }
   }
 }
