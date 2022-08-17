@@ -21,7 +21,7 @@
       <template #isShow="{ model }">
         <el-radio-group v-model="model.isShow">
           <el-radio :label="1">{{ t('common.basic.show') }}</el-radio>
-          <el-radio :label="2">{{ t('common.basic.hidden') }}</el-radio>
+          <el-radio :label="0">{{ t('common.basic.hidden') }}</el-radio>
         </el-radio-group>
       </template>
     </BasicForm>
