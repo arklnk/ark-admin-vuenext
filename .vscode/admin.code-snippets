@@ -24,5 +24,19 @@
       "}"
     ],
     "description": "permission api define"
+  },
+  "defreq": {
+    "scope": "typescript",
+    "prefix": "defreq",
+    "body": [
+      "export function use$1Request(): [PromiseFn, string] {",
+      "  async function request() {",
+      "    return await defHttp.get({ url: Api.$2 })",
+      "  }",
+      "",
+      "  return [request, Api.$2]",
+      "}"
+    ],
+    "description": "define api request"
   }
 }
