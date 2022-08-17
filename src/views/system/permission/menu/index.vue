@@ -33,10 +33,10 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="handleUpdate(row)">{{
+        <ElButton type="primary" link @click.stop="handleUpdate(row)">{{
           t('common.basic.edit')
         }}</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">{{
+        <ElButton type="danger" link @click.stop="handleDelete(row)">{{
           t('common.basic.delete')
         }}</ElButton>
       </template>
