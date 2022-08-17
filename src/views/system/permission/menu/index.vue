@@ -148,6 +148,7 @@ const columns = ref<BasicColumn[]>([
     align: 'center',
     label: t('common.basic.operation'),
     slot: 'action',
+    fixed: 'right',
   },
 ])
 </script>
