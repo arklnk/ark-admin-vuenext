@@ -1,17 +1,18 @@
 <template>
   <slot name="prepend"></slot>
   <ElButton @click="handleCancel" v-bind="cancelBtnProps" v-if="showCancelBtn">
-    {{ cancelText }}
+    {{ cancelText || t('common.basic.cancel') }}
   </ElButton>
   <slot name="center"></slot>
   <ElButton type="primary" v-bind="confirmBtnProps" @click="handleConfirm" v-if="showConfirmBtn">
-    {{ confirmText }}
+    {{ confirmText || t('common.basic.confirm') }}
   </ElButton>
   <slot name="append"></slot>
 </template>
 
 <script setup lang="ts">
 import type { ButtonProps } from 'element-plus'
+import { useTransl } from '/@/composables/core/useTransl'
 
 defineProps({
   confirmText: {
@@ -35,6 +36,8 @@ defineProps({
 })
 
 const emit = defineEmits(['cancel', 'confirm'])
+
+const { t } = useTransl()
 
 function handleCancel() {
   emit('cancel')

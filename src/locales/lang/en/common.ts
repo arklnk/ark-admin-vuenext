@@ -47,6 +47,7 @@ export default {
     search: 'Search',
     operation: 'Operation',
     edit: 'Edit',
+    confirm: 'Confirm',
 
     show: 'Show',
     hidden: 'Hidden',

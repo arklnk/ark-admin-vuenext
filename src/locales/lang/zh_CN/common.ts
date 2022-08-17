@@ -45,11 +45,12 @@ export default {
     search: '搜索',
     operation: '操作',
     edit: '编辑',
+    confirm: '确定',
 
     show: '显示',
     hidden: '隐藏',
 
-    ok: '确认',
+    ok: '好',
     cancel: '取消',
     close: '关闭',
     redo: '刷新',
