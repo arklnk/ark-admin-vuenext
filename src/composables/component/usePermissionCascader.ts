@@ -65,12 +65,17 @@ export function usePermissionCascader(config?: Config) {
     return auth
   })
 
-  function transformValues(values: (string | number)[][], separator = '/'): string[] {
-    return values.map((e) => e.join(`${separator}`))
+  function transformValues(values: string[][], separator = '/'): string[] {
+    return values.map((e) => e.join(separator))
+  }
+
+  function reverseValues(values: string[], separator = '/'): string[][] {
+    return values.map((e) => e.split(separator))
   }
 
   return {
     getOptionsRef,
     transformValues,
+    reverseValues,
   }
 }
