@@ -49,15 +49,15 @@ export function useTableEvents(
     emit('cell-dblclick', ...args)
   }
 
-  function handleRowClick(row: Recordable, ...args: any[]) {
-    emit('row-click', row, ...args)
-
+  function handleRowClick(row: Recordable, column: any, event: Event) {
     // tree table
     if (Reflect.has(row, unref(getChildrenName))) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       unref(tableRef)?.toggleRowExpansion(row)
     }
+
+    emit('row-click', row, column, event)
   }
 
   function handleRowContextmenu(...args: any[]) {
