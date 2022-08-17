@@ -1,8 +1,6 @@
 <template>
-  <ElTooltip content="全屏内容" placement="top">
-    <IconMajesticonsArrowsCollapseFull @click="toggle" v-if="isFullscreen" />
-    <IconMajesticonsArrowsExpandFull @click="toggle" v-else />
-  </ElTooltip>
+  <IconMajesticonsArrowsCollapseFull @click="toggle" v-if="isFullscreen" />
+  <IconMajesticonsArrowsExpandFull @click="toggle" v-else />
 </template>
 
 <script setup lang="ts">

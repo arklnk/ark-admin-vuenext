@@ -1,7 +1,5 @@
 <template>
-  <ElTooltip placement="top" content="刷新">
-    <IconMdiRestore @click="redo" />
-  </ElTooltip>
+  <IconMdiRestore @click="redo" />
 </template>
 
 <script setup lang="ts">

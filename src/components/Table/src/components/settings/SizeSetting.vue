@@ -1,14 +1,18 @@
 <template>
-  <ElTooltip content="密度" placement="top">
-    <ElDropdown @command="handleCommand" trigger="click">
-      <IconMdiFormatLineSpacing />
-      <template #dropdown>
-        <el-dropdown-item :disabled="isDisable('small')" command="small">紧凑</el-dropdown-item>
-        <el-dropdown-item :disabled="isDisable('default')" command="default">默认</el-dropdown-item>
-        <el-dropdown-item :disabled="isDisable('large')" command="large">宽松</el-dropdown-item>
-      </template>
-    </ElDropdown>
-  </ElTooltip>
+  <ElDropdown @command="handleCommand" trigger="click">
+    <IconMdiFormatLineSpacing />
+    <template #dropdown>
+      <el-dropdown-item :disabled="isDisable('small')" command="small">
+        {{ t('component.table.toolbar.desityCompact') }}
+      </el-dropdown-item>
+      <el-dropdown-item :disabled="isDisable('default')" command="default">
+        {{ t('component.table.toolbar.desityDefault') }}
+      </el-dropdown-item>
+      <el-dropdown-item :disabled="isDisable('large')" command="large">
+        {{ t('component.table.toolbar.desityLoose') }}
+      </el-dropdown-item>
+    </template>
+  </ElDropdown>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +21,9 @@ import type { SizeType } from '/#/config'
 import IconMdiFormatLineSpacing from '~icons/mdi/format-line-spacing'
 import { useTableContext } from '../../composables/useTableContext'
 import projectSetting from '/@/settings/projectSetting'
+import { useTransl } from '/@/composables/core/useTransl'
+
+const { t } = useTransl()
 
 const table = useTableContext()
 
