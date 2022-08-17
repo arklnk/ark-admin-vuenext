@@ -136,7 +136,7 @@ export default defineComponent({
       wrapRef
     )
 
-    const { onTableEvent } = useTableEvents(emit)
+    const { onTableEvent } = useTableEvents(emit, getProps, tableRef)
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)

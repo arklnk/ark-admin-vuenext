@@ -1,7 +1,22 @@
+import type { ComputedRef, Ref } from 'vue'
+import type { BasicTableProps } from '../types/table'
+import type { ElTable } from 'element-plus'
+
+import { unref, computed } from 'vue'
+import { DEFAULT_CHILDREN_KEY } from '../const'
+
 /**
  * 注册原有的ElTable事件
  */
-export function useTableEvents(emit: EmitFn) {
+export function useTableEvents(
+  emit: EmitFn,
+  getProps: ComputedRef<BasicTableProps>,
+  tableRef: Ref<Nullable<InstanceType<typeof ElTable>>>
+) {
+  const getChildrenName = computed(() => {
+    return unref(getProps).treeProps?.children || DEFAULT_CHILDREN_KEY
+  })
+
   function handleSelect(...args: any[]) {
     emit('select', ...args)
   }
@@ -34,8 +49,15 @@ export function useTableEvents(emit: EmitFn) {
     emit('cell-dblclick', ...args)
   }
 
-  function handleRowClick(...args: any[]) {
-    emit('row-click', ...args)
+  function handleRowClick(row: Recordable, ...args: any[]) {
+    emit('row-click', row, ...args)
+
+    // tree table
+    if (Reflect.has(row, unref(getChildrenName))) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      unref(tableRef)?.toggleRowExpansion(row)
+    }
   }
 
   function handleRowContextmenu(...args: any[]) {
