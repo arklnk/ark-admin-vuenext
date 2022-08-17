@@ -18,7 +18,7 @@ export default {
     // show state
     menuHidden: '隐藏',
 
-    form: {
+    editform: {
       title: '编辑菜单',
     },
   },

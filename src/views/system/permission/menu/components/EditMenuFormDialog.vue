@@ -1,10 +1,15 @@
 <template>
-  <BasicDialog @register="registerDialog" :title="t('views.system.menu.form.title')">
+  <BasicDialog
+    @register="registerDialog"
+    :title="t('views.system.menu.editform.title')"
+    @confirm="submit"
+  >
     <BasicForm
       @register="registerForm"
       :show-action-button-group="false"
       :schemas="schemas"
-      label-width="100px"
+      label-width="110px"
+      @submit="handleSubmit"
     >
       <template #type="{ model }">
         <el-radio-group v-model="model.type">
@@ -13,53 +18,110 @@
           <el-radio :label="2">{{ t('views.system.menu.menuTypePermission') }}</el-radio>
         </el-radio-group>
       </template>
+      <template #isShow="{ model }">
+        <el-radio-group v-model="model.isShow">
+          <el-radio :label="1">{{ t('common.basic.show') }}</el-radio>
+          <el-radio :label="2">{{ t('common.basic.hidden') }}</el-radio>
+        </el-radio-group>
+      </template>
     </BasicForm>
   </BasicDialog>
 </template>
 
 <script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
+import type { MenuResult } from '/@/api/system/menu.api'
 
+import { useAddMenuRequest, useUpdateMenuRequest } from '/@/api/system/menu.api'
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { useTransl } from '/@/composables/core/useTransl'
 import { ref, unref } from 'vue'
 import { IconPicker } from '/@/components/Icon'
 import { usePermissionCascader } from '/@/composables/component/usePermissionCascader'
+import { filter } from '/@/utils/helper/tree'
+import { isUrl } from '/@/utils/is'
 
-defineEmits(['register'])
+const emit = defineEmits(['register', 'success'])
 
 const { t } = useTransl()
 
-interface MenuTreeSelect {
-  id: number
-  name: string
-  parentId?: number
-  children?: MenuTreeSelect[]
-}
+const updateMenuId = ref<null | number>(null)
 
-const [registerForm, { updateSchema }] = useForm()
+const [addMenuRequest, _] = useAddMenuRequest()
+const [updateMenuRequest, __] = useUpdateMenuRequest()
 
-const { getOptionsRef } = usePermissionCascader()
+const [registerForm, { updateSchema, submit, setProps: setFormProps, setFormModel }] = useForm()
 
-const [registerDialog] = useDialogInner(
-  (data: { menus?: MenuTreeSelect[]; item?: MenuTreeSelect }) => {
+const { getOptionsRef, transformValues, reverseValues } = usePermissionCascader()
+
+const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner(
+  (data: { menus?: MenuResult[]; item?: MenuResult }) => {
+    const menus = filter<MenuResult>(data.menus || [], (item): boolean => {
+      // 过滤权限节点，权限节点不能作为父级
+      return item.type === 0 || item.type === 1
+    })
     const menuTree = [
       {
         id: 0,
         name: '#',
-        children: data.menus || [],
+        children: menus,
       },
     ]
 
+    // update tree props data
     updateSchema({
       prop: 'parentId',
       componentProps: {
         data: menuTree,
       },
     })
+
+    // is update?
+    if (data.item) {
+      const values = {
+        ...data.item,
+        perms: reverseValues(data.item.perms),
+      }
+      setFormModel(values)
+      updateMenuId.value = data.item.id
+    } else {
+      updateMenuId.value = null
+    }
   }
 )
+
+async function handleSubmit(res: Omit<MenuResult, 'id'>) {
+  try {
+    setFormProps({ disabled: true })
+    setDialogProps({ confirmBtnProps: { loading: true } })
+
+    // 转换权限值
+    if (res.type === 2) {
+      res.perms = transformValues(res.perms as unknown as string[][])
+    }
+
+    // 未实现，默认处理
+    res.activeRouter = ''
+
+    if (updateMenuId.value === null) {
+      await addMenuRequest(res)
+    } else {
+      await updateMenuRequest({
+        ...res,
+        id: updateMenuId.value,
+      })
+    }
+
+    // close
+    closeDialog()
+
+    emit('success')
+  } finally {
+    setFormProps({ disabled: false })
+    setDialogProps({ confirmBtnProps: { loading: false } })
+  }
+}
 
 const schemas = ref<FormSchema[]>([
   {
@@ -67,12 +129,23 @@ const schemas = ref<FormSchema[]>([
     defaultValue: 0,
     prop: 'type',
     slot: 'type',
+    rules: {
+      required: true,
+      min: 0,
+      max: 2,
+      type: 'number',
+    },
   },
   {
     label: t('views.system.menu.name'),
     defaultValue: '',
     prop: 'name',
     component: 'ElInput',
+    rules: {
+      required: true,
+      type: 'string',
+      message: `${t('component.form.enter')}${t('views.system.menu.name')}`,
+    },
   },
   {
     label: t('views.system.menu.parent'),
@@ -84,9 +157,17 @@ const schemas = ref<FormSchema[]>([
       nodeKey: 'id',
       data: [],
       checkStrictly: true,
+      defaultExpandAll: true,
       props: {
-        label: 'name',
+        label: (data: MenuResult): string => {
+          return t(data.name)
+        },
       },
+    },
+    rules: {
+      required: true,
+      type: 'number',
+      min: 0,
     },
   },
   {
@@ -97,13 +178,27 @@ const schemas = ref<FormSchema[]>([
       return model.type === 2
     },
     component: 'ElInput',
+    rules: {
+      required: true,
+      validator: (_, value: string, cb) => {
+        if (!value) {
+          cb(new Error(`${t('component.form.enter')}${t('views.system.menu.router')}`))
+          return
+        }
+        if (!isUrl(value) && !value.startsWith('/')) {
+          cb(new Error(`${t('component.form.invalid')}${t('views.system.menu.router')}`))
+          return
+        }
+        cb()
+      },
+    },
   },
   {
     label: t('views.system.menu.viewPath'),
     defaultValue: '',
     prop: 'viewPath',
     hidden: ({ model }) => {
-      return model.type === 2
+      return model.type === 2 || model.type === 0
     },
     component: 'ElInput',
   },
@@ -115,6 +210,15 @@ const schemas = ref<FormSchema[]>([
       return model.type === 2
     },
     component: IconPicker,
+  },
+  {
+    label: t('views.system.menu.isShow'),
+    prop: 'isShow',
+    defaultValue: 1,
+    hidden: ({ model }) => {
+      return model.type === 2
+    },
+    slot: 'isShow',
   },
   {
     label: t('views.system.menu.perm'),
@@ -133,6 +237,21 @@ const schemas = ref<FormSchema[]>([
         expandTrigger: 'hover',
         multiple: true,
       },
+    },
+    rules: {
+      required: true,
+      type: 'array',
+      min: 1,
+      message: `${t('component.form.choose')}${t('views.system.menu.perm')}`,
+    },
+  },
+  {
+    label: t('views.system.menu.orderNum'),
+    defaultValue: 0,
+    prop: 'orderNum',
+    component: 'ElInputNumber',
+    componentProps: {
+      min: 0,
     },
   },
 ])

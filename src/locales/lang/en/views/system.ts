@@ -18,7 +18,7 @@ export default {
     // show state
     menuHidden: 'Hidden',
 
-    form: {
+    editform: {
       title: 'Edit Menu',
     },
   },

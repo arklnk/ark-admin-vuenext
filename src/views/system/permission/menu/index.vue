@@ -11,30 +11,39 @@
     >
       <!-- toolbar -->
       <template #toolbar>
-        <ElButton type="primary" @click="openEditMenuFormDialog">
-          {{ t('common.basic.create') }}
+        <ElButton type="primary" @click="openEditMenuFormDialog()">
+          {{ t('common.basic.add') }}
         </ElButton>
       </template>
       <!-- column -->
       <template #name="{ row }">
         {{ t(row.name) }}
         <ElTag v-if="row.isShow === 0 && row.type !== 2" type="danger">{{
-          t('views.system.menu.menuHidden')
+          t('common.basic.hidden')
         }}</ElTag>
       </template>
       <template #type="{ row }">
         <ElTag>{{ formatterType(row.type) }}</ElTag>
       </template>
       <template #perms="{ row }">
-        <ElTag v-for="item in row.perms" :key="item">{{ item }}</ElTag>
+        <ElTag v-for="item in row.perms" :key="item" class="mr-0.5">{{ item }}</ElTag>
       </template>
       <template #icon="{ row }">
         <SvgIcon v-if="row.icon" :icon="row.icon" />
       </template>
+
+      <template #action="{ row }">
+        <ElButton type="primary" link @click="handleUpdate(row)">{{
+          t('common.basic.edit')
+        }}</ElButton>
+        <ElButton type="danger" link @click="handleDelete(row)">{{
+          t('common.basic.delete')
+        }}</ElButton>
+      </template>
     </BasicTable>
 
     <!-- form -->
-    <EditMenuFormDialog @register="registerDialog" />
+    <EditMenuFormDialog @register="registerDialog" @success="reload" />
   </PageWrapper>
 </template>
 
@@ -44,7 +53,7 @@ import type { BasicColumn } from '/@/components/Table'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { getMenuList } from '/@/api/system/menu.api'
+import { useGetMenuListRequest, useDeleteMenuRequest } from '/@/api/system/menu.api'
 import { useTransl } from '/@/composables/core/useTransl'
 import { listToTree } from '/@/utils/helper/tree'
 import EditMenuFormDialog from './components/EditMenuFormDialog.vue'
@@ -54,14 +63,16 @@ const { t } = useTransl()
 
 const [registerDialog, { openDialog }] = useDialog()
 
-const [registerTable, { getDataSource }] = useTable()
+const [registerTable, { getDataSource, reload }] = useTable()
 
-function openEditMenuFormDialog() {
+function openEditMenuFormDialog(update?: Recordable) {
   openDialog({
     menus: getDataSource(),
+    item: update,
   })
 }
-const [request, _] = getMenuList()
+const [menuListRequest, _] = useGetMenuListRequest()
+const [deleteMenuRequest, __] = useDeleteMenuRequest()
 
 function formatterType(type: number) {
   switch (type) {
@@ -74,8 +85,17 @@ function formatterType(type: number) {
   }
 }
 
+function handleUpdate(row: Recordable) {
+  openEditMenuFormDialog(row)
+}
+
+async function handleDelete(row: Recordable) {
+  await deleteMenuRequest({ id: row.id })
+  reload()
+}
+
 async function processRequestData() {
-  const { list } = await request()
+  const { list } = await menuListRequest()
   return listToTree(list)
 }
 const columns = ref<BasicColumn[]>([
@@ -123,6 +143,12 @@ const columns = ref<BasicColumn[]>([
     align: 'center',
     label: t('views.system.menu.orderNum'),
     prop: 'orderNum',
+  },
+  {
+    width: 140,
+    align: 'center',
+    label: t('common.basic.operation'),
+    slot: 'action',
   },
 ])
 </script>

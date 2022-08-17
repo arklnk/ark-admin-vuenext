@@ -1,11 +1,20 @@
 export default {
   form: {
-    invalid: 'Please enter a valid ',
-    required: 'Please enter a ',
+    invalid: 'invalid ',
+    enter: 'Please enter a ',
+    choose: 'Please choose',
   },
 
   icon: {
     placeholder: 'Click to select icon',
     searchPlaceholder: 'Search icon',
+  },
+
+  table: {
+    toolbar: {
+      desityCompact: 'Compact',
+      desityDefault: 'Default',
+      desityLoose: 'Loose',
+    },
   },
 }

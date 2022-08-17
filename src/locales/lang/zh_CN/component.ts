@@ -1,11 +1,20 @@
 export default {
   form: {
-    invalid: '请输入有效的',
-    required: '请输入',
+    invalid: '无效的',
+    enter: '请输入',
+    choose: '请选择',
   },
 
   icon: {
     placeholder: '点击选择图标',
     searchPlaceholder: '搜索图标',
+  },
+
+  table: {
+    toolbar: {
+      desityCompact: '紧凑',
+      desityDefault: '默认',
+      desityLoose: '宽松',
+    },
   },
 }

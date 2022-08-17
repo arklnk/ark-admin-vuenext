@@ -38,13 +38,18 @@ export default {
   },
 
   basic: {
-    create: 'Create',
+    add: 'Add',
     update: 'Update',
     delete: 'Delete',
     query: 'Query',
     save: 'Save',
     reset: 'Reset',
     search: 'Search',
+    operation: 'Operation',
+    edit: 'Edit',
+
+    show: 'Show',
+    hidden: 'Hidden',
 
     ok: 'Ok',
     cancel: 'Cancel',

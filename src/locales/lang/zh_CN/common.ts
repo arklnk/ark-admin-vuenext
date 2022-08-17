@@ -36,13 +36,18 @@ export default {
   },
 
   basic: {
-    create: '新增',
+    add: '新增',
     update: '更新',
     delete: '删除',
     query: '查询',
     save: '保存',
     reset: '重置',
     search: '搜索',
+    operation: '操作',
+    edit: '编辑',
+
+    show: '显示',
+    hidden: '隐藏',
 
     ok: '确认',
     cancel: '取消',
