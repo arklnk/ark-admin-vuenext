@@ -3,7 +3,18 @@ import type { BasicFormProps, FormSchema } from '../typing'
 import type { FormInstance, FormItemProp } from 'element-plus'
 
 import { unref, toRaw } from 'vue'
-import { cloneDeep, get, hasIn, isEqual, isFunction, isNil, merge, set, unset } from 'lodash-es'
+import {
+  cloneDeep,
+  get,
+  hasIn,
+  isEqual,
+  isFunction,
+  isNil,
+  isPlainObject,
+  merge,
+  set,
+  unset,
+} from 'lodash-es'
 import { error } from '/@/utils/log'
 
 interface UseFormEventsParams {
@@ -28,6 +39,8 @@ export function useFormEvents({
   processFormValues,
 }: UseFormEventsParams) {
   function setFormModel(values: Recordable) {
+    if (!isPlainObject(values)) return
+
     const props = unref(getSchema)
       .map((e) => e.prop)
       .filter((e) => hasIn(values, e))
