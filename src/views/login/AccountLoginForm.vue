@@ -139,7 +139,7 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       min: 4,
       message: () => {
         if (isEmpty(formData.account)) {
-          return t('component.form.required') + t('common.login.account')
+          return t('component.form.enter') + t('common.login.account')
         } else {
           return t('component.form.invalid') + t('common.login.account')
         }
@@ -154,7 +154,7 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       min: 6,
       message: () => {
         if (isEmpty(formData.password)) {
-          return t('component.form.required') + t('common.login.passwd')
+          return t('component.form.enter') + t('common.login.passwd')
         } else {
           return t('component.form.invalid') + t('common.login.passwd')
         }
@@ -170,7 +170,7 @@ const formRules = reactive<Partial<Record<string, FormItemRule | FormItemRule[]>
       max: 4,
       message: () => {
         if (isEmpty(formData.verifyCode)) {
-          return t('component.form.required') + t('common.login.captcha')
+          return t('component.form.enter') + t('common.login.captcha')
         } else {
           return t('component.form.invalid') + t('common.login.captcha')
         }
