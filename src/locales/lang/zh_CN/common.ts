@@ -47,6 +47,7 @@ export default {
     edit: '编辑',
     confirm: '确定',
     submit: '提交',
+    sort: '排序',
 
     show: '显示',
     hidden: '隐藏',

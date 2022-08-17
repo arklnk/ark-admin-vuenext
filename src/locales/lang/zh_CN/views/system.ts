@@ -22,4 +22,11 @@ export default {
       title: '编辑菜单',
     },
   },
+
+  role: {
+    name: '角色名称',
+    uniqueKey: '唯一标识',
+    remark: '备注',
+    status: '状态',
+  },
 }

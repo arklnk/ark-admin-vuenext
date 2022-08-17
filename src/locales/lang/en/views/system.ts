@@ -22,4 +22,11 @@ export default {
       title: 'Edit Menu',
     },
   },
+
+  role: {
+    name: 'Role name',
+    uniqueKey: 'Unique identity',
+    remark: 'Remark',
+    status: 'Status',
+  },
 }

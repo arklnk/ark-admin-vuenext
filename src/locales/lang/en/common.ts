@@ -49,6 +49,7 @@ export default {
     edit: 'Edit',
     confirm: 'Confirm',
     submit: 'Submit',
+    sort: 'Sort',
 
     show: 'Show',
     hidden: 'Hidden',
