@@ -10,6 +10,15 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>
 
 const IFRAME_PARAM = '__iframe__'
 
+function parseDynamicImportPath(key: string): string {
+  const k = key.replace('../../', '')
+  // const startFlag = component.startsWith('/')
+  // const endFlag = component.endsWith('/index.vue') || component.endsWith('/index.tsx')
+  // remove /index view name
+  const lastIndex = k.lastIndexOf('.') - 6
+  return k.substring(0, lastIndex)
+}
+
 export function dynamicImport(component?: string): Component {
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/index.{vue,tsx}')
 
@@ -20,15 +29,9 @@ export function dynamicImport(component?: string): Component {
   }
 
   const matchKeys = keys.filter((key) => {
-    // support vue2: views/system/permission/menu,
-    // but vuenext view path: views/system/permission/menu/index.vue | index.tsx
-    const k = key.replace('../../', '')
-    const startFlag = component.startsWith('/')
-    const endFlag = component.endsWith('/index.vue') || component.endsWith('/index.tsx')
-    const startIndex = startFlag ? 1 : 0
-    const lastIndex = endFlag ? k.length : k.lastIndexOf('.') - 6 // remove /index
-    return k.substring(startIndex, lastIndex) === component
+    return parseDynamicImportPath(key) === component
   })
+
   if (matchKeys?.length === 1) {
     const matchKey = matchKeys[0]
     return dynamicViewsModules[matchKey]
@@ -41,6 +44,15 @@ export function dynamicImport(component?: string): Component {
     warn(`在src/${component}找不到指定的文件,请自行创建!`)
     return ViewNotImpl
   }
+}
+
+/**
+ * get all dynamic import view list
+ */
+export function getDynamicImportViews(): string[] {
+  if (!dynamicViewsModules) return []
+
+  return Object.keys(dynamicViewsModules).map((key) => parseDynamicImportPath(key))
 }
 
 /**

@@ -24,6 +24,16 @@
           <el-radio :label="0">{{ t('common.basic.hidden') }}</el-radio>
         </el-radio-group>
       </template>
+      <template #viewPath="{ model }">
+        <ElSelect v-model="model.viewPath" class="w-full" clearable>
+          <el-option
+            v-for="item in allDynamicImportViews"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </ElSelect>
+      </template>
     </BasicForm>
   </BasicDialog>
 </template>
@@ -41,6 +51,7 @@ import { IconPicker } from '/@/components/Icon'
 import { usePermissionCascader } from '/@/composables/component/usePermissionCascader'
 import { filter } from '/@/utils/helper/tree'
 import { isUrl } from '/@/utils/is'
+import { getDynamicImportViews } from '/@/router/helper/routeHelper'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -123,6 +134,8 @@ async function handleSubmit(res: Omit<MenuResult, 'id'>) {
   }
 }
 
+const allDynamicImportViews = getDynamicImportViews()
+
 const schemas = ref<FormSchema[]>([
   {
     label: t('views.system.menu.type'),
@@ -200,7 +213,7 @@ const schemas = ref<FormSchema[]>([
     hidden: ({ model }) => {
       return model.type === 2 || model.type === 0
     },
-    component: 'ElInput',
+    slot: 'viewPath',
   },
   {
     label: t('views.system.menu.icon'),
