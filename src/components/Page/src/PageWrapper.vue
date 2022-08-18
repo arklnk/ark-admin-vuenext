@@ -180,7 +180,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/var.scss';
 
 $prefixCls: #{var.$namespace}-page-wrapper;

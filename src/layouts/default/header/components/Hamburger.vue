@@ -26,7 +26,7 @@ const getWrapClass = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 

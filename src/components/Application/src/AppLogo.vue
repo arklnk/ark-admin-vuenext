@@ -38,7 +38,7 @@ const getWrapClass = computed(() => [prefixCls, props.theme])
 const go = useGo()
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 

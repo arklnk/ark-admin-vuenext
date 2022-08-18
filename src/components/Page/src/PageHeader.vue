@@ -22,7 +22,7 @@ defineProps({
 const { prefixCls } = useDesign('page-header')
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '/@/styles/var.scss';
 
 $prefixCls: #{var.$namespace}-page-header;
