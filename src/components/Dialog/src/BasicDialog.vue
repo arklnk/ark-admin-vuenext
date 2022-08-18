@@ -1,5 +1,5 @@
 <template>
-  <ElDialog v-bind="getBindValue">
+  <ElDialog v-bind="getBindValue" :before-close="handleCancel">
     <!-- header -->
     <template #header="{ titleId, titleClass }">
       <div :id="titleId" :class="titleClass">
@@ -66,7 +66,7 @@ import { useDesign } from '/@/composables/core/useDesign'
 import DialogHeader from './components/DialogHeader.vue'
 import DialogFooter from './components/DialogFooter.vue'
 import DialogClose from './components/DialogClose.vue'
-import { isFunction, merge } from 'lodash-es'
+import { isFunction, merge, omit } from 'lodash-es'
 import { useAppInject } from '/@/composables/core/useAppInject'
 
 export default defineComponent({
@@ -79,7 +79,7 @@ export default defineComponent({
   inheritAttrs: false,
   props: basicProps,
   emits: ['register', 'confirm', 'cancel', 'update:visible', 'visible-change'],
-  setup(props, { emit }) {
+  setup(props, { emit, attrs }) {
     const visibleRef = ref(false)
     const fullscreenRef = ref(false)
 
@@ -112,24 +112,12 @@ export default defineComponent({
 
     // el-dialog props
     const getBindValue = computed((): Recordable => {
-      const mergeProps = unref(getMergeProps)
-
       const opt: Recordable = {
-        draggable: mergeProps.draggable,
-        top: mergeProps.top,
-        width: mergeProps.width,
-        modal: mergeProps.modal,
-        appendToBody: mergeProps.appendToBody,
-        lockScroll: mergeProps.lockScroll,
-        openDelay: mergeProps.openDelay,
-        closeDelay: mergeProps.closeDelay,
-        closeOnClickModal: mergeProps.closeOnClickModal,
-        closeOnPressEscape: mergeProps.closeOnPressEscape,
-        destroyOnClose: mergeProps.destroyOnClose,
+        ...attrs,
+        ...unref(getMergeProps),
+        // basic setting
         modelValue: unref(visibleRef),
         fullscreen: unref(fullscreenRef),
-        beforeClose: handleCancel,
-        // do not change
         customClass: prefixCls,
         center: false,
         showClose: false,
@@ -139,12 +127,10 @@ export default defineComponent({
       const isMobile = unref(getIsMobile)
       if (isMobile) {
         opt.fullscreen = true
-        setProps({ canFullscreen: false })
+        opt.canFullscreen = false
       } else {
         // 还原回原来的默认值
-        if (props.canFullscreen) {
-          setProps({ canFullscreen: props.canFullscreen })
-        }
+        opt.canFullscreen = props.canFullscreen
       }
 
       // 当 modal 的值为 false 时，请一定要确保 append-to-body 属性为 true
@@ -152,7 +138,24 @@ export default defineComponent({
         opt.appendToBody = true
       }
 
-      return opt
+      return omit(opt, [
+        'visible',
+        'defaultFullscreen',
+        'minHeight',
+        'height',
+        'loading',
+        'loadingTip',
+        'canFullscreen',
+        'showConfirmBtn',
+        'showCancelBtn',
+        'confirmText',
+        'cancelText',
+        'confirmBtnProps',
+        'cancelBtnProps',
+        'title',
+        'helpMessage',
+        'closeFunc',
+      ])
     })
 
     async function handleCancel(e: Event) {
