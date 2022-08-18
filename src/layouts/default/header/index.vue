@@ -119,10 +119,18 @@ $prefixCls: #{var.$namespace}-app-header;
 
   @include when(light) {
     color: var.$color-black;
+
+    .item {
+      color: var.$color-black;
+    }
   }
 
   @include when(dark) {
     color: var.$color-white;
+
+    .item {
+      color: var.$color-white;
+    }
   }
 
   &-menu {
