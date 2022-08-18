@@ -4,7 +4,6 @@
     ref="treeRef"
     :data="data"
     node-key="id"
-    default-expand-all
     show-checkbox
     :props="treeProps"
     @check="handleCheck"
