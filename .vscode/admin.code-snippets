@@ -31,10 +31,10 @@
     "body": [
       "export function use$1Request(): [PromiseFn, string] {",
       "  async function request() {",
-      "    return await defHttp.get({ url: Api.$2 })",
+      "    return await defHttp.$2({ url: Api.$3 })",
       "  }",
       "",
-      "  return [request, Api.$2]",
+      "  return [request, Api.$3]",
       "}"
     ],
     "description": "define api request"
