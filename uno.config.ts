@@ -18,6 +18,8 @@ export default defineConfig({
       info: 'var(--el-color-info)',
       overlay: 'var(--el-bg-color-overlay)',
       page: 'var(--el-bg-color-page)',
+      border: 'var(--el-border-color)',
+      disabled: 'var(--el-text-color-disabled)',
     },
   },
 })
