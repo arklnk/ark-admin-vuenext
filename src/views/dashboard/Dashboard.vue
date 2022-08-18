@@ -1,7 +1,3 @@
 <template>
-  <div><BasicForm /></div>
+  <div>dashboard</div>
 </template>
-
-<script setup lang="ts">
-import { BasicForm } from '/@/components/Form'
-</script>
