@@ -51,8 +51,10 @@ export function useFormEvents({
       set(formModel, item, fieldValue)
     })
 
-    // try validate prop
-    validateField(props).catch((_) => {})
+    // try validate update prop
+    if (props.length > 0) {
+      validateField(props).catch((_) => {})
+    }
   }
 
   async function resetFields(): Promise<void> {
@@ -167,8 +169,9 @@ export function useFormEvents({
 
   function _setDefaultValue(schemas: FormSchema[]) {
     const obj: Recordable = {}
+    const curFieldsValue = getFieldsValue()
     schemas.forEach((item) => {
-      if (item.prop && !isNil(item.defaultValue)) {
+      if (item.prop && !isNil(item.defaultValue) && !hasIn(curFieldsValue, item.prop)) {
         set(obj, item.prop, item.defaultValue)
       }
     })
