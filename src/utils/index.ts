@@ -1,4 +1,4 @@
-import type { App, Plugin } from 'vue'
+import type { App, Plugin, Component } from 'vue'
 
 /**
  * / _ - 符号转换成驼峰
@@ -12,7 +12,7 @@ export function toHump(name: string) {
 export const withInstall = <T>(component: T, alias?: string) => {
   const comp = component as any
   comp.install = (app: App) => {
-    app.component(comp.name || comp.displayName, component as any)
+    app.component(comp.name || comp.displayName, component as Component)
     if (alias) {
       app.config.globalProperties[alias] = component
     }
