@@ -4,6 +4,7 @@ export const Api = {
   list: '/sys/role/list',
   add: '/sys/role/add',
   update: '/sys/role/update',
+  delete: '/sys/role/delete',
 }
 
 export interface RoleResult {
@@ -38,4 +39,12 @@ export function useUpdateRoleRequest(): [PromiseFn<RoleResult>, string] {
   }
 
   return [request, Api.update]
+}
+
+export function useDeleteRoleRequest(): [PromiseFn<{ id: number }>, string] {
+  async function request(data: { id: number }) {
+    return await defHttp.post({ url: Api.delete, data })
+  }
+
+  return [request, Api.delete]
 }

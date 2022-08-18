@@ -28,7 +28,7 @@ import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
 import { useTransl } from '/@/composables/core/useTransl'
-import { useGetRoleListRequest } from '/@/api/system/role.api'
+import { useGetRoleListRequest, useDeleteRoleRequest } from '/@/api/system/role.api'
 import { listToTree } from '/@/utils/helper/tree'
 import EditRoleFormDialog from './components/EditRoleFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
@@ -36,6 +36,7 @@ import { useDialog } from '/@/components/Dialog'
 const { t } = useTransl()
 
 const [getRoleListRequest, _] = useGetRoleListRequest()
+const [deleteRoleRequest, __] = useDeleteRoleRequest()
 
 async function processRequestData() {
   const { list } = await getRoleListRequest()
@@ -56,7 +57,10 @@ function handleUpdate(row: Recordable) {
   openEditRoleFormDialog(row)
 }
 
-function handleDelete(_row: Recordable) {}
+async function handleDelete(row: Recordable) {
+  await deleteRoleRequest({ id: row.id })
+  reload()
+}
 
 const columns = ref<BasicColumn[]>([
   {

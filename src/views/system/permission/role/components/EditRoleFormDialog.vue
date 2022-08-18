@@ -1,6 +1,5 @@
 <template>
   <BasicDialog
-    destroy-on-close
     @register="registerDialog"
     :title="t('views.system.role.editform.title')"
     @confirm="submit"
@@ -62,8 +61,8 @@ const [registerDialog, { closeDialog, setProps: setDialogProps }] = useDialogInn
 
     // is update?
     if (data.item) {
-      updateRoleId.value = data.item.id
       setFormModel(data.item)
+      updateRoleId.value = data.item.id
     } else {
       updateRoleId.value = null
     }
