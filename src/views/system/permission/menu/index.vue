@@ -66,7 +66,7 @@ const [registerTable, { getDataSource, reload }] = useTable()
 
 function openEditMenuFormDialog(update?: Recordable) {
   openDialog({
-    menus: getDataSource(),
+    list: getDataSource(),
     item: update,
   })
 }

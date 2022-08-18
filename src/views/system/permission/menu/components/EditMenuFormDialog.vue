@@ -56,8 +56,8 @@ const [registerForm, { updateSchema, submit, setProps: setFormProps, setFormMode
 const { getOptionsRef, transformValues, reverseValues } = usePermissionCascader()
 
 const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner(
-  (data: { menus?: MenuResult[]; item?: MenuResult }) => {
-    const menus = filter<MenuResult>(data.menus || [], (item): boolean => {
+  (data: { list?: MenuResult[]; item?: MenuResult }) => {
+    const menus = filter<MenuResult>(data.list || [], (item): boolean => {
       // 过滤权限节点，权限节点不能作为父级
       return item.type === 0 || item.type === 1
     })
