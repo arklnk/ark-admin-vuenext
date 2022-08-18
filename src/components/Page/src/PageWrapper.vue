@@ -147,10 +147,10 @@ export default defineComponent({
       const { contentClass, contentBackground } = props
       return [
         `${prefixCls}-content`,
+        contentClass,
         {
           [`${prefixCls}-content-bg`]: contentBackground,
         },
-        contentClass,
       ]
     })
 
