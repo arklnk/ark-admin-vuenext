@@ -35,6 +35,7 @@ export default {
     captcha: '验证码',
   },
 
+  // common basic words
   basic: {
     add: '新增',
     update: '更新',
@@ -51,6 +52,11 @@ export default {
 
     show: '显示',
     hidden: '隐藏',
+    disabled: '禁用',
+    enable: '启用',
+
+    status: '状态',
+    remark: '备注',
 
     ok: '好',
     cancel: '取消',

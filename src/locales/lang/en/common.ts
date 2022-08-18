@@ -37,6 +37,7 @@ export default {
     captcha: 'Captcha',
   },
 
+  // common basic words
   basic: {
     add: 'Add',
     update: 'Update',
@@ -53,6 +54,11 @@ export default {
 
     show: 'Show',
     hidden: 'Hidden',
+    disabled: 'Disabled',
+    enable: 'Enable',
+
+    status: 'Status',
+    remark: 'Remark',
 
     ok: 'Ok',
     cancel: 'Cancel',

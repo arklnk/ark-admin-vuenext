@@ -1,8 +1,8 @@
 export default {
   form: {
     invalid: 'invalid ',
-    enter: 'Please enter a ',
-    choose: 'Please choose',
+    enter: 'Please enter ',
+    choose: 'Please choose ',
   },
 
   icon: {

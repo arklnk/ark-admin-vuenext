@@ -26,7 +26,11 @@ export default {
   role: {
     name: '角色名称',
     uniqueKey: '唯一标识',
-    remark: '备注',
-    status: '状态',
+
+    editform: {
+      title: '编辑角色',
+      parent: '父级角色',
+      permissionAssign: '权限分配',
+    },
   },
 }

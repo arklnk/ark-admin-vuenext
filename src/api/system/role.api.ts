@@ -2,6 +2,8 @@ import { defHttp } from '/@/utils/http/axios'
 
 export const Api = {
   list: '/sys/role/list',
+  add: '/sys/role/add',
+  update: '/sys/role/update',
 }
 
 export interface RoleResult {
@@ -12,6 +14,7 @@ export interface RoleResult {
   remark: string
   status: number
   uniqueKey: string
+  permMenuIds: number[]
 }
 export function useGetRoleListRequest(): [PromiseFn<{ list: RoleResult[] }>, string] {
   async function request() {
@@ -19,4 +22,20 @@ export function useGetRoleListRequest(): [PromiseFn<{ list: RoleResult[] }>, str
   }
 
   return [request, Api.list]
+}
+
+export function useAddRoleRequest(): [PromiseFn<Omit<RoleResult, 'id'>>, string] {
+  async function request(data: Omit<RoleResult, 'id'>) {
+    return await defHttp.post({ url: Api.add, data })
+  }
+
+  return [request, Api.add]
+}
+
+export function useUpdateRoleRequest(): [PromiseFn<RoleResult>, string] {
+  async function request(data: RoleResult) {
+    return await defHttp.post({ url: Api.update, data })
+  }
+
+  return [request, Api.update]
 }

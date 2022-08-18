@@ -25,8 +25,12 @@ export default {
 
   role: {
     name: 'Role name',
-    uniqueKey: 'Unique identity',
-    remark: 'Remark',
-    status: 'Status',
+    uniqueKey: 'Unique id',
+
+    editform: {
+      title: 'Edit Role',
+      parent: 'Parent role',
+      permissionAssign: 'Permission assign',
+    },
   },
 }
