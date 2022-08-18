@@ -68,6 +68,7 @@ import DialogFooter from './components/DialogFooter.vue'
 import DialogClose from './components/DialogClose.vue'
 import { isFunction, merge, omit } from 'lodash-es'
 import { useAppInject } from '/@/composables/core/useAppInject'
+import { createDialogContext } from './composables/useDialogContext'
 
 export default defineComponent({
   name: 'BasicDialog',
@@ -86,6 +87,10 @@ export default defineComponent({
     const innerPropsRef = ref<Partial<BasicDialogProps>>()
     const { prefixCls } = useDesign('basic-dialog')
     const { getIsMobile } = useAppInject()
+
+    createDialogContext({
+      visibleRef,
+    })
 
     const getMergeProps = computed((): BasicDialogProps => {
       return {
@@ -127,10 +132,10 @@ export default defineComponent({
       const isMobile = unref(getIsMobile)
       if (isMobile) {
         opt.fullscreen = true
-        opt.canFullscreen = false
+        setProps({ canFullscreen: false })
       } else {
         // 还原回原来的默认值
-        opt.canFullscreen = props.canFullscreen
+        opt.canFullscreen && setProps({ canFullscreen: props.canFullscreen })
       }
 
       // 当 modal 的值为 false 时，请一定要确保 append-to-body 属性为 true

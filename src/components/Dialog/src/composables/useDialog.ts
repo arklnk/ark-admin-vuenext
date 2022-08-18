@@ -19,7 +19,7 @@ import { error } from '/@/utils/log'
 import { isFunction, isNil } from 'lodash-es'
 
 // store the parameters passed when opening the pop-up window
-const store = reactive<any>({})
+const store = reactive<{ [key: number]: any }>({})
 
 export function useDialog(): UseDialogReturnType {
   const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
