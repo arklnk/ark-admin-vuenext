@@ -48,6 +48,7 @@ import { useFormEvents } from './composables/useFormEvents'
 import { cloneDeep, merge, set } from 'lodash-es'
 import BasicFormAction from './components/FormAction.vue'
 import { createFormContext } from './composables/useFormContext'
+import { useDialogContext } from '/@/components/Dialog'
 
 export default defineComponent({
   name: 'BasicForm',
@@ -150,6 +151,20 @@ export default defineComponent({
       resetAction: resetFields,
       submitAction: handleSubmit,
     })
+
+    // check inside the dialog
+    // not inside dialog will undefined
+    // watch visibleRef status to reset fields
+    // not inside dialogCtx will be a {}
+    const dialogCtx = useDialogContext()
+    if (Reflect.has(dialogCtx, 'visibleRef')) {
+      watch(
+        () => dialogCtx.visibleRef,
+        (v) => {
+          !v && resetFields()
+        }
+      )
+    }
 
     watch(
       () => unref(getProps).model,

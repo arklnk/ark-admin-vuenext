@@ -8,8 +8,8 @@ export interface DialogContextProps {
 
 const key: InjectionKey<DialogContextProps> = Symbol()
 
-export function createDialogContext(ctx: DialogContextProps) {
-  return createContext<DialogContextProps>(ctx, key)
+export function createDialogContext(context: DialogContextProps) {
+  return createContext<DialogContextProps>(context, key)
 }
 
 export function useDialogContext() {
