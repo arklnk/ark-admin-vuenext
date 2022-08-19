@@ -1,6 +1,12 @@
 <template>
   <PageWrapper>
-    <BasicTable :columns="columns" :api="processRequestData" row-key="id" @register="registerTable">
+    <BasicTable
+      :columns="columns"
+      :api="processRequestData"
+      row-key="id"
+      @register="registerTable"
+      :pagination="false"
+    >
       <template #toolbar>
         <ElButton type="primary" @click="openEditRoleFormDialog()">{{
           t('common.basic.add')

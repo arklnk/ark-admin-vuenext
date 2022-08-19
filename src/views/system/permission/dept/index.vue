@@ -5,6 +5,7 @@
       :api="processDeptListResult"
       row-key="id"
       @register="registerTable"
+      :pagination="false"
     >
       <template #toolbar>
         <ElButton type="primary" @click="openEditDeptFormDialog()">{{
