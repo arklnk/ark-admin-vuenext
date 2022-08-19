@@ -49,4 +49,12 @@ export default {
       parent: 'Parent Dept',
     },
   },
+
+  job: {
+    name: 'Job name',
+
+    editform: {
+      title: 'Edit job',
+    },
+  },
 }

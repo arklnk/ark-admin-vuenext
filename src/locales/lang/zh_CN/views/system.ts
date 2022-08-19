@@ -49,4 +49,12 @@ export default {
       parent: '父级部门',
     },
   },
+
+  job: {
+    name: '岗位名称',
+
+    editform: {
+      title: '编辑岗位',
+    },
+  },
 }
