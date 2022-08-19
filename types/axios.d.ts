@@ -4,6 +4,21 @@ export interface Result<T = any> {
   data?: T
 }
 
+export interface PaginationResult<T = any> {
+  list: T[]
+
+  pagination: {
+    page: number
+    limit: number
+    total: number
+  }
+}
+
+export interface PageRequestParams {
+  page: number
+  limit: number
+}
+
 export type ErrorMessageMode = 'messageBox' | 'message' | 'none' | undefined
 
 export interface RequestOptions {

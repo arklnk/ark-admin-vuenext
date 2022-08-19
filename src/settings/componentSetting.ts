@@ -9,7 +9,7 @@ export default {
     },
     fetchSetting: {
       pageField: 'page',
-      sizeField: 'size',
+      sizeField: 'limit',
       listField: 'list',
       totalField: 'pagination.total',
     },
