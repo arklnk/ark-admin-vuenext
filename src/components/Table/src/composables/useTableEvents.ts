@@ -50,8 +50,12 @@ export function useTableEvents(
   }
 
   function handleRowClick(row: Recordable, column: any, event: Event) {
-    // tree table
-    if (Reflect.has(row, unref(getChildrenName))) {
+    // tree table and must be a cell target， a blank is in effect
+    if (
+      Reflect.has(row, unref(getChildrenName)) &&
+      event.target instanceof HTMLElement &&
+      event.target.className.includes('cell')
+    ) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       unref(tableRef)?.toggleRowExpansion(row)
