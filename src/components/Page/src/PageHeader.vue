@@ -15,8 +15,8 @@ import { useDesign } from '/@/composables/core/useDesign'
 defineProps({
   title: {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 })
 
 const { prefixCls } = useDesign('page-header')
@@ -35,7 +35,7 @@ $prefixCls: #{var.$namespace}-page-header;
   font-size: 14px;
   line-height: 1.75;
   list-style: none;
-  background-color: var.$color-white;
+  background-color: var(--el-bg-color-overlay);
 
   &-heading {
     display: flex;
@@ -56,13 +56,6 @@ $prefixCls: #{var.$namespace}-page-header;
 
   &-content {
     padding-top: 12px;
-  }
-}
-
-html.dark {
-  .#{$prefixCls} {
-    color: var.$color-white;
-    background-color: var.$app-page-dark-bg-color;
   }
 }
 </style>

@@ -203,15 +203,7 @@ $prefixCls: #{var.$namespace}-page-wrapper;
   }
 
   &-content-bg {
-    background-color: var.$color-white;
-  }
-}
-
-html.dark {
-  .#{$prefixCls} {
-    &-content-bg {
-      background-color: var.$app-page-dark-bg-color;
-    }
+    background-color: var(--el-bg-color-overlay);
   }
 }
 </style>
