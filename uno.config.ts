@@ -1,13 +1,25 @@
 import { defineConfig, presetUno } from 'unocss'
 
 export default defineConfig({
-  exclude: ['node_modules', '.git', '.vscode', 'dist', 'public', 'build', 'mock'],
+  exclude: [
+    'node_modules',
+    '.git',
+    '.vscode',
+    'dist',
+    'public',
+    'build',
+    'mock',
+    '.github',
+    'types',
+  ],
   presets: [
     presetUno({
       dark: 'class',
     }),
   ],
-  shortcuts: {},
+  shortcuts: {
+    'bg-comp': 'bg-white dark:bg-overlay',
+  },
   theme: {
     colors: {
       primary: 'var(--el-color-primary)',
@@ -18,8 +30,11 @@ export default defineConfig({
       info: 'var(--el-color-info)',
       overlay: 'var(--el-bg-color-overlay)',
       page: 'var(--el-bg-color-page)',
-      border: 'var(--el-border-color)',
+      bd: 'var(--el-border-color)',
       disabled: 'var(--el-text-color-disabled)',
+      regular: 'var(--el-text-color-regular)',
+      placeholder: 'var(--el-text-color-placeholder)',
+      primarytext: 'var(--el-text-color-primary)',
     },
   },
 })

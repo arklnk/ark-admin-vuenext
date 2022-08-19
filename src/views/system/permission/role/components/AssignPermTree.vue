@@ -1,6 +1,6 @@
 <template>
   <ElTree
-    class="h-52 w-full overflow-auto border border-border hover:border-disabled rounded-sm"
+    class="h-52 w-full overflow-auto border border-bd hover:border-disabled rounded-sm"
     ref="treeRef"
     :data="data"
     node-key="id"
