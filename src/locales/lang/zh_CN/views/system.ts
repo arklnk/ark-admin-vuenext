@@ -33,4 +33,20 @@ export default {
       permissionAssign: '权限分配',
     },
   },
+
+  dept: {
+    name: '部门名称',
+    fullname: '部门全称',
+    code: '部门代码',
+    type: '部门类型',
+
+    deptTypeCompany: '公司',
+    deptTypeSubsidiary: '子公司',
+    deptTypeDepartment: '部门',
+
+    editform: {
+      title: '编辑部门',
+      parent: '父级部门',
+    },
+  },
 }
