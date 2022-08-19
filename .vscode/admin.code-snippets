@@ -20,7 +20,10 @@
       "import { defHttp } from '/@/utils/http/axios'",
       "",
       "export const Api = {",
-      "  $1",
+      "  list: '$1',",
+      "  add: '',",
+      "  update: '',",
+      "  delete: '',",
       "}"
     ],
     "description": "permission api define"
