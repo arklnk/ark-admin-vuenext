@@ -13,12 +13,14 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   watch(
     () => unref(getProps).pagination,
     (pagination) => {
+      // pagenation props can be a null, it will be use default config
       if (!isBoolean(pagination) && pagination) {
         configRef.value = {
           ...unref(configRef),
           ...(pagination || {}),
         }
-      } else if (!pagination) {
+      } else if (isBoolean(pagination) && !pagination) {
+        // check is boolean and value is false
         showRef.value = false
       }
     },
