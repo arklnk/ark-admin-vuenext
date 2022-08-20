@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <div v-if="$slots.headerTop && $slots.headerTop?.length > 0" class="m-1.25">
+    <div v-if="$slots.headerTop" class="m-1.25">
       <slot name="headerTop"></slot>
     </div>
     <div class="flex items-center flex-row py-1">
@@ -24,7 +24,10 @@ import { useDesign } from '/@/composables/core/useDesign'
 import RedoSetting from './settings/RedoSetting.vue'
 import SizeSetting from './settings/SizeSetting.vue'
 import FullscreenSetting from './settings/FullscreenSetting.vue'
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
+
+const slots = useSlots()
+console.log(slots.toolbar, slots.headerTop)
 
 const props = defineProps({
   showTableSetting: {
@@ -59,7 +62,8 @@ $prefixCls: #{var.$namespace}-basic-table-header;
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 12px 0;
+    padding: 8px 0;
+    margin-right: 8px;
 
     svg {
       color: var(--el-text-color-regular);

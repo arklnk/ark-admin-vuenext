@@ -2,7 +2,7 @@
   <div ref="wrapRef" :class="getWrapperClass">
     <!-- header -->
     <BasicTableHeader ref="headerRef" v-if="getShowTableHeader" v-bind="getHeaderBindValues">
-      <template #[item]="data" v-for="item in ['headerTop', 'toolbar']">
+      <template #[item]="data" v-for="item in Object.keys(pick($slots, 'headerTop', 'toolbar'))">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </BasicTableHeader>
@@ -20,7 +20,7 @@
       </BasicTableColumn>
 
       <!-- slot -->
-      <template #[item]="data" v-for="item in ['append', 'empty']">
+      <template #[item]="data" v-for="item in Object.keys(pick($slots, ['append', 'empty']))">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </ElTable>
@@ -41,7 +41,7 @@ import type { BasicTableActionType, BasicTableProps } from './types/table'
 import type { SizeType } from '/#/config'
 
 import { computed, defineComponent, ref, unref } from 'vue'
-import { omit } from 'lodash-es'
+import { omit, pick } from 'lodash-es'
 import { useLoading } from './composables/useLoading'
 import { basicProps } from './props'
 import { usePagination } from './composables/usePagination'
@@ -228,6 +228,7 @@ export default defineComponent({
       getColumnsRef,
       getLoading,
       omit,
+      pick,
       handlePageChange,
       handleSizeChange,
     }
