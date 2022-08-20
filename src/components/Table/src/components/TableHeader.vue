@@ -54,6 +54,7 @@ $prefixCls: #{var.$namespace}-basic-table-header;
 
 .#{$prefixCls} {
   width: 100%;
+  color: var(--el-text-color-primary);
 
   &__toolbar {
     display: flex;
@@ -63,7 +64,6 @@ $prefixCls: #{var.$namespace}-basic-table-header;
     margin-right: 8px;
 
     svg {
-      color: var(--el-text-color-regular);
       font-size: 20px;
       margin: 0 6px;
       cursor: pointer;
