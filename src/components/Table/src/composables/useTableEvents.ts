@@ -51,7 +51,9 @@ export function useTableEvents(
 
   function handleRowClick(row: Recordable, column: any, event: Event) {
     // tree table and must be a cell target， a blank is in effect
+    // highlightCurrentRow is true then do not process
     if (
+      !unref(getProps).highlightCurrentRow &&
       Reflect.has(row, unref(getChildrenName)) &&
       event.target instanceof HTMLElement &&
       event.target.className.includes('cell')
