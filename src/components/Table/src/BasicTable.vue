@@ -243,7 +243,7 @@ $prefixCls: #{var.$namespace}-basic-table;
 
 .#{$prefixCls} {
   max-width: 100%;
-  padding: 4px 8px;
+  padding: 6px;
   position: relative;
   background-color: var(--el-fill-color-blank);
 
@@ -253,6 +253,15 @@ $prefixCls: #{var.$namespace}-basic-table;
 
     .el-loading-mask {
       z-index: 8;
+    }
+
+    // remove not border mode appear bottom border
+    &:not(.el-table--border) {
+      .el-table__inner-wrapper {
+        &::before {
+          content: none;
+        }
+      }
     }
   }
 

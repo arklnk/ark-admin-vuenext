@@ -58,7 +58,7 @@ $prefixCls: #{var.$namespace}-basic-table-footer;
   }
 
   .el-pagination {
-    margin: 8px 0;
+    margin-top: 6px;
   }
 }
 </style>
