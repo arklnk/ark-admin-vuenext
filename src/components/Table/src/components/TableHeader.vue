@@ -24,10 +24,7 @@ import { useDesign } from '/@/composables/core/useDesign'
 import RedoSetting from './settings/RedoSetting.vue'
 import SizeSetting from './settings/SizeSetting.vue'
 import FullscreenSetting from './settings/FullscreenSetting.vue'
-import { computed, useSlots } from 'vue'
-
-const slots = useSlots()
-console.log(slots.toolbar, slots.headerTop)
+import { computed } from 'vue'
 
 const props = defineProps({
   showTableSetting: {
