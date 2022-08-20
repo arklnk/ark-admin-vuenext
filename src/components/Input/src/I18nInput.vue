@@ -20,5 +20,5 @@ function handleUpdate(v: string) {
 
 const { t } = useTransl()
 
-const translateText = computed(() => t(props.modelValue || ''))
+const translateText = computed(() => (props.modelValue ? t(props.modelValue) : '?'))
 </script>
