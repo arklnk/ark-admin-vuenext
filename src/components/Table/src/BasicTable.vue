@@ -55,6 +55,7 @@ import BasicTableColumn from './components/TableColumn'
 import BasicTableHeader from './components/TableHeader.vue'
 import BasicTableFooter from './components/TableFooter.vue'
 import { useTableEvents } from './composables/useTableEvents'
+import { useCurrentRow } from './composables/useCurrentRow'
 
 export default defineComponent({
   name: 'BasicTable',
@@ -136,7 +137,9 @@ export default defineComponent({
       wrapRef
     )
 
-    const { onTableEvent } = useTableEvents(emit, getProps, tableRef)
+    const { setCurrentRowRef, setCurrentRow, getCurrentRow } = useCurrentRow(tableRef)
+
+    const { onTableEvent } = useTableEvents(emit, getProps, tableRef, setCurrentRowRef)
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -205,6 +208,8 @@ export default defineComponent({
       getDataSource,
       getSize: () => unref(getProps).size as SizeType,
       redoHeight,
+      setCurrentRow,
+      getCurrentRow,
     }
 
     createTableContext({ ...tableAction, wrapRef, tableRef, getBindValues })

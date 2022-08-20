@@ -58,6 +58,12 @@ export function useTable(): [Register, BasicTableActionType] {
     redoHeight: () => {
       getTableInstance().redoHeight()
     },
+    setCurrentRow: (row: Recordable) => {
+      getTableInstance().setCurrentRow(row)
+    },
+    getCurrentRow: () => {
+      return getTableInstance().getCurrentRow()
+    },
   }
 
   return [register, methods]

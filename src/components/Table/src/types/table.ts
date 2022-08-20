@@ -52,4 +52,6 @@ export interface BasicTableActionType {
   getDataSource: <T = Recordable>() => T[]
   getSize: () => SizeType
   redoHeight: () => void
+  setCurrentRow: (row: Recordable) => void
+  getCurrentRow: () => Nullable<Recordable>
 }

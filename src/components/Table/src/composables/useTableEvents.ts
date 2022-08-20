@@ -11,7 +11,8 @@ import { DEFAULT_CHILDREN_KEY } from '../const'
 export function useTableEvents(
   emit: EmitFn,
   getProps: ComputedRef<BasicTableProps>,
-  tableRef: Ref<Nullable<InstanceType<typeof ElTable>>>
+  tableRef: Ref<Nullable<InstanceType<typeof ElTable>>>,
+  setCurrentRowRef: Fn
 ) {
   const getChildrenName = computed(() => {
     return unref(getProps).treeProps?.children || DEFAULT_CHILDREN_KEY
@@ -90,8 +91,11 @@ export function useTableEvents(
     emit('filter-change', ...args)
   }
 
-  function handleCurrentChange(...args: any[]) {
-    emit('current-change', ...args)
+  function handleCurrentChange(currentRow: Recordable, oldCurrentRow: Recordable) {
+    // update current row
+    setCurrentRowRef(currentRow)
+
+    emit('current-change', currentRow, oldCurrentRow)
   }
 
   function handleHeaderDragend(...args: any[]) {
