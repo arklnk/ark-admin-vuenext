@@ -57,4 +57,12 @@ export default {
       title: 'Edit job',
     },
   },
+
+  profession: {
+    name: 'Profession name',
+
+    editform: {
+      title: 'Edit Profession',
+    },
+  },
 }

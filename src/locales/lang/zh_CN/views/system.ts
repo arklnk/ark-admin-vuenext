@@ -57,4 +57,12 @@ export default {
       title: '编辑岗位',
     },
   },
+
+  profession: {
+    name: '职级名称',
+
+    editform: {
+      title: '编辑职称',
+    },
+  },
 }
