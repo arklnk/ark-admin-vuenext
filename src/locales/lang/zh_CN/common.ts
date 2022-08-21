@@ -64,5 +64,9 @@ export default {
     redo: '刷新',
     back: '返回',
     loading: '加载中...',
+
+    male: '男',
+    female: '女',
+    secrecy: '保密',
   },
 }

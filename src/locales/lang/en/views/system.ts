@@ -65,4 +65,25 @@ export default {
       title: 'Edit Profession',
     },
   },
+
+  user: {
+    deptStruct: 'Department Structure',
+
+    account: 'Account',
+    username: 'Username',
+    nickname: 'Nickname',
+    avatar: 'Avatar',
+    gender: 'Gender',
+    birthday: 'Birthday',
+    email: 'Email',
+    mobile: 'Mobile',
+    profession: 'Profession',
+    job: 'Job',
+    dept: 'Department',
+    roles: 'Roles',
+
+    editform: {
+      title: 'Edit userinfo',
+    },
+  },
 }

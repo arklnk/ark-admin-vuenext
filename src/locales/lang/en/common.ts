@@ -66,5 +66,9 @@ export default {
     redo: 'Refresh',
     back: 'Back',
     loading: 'Loading...',
+
+    male: 'Male',
+    female: 'Female',
+    secrecy: 'Secrecy',
   },
 }
