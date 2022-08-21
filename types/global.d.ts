@@ -13,10 +13,7 @@ declare global {
   declare interface ViteEnv {
     VITE_PORT: number
     VITE_APP_BASE_API: string
-    VITE_APP_BASE_SOCKET_PATH: string
-    VITE_APP_BASE_SOCKET_NSP: string
     VITE_PROXY_API_TARGET: string
-    VITE_PROXY_WS_TARGET: string
   }
 
   declare type PropType<T> = VuePropType<T>
