@@ -27,7 +27,7 @@ export function useGetJobPageRequest(): [
   return [request, Api.page]
 }
 
-export function useGetJobListRequest(): [PromiseFn<JobResult[]>, string] {
+export function useGetJobListRequest(): [PromiseFn<{ list: JobResult[] }>, string] {
   async function request() {
     return await defHttp.get({ url: Api.list })
   }

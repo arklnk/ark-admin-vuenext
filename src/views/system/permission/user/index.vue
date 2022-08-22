@@ -35,19 +35,23 @@
               t('common.basic.add')
             }}</ElButton>
           </template>
-          <template #action>
-            <ElButton type="primary" link>{{ t('common.basic.edit') }}</ElButton>
-            <ElButton type="danger" link>{{ t('common.basic.delete') }}</ElButton>
+          <template #action="{ row }">
+            <ElButton type="primary" link @click="openEditUserFormDialog(row)">{{
+              t('common.basic.edit')
+            }}</ElButton>
+            <ElButton type="danger" link @click="handleDelete(row)">{{
+              t('common.basic.delete')
+            }}</ElButton>
           </template>
         </BasicTable>
       </div>
     </div>
 
-    <EditUserFormDialog @register="registerDialog" />
+    <EditUserFormDialog @register="registerDialog" @success="reload" />
   </PageWrapper>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
 import type { BasicColumn } from '/@/components/Table'
 import type { UserResult } from '/@/api/system/user.api'
 
@@ -57,7 +61,7 @@ import { BasicTable, useTable } from '/@/components/Table'
 import { listToTree } from '/@/utils/helper/tree'
 import { ref, nextTick } from 'vue'
 import { useTransl } from '/@/composables/core/useTransl'
-import { useGetUserListRequest } from '/@/api/system/user.api'
+import { useGetUserListRequest, useDeleteUserRequest } from '/@/api/system/user.api'
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 
@@ -68,18 +72,26 @@ const [registerUserTable, { reload }] = useTable()
 
 const [registerDialog, { openDialog }] = useDialog()
 
-function openEditUserFormDialog() {
-  openDialog()
+function openEditUserFormDialog(update?: Recordable) {
+  openDialog({
+    item: update,
+  })
 }
 
 // User
 const [getUserListRequest, __] = useGetUserListRequest()
+const [deleteUserListRequest, ___] = useDeleteUserRequest()
 
 async function processUserListRequest(params: any) {
   return await getUserListRequest({
     ...params,
     deptId: getCurrentRow()?.id || 0,
   })
+}
+
+async function handleDelete(row: Recordable) {
+  await deleteUserListRequest({ id: row.id })
+  reload()
 }
 
 function handleDeptChange() {
@@ -104,15 +116,6 @@ const userColumns = ref<BasicColumn[]>([
     prop: 'username',
     align: 'center',
     width: 160,
-  },
-  {
-    label: t('views.system.user.avatar'),
-    prop: 'avatar',
-    render: ({ row }) => {
-      return <el-avatar class="align-middle" size={22} src={row.avatar} />
-    },
-    align: 'center',
-    width: 100,
   },
   {
     label: t('views.system.user.dept'),
@@ -176,12 +179,6 @@ const userColumns = ref<BasicColumn[]>([
     prop: 'nickname',
     align: 'center',
     width: 160,
-  },
-  {
-    label: t('views.system.user.birthday'),
-    prop: 'birthday',
-    align: 'center',
-    width: 180,
   },
   {
     label: t('views.system.user.email'),

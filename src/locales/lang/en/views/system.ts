@@ -74,7 +74,6 @@ export default {
     nickname: 'Nickname',
     avatar: 'Avatar',
     gender: 'Gender',
-    birthday: 'Birthday',
     email: 'Email',
     mobile: 'Mobile',
     profession: 'Profession',
