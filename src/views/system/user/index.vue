@@ -1,7 +1,7 @@
 <template>
   <PageWrapper :content-background="false" content-full-height fixed-height>
     <div class="flex flex-row h-full relative">
-      <div class="mr-2 h-full w-[300px] bg-comp">
+      <div class="mr-2 h-full w-[320px] bg-comp">
         <BasicTable
           class="h-full"
           :pagination="false"
