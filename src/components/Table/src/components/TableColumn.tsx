@@ -17,6 +17,7 @@ export default defineComponent({
       return columns.map((col) => {
         const slotsObj: Recordable = {}
 
+        // render content
         if (col.children && col.children.length > 0) {
           // multiple table header
           const childColumns = renderColumns(col.children)
@@ -29,7 +30,16 @@ export default defineComponent({
           slotsObj.default = (scope: BasicColumnData) => col.render!(scope)
         }
 
-        const bindValue = omit(col, ['children', 'render', 'slot'])
+        // render header
+        if (!isEmpty(col.headerSlot)) {
+          slotsObj.header = (scope: Omit<BasicColumnData, 'row'>) =>
+            getSlot(slots, col.headerSlot, scope)
+        } else if (col.renderHeader && isFunction(col.renderHeader)) {
+          slotsObj.header = (scope: Omit<BasicColumnData, 'row'>) => col.renderHeader!(scope)
+        }
+
+        const bindValue = omit(col, ['children', 'render', 'slot', 'renderHeader', 'headerSlot'])
+
         return <el-table-column v-slots={slotsObj} {...bindValue} />
       })
     }

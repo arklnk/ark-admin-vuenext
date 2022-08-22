@@ -13,11 +13,16 @@ export interface BasicColumnData<T = any> {
 /**
  * table-column-props
  */
-export interface BasicColumn extends Partial<ExtractPropTypes<typeof columnProps>> {
+export interface BasicColumn
+  extends Omit<Partial<ExtractPropTypes<typeof columnProps>>, 'renderHeader'> {
   // 自定义列的内容
   render?: (data: BasicColumnData) => VueNode
+  // 自定义表头内容
+  renderHeader?: (data: Omit<BasicColumnData, 'row'>) => VueNode
   // 插槽形式自定义列内容
   slot?: string
+  // Header插槽形式自定义列头内容
+  headerSlot?: string
   // 多级表头
   children?: BasicColumn[]
 }
