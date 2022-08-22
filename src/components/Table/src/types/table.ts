@@ -21,6 +21,7 @@ export interface FetchSetting {
 
 export interface FetchParams {
   page?: number
+  searchInfo?: Recordable
 }
 
 export type BasicTableProps = Partial<ExtractPropTypes<typeof basicProps>>

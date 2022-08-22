@@ -3,7 +3,7 @@ import type { PaginationProps } from '../types/pagination'
 import type { BasicTableProps, FetchParams } from '../types/table'
 
 import { watch, unref, ref, onMounted, watchEffect, computed } from 'vue'
-import { get, isFunction } from 'lodash-es'
+import { get, isFunction, merge } from 'lodash-es'
 import { DEFAULT_PAGINATION, FETCH_SETTING } from '../const'
 
 interface ActionType {
@@ -53,7 +53,8 @@ export function useDataSource(
   })
 
   async function fetch(opt?: FetchParams) {
-    const { api, fetchSetting, beforeFetch, afterFetch } = unref(getProps)
+    const { api, fetchSetting, beforeFetch, afterFetch, searchInfo } = unref(getProps)
+
     if (!api || !isFunction(api)) return
 
     try {
@@ -76,9 +77,8 @@ export function useDataSource(
         pageParams[sizeField] = pageSize
       }
 
-      let apiParams: Recordable = {
-        ...pageParams,
-      }
+      // merge params
+      let apiParams: Recordable = merge(pageParams, searchInfo ?? {}, opt?.searchInfo ?? {})
 
       if (beforeFetch && isFunction(beforeFetch)) {
         apiParams = (await beforeFetch(apiParams)) || apiParams

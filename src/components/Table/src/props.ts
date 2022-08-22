@@ -19,6 +19,13 @@ export const basicProps = {
     type: Function as PropType<(...arg: any[]) => Promise<any>>,
     default: null,
   },
+  /**
+   * 用于 api 的额外参数
+   */
+  searchInfo: {
+    type: Object as PropType<Recordable>,
+    default: null,
+  },
   beforeFetch: {
     type: Function as PropType<Fn>,
     default: null,
