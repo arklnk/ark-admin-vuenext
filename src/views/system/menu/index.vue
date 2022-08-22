@@ -25,7 +25,7 @@
         <ElTag>{{ formatterType(row.type) }}</ElTag>
       </template>
       <template #perms="{ row }">
-        <ElTag v-for="item in row.perms" :key="item" class="mr-0.5">{{ item }}</ElTag>
+        <ElTag v-for="item in row.perms" :key="item" class="mr-1 mt-0.75">{{ item }}</ElTag>
       </template>
       <template #icon="{ row }">
         <SvgIcon v-if="row.icon" :icon="row.icon" />

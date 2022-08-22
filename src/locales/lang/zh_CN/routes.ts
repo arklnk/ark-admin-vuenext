@@ -6,7 +6,24 @@ export default {
   redirect: '跳转中...',
 
   // system
-  systemManagement: '系统管理',
-  permManagement: '权限管理',
-  menuList: '菜单列表',
+  system: {
+    name: '系统管理',
+
+    // children
+    menu: { name: '菜单管理' },
+    role: { name: '角色管理' },
+    department: { name: '部门管理' },
+    job: { name: '岗位管理' },
+    profession: { name: '职称管理' },
+    user: { name: '用户管理' },
+  },
+
+  // params
+  param: {
+    name: '参数管理',
+
+    // children
+    config: { name: '配置管理' },
+    dictionary: { name: '字典管理' },
+  },
 }

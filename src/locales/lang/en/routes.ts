@@ -2,11 +2,28 @@ export default {
   // basic
   login: 'Login',
   dashboard: 'Dashboard',
-  notfound: 'Page Not Found',
+  notfound: 'Page not found',
   redirect: 'Redirecting...',
 
   // system
-  systemManagement: 'System Management',
-  permManagement: 'Permission Management',
-  menuList: 'Menu List',
+  system: {
+    name: 'System anagement',
+
+    // children
+    menu: { name: 'Menu management' },
+    role: { name: 'Role management' },
+    department: { name: 'Dept management' },
+    job: { name: 'Job management' },
+    profession: { name: 'Profession management' },
+    user: { name: 'User management' },
+  },
+
+  // params
+  param: {
+    name: 'Param management',
+
+    // children
+    config: { name: 'Config management' },
+    dictionary: { name: 'Dictionary management' },
+  },
 }
