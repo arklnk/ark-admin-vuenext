@@ -1,8 +1,10 @@
+import { JobResult } from './job.api'
 import type { PageRequestParams, PaginationResult } from '/#/axios'
 
 import { defHttp } from '/@/utils/http/axios'
 
 export const Api = {
+  page: '/sys/profession/page',
   list: '/sys/profession/list',
   add: '/sys/profession/add',
   update: '/sys/profession/update',
@@ -16,12 +18,20 @@ export interface ProfessionResult {
   status: number
 }
 
-export function useGetProfListRequest(): [
+export function useGetProfPageRequest(): [
   PromiseFn<PageRequestParams, PaginationResult<ProfessionResult[]>>,
   string
 ] {
   async function request(params: PageRequestParams) {
-    return await defHttp.get({ url: Api.list, params })
+    return await defHttp.get({ url: Api.page, params })
+  }
+
+  return [request, Api.page]
+}
+
+export function useGetProfListRequest(): [PromiseFn<JobResult[]>, string] {
+  async function request() {
+    return await defHttp.get({ url: Api.list })
   }
 
   return [request, Api.list]

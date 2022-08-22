@@ -25,7 +25,7 @@
 import type { BasicColumn } from '/@/components/Table'
 import type { ProfessionResult } from '/@/api/system/profession.api'
 
-import { useGetProfListRequest, useDeleteProfRequest } from '/@/api/system/profession.api'
+import { useGetProfPageRequest, useDeleteProfRequest } from '/@/api/system/profession.api'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
@@ -35,7 +35,7 @@ import { useDialog } from '/@/components/Dialog'
 
 const { t } = useTransl()
 
-const [getProfListRequest, _] = useGetProfListRequest()
+const [getProfListRequest, _] = useGetProfPageRequest()
 const [deleteProfRequest, __] = useDeleteProfRequest()
 
 const [registerDialog, { openDialog }] = useDialog()

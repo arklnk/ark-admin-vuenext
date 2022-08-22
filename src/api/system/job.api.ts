@@ -3,6 +3,7 @@ import type { PageRequestParams, PaginationResult } from '/#/axios'
 import { defHttp } from '/@/utils/http/axios'
 
 export const Api = {
+  page: '/sys/job/page',
   list: '/sys/job/list',
   add: '/sys/job/add',
   update: '/sys/job/update',
@@ -15,12 +16,20 @@ export interface JobResult {
   orderNum: number
   status: number
 }
-export function useGetJobListRequest(): [
+export function useGetJobPageRequest(): [
   PromiseFn<PageRequestParams, PaginationResult<JobResult>>,
   string
 ] {
   async function request(params: PageRequestParams) {
-    return await defHttp.get({ url: Api.list, params })
+    return await defHttp.get({ url: Api.page, params })
+  }
+
+  return [request, Api.page]
+}
+
+export function useGetJobListRequest(): [PromiseFn<JobResult[]>, string] {
+  async function request() {
+    return await defHttp.get({ url: Api.list })
   }
 
   return [request, Api.list]

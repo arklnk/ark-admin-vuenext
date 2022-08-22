@@ -2,13 +2,13 @@
   <PageWrapper>
     <BasicTable :columns="columns" :api="processRequestData" @register="registerTable">
       <template #toolbar>
-        <ElButton type="primary" @click="openEditRoleFormDialog()">{{
+        <ElButton type="primary" @click="openEditJobFormDialog()">{{
           t('common.basic.add')
         }}</ElButton>
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="openEditRoleFormDialog(row)">{{
+        <ElButton type="primary" link @click="openEditJobFormDialog(row)">{{
           t('common.basic.edit')
         }}</ElButton>
         <ElButton type="danger" link @click="handleDelete(row)">{{
@@ -28,20 +28,20 @@ import type { JobResult } from '/@/api/system/job.api'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { useGetJobListRequest, useDeleteJobRequest } from '/@/api/system/job.api'
+import { useGetJobPageRequest, useDeleteJobRequest } from '/@/api/system/job.api'
 import { useTransl } from '/@/composables/core/useTransl'
 import EditJobFormDialog from './components/EditJobFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 
 const { t } = useTransl()
 
-const [getJobListRequest, _] = useGetJobListRequest()
+const [getJobListRequest, _] = useGetJobPageRequest()
 const [deleteJobRequest, __] = useDeleteJobRequest()
 
 const [registerDialog, { openDialog }] = useDialog()
 const [registerTable, { reload }] = useTable()
 
-function openEditRoleFormDialog(update?: JobResult) {
+function openEditJobFormDialog(update?: JobResult) {
   openDialog({
     item: update,
   })
