@@ -19,11 +19,10 @@ export default {
   },
 
   // params
-  param: {
-    name: 'Param management',
+  config: {
+    name: 'Config management',
 
     // children
-    config: { name: 'Config management' },
     dictionary: { name: 'Dictionary management' },
   },
 }

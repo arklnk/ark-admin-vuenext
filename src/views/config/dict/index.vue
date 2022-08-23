@@ -44,7 +44,7 @@
 import type { BasicColumn } from '/@/components/Table'
 
 import { nextTick, reactive, ref } from 'vue'
-import { useGetConfigSetRequest, useGetConfigPageRequest } from '/@/api/param/config.api'
+import { useGetConfigSetRequest, useGetConfigPageRequest } from '/@/api/config/dict.api'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { useTransl } from '/@/composables/core/useTransl'
@@ -83,18 +83,24 @@ function handleSetChange() {
 
 const itemColumns = ref<BasicColumn[]>([
   {
-    label: t('views.param.config.item'),
+    label: t('views.config.dict.itemname'),
     prop: 'name',
     width: 220,
   },
   {
-    label: t('views.param.config.uniqueKey'),
+    label: t('views.config.dict.uniqueKey'),
     prop: 'uniqueKey',
+    width: 120,
+    align: 'center',
+  },
+  {
+    label: t('views.config.dict.type'),
+    prop: 'type',
     width: 200,
     align: 'center',
   },
   {
-    label: t('views.param.config.value'),
+    label: t('views.config.dict.value'),
     prop: 'value',
     width: 340,
     showTooltipWhenOverflow: true,
@@ -133,17 +139,15 @@ const itemColumns = ref<BasicColumn[]>([
 
 const setColumns = ref<BasicColumn[]>([
   {
-    label: t('views.param.config.set'),
+    label: t('views.config.dict.name'),
     prop: 'name',
     renderHeader: ({ column }) => {
-
       return (
         <div class="flex flex-row">
-          <span class="flex-1">{ column.label }</span>
-          +
+          <span class="flex-1">{column.label}</span>+
         </div>
       )
-    }
+    },
   },
 ])
 </script>

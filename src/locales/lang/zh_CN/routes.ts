@@ -19,11 +19,10 @@ export default {
   },
 
   // params
-  param: {
-    name: '参数管理',
+  config: {
+    name: '配置管理',
 
     // children
-    config: { name: '配置管理' },
     dictionary: { name: '字典管理' },
   },
 }

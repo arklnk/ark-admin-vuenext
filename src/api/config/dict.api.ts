@@ -3,11 +3,11 @@ import type { PageRequestParams, PaginationResult } from '/#/axios'
 import { defHttp } from '/@/utils/http/axios'
 
 export const Api = {
-  set: '/param/config/set',
-  page: '/param/config/page',
-  add: '',
-  update: '',
-  delete: '',
+  list: '/config/dict/list',
+  page: '/config/dict/data/page',
+  add: '/config/dict/add',
+  update: '/config/dict/update',
+  delete: '/config/dict/delete',
 }
 
 export interface ParamConfigResult {
@@ -22,11 +22,11 @@ export interface ParamConfigResult {
 }
 export function useGetConfigSetRequest(): [PromiseFn<ParamConfigResult[]>, string] {
   async function request() {
-    const { list } = await defHttp.get({ url: Api.set })
+    const { list } = await defHttp.get({ url: Api.list })
     return list
   }
 
-  return [request, Api.set]
+  return [request, Api.list]
 }
 
 export function useGetConfigPageRequest(): [
