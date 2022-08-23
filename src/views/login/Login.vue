@@ -4,7 +4,7 @@
     class="relative h-full w-full bg-no-repeat bg-cover bg-gray-100 overflow-y-auto"
   >
     <header class="max-w-[800px] h-20 px-5 m-auto flex justify-end items-center">
-      <AppLocalePicker class="ml-4 text-info text-sm" />
+      <AppLocalePicker v-if="localeStore.getShowPicker" class="ml-4 text-info text-sm" />
       <AppDarkModeToggle class="ml-4 text-sm" />
     </header>
     <main class="max-w-[800px] m-auto pt-12 pb-6">
@@ -23,9 +23,12 @@ import AccountLoginForm from './AccountLoginForm.vue'
 import { AppDarkModeToggle, AppLocalePicker } from '/@/components/Application'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useTransl } from '/@/composables/core/useTransl'
+import { useLocaleStore } from '/@/stores/modules/locale'
 
 const { prefixCls } = useDesign('login')
 const { t } = useTransl()
+
+const localeStore = useLocaleStore()
 </script>
 
 <style lang="scss" scoped>

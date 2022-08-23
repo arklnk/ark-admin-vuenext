@@ -24,7 +24,7 @@
 
     <!-- action -->
     <div class="flex flex-row h-full" :class="`${prefixCls}-action`">
-      <AppLocalePicker class="item" />
+      <AppLocalePicker v-if="localeStore.getShowPicker" class="item" />
       <FullScreen v-if="getShowFullScreen" class="item" />
       <UserDropdown class="item" />
       <ProjectConfig v-if="getShowSettingButton" class="item" />
@@ -47,6 +47,7 @@ import { useMenuSetting } from '/@/composables/setting/useMenuSetting'
 import { useRootSetting } from '/@/composables/setting/useRootSetting'
 import { useAppInject } from '/@/composables/core/useAppInject'
 import { AppLocalePicker } from '/@/components/Application'
+import { useLocaleStore } from '/@/stores/modules/locale'
 
 const { prefixCls } = useDesign('app-header')
 const { setAppHeaderHeight, appHeaderHeightRef } = useLayoutHeight()
@@ -89,6 +90,8 @@ const getPlaceholderDomStyle = computed(() => {
     height: `${unref(appHeaderHeightRef)}px`,
   }
 })
+
+const localeStore = useLocaleStore()
 </script>
 
 <style lang="scss">
