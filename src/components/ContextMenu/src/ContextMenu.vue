@@ -43,14 +43,14 @@ const ContextMenuItemHeight = 40
 const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
   const Icon = props.item.icon as string | any
   return (
-    <div onClick={props.handler.bind(null, props.item)}>
+    <>
       {props.showIcon && Icon ? (
         <el-icon>
           {typeof Icon === 'string' ? <svg-icon icon={props.item.icon} /> : <Icon />}
         </el-icon>
       ) : null}
       <span class="ml-2">{props.item.label}</span>
-    </div>
+    </>
   )
 }
 
@@ -111,12 +111,15 @@ export default defineComponent({
         const contentProps: ItemContentProps = {
           showIcon: props.showIcon,
           item,
-          handler: handleItemClick,
         }
 
         return (
           <>
-            <el-menu-item disabled={disabled} index={label!}>
+            <el-menu-item
+              disabled={disabled}
+              index={label!}
+              onClick={handleItemClick.bind(null, item, null)}
+            >
               <ItemContent {...contentProps} />
             </el-menu-item>
             {divider ? <el-divider key={`d-${label}`} /> : null}

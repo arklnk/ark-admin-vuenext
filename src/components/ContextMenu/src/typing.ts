@@ -36,5 +36,4 @@ export interface CreateContextMenuOptions {
 export interface ItemContentProps {
   showIcon: boolean | undefined
   item: ContextMenuItem
-  handler: Fn
 }
