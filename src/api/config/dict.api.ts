@@ -20,7 +20,7 @@ export interface ParamConfigResult {
   uniqueKey: string
   value: string
 }
-export function useGetConfigSetRequest(): [PromiseFn<ParamConfigResult[]>, string] {
+export function useGetDictListRequest(): [PromiseFn<ParamConfigResult[]>, string] {
   async function request() {
     const { list } = await defHttp.get({ url: Api.list })
     return list
@@ -29,7 +29,7 @@ export function useGetConfigSetRequest(): [PromiseFn<ParamConfigResult[]>, strin
   return [request, Api.list]
 }
 
-export function useGetConfigPageRequest(): [
+export function useGetDictDataPageRequest(): [
   PromiseFn<PageRequestParams, PaginationResult<ParamConfigResult[]>>,
   string
 ] {
@@ -38,4 +38,28 @@ export function useGetConfigPageRequest(): [
   }
 
   return [request, Api.page]
+}
+
+export function useAddDictRequest(): [PromiseFn<Omit<ParamConfigResult, 'id'>>, string] {
+  async function request(data: Omit<ParamConfigResult, 'id'>) {
+    return await defHttp.post({ url: Api.add, data })
+  }
+
+  return [request, Api.add]
+}
+
+export function useUpdateDictRequest(): [PromiseFn<ParamConfigResult>, string] {
+  async function request(data: ParamConfigResult) {
+    return await defHttp.post({ url: Api.update, data })
+  }
+
+  return [request, Api.update]
+}
+
+export function useDeleteDictRequest(): [PromiseFn<{ id: number }>, string] {
+  async function request(data: { id: number }) {
+    return await defHttp.post({ url: Api.delete, data })
+  }
+
+  return [request, Api.delete]
 }

@@ -6,37 +6,51 @@
           class="h-full"
           container-height-fixed
           :pagination="false"
-          :api="getConfigSetRequest"
+          :api="getDictListRequest"
           :columns="setColumns"
           :table-setting="{ fullscreen: false }"
           highlight-current-row
           :show-table-setting="false"
           @fetch-success="handleFetchConfigSetSuccess"
-          @register="registerSetTable"
-          @current-change="handleSetChange"
+          @register="registerDictTable"
+          @current-change="handleDictChange"
+          @row-contextmenu="handleDictRowContextmenu"
+          :before-fetch="resetCurrentDictId"
         />
       </div>
       <div class="h-full flex-1 w-0 bg-comp">
         <BasicTable
           class="h-full"
           container-height-fixed
-          :api="getConfigPageRequest"
+          :api="getDictDataPageRequest"
           :immediate="false"
           @register="registerItemTable"
           :columns="itemColumns"
-          :search-info="currentSetId"
+          :search-info="currentDictInfo"
         >
           <template #toolbar>
-            <ElButton type="primary">{{ t('common.basic.add') }}</ElButton>
+            <ElButton
+              type="primary"
+              :disabled="currentDictInfo.parentId === null"
+              @click="openEditDictDataFormDialog()"
+            >
+              {{ t('common.basic.add') }}
+            </ElButton>
           </template>
 
-          <template #action>
-            <ElButton type="primary" link>{{ t('common.basic.edit') }}</ElButton>
-            <ElButton type="danger" link>{{ t('common.basic.delete') }}</ElButton>
+          <template #action="{ row }">
+            <ElButton type="primary" link @click="openEditDictDataFormDialog(row)">{{
+              t('common.basic.edit')
+            }}</ElButton>
+            <ElButton type="danger" link @click="handleDeleteDict(row)">{{
+              t('common.basic.delete')
+            }}</ElButton>
           </template>
         </BasicTable>
       </div>
     </div>
+
+    <EditDictFormDialog @register="registerDialog" @success="handleEditSuccess" />
   </PageWrapper>
 </template>
 
@@ -44,23 +58,64 @@
 import type { BasicColumn } from '/@/components/Table'
 
 import { nextTick, reactive, ref } from 'vue'
-import { useGetConfigSetRequest, useGetConfigPageRequest } from '/@/api/config/dict.api'
+import {
+  useGetDictListRequest,
+  useGetDictDataPageRequest,
+  useDeleteDictRequest,
+} from '/@/api/config/dict.api'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { useTransl } from '/@/composables/core/useTransl'
+import IconFontistoSpinnerRefresh from '~icons/fontisto/spinner-refresh'
+import IconFluentAdd12Filled from '~icons/fluent/add-12-filled'
+import { createContextMenu } from '/@/components/ContextMenu'
+import EditDictFormDialog from './components/EditDictFormDialog.vue'
+import { useDialog } from '/@/components/Dialog'
+import { DictValueTypes } from './DictValueType'
 
 const { t } = useTransl()
 
-const [getConfigSetRequest, _] = useGetConfigSetRequest()
-const [getConfigPageRequest, __] = useGetConfigPageRequest()
+const [getDictListRequest, _] = useGetDictListRequest()
+const [getDictDataPageRequest, __] = useGetDictDataPageRequest()
+const [deleteDictRequest, ___] = useDeleteDictRequest()
 
-const [registerSetTable, { setCurrentRow, getDataSource: getSetDataSource, getCurrentRow }] =
-  useTable()
+const [
+  registerDictTable,
+  { setCurrentRow, getDataSource: getSetDataSource, getCurrentRow, reload: reloadDictTable },
+] = useTable()
+
 const [registerItemTable, { reload }] = useTable()
 
-const currentSetId = reactive({
+const [registerDialog, { openDialog }] = useDialog()
+
+const currentDictInfo = reactive({
   parentId: null,
 })
+
+function openEditDictDataFormDialog(update?: Recordable) {
+  openDialog({
+    pid: currentDictInfo.parentId,
+    item: update,
+  })
+}
+
+function openEditDictFormDialog(update?: Recordable) {
+  openDialog({
+    pid: 0,
+    item: update,
+  })
+}
+
+function resetCurrentDictId() {
+  currentDictInfo.parentId = null
+}
+
+async function handleDeleteDict(row: Recordable) {
+  await deleteDictRequest({
+    id: row.id,
+  })
+  reloadDictTable()
+}
 
 function handleFetchConfigSetSuccess() {
   nextTick(() => {
@@ -71,14 +126,43 @@ function handleFetchConfigSetSuccess() {
   })
 }
 
-function handleSetChange() {
+function handleDictChange() {
   nextTick(() => {
     const parentId = getCurrentRow()?.id
     if (parentId) {
-      currentSetId.parentId = parentId
+      currentDictInfo.parentId = parentId
       reload({ page: 1 })
     }
   })
+}
+
+function handleDictRowContextmenu(row: Recordable, _: unknown, e: MouseEvent) {
+  createContextMenu({
+    width: 140,
+    event: e,
+    items: [
+      {
+        label: t('common.basic.edit'),
+        handler: () => {
+          openEditDictFormDialog(row)
+        },
+      },
+      {
+        label: t('common.basic.delete'),
+        handler: async () => {
+          handleDeleteDict(row)
+        },
+      },
+    ],
+  })
+}
+
+function handleEditSuccess(id: number) {
+  if (id === 0) {
+    reloadDictTable()
+  } else {
+    reload({ page: 1 })
+  }
 }
 
 const itemColumns = ref<BasicColumn[]>([
@@ -98,6 +182,9 @@ const itemColumns = ref<BasicColumn[]>([
     prop: 'type',
     width: 200,
     align: 'center',
+    formatter: (row: Recordable) => {
+      return t(DictValueTypes.find((e) => e.value === row.type)!.label)
+    },
   },
   {
     label: t('views.config.dict.value'),
@@ -144,7 +231,13 @@ const setColumns = ref<BasicColumn[]>([
     renderHeader: ({ column }) => {
       return (
         <div class="flex flex-row">
-          <span class="flex-1">{column.label}</span>+
+          <span class="flex-1">{column.label}</span>
+          <span class="px-1 cursor-pointer" onClick={() => openEditDictFormDialog()}>
+            <IconFluentAdd12Filled />
+          </span>
+          <span class="ml-1 px-1 cursor-pointer" onClick={() => reloadDictTable()}>
+            <IconFontistoSpinnerRefresh />
+          </span>
         </div>
       )
     },
