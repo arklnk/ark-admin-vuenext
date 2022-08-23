@@ -1,8 +1,8 @@
 export default {
   table: {
     pagination: {
-      pageSizes: [10, 50, 80, 100],
-      pageSize: 10,
+      pageSizes: [50, 80, 100, 200],
+      pageSize: 50,
       layout: 'total, sizes, prev, pager, next',
       background: true,
       small: true,
