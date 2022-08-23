@@ -47,7 +47,6 @@ import { usePermissionCascader } from '/@/composables/component/usePermissionCas
 import { filter } from '/@/utils/helper/tree'
 import { isUrl } from '/@/utils/is'
 import { getDynamicImportViews } from '/@/router/helper/routeHelper'
-import { I18nInput } from '/@/components/Input'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -147,7 +146,7 @@ const schemas = ref<FormSchema[]>([
     label: '菜单名称',
     defaultValue: '',
     prop: 'name',
-    component: I18nInput,
+    component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
