@@ -10,16 +10,13 @@
     >
       <!-- toolbar -->
       <template #toolbar>
-        <ElButton type="primary" @click="openEditMenuFormDialog()">
-          {{ t('common.basic.add') }}
-        </ElButton>
+        <ElButton type="primary" @click="openEditMenuFormDialog()">新增</ElButton>
       </template>
+
       <!-- column -->
       <template #name="{ row }">
-        {{ t(row.name) }}
-        <ElTag v-if="row.isShow === 0 && row.type !== 2" type="danger">{{
-          t('common.basic.hidden')
-        }}</ElTag>
+        {{ row.name }}
+        <ElTag v-if="row.isShow === 0 && row.type !== 2" type="danger">隐藏</ElTag>
       </template>
       <template #type="{ row }">
         <ElTag>{{ formatterType(row.type) }}</ElTag>
@@ -32,12 +29,8 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="handleUpdate(row)">{{
-          t('common.basic.edit')
-        }}</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">{{
-          t('common.basic.delete')
-        }}</ElButton>
+        <ElButton type="primary" link @click="handleUpdate(row)">编辑</ElButton>
+        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
       </template>
     </BasicTable>
 
@@ -53,12 +46,9 @@ import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
 import { useGetMenuListRequest, useDeleteMenuRequest } from '/@/api/system/menu.api'
-import { useTransl } from '/@/composables/core/useTransl'
 import { listToTree } from '/@/utils/helper/tree'
 import EditMenuFormDialog from './components/EditMenuFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-
-const { t } = useTransl()
 
 const [registerDialog, { openDialog }] = useDialog()
 
@@ -76,11 +66,11 @@ const [deleteMenuRequest, __] = useDeleteMenuRequest()
 function formatterType(type: number) {
   switch (type) {
     case 0:
-      return t('views.system.menu.menuTypeCatalogue')
+      return '目录'
     case 1:
-      return t('views.system.menu.menuTypeMenu')
+      return '菜单'
     case 2:
-      return t('views.system.menu.menuTypePermission')
+      return '权限'
   }
 }
 
@@ -100,53 +90,53 @@ async function processRequestData() {
 const columns = ref<BasicColumn[]>([
   {
     width: 300,
-    label: t('views.system.menu.name'),
+    label: '菜单名称',
     prop: 'name',
     slot: 'name',
   },
   {
     align: 'center',
     width: 120,
-    label: t('views.system.menu.type'),
+    label: '类型',
     prop: 'type',
     slot: 'type',
   },
   {
     width: 80,
     align: 'center',
-    label: t('views.system.menu.icon'),
+    label: '图标',
     prop: 'icon',
     slot: 'icon',
   },
   {
     align: 'center',
-    label: t('views.system.menu.router'),
+    label: '路由',
     prop: 'router',
     showTooltipWhenOverflow: true,
   },
   {
     align: 'center',
-    label: t('views.system.menu.viewPath'),
+    label: '视图路径',
     prop: 'viewPath',
     showTooltipWhenOverflow: true,
   },
   {
     width: 340,
     align: 'center',
-    label: t('views.system.menu.perm'),
+    label: '权限',
     prop: 'perms',
     slot: 'perms',
   },
   {
     width: 80,
     align: 'center',
-    label: t('views.system.menu.orderNum'),
+    label: '排序',
     prop: 'orderNum',
   },
   {
     width: 140,
     align: 'center',
-    label: t('common.basic.operation'),
+    label: '操作',
     slot: 'action',
     fixed: 'right',
   },

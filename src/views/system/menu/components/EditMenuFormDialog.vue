@@ -1,9 +1,5 @@
 <template>
-  <BasicDialog
-    @register="registerDialog"
-    :title="t('views.system.menu.editform.title')"
-    @confirm="submit"
-  >
+  <BasicDialog @register="registerDialog" title="编辑菜单信息" @confirm="submit">
     <BasicForm
       @register="registerForm"
       :show-action-button-group="false"
@@ -12,17 +8,17 @@
       @submit="handleSubmit"
     >
       <template #type="{ model }">
-        <el-radio-group v-model="model.type">
-          <el-radio :label="0">{{ t('views.system.menu.menuTypeCatalogue') }}</el-radio>
-          <el-radio :label="1">{{ t('views.system.menu.menuTypeMenu') }}</el-radio>
-          <el-radio :label="2">{{ t('views.system.menu.menuTypePermission') }}</el-radio>
-        </el-radio-group>
+        <ElRadioGroup v-model="model.type">
+          <ElRadio :label="0">目录</ElRadio>
+          <ElRadio :label="1">菜单</ElRadio>
+          <ElRadio :label="2">权限</ElRadio>
+        </ElRadioGroup>
       </template>
       <template #isShow="{ model }">
-        <el-radio-group v-model="model.isShow">
-          <el-radio :label="1">{{ t('common.basic.show') }}</el-radio>
-          <el-radio :label="0">{{ t('common.basic.hidden') }}</el-radio>
-        </el-radio-group>
+        <ElRadioGroup v-model="model.isShow">
+          <ElRadio :label="1">显示</ElRadio>
+          <ElRadio :label="0">隐藏</ElRadio>
+        </ElRadioGroup>
       </template>
       <template #viewPath="{ model }">
         <ElSelect v-model="model.viewPath" class="w-full" clearable>
@@ -45,7 +41,6 @@ import type { MenuResult } from '/@/api/system/menu.api'
 import { useAddMenuRequest, useUpdateMenuRequest } from '/@/api/system/menu.api'
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
-import { useTransl } from '/@/composables/core/useTransl'
 import { ref, unref } from 'vue'
 import { IconPicker } from '/@/components/Icon'
 import { usePermissionCascader } from '/@/composables/component/usePermissionCascader'
@@ -55,8 +50,6 @@ import { getDynamicImportViews } from '/@/router/helper/routeHelper'
 import { I18nInput } from '/@/components/Input'
 
 const emit = defineEmits(['register', 'success'])
-
-const { t } = useTransl()
 
 const updateMenuId = ref<null | number>(null)
 
@@ -139,7 +132,7 @@ const allDynamicImportViews = getDynamicImportViews()
 
 const schemas = ref<FormSchema[]>([
   {
-    label: t('views.system.menu.type'),
+    label: '类型',
     defaultValue: 0,
     prop: 'type',
     slot: 'type',
@@ -151,18 +144,18 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.menu.name'),
+    label: '菜单名称',
     defaultValue: '',
     prop: 'name',
     component: I18nInput,
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.menu.name')}`,
+      message: '请输入菜单名称',
     },
   },
   {
-    label: t('views.system.menu.parent'),
+    label: '父级菜单',
     defaultValue: 0,
     prop: 'parentId',
     component: 'ElTreeSelect',
@@ -174,7 +167,7 @@ const schemas = ref<FormSchema[]>([
       defaultExpandAll: true,
       props: {
         label: (data: MenuResult): string => {
-          return t(data.name)
+          return data.name
         },
       },
     },
@@ -185,7 +178,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.menu.router'),
+    label: '路由',
     defaultValue: '',
     prop: 'router',
     hidden: ({ model }) => {
@@ -196,11 +189,11 @@ const schemas = ref<FormSchema[]>([
       required: true,
       validator: (_, value: string, cb) => {
         if (!value) {
-          cb(new Error(`${t('component.form.enter')}${t('views.system.menu.router')}`))
+          cb(new Error('请输入路由'))
           return
         }
         if (!isUrl(value) && !value.startsWith('/')) {
-          cb(new Error(`${t('component.form.invalid')}${t('views.system.menu.router')}`))
+          cb(new Error('无效的路由'))
           return
         }
         cb()
@@ -208,7 +201,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.menu.viewPath'),
+    label: '视图路径',
     defaultValue: '',
     prop: 'viewPath',
     hidden: ({ model }) => {
@@ -217,7 +210,7 @@ const schemas = ref<FormSchema[]>([
     slot: 'viewPath',
   },
   {
-    label: t('views.system.menu.icon'),
+    label: '图标',
     defaultValue: '',
     prop: 'icon',
     hidden: ({ model }) => {
@@ -226,7 +219,7 @@ const schemas = ref<FormSchema[]>([
     component: IconPicker,
   },
   {
-    label: t('views.system.menu.isShow'),
+    label: '状态',
     prop: 'isShow',
     defaultValue: 1,
     hidden: ({ model }) => {
@@ -235,7 +228,7 @@ const schemas = ref<FormSchema[]>([
     slot: 'isShow',
   },
   {
-    label: t('views.system.menu.perm'),
+    label: '权限',
     defaultValue: [],
     prop: 'perms',
     hidden: ({ model }) => {
@@ -256,11 +249,11 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'array',
       min: 1,
-      message: `${t('component.form.choose')}${t('views.system.menu.perm')}`,
+      message: '请选择权限',
     },
   },
   {
-    label: t('views.system.menu.orderNum'),
+    label: '排序',
     defaultValue: 0,
     prop: 'orderNum',
     component: 'ElInputNumber',

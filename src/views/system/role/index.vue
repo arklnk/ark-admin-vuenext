@@ -8,18 +8,12 @@
       :pagination="false"
     >
       <template #toolbar>
-        <ElButton type="primary" @click="openEditRoleFormDialog()">{{
-          t('common.basic.add')
-        }}</ElButton>
+        <ElButton type="primary" @click="openEditRoleFormDialog()">新增</ElButton>
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="handleUpdate(row)">{{
-          t('common.basic.edit')
-        }}</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">{{
-          t('common.basic.delete')
-        }}</ElButton>
+        <ElButton type="primary" link @click="handleUpdate(row)">编辑</ElButton>
+        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
       </template>
     </BasicTable>
 
@@ -33,13 +27,10 @@ import type { BasicColumn } from '/@/components/Table'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { useTransl } from '/@/composables/core/useTransl'
 import { useGetRoleListRequest, useDeleteRoleRequest } from '/@/api/system/role.api'
 import { listToTree } from '/@/utils/helper/tree'
 import EditRoleFormDialog from './components/EditRoleFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-
-const { t } = useTransl()
 
 const [getRoleListRequest, _] = useGetRoleListRequest()
 const [deleteRoleRequest, __] = useDeleteRoleRequest()
@@ -70,40 +61,40 @@ async function handleDelete(row: Recordable) {
 
 const columns = ref<BasicColumn[]>([
   {
-    label: t('views.system.role.name'),
+    label: '角色名称',
     prop: 'name',
     width: 320,
   },
   {
-    label: t('views.system.role.uniqueKey'),
+    label: '角色标识',
     prop: 'uniqueKey',
     width: 320,
   },
   {
     align: 'center',
     width: 100,
-    label: t('common.basic.status'),
+    label: '状态',
     prop: 'status',
     formatter: (row: Recordable): string => {
-      return row.status === 0 ? t('common.basic.disabled') : t('common.basic.enable')
+      return row.status === 0 ? '禁用' : '启用'
     },
   },
   {
     align: 'center',
-    label: t('common.basic.remark'),
+    label: '备注',
     prop: 'remark',
     showTooltipWhenOverflow: true,
   },
   {
     width: 100,
     align: 'center',
-    label: t('common.basic.sort'),
+    label: '排序',
     prop: 'orderNum',
   },
   {
     width: 140,
     align: 'center',
-    label: t('common.basic.operation'),
+    label: '操作',
     slot: 'action',
     fixed: 'right',
   },

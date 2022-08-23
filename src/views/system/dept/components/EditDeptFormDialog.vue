@@ -1,9 +1,5 @@
 <template>
-  <BasicDialog
-    @register="registerDialog"
-    :title="t('views.system.dept.editform.title')"
-    @confirm="submit"
-  >
+  <BasicDialog @register="registerDialog" title="编辑部门信息" @confirm="submit">
     <BasicForm
       :schemas="schemas"
       label-width="100px"
@@ -13,15 +9,15 @@
     >
       <template #status="{ model }">
         <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">{{ t('common.basic.enable') }}</ElRadio>
-          <ElRadio :label="0">{{ t('common.basic.disabled') }}</ElRadio>
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
         </ElRadioGroup>
       </template>
       <template #type="{ model }">
         <ElSelect v-model="model.type" class="w-full">
-          <ElOption :label="t('views.system.dept.deptTypeCompany')" :value="1" />
-          <ElOption :label="t('views.system.dept.deptTypeSubsidiary')" :value="2" />
-          <ElOption :label="t('views.system.dept.deptTypeDepartment')" :value="3" />
+          <ElOption label="公司" :value="1" />
+          <ElOption label="子公司" :value="2" />
+          <ElOption label="部门" :value="3" />
         </ElSelect>
       </template>
     </BasicForm>
@@ -33,14 +29,11 @@ import { FormSchema, useForm } from '/@/components/Form'
 import type { DeptResult } from '/@/api/system/dept.api'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
-import { useTransl } from '/@/composables/core/useTransl'
 import { BasicForm } from '/@/components/Form'
 import { ref } from 'vue'
 import { useAddDeptRequest, useUpdateDeptRequest } from '/@/api/system/dept.api'
 
 const emit = defineEmits(['register', 'success'])
-
-const { t } = useTransl()
 
 const updateDeptId = ref<number | null>(null)
 
@@ -100,7 +93,7 @@ async function handleSubmit(res: Omit<DeptResult, 'id'>) {
 
 const schemas = ref<FormSchema[]>([
   {
-    label: t('views.system.dept.name'),
+    label: '部门名称',
     defaultValue: '',
     prop: 'name',
     colProps: {
@@ -110,11 +103,11 @@ const schemas = ref<FormSchema[]>([
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.dept.name')}`,
+      message: '请输入部门名称',
     },
   },
   {
-    label: t('views.system.dept.code'),
+    label: '部门标识',
     defaultValue: '',
     prop: 'uniqueKey',
     component: 'ElInput',
@@ -124,11 +117,11 @@ const schemas = ref<FormSchema[]>([
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.dept.code')}`,
+      message: '请输入部门标识',
     },
   },
   {
-    label: t('views.system.dept.editform.parent'),
+    label: '父级部门',
     defaultValue: 0,
     prop: 'parentId',
     component: 'ElTreeSelect',
@@ -140,7 +133,7 @@ const schemas = ref<FormSchema[]>([
       defaultExpandAll: true,
       props: {
         label: (data: DeptResult): string => {
-          return t(data.name)
+          return data.name
         },
       },
     },
@@ -151,7 +144,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.dept.type'),
+    label: '部门类型',
     defaultValue: 1,
     prop: 'type',
     slot: 'type',
@@ -160,7 +153,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.dept.fullname'),
+    label: '部门全称',
     defaultValue: '',
     prop: 'fullName',
     component: 'ElInput',
@@ -169,7 +162,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.remark'),
+    label: '备注',
     prop: 'remark',
     defaultValue: '',
     component: 'ElInput',
@@ -179,7 +172,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.status'),
+    label: '状态',
     defaultValue: 1,
     prop: 'status',
     slot: 'status',
@@ -188,7 +181,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.sort'),
+    label: '排序',
     defaultValue: 0,
     prop: 'orderNum',
     component: 'ElInputNumber',

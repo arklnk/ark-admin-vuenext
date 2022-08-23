@@ -17,7 +17,7 @@
           @register="registerDeptTable"
         >
           <template #toolbar>
-            <span class="ml-1 text-sm">{{ t('views.system.user.deptStruct') }}</span>
+            <span class="ml-1 text-sm">部门架构</span>
           </template>
         </BasicTable>
       </div>
@@ -31,17 +31,11 @@
           :immediate="false"
         >
           <template #toolbar>
-            <ElButton type="primary" @click="openEditUserFormDialog()">{{
-              t('common.basic.add')
-            }}</ElButton>
+            <ElButton type="primary" @click="openEditUserFormDialog()">新增</ElButton>
           </template>
           <template #action="{ row }">
-            <ElButton type="primary" link @click="openEditUserFormDialog(row)">{{
-              t('common.basic.edit')
-            }}</ElButton>
-            <ElButton type="danger" link @click="handleDelete(row)">{{
-              t('common.basic.delete')
-            }}</ElButton>
+            <ElButton type="primary" link @click="openEditUserFormDialog(row)">编辑</ElButton>
+            <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
           </template>
         </BasicTable>
       </div>
@@ -60,12 +54,9 @@ import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { listToTree } from '/@/utils/helper/tree'
 import { ref, nextTick } from 'vue'
-import { useTransl } from '/@/composables/core/useTransl'
 import { useGetUserListRequest, useDeleteUserRequest } from '/@/api/system/user.api'
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-
-const { t } = useTransl()
 
 const [registerDeptTable, { getCurrentRow }] = useTable()
 const [registerUserTable, { reload }] = useTable()
@@ -106,19 +97,19 @@ nextTick(() => {
 
 const userColumns = ref<BasicColumn[]>([
   {
-    label: t('views.system.user.account'),
+    label: '账号',
     prop: 'account',
     align: 'center',
     width: 160,
   },
   {
-    label: t('views.system.user.username'),
+    label: '姓名',
     prop: 'username',
     align: 'center',
     width: 160,
   },
   {
-    label: t('views.system.user.dept'),
+    label: '所属部门',
     prop: 'dept',
     align: 'center',
     width: 180,
@@ -127,7 +118,7 @@ const userColumns = ref<BasicColumn[]>([
     },
   },
   {
-    label: t('views.system.user.roles'),
+    label: '所属角色',
     prop: 'roles',
     align: 'center',
     width: 200,
@@ -136,7 +127,7 @@ const userColumns = ref<BasicColumn[]>([
     },
   },
   {
-    label: t('views.system.user.profession'),
+    label: '职称',
     prop: 'profession',
     align: 'center',
     width: 180,
@@ -145,7 +136,7 @@ const userColumns = ref<BasicColumn[]>([
     },
   },
   {
-    label: t('views.system.user.job'),
+    label: '岗位',
     prop: 'job',
     align: 'center',
     width: 180,
@@ -154,40 +145,40 @@ const userColumns = ref<BasicColumn[]>([
     },
   },
   {
-    label: t('views.system.user.gender'),
+    label: '性别',
     align: 'center',
     prop: 'gender',
     width: 120,
     formatter: (row: UserResult) => {
       if (row.gender === 1) {
-        return t('common.basic.female')
+        return '女'
       } else if (row.gender === 2) {
-        return t('common.basic.male')
+        return '难'
       } else {
-        return t('common.basic.secrecy')
+        return '保密'
       }
     },
   },
   {
-    label: t('views.system.user.mobile'),
+    label: '手机号',
     prop: 'mobile',
     align: 'center',
     width: 180,
   },
   {
-    label: t('views.system.user.nickname'),
+    label: '昵称',
     prop: 'nickname',
     align: 'center',
     width: 160,
   },
   {
-    label: t('views.system.user.email'),
+    label: '邮箱',
     prop: 'email',
     align: 'center',
     width: 180,
   },
   {
-    label: t('common.basic.operation'),
+    label: '操作',
     align: 'center',
     width: 140,
     fixed: 'right',
@@ -205,7 +196,7 @@ async function processDeptListResult() {
 
 const deptColumns = ref<BasicColumn[]>([
   {
-    label: t('views.system.dept.name'),
+    label: '部门名称',
     prop: 'name',
   },
 ])

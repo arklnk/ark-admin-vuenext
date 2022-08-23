@@ -9,8 +9,8 @@
     >
       <template #status="{ model }">
         <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">{{ t('common.basic.enable') }}</ElRadio>
-          <ElRadio :label="0">{{ t('common.basic.disabled') }}</ElRadio>
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
         </ElRadioGroup>
       </template>
     </BasicForm>
@@ -23,7 +23,6 @@ import type { ParamConfigResult } from '/@/api/config/dict.api'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
-import { useTransl } from '/@/composables/core/useTransl'
 import { ref, computed } from 'vue'
 import { DictValueTypes } from '../DictValueType'
 import { isNil } from 'lodash-es'
@@ -31,16 +30,10 @@ import { useAddDictRequest, useUpdateDictRequest } from '/@/api/config/dict.api'
 
 const emit = defineEmits(['register', 'success'])
 
-const { t } = useTransl()
-
 const currentParentId = ref<number>(0)
 const currentUpdateId = ref<number | null>(null)
 
-const getTitle = computed(() =>
-  currentParentId.value === 0
-    ? t('views.config.dict.editform.title')
-    : t('views.config.dict.editform.title2')
-)
+const getTitle = computed(() => (currentParentId.value === 0 ? '编辑字典信息' : '编辑字典项信息'))
 
 const [registerForm, { submit, setProps: setFormProps, updateSchema, setFormModel }] = useForm()
 const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner(
@@ -110,35 +103,35 @@ async function handleSubmit(res: Omit<ParamConfigResult, 'id' | 'parentId'>) {
 
 const schemas = ref<FormSchema[]>([
   {
-    label: t('views.config.dict.name'),
+    label: '名称',
     prop: 'name',
     defaultValue: '',
     component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.config.dict.name')}`,
+      message: '请输入名称',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.config.dict.uniqueKey'),
+    label: '标识',
     prop: 'uniqueKey',
     defaultValue: '',
     component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.config.dict.uniqueKey')}`,
+      message: '请输入标识',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.config.dict.type'),
+    label: '值类型',
     prop: 'type',
     defaultValue: 1,
     component: 'ElTreeSelect',
@@ -150,7 +143,7 @@ const schemas = ref<FormSchema[]>([
       renderAfterExpand: false,
       props: {
         label: (data: Recordable): string => {
-          return t(data.label)
+          return data.label
         },
       },
     },
@@ -158,14 +151,14 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'number',
       min: 0,
-      message: `${t('component.form.choose')}${t('views.config.dict.type')}`,
+      message: '请选择值类型',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.config.dict.value'),
+    label: '字典项值',
     prop: 'value',
     component: 'ElInput',
     defaultValue: '',
@@ -174,7 +167,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.sort'),
+    label: '排序',
     defaultValue: 0,
     prop: 'orderNum',
     component: 'ElInputNumber',
@@ -186,7 +179,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.status'),
+    label: '状态',
     defaultValue: 1,
     prop: 'status',
     slot: 'status',
@@ -195,7 +188,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.remark'),
+    label: '备注',
     prop: 'remark',
     defaultValue: '',
     component: 'ElInput',

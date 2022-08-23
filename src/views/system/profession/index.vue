@@ -2,18 +2,12 @@
   <PageWrapper>
     <BasicTable :api="getProfListRequest" :columns="columns" @register="registerTable">
       <template #toolbar>
-        <ElButton type="primary" @click="openEditProfFormDialog()">{{
-          t('common.basic.add')
-        }}</ElButton>
+        <ElButton type="primary" @click="openEditProfFormDialog()">新增</ElButton>
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="openEditProfFormDialog(row)">{{
-          t('common.basic.edit')
-        }}</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">{{
-          t('common.basic.delete')
-        }}</ElButton>
+        <ElButton type="primary" link @click="openEditProfFormDialog(row)">编辑</ElButton>
+        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
       </template>
     </BasicTable>
 
@@ -29,11 +23,8 @@ import { useGetProfPageRequest, useDeleteProfRequest } from '/@/api/system/profe
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { useTransl } from '/@/composables/core/useTransl'
 import EditProfFormDialog from './components/EditProfFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-
-const { t } = useTransl()
 
 const [getProfListRequest, _] = useGetProfPageRequest()
 const [deleteProfRequest, __] = useDeleteProfRequest()
@@ -54,27 +45,27 @@ async function handleDelete(row: ProfessionResult) {
 
 const columns = ref<BasicColumn[]>([
   {
-    label: t('views.system.profession.name'),
+    label: '职称',
     prop: 'name',
     minWidth: 300,
     align: 'center',
   },
   {
     align: 'center',
-    label: t('common.basic.status'),
+    label: '状态',
     prop: 'status',
     formatter: (row: Recordable) => {
-      return row.status === 0 ? t('common.basic.disabled') : t('common.basic.enable')
+      return row.status === 0 ? '禁用' : '启用'
     },
   },
   {
     align: 'center',
-    label: t('common.basic.sort'),
+    label: '排序',
     prop: 'orderNum',
   },
   {
     align: 'center',
-    label: t('common.basic.operation'),
+    label: '操作',
     slot: 'action',
     width: 140,
     fixed: 'right',

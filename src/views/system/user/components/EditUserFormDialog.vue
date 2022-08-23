@@ -2,7 +2,7 @@
   <BasicDialog
     @register="registerDialog"
     @confirm="submit"
-    :title="t('views.system.user.editform.title')"
+    title="编辑用户信息"
     @visible-change="handleVisibleChange"
   >
     <BasicForm
@@ -14,16 +14,16 @@
     >
       <template #gender="{ model }">
         <ElSelect v-model="model.gender" class="w-full">
-          <ElOption :label="t('common.basic.secrecy')" :value="0" />
-          <ElOption :label="t('common.basic.female')" :value="1" />
-          <ElOption :label="t('common.basic.male')" :value="2" />
+          <ElOption label="保密" :value="0" />
+          <ElOption label="女" :value="1" />
+          <ElOption label="男" :value="2" />
         </ElSelect>
       </template>
 
       <template #status="{ model }">
         <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">{{ t('common.basic.enable') }}</ElRadio>
-          <ElRadio :label="0">{{ t('common.basic.disabled') }}</ElRadio>
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
         </ElRadioGroup>
       </template>
     </BasicForm>
@@ -36,7 +36,6 @@ import type { UserRequestParams, UserResult } from '/@/api/system/user.api'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
-import { useTransl } from '/@/composables/core/useTransl'
 import { ref, nextTick } from 'vue'
 import { useGetRoleListRequest } from '/@/api/system/role.api'
 import { useGetDeptListRequest } from '/@/api/system/dept.api'
@@ -46,8 +45,6 @@ import { listToTree } from '/@/utils/helper/tree'
 import { useAddUserRequest, useUpdateUserRequest } from '/@/api/system/user.api'
 
 const emit = defineEmits(['register', 'success'])
-
-const { t } = useTransl()
 
 const [addUserRequest, _] = useAddUserRequest()
 const [updateUserRequest, __] = useUpdateUserRequest()
@@ -157,35 +154,35 @@ function handleVisibleChange(visible: boolean) {
 
 const schemas = ref<FormSchema[]>([
   {
-    label: t('views.system.user.account'),
+    label: '账号',
     prop: 'account',
     defaultValue: '',
     component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.user.account')}`,
+      message: '请输入账号',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.system.user.username'),
+    label: '姓名',
     prop: 'username',
     defaultValue: '',
     component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.user.username')}`,
+      message: '请输入姓名',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.system.user.gender'),
+    label: '性别',
     prop: 'gender',
     defaultValue: 0,
     slot: 'gender',
@@ -194,7 +191,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.user.nickname'),
+    label: '昵称',
     prop: 'nickname',
     defaultValue: '',
     component: 'ElInput',
@@ -203,7 +200,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.user.email'),
+    label: '邮箱',
     prop: 'email',
     defaultValue: '',
     component: 'ElInput',
@@ -212,7 +209,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.user.mobile'),
+    label: '手机号',
     prop: 'mobile',
     defaultValue: '',
     component: 'ElInput',
@@ -221,7 +218,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.user.roles'),
+    label: '所属角色',
     prop: 'roleIds',
     defaultValue: [],
     component: 'ElTreeSelect',
@@ -235,7 +232,7 @@ const schemas = ref<FormSchema[]>([
       renderAfterExpand: false,
       props: {
         label: (data: Recordable): string => {
-          return t(data.name)
+          return data.name
         },
       },
     },
@@ -243,14 +240,14 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'array',
       min: 1,
-      message: `${t('component.form.choose')}${t('views.system.user.roles')}`,
+      message: '请选择所属角色',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.system.user.dept'),
+    label: '所属部门',
     prop: 'deptId',
     component: 'ElTreeSelect',
     componentProps: {
@@ -261,7 +258,7 @@ const schemas = ref<FormSchema[]>([
       renderAfterExpand: false,
       props: {
         label: (data: Recordable): string => {
-          return t(data.name)
+          return data.name
         },
       },
     },
@@ -269,14 +266,14 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'number',
       min: 1,
-      message: `${t('component.form.choose')}${t('views.system.user.dept')}`,
+      message: '请选择所属部门',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.system.user.profession'),
+    label: '职称',
     prop: 'professionId',
     component: 'ElTreeSelect',
     componentProps: {
@@ -286,7 +283,7 @@ const schemas = ref<FormSchema[]>([
       nodeKey: 'id',
       props: {
         label: (data: Recordable): string => {
-          return t(data.name)
+          return data.name
         },
       },
     },
@@ -294,14 +291,14 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'number',
       min: 1,
-      message: `${t('component.form.choose')}${t('views.system.user.profession')}`,
+      message: '请选择职称',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.system.user.job'),
+    label: '岗位',
     prop: 'jobId',
     component: 'ElTreeSelect',
     componentProps: {
@@ -311,7 +308,7 @@ const schemas = ref<FormSchema[]>([
       nodeKey: 'id',
       props: {
         label: (data: Recordable): string => {
-          return t(data.name)
+          return data.name
         },
       },
     },
@@ -319,14 +316,14 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'number',
       min: 1,
-      message: `${t('component.form.choose')}${t('views.system.user.job')}`,
+      message: '请选择岗位',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('common.basic.sort'),
+    label: '排序',
     prop: 'orderNum',
     defaultValue: 0,
     component: 'ElInputNumber',
@@ -338,7 +335,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.status'),
+    label: '状态',
     defaultValue: 1,
     prop: 'status',
     slot: 'status',
@@ -347,7 +344,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.remark'),
+    label: '备注',
     prop: 'remark',
     defaultValue: '',
     component: 'ElInput',

@@ -1,9 +1,5 @@
 <template>
-  <BasicDialog
-    @register="registerDialog"
-    @confirm="submit"
-    :title="t('views.system.profession.editform.title')"
-  >
+  <BasicDialog @register="registerDialog" @confirm="submit" title="编辑职称信息">
     <BasicForm
       :schemas="schemas"
       :show-action-button-group="false"
@@ -13,8 +9,8 @@
     >
       <template #status="{ model }">
         <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">{{ t('common.basic.enable') }}</ElRadio>
-          <ElRadio :label="0">{{ t('common.basic.disabled') }}</ElRadio>
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
         </ElRadioGroup>
       </template>
     </BasicForm>
@@ -27,13 +23,10 @@ import type { ProfessionResult } from '/@/api/system/profession.api'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
-import { useTransl } from '/@/composables/core/useTransl'
 import { ref } from 'vue'
 import { useAddProfRequest, useUpdateProfRequest } from '/@/api/system/profession.api'
 
 const emit = defineEmits(['register', 'success'])
-
-const { t } = useTransl()
 
 const updateProfId = ref<number | null>(null)
 
@@ -78,18 +71,18 @@ async function handleSubmit(res: Omit<ProfessionResult, 'id'>) {
 
 const schemas = ref<FormSchema[]>([
   {
-    label: t('views.system.profession.name'),
+    label: '职称',
     prop: 'name',
     defaultValue: '',
     component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.profession.name')}`,
+      message: '请输入职称',
     },
   },
   {
-    label: t('common.basic.status'),
+    label: '状态',
     defaultValue: 1,
     prop: 'status',
     slot: 'status',
@@ -98,7 +91,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.sort'),
+    label: '排序',
     defaultValue: 0,
     prop: 'orderNum',
     component: 'ElInputNumber',

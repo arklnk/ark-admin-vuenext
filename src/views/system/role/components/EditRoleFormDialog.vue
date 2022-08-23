@@ -1,7 +1,7 @@
 <template>
   <BasicDialog
     @register="registerDialog"
-    :title="t('views.system.role.editform.title')"
+    title="编辑角色信息"
     @confirm="submit"
     @visible-change="handleVisibleChange"
   >
@@ -13,10 +13,10 @@
       @submit="handleSubmit"
     >
       <template #status="{ model }">
-        <el-radio-group v-model="model.status">
-          <el-radio :label="1">{{ t('common.basic.enable') }}</el-radio>
-          <el-radio :label="0">{{ t('common.basic.disabled') }}</el-radio>
-        </el-radio-group>
+        <ElRadioGroup v-model="model.status">
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
+        </ElRadioGroup>
       </template>
     </BasicForm>
   </BasicDialog>
@@ -25,20 +25,17 @@
 <script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
 import type { RoleResult } from '/@/api/system/role.api'
-// import type { MenuResult } from '/@/api/system/menu.api'
 
 import { useAddRoleRequest, useUpdateRoleRequest } from '/@/api/system/role.api'
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import AssignPermTree from './AssignPermTree.vue'
-import { useTransl } from '/@/composables/core/useTransl'
 import { ref, nextTick } from 'vue'
 import { useGetMenuListRequest } from '/@/api/system/menu.api'
 import { listToTree } from '/@/utils/helper/tree'
 
 const emit = defineEmits(['register', 'success'])
 
-const { t } = useTransl()
 const updateRoleId = ref<number | null>(null)
 
 const [registerForm, { updateSchema, submit, setProps: setFormProps, setFormModel }] = useForm()
@@ -122,35 +119,35 @@ function handleVisibleChange(visible: boolean) {
 
 const schemas = ref<FormSchema[]>([
   {
-    label: t('views.system.role.name'),
+    label: '角色名称',
     prop: 'name',
     defaultValue: '',
     component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.role.name')}`,
+      message: '请输入角色名称',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.system.role.uniqueKey'),
+    label: '角色标识',
     prop: 'uniqueKey',
     defaultValue: '',
     component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.role.uniqueKey')}`,
+      message: '请输入角色标识',
     },
     colProps: {
       span: 12,
     },
   },
   {
-    label: t('views.system.role.editform.parent'),
+    label: '父级角色',
     defaultValue: 0,
     prop: 'parentId',
     component: 'ElTreeSelect',
@@ -161,7 +158,7 @@ const schemas = ref<FormSchema[]>([
       defaultExpandAll: true,
       props: {
         label: (data: RoleResult): string => {
-          return t(data.name)
+          return data.name
         },
       },
     },
@@ -172,7 +169,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.role.editform.permissionAssign'),
+    label: '分配权限',
     defaultValue: [],
     prop: 'permMenuIds',
     component: AssignPermTree,
@@ -181,7 +178,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.remark'),
+    label: '备注',
     prop: 'remark',
     defaultValue: '',
     component: 'ElInput',
@@ -191,7 +188,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('views.system.menu.orderNum'),
+    label: '排序',
     defaultValue: 0,
     prop: 'orderNum',
     component: 'ElInputNumber',
@@ -200,7 +197,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.status'),
+    label: '状态',
     prop: 'status',
     defaultValue: 1,
     slot: 'status',

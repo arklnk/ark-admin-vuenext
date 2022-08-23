@@ -34,17 +34,13 @@
               :disabled="currentDictInfo.parentId === null"
               @click="openEditDictDataFormDialog()"
             >
-              {{ t('common.basic.add') }}
+              新增
             </ElButton>
           </template>
 
           <template #action="{ row }">
-            <ElButton type="primary" link @click="openEditDictDataFormDialog(row)">{{
-              t('common.basic.edit')
-            }}</ElButton>
-            <ElButton type="danger" link @click="handleDeleteDict(row)">{{
-              t('common.basic.delete')
-            }}</ElButton>
+            <ElButton type="primary" link @click="openEditDictDataFormDialog(row)">编辑</ElButton>
+            <ElButton type="danger" link @click="handleDeleteDict(row)">删除</ElButton>
           </template>
         </BasicTable>
       </div>
@@ -65,15 +61,12 @@ import {
 } from '/@/api/config/dict.api'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
-import { useTransl } from '/@/composables/core/useTransl'
 import IconFontistoSpinnerRefresh from '~icons/fontisto/spinner-refresh'
 import IconFluentAdd12Filled from '~icons/fluent/add-12-filled'
 import { createContextMenu } from '/@/components/ContextMenu'
 import EditDictFormDialog from './components/EditDictFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { DictValueTypes } from './DictValueType'
-
-const { t } = useTransl()
 
 const [getDictListRequest, _] = useGetDictListRequest()
 const [getDictDataPageRequest, __] = useGetDictDataPageRequest()
@@ -142,13 +135,13 @@ function handleDictRowContextmenu(row: Recordable, _: unknown, e: MouseEvent) {
     event: e,
     items: [
       {
-        label: t('common.basic.edit'),
+        label: '编辑',
         handler: () => {
           openEditDictFormDialog(row)
         },
       },
       {
-        label: t('common.basic.delete'),
+        label: '删除',
         handler: async () => {
           handleDeleteDict(row)
         },
@@ -167,27 +160,27 @@ function handleEditSuccess(id: number) {
 
 const itemColumns = ref<BasicColumn[]>([
   {
-    label: t('views.config.dict.itemname'),
+    label: '字典项名称',
     prop: 'name',
     width: 220,
   },
   {
-    label: t('views.config.dict.uniqueKey'),
+    label: '字典项标识',
     prop: 'uniqueKey',
     width: 120,
     align: 'center',
   },
   {
-    label: t('views.config.dict.type'),
+    label: '值类型',
     prop: 'type',
     width: 200,
     align: 'center',
     formatter: (row: Recordable) => {
-      return t(DictValueTypes.find((e) => e.value === row.type)!.label)
+      return DictValueTypes.find((e) => e.value === row.type)!.label
     },
   },
   {
-    label: t('views.config.dict.value'),
+    label: '字典项值',
     prop: 'value',
     width: 340,
     showTooltipWhenOverflow: true,
@@ -195,29 +188,29 @@ const itemColumns = ref<BasicColumn[]>([
   },
   {
     align: 'center',
-    label: t('common.basic.status'),
+    label: '状态',
     prop: 'status',
     width: 120,
     formatter: (row: Recordable) => {
-      return row.status === 0 ? t('common.basic.disabled') : t('common.basic.enable')
+      return row.status === 0 ? '禁用' : '启用'
     },
   },
   {
     align: 'center',
-    label: t('common.basic.sort'),
+    label: '排序',
     width: 100,
     prop: 'orderNum',
   },
   {
     align: 'center',
-    label: t('common.basic.remark'),
+    label: '备注',
     prop: 'remark',
     width: 300,
     showTooltipWhenOverflow: true,
   },
   {
     align: 'center',
-    label: t('common.basic.operation'),
+    label: '操作',
     width: 140,
     fixed: 'right',
     slot: 'action',
@@ -226,7 +219,7 @@ const itemColumns = ref<BasicColumn[]>([
 
 const setColumns = ref<BasicColumn[]>([
   {
-    label: t('views.config.dict.name'),
+    label: '字典名称',
     prop: 'name',
     renderHeader: ({ column }) => {
       return (

@@ -8,9 +8,7 @@
       :pagination="false"
     >
       <template #toolbar>
-        <ElButton type="primary" @click="openEditDeptFormDialog()">{{
-          t('common.basic.add')
-        }}</ElButton>
+        <ElButton type="primary" @click="openEditDeptFormDialog()">新增</ElButton>
       </template>
 
       <template #type="{ row }">
@@ -18,12 +16,8 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="openEditDeptFormDialog(row)">{{
-          t('common.basic.edit')
-        }}</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">{{
-          t('common.basic.delete')
-        }}</ElButton>
+        <ElButton type="primary" link @click="openEditDeptFormDialog(row)">编辑</ElButton>
+        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
       </template>
     </BasicTable>
 
@@ -40,11 +34,9 @@ import { BasicTable } from '/@/components/Table'
 import { ref } from 'vue'
 import { useGetDeptListRequest, useDeleteDeptRequest } from '/@/api/system/dept.api'
 import { listToTree } from '/@/utils/helper/tree'
-import { useTransl } from '/@/composables/core/useTransl'
 import EditDeptFormDialog from './components/EditDeptFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 
-const { t } = useTransl()
 const [getDeptListRequest, _] = useGetDeptListRequest()
 const [deleteDeptRequest, __] = useDeleteDeptRequest()
 
@@ -71,11 +63,11 @@ async function handleDelete(row: DeptResult) {
 function formatterType(type: number) {
   switch (type) {
     case 1:
-      return t('views.system.dept.deptTypeCompany')
+      return '公司'
     case 2:
-      return t('views.system.dept.deptTypeSubsidiary')
+      return '子公司'
     case 3:
-      return t('views.system.dept.deptTypeDepartment')
+      return '部门'
   }
 }
 
@@ -93,52 +85,52 @@ function getTypeTag(type: number) {
 const columns = ref<BasicColumn[]>([
   {
     width: 300,
-    label: t('views.system.dept.name'),
+    label: '部门名称',
     prop: 'name',
   },
   {
     align: 'center',
     width: 140,
-    label: t('views.system.dept.code'),
+    label: '部门标识',
     prop: 'uniqueKey',
   },
   {
     align: 'center',
     width: 300,
-    label: t('views.system.dept.fullname'),
+    label: '部门全称',
     prop: 'fullName',
   },
   {
     align: 'center',
     width: 120,
-    label: t('views.system.dept.type'),
+    label: '部门类型',
     prop: 'type',
     slot: 'type',
   },
   {
     align: 'center',
     width: 100,
-    label: t('common.basic.status'),
+    label: '状态',
     prop: 'status',
     formatter: (row: Recordable) => {
-      return row.status === 0 ? t('common.basic.disabled') : t('common.basic.enable')
+      return row.status === 0 ? '禁用' : '启用'
     },
   },
   {
     align: 'center',
     width: 80,
-    label: t('common.basic.sort'),
+    label: '排序',
     prop: 'orderNum',
   },
   {
     align: 'center',
-    label: t('common.basic.remark'),
+    label: '备注',
     prop: 'remark',
   },
   {
     width: 140,
     align: 'center',
-    label: t('common.basic.operation'),
+    label: '操作',
     fixed: 'right',
     slot: 'action',
   },

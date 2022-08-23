@@ -1,5 +1,5 @@
 <template>
-  <BasicDialog @register="registerDialog" @confirm="submit" :title="t('views.system.job.name')">
+  <BasicDialog @register="registerDialog" @confirm="submit" title="编辑岗位信息">
     <BasicForm
       :schemas="schemas"
       :show-action-button-group="false"
@@ -9,8 +9,8 @@
     >
       <template #status="{ model }">
         <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">{{ t('common.basic.enable') }}</ElRadio>
-          <ElRadio :label="0">{{ t('common.basic.disabled') }}</ElRadio>
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
         </ElRadioGroup>
       </template>
     </BasicForm>
@@ -23,13 +23,10 @@ import type { JobResult } from '/@/api/system/job.api'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
-import { useTransl } from '/@/composables/core/useTransl'
 import { ref } from 'vue'
 import { useAddJobRequest, useUpdateJobRequest } from '/@/api/system/job.api'
 
 const emit = defineEmits(['register', 'success'])
-
-const { t } = useTransl()
 
 const updateJobId = ref<number | null>(null)
 
@@ -73,18 +70,18 @@ async function handleSubmit(res: Omit<JobResult, 'id'>) {
 
 const schemas = ref<FormSchema[]>([
   {
-    label: t('views.system.job.name'),
+    label: '岗位名称',
     prop: 'name',
     defaultValue: '',
     component: 'ElInput',
     rules: {
       required: true,
       type: 'string',
-      message: `${t('component.form.enter')}${t('views.system.job.name')}`,
+      message: '请输入岗位名称',
     },
   },
   {
-    label: t('common.basic.status'),
+    label: '状态',
     defaultValue: 1,
     prop: 'status',
     slot: 'status',
@@ -93,7 +90,7 @@ const schemas = ref<FormSchema[]>([
     },
   },
   {
-    label: t('common.basic.sort'),
+    label: '排序',
     defaultValue: 0,
     prop: 'orderNum',
     component: 'ElInputNumber',
