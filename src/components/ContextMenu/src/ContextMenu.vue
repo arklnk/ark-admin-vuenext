@@ -4,7 +4,6 @@ import type { Axis, ContextMenuItem, ItemContentProps } from './typing'
 
 import { defineComponent, ref, onMounted, nextTick, unref, toRefs, computed } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
-import { ArrowRight } from '@element-plus/icons-vue'
 
 const props = {
   width: {
@@ -44,13 +43,13 @@ const ContextMenuItemHeight = 40
 const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
   const Icon = props.item.icon as string | any
   return (
-    <div onClick={props.handler.bind(null, props.item)} class="flex flex-row items-center">
+    <div onClick={props.handler.bind(null, props.item)}>
       {props.showIcon && Icon ? (
         <el-icon>
           {typeof Icon === 'string' ? <svg-icon icon={props.item.icon} /> : <Icon />}
         </el-icon>
       ) : null}
-      <span class="ml-2 flex-1">{props.item.label}</span>
+      <span class="ml-2">{props.item.label}</span>
     </div>
   )
 }
@@ -103,11 +102,11 @@ export default defineComponent({
       handler?.()
     }
 
-    function renderMenuItem(items: ContextMenuItem[], level: number) {
+    function renderMenuItem(items: ContextMenuItem[]) {
       const visibleItems = items.filter((item) => !item.hidden)
 
       return visibleItems.map((item) => {
-        const { disabled, label, divider = false, children } = item
+        const { disabled, label, divider = false } = item
 
         const contentProps: ItemContentProps = {
           showIcon: props.showIcon,
@@ -115,42 +114,13 @@ export default defineComponent({
           handler: handleItemClick,
         }
 
-        if (!children || children.length === 0) {
-          return (
-            <>
-              <el-menu-item disabled={disabled} index={label!}>
-                <ItemContent {...contentProps} />
-              </el-menu-item>
-              {divider ? <el-divider key={`d-${label}`} /> : null}
-            </>
-          )
-        }
-
-        // sub-menu slot
-        const slots = {
-          default: () => renderMenuItem(children, level + 1),
-          title: () => (
-            <>
-              <div class="flex flex-row items-center w-full">
-                <div class="flex-1">
-                  <ItemContent {...contentProps} />
-                </div>
-                {level === 0 ? (
-                  <el-icon class="root-sub-menu__arrow">
-                    <ArrowRight />
-                  </el-icon>
-                ) : null}
-              </div>
-            </>
-          ),
-        }
         return (
-          <el-sub-menu
-            v-slots={slots}
-            disabled={disabled}
-            index={label!}
-            popper-class={`${prefixCls}__popper`}
-          />
+          <>
+            <el-menu-item disabled={disabled} index={label!}>
+              <ItemContent {...contentProps} />
+            </el-menu-item>
+            {divider ? <el-divider key={`d-${label}`} /> : null}
+          </>
         )
       })
     }
@@ -164,11 +134,11 @@ export default defineComponent({
             style={unref(getStyle)}
             ref={wrapperRef}
             mode="vertical"
-            collapse={true}
+            collapse={false}
             collapse-transition={false}
             unique-opened={true}
           >
-            {renderMenuItem(props.items, 0)}
+            {renderMenuItem(props.items)}
           </el-menu>
         </div>
       )
@@ -186,51 +156,26 @@ $item-height: 40px;
 
 .#{$prefixCls} {
   position: fixed;
+  z-index: 200;
   left: 0;
   top: 0;
   width: 0;
   height: 0;
 
-  @mixin cover-el-menu {
-    .el-menu {
-      --el-menu-item-height: #{$item-height};
-      --el-menu-sub-item-height: #{$item-height};
-
-      user-select: none;
-      border: none;
-      background-color: var(--el-bg-color-overlay);
-
-      .el-divider--horizontal {
-        margin: 0;
-        width: 100%;
-      }
-    }
-  }
-
   .el-menu {
-    .el-sub-menu {
-      .root-sub-menu__arrow {
-        transform: var(--el-menu-icon-transform-closed);
-        transition: transform var(--el-transition-duration);
-        font-size: 12px;
-        margin-right: -var(--el-menu-base-level-padding);
-      }
+    --el-menu-item-height: #{$item-height};
+    --el-menu-sub-item-height: #{$item-height};
 
-      &.is-opened {
-        .root-sub-menu__arrow {
-          transform: var(--el-menu-icon-transform-open);
-        }
-      }
-    }
-  }
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    background-clip: padding-box;
 
-  @include cover-el-menu();
+    user-select: none;
+    border: none;
+    background-color: var(--el-bg-color-overlay);
 
-  &__popper {
-    @include cover-el-menu();
-
-    .el-menu--popup {
-      padding: 0;
+    .el-divider--horizontal {
+      margin: 0;
+      width: 100%;
     }
   }
 }

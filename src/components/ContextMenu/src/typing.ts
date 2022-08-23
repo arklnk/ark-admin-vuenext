@@ -12,7 +12,6 @@ export interface ContextMenuItem {
   disabled?: boolean
   divider?: boolean
   handler?: Fn
-  children?: ContextMenuItem[]
 }
 
 export interface ContextMenuProps {
