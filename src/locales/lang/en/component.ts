@@ -17,4 +17,10 @@ export default {
       desityLoose: 'Loose',
     },
   },
+
+  button: {
+    popconfirm: {
+      title: 'Sure perform operations?',
+    },
+  },
 }

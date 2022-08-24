@@ -13,3 +13,16 @@ export function getSlot(slots: Slots, name = 'default', data?: any) {
 
   return slotFn(data)
 }
+
+export function extendSlots(slots: Slots, excludeKeys: string[] = []) {
+  const slotKeys = Object.keys(slots)
+
+  const ret: Recordable = {}
+  slotKeys.forEach((key) => {
+    if (excludeKeys.includes(key)) return
+
+    ret[key] = (scope?: any) => getSlot(slots, key, scope)
+  })
+
+  return ret
+}

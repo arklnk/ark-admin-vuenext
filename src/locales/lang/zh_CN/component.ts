@@ -17,4 +17,10 @@ export default {
       desityLoose: '宽松',
     },
   },
+
+  button: {
+    popconfirm: {
+      title: '确定执行操作?',
+    },
+  },
 }
