@@ -6,4 +6,6 @@ export enum PageEnum {
   Dashboard = '/dashboard',
   NotFound = '/404',
   Forbidden = '/403',
+  Profile = '/user/profile',
+  Logout = '/logout',
 }

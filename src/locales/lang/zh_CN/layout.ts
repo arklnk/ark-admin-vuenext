@@ -48,6 +48,7 @@ export default {
     switchAnimation: '切换动画',
     switchAnimationType: '切换动画类型',
   },
+
   header: {
     userDropdown: {
       accountSetting: '账号设置',

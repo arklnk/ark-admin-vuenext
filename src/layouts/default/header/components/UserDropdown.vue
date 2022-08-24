@@ -6,10 +6,10 @@
     </span>
     <template #dropdown>
       <ElDropdownMenu>
-        <ElDropdownItem command="/account/setting" :icon="IconAccount">
-          {{ t('layout.header.userDropdown.accountSetting') }}
+        <ElDropdownItem :command="PageEnum.Profile" :icon="IconAccount">
+          {{ t('routes.profile') }}
         </ElDropdownItem>
-        <ElDropdownItem divided command="/logout" :icon="IconTablerPower">
+        <ElDropdownItem divided :command="PageEnum.Logout" :icon="IconTablerPower">
           {{ t('layout.header.userDropdown.logout') }}
         </ElDropdownItem>
       </ElDropdownMenu>

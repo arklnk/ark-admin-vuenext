@@ -4,4 +4,5 @@ export default {
   dashboard: '工作台',
   notfound: '无法找到此页面',
   redirect: '跳转中...',
+  profile: '个人资料',
 }

@@ -48,6 +48,7 @@ export default {
     switchAnimation: 'Switch Animation',
     switchAnimationType: 'Switch Animation Type',
   },
+
   header: {
     userDropdown: {
       accountSetting: 'Account setting',

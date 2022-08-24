@@ -87,6 +87,24 @@ const RedirectRoute: RouteRecordRaw = {
   ],
 }
 
+const ProfileRoute: RouteRecordRaw = {
+  path: PageEnum.Root,
+  component: ParentLayout,
+  meta: {
+    hidden: true,
+  },
+  children: [
+    {
+      path: PageEnum.Profile,
+      name: toHump(PageEnum.Profile),
+      component: () => import('/@/views/profile/Profile.vue'),
+      meta: {
+        title: t('routes.profile'),
+      },
+    },
+  ],
+}
+
 /**
  * @description basic routing without permission
  */
@@ -95,4 +113,5 @@ export const basicRoutes: RouteRecordRaw[] = [
   Error404Route,
   RedirectRoute,
   DashboardRoute,
+  ProfileRoute,
 ]
