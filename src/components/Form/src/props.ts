@@ -75,6 +75,10 @@ export const basicProps = {
   actionColProps: {
     type: Object as PropType<Partial<Writable<ColProps>>>,
   },
+  // 操作按钮栏样式
+  actionColStyle: {
+    type: [String, Object] as PropType<string | CSSProperties>,
+  },
   // 是否显示重置按钮
   showResetButton: {
     type: Boolean,

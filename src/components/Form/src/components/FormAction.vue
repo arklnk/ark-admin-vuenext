@@ -1,7 +1,7 @@
 <template>
   <ElCol v-bind="actionColProps" v-if="showActionButtonGroup">
     <ElFormItem>
-      <div class="w-full flex justify-end">
+      <div class="w-full" :style="actionColStyle">
         <slot name="resetBefore"></slot>
         <ElButton v-if="showResetButton" v-bind="resetButtonProps" @click="resetAction">
           {{ t('common.basic.reset') }}
@@ -32,6 +32,7 @@ export default defineComponent({
   props: pick(basicProps, [
     'showActionButtonGroup',
     'actionColProps',
+    'actionColStyle',
     'showResetButton',
     'showSubmitButton',
     'submitButtonProps',
