@@ -4,7 +4,6 @@ import { defHttp } from '/@/utils/http/axios'
 
 export const Api = {
   page: '/sys/profession/page',
-  list: '/sys/profession/list',
   add: '/sys/profession/add',
   update: '/sys/profession/update',
   delete: '/sys/profession/delete',
@@ -26,14 +25,6 @@ export function useGetProfPageRequest(): [
   }
 
   return [request, Api.page]
-}
-
-export function useGetProfListRequest(): [PromiseFn<{ list: ProfessionResult[] }>, string] {
-  async function request() {
-    return await defHttp.get({ url: Api.list })
-  }
-
-  return [request, Api.list]
 }
 
 export function useAddProfRequest(): [PromiseFn<Omit<ProfessionResult, 'id'>>, string] {

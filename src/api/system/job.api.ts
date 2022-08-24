@@ -4,7 +4,6 @@ import { defHttp } from '/@/utils/http/axios'
 
 export const Api = {
   page: '/sys/job/page',
-  list: '/sys/job/list',
   add: '/sys/job/add',
   update: '/sys/job/update',
   delete: '/sys/job/delete',
@@ -25,14 +24,6 @@ export function useGetJobPageRequest(): [
   }
 
   return [request, Api.page]
-}
-
-export function useGetJobListRequest(): [PromiseFn<{ list: JobResult[] }>, string] {
-  async function request() {
-    return await defHttp.get({ url: Api.list })
-  }
-
-  return [request, Api.list]
 }
 
 export function useAddJobRequest(): [PromiseFn<Omit<JobResult, 'id'>>, string] {

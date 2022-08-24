@@ -7,6 +7,7 @@ export const Api = {
   add: '/sys/user/add',
   update: '/sys/user/update',
   delete: '/sys/user/delete',
+  rdpj: '/sys/user/rdpj/info',
 }
 
 interface IdNameRecord {
@@ -71,4 +72,18 @@ export function useDeleteUserRequest(): [PromiseFn<{ id: number }>, string] {
   }
 
   return [request, Api.delete]
+}
+
+interface RDPJInfoResult {
+  role: IdNameRecord[]
+  profession: IdNameRecord[]
+  job: IdNameRecord[]
+  dept: IdNameRecord[]
+}
+export function useGetRDPJInfoRequest(): [PromiseFn<RDPJInfoResult>, string] {
+  async function request() {
+    return await defHttp.get({ url: Api.rdpj })
+  }
+
+  return [request, Api.rdpj]
 }

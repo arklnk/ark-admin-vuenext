@@ -37,12 +37,12 @@ import type { UserRequestParams, UserResult } from '/@/api/system/user.api'
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { ref, nextTick } from 'vue'
-import { useGetRoleListRequest } from '/@/api/system/role.api'
-import { useGetDeptListRequest } from '/@/api/system/dept.api'
-import { useGetProfListRequest } from '/@/api/system/profession.api'
-import { useGetJobListRequest } from '/@/api/system/job.api'
 import { listToTree } from '/@/utils/helper/tree'
-import { useAddUserRequest, useUpdateUserRequest } from '/@/api/system/user.api'
+import {
+  useAddUserRequest,
+  useUpdateUserRequest,
+  useGetRDPJInfoRequest,
+} from '/@/api/system/user.api'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -99,10 +99,7 @@ async function handleSubmit(res: UserRequestParams) {
   }
 }
 
-const [getRoleListRequest] = useGetRoleListRequest()
-const [getDeptListRequest] = useGetDeptListRequest()
-const [getProfListRequest] = useGetProfListRequest()
-const [getJobListRequest] = useGetJobListRequest()
+const [getRDPJInfoRequest, ___] = useGetRDPJInfoRequest()
 
 function handleVisibleChange(visible: boolean) {
   if (!visible) return
@@ -110,36 +107,31 @@ function handleVisibleChange(visible: boolean) {
   nextTick(async () => {
     try {
       setDialogProps({ loading: true })
-      const [roles, depts, profs, jobs] = await Promise.all([
-        getRoleListRequest(),
-        getDeptListRequest(),
-        getProfListRequest(),
-        getJobListRequest(),
-      ])
+      const { role, dept, profession, job } = await getRDPJInfoRequest()
 
       const updateSchemas: FormSchema[] = [
         {
           prop: 'deptId',
           componentProps: {
-            data: listToTree(depts.list),
+            data: listToTree(dept),
           },
         },
         {
           prop: 'roleIds',
           componentProps: {
-            data: listToTree(roles.list),
+            data: listToTree(role),
           },
         },
         {
           prop: 'jobId',
           componentProps: {
-            data: jobs.list,
+            data: job,
           },
         },
         {
           prop: 'professionId',
           componentProps: {
-            data: profs.list,
+            data: profession,
           },
         },
       ]
