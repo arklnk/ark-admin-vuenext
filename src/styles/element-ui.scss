@@ -13,3 +13,25 @@
 .el-input__inner:-webkit-autofill:active {
   box-shadow: none !important;
 }
+
+// ==============================================
+// ===============修改Tab默认样式=================
+// ==============================================
+.el-tabs {
+  &.el-tabs--top {
+    // 移除top/bottom模式时被移除的padding值
+    .el-tabs__item.is-top,
+    .el-tabs__item.is-bottom {
+      &:nth-child(2),
+      &:last-child {
+        padding: 0 20px;
+      }
+    }
+  }
+
+  .el-tabs__nav-wrap {
+    &::after {
+      height: 1px;
+    }
+  }
+}
