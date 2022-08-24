@@ -4,5 +4,5 @@ export default {
   dashboard: 'Dashboard',
   notfound: 'Page not found',
   redirect: 'Redirecting...',
-  profile: 'User profile',
+  account: 'Personal center',
 }

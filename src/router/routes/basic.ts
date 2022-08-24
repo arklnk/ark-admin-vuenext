@@ -88,18 +88,20 @@ const RedirectRoute: RouteRecordRaw = {
 }
 
 const ProfileRoute: RouteRecordRaw = {
-  path: PageEnum.Root,
+  path: PageEnum.Account,
+  name: toHump(PageEnum.Account),
+  redirect: `${PageEnum.Account}/center`,
   component: ParentLayout,
   meta: {
     hidden: true,
   },
   children: [
     {
-      path: PageEnum.Profile,
-      name: toHump(PageEnum.Profile),
-      component: () => import('/@/views/profile/Profile.vue'),
+      path: 'center',
+      name: toHump(`${PageEnum.Account}/center`),
+      component: () => import('/@/views/account/Account.vue'),
       meta: {
-        title: t('routes.profile'),
+        title: t('routes.account'),
       },
     },
   ],
