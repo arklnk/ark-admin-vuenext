@@ -54,7 +54,7 @@ import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { listToTree } from '/@/utils/helper/tree'
 import { ref, nextTick } from 'vue'
-import { useGetUserListRequest, useDeleteUserRequest } from '/@/api/system/user.api'
+import { useGetUserPageRequest, useDeleteUserRequest } from '/@/api/system/user.api'
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 
@@ -70,11 +70,11 @@ function openEditUserFormDialog(update?: Recordable) {
 }
 
 // User
-const [getUserListRequest, __] = useGetUserListRequest()
+const [getUserPageRequest, __] = useGetUserPageRequest()
 const [deleteUserListRequest, ___] = useDeleteUserRequest()
 
 async function processUserListRequest(params: any) {
-  return await getUserListRequest({
+  return await getUserPageRequest({
     ...params,
     deptId: getCurrentRow()?.id || 0,
   })

@@ -3,7 +3,7 @@ import type { PageRequestParams } from '/#/axios'
 import { defHttp } from '/@/utils/http/axios'
 
 export const Api = {
-  list: '/sys/user/list',
+  page: '/sys/user/page',
   add: '/sys/user/add',
   update: '/sys/user/update',
   delete: '/sys/user/delete',
@@ -32,15 +32,15 @@ export interface UserResult {
   status: number
   username: string
 }
-export function useGetUserListRequest(): [
+export function useGetUserPageRequest(): [
   PromiseFn<PageRequestParams & { deptId: number }, UserResult>,
   string
 ] {
   async function request(params: PageRequestParams & { deptId: number }) {
-    return await defHttp.get({ url: Api.list, params })
+    return await defHttp.get({ url: Api.page, params })
   }
 
-  return [request, Api.list]
+  return [request, Api.page]
 }
 
 export type UserRequestParams = Omit<UserResult, 'id' | 'job' | 'profession' | 'roles' | 'dept'> & {
