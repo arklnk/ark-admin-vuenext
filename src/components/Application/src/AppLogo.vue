@@ -51,12 +51,12 @@ $prefixCls: #{var.$namespace}-app-logo;
   cursor: pointer;
 
   @include when(light) {
-    color: var(--el-color-primary);
+    color: var(--el-color-primary) !important;
     border-bottom: 1px solid var.$border-color-base;
   }
 
   @include when(dark) {
-    color: var.$color-white;
+    color: var.$color-white !important;
   }
 
   &__title {
