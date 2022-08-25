@@ -56,7 +56,9 @@ const profileSchemas = ref<FormSchema[]>([
     rules: {
       required: true,
       type: 'string',
-      message: '请输入旧密码',
+      min: 6,
+      max: 12,
+      message: '请输入旧密码,长度6-12位',
       trigger: 'blur',
     },
   },
@@ -68,7 +70,9 @@ const profileSchemas = ref<FormSchema[]>([
     rules: {
       required: true,
       type: 'string',
-      message: '请输入新密码',
+      min: 6,
+      max: 12,
+      message: '请输入新密码,长度6-12位',
       trigger: 'blur',
     },
   },

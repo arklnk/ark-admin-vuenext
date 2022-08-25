@@ -35,6 +35,7 @@
           </template>
           <template #action="{ row }">
             <ElButton type="primary" link @click="openEditUserFormDialog(row)">编辑</ElButton>
+            <ElButton type="primary" link @click="openPwdDialog(row)">改密</ElButton>
             <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
           </template>
         </BasicTable>
@@ -42,6 +43,8 @@
     </div>
 
     <EditUserFormDialog @register="registerDialog" @success="reload" />
+
+    <EditPwdFormDialog @register="registerPwdDialog" />
   </PageWrapper>
 </template>
 
@@ -56,12 +59,14 @@ import { listToTree } from '/@/utils/helper/tree'
 import { ref, nextTick } from 'vue'
 import { useGetUserPageRequest, useDeleteUserRequest } from '/@/api/system/user.api'
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
+import EditPwdFormDialog from './components/EditPwdFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 
 const [registerDeptTable, { getCurrentRow }] = useTable()
 const [registerUserTable, { reload }] = useTable()
 
 const [registerDialog, { openDialog }] = useDialog()
+const [registerPwdDialog, { openDialog: openPwdDialog }] = useDialog()
 
 function openEditUserFormDialog(update?: Recordable) {
   openDialog({
@@ -180,7 +185,7 @@ const userColumns = ref<BasicColumn[]>([
   {
     label: '操作',
     align: 'center',
-    width: 140,
+    width: 200,
     fixed: 'right',
     slot: 'action',
   },

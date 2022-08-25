@@ -8,6 +8,7 @@ export const Api = {
   update: '/sys/user/update',
   delete: '/sys/user/delete',
   rdpj: '/sys/user/rdpj/info',
+  pwd: '/sys/user/password/update',
 }
 
 interface IdNameRecord {
@@ -86,4 +87,12 @@ export function useGetRDPJInfoRequest(): [PromiseFn<RDPJInfoResult>, string] {
   }
 
   return [request, Api.rdpj]
+}
+
+export function useUpdateUserPwdRequest(): [PromiseFn<{ id: number; password: string }>, string] {
+  async function request(data: { id: number; password: string }) {
+    return await defHttp.post({ url: Api.pwd, data })
+  }
+
+  return [request, Api.pwd]
 }
