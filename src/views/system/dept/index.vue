@@ -17,7 +17,7 @@
 
       <template #action="{ row }">
         <ElButton type="primary" link @click="openEditDeptFormDialog(row)">编辑</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
+        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -36,6 +36,7 @@ import { useGetDeptListRequest, useDeleteDeptRequest } from '/@/api/system/dept.
 import { listToTree } from '/@/utils/helper/tree'
 import EditDeptFormDialog from './components/EditDeptFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
+import { PopConfirmButton } from '/@/components/Button'
 
 const [getDeptListRequest, _] = useGetDeptListRequest()
 const [deleteDeptRequest, __] = useDeleteDeptRequest()

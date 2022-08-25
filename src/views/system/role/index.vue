@@ -13,7 +13,7 @@
 
       <template #action="{ row }">
         <ElButton type="primary" link @click="handleUpdate(row)">编辑</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
+        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -31,6 +31,7 @@ import { useGetRoleListRequest, useDeleteRoleRequest } from '/@/api/system/role.
 import { listToTree } from '/@/utils/helper/tree'
 import EditRoleFormDialog from './components/EditRoleFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
+import { PopConfirmButton } from '/@/components/Button'
 
 const [getRoleListRequest, _] = useGetRoleListRequest()
 const [deleteRoleRequest, __] = useDeleteRoleRequest()

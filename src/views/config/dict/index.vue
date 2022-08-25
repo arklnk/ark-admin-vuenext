@@ -40,7 +40,9 @@
 
           <template #action="{ row }">
             <ElButton type="primary" link @click="openEditDictDataFormDialog(row)">编辑</ElButton>
-            <ElButton type="danger" link @click="handleDeleteDict(row)">删除</ElButton>
+            <PopConfirmButton type="danger" link @click="handleDeleteDict(row)">
+              删除
+            </PopConfirmButton>
           </template>
         </BasicTable>
       </div>
@@ -67,6 +69,7 @@ import { createContextMenu } from '/@/components/ContextMenu'
 import EditDictFormDialog from './components/EditDictFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { DictValueTypes } from './DictValueType'
+import { PopConfirmButton } from '/@/components/Button'
 
 const [getDictListRequest, _] = useGetDictListRequest()
 const [getDictDataPageRequest, __] = useGetDictDataPageRequest()

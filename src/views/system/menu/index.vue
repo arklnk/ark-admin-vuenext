@@ -30,7 +30,7 @@
 
       <template #action="{ row }">
         <ElButton type="primary" link @click="handleUpdate(row)">编辑</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
+        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -49,6 +49,7 @@ import { useGetMenuListRequest, useDeleteMenuRequest } from '/@/api/system/menu.
 import { listToTree } from '/@/utils/helper/tree'
 import EditMenuFormDialog from './components/EditMenuFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
+import { PopConfirmButton } from '/@/components/Button'
 
 const [registerDialog, { openDialog }] = useDialog()
 
@@ -113,14 +114,14 @@ const columns = ref<BasicColumn[]>([
     label: '路由',
     prop: 'router',
     showTooltipWhenOverflow: true,
-    width: 240,
+    minWidth: 240,
   },
   {
     align: 'center',
     label: '视图路径',
     prop: 'viewPath',
     showTooltipWhenOverflow: true,
-    width: 240,
+    minWidth: 240,
   },
   {
     width: 340,

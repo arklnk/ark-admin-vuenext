@@ -7,7 +7,7 @@
 
       <template #action="{ row }">
         <ElButton type="primary" link @click="openEditJobFormDialog(row)">编辑</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
+        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -25,6 +25,7 @@ import { ref } from 'vue'
 import { useGetJobPageRequest, useDeleteJobRequest } from '/@/api/system/job.api'
 import EditJobFormDialog from './components/EditJobFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
+import { PopConfirmButton } from '/@/components/Button'
 
 const [getJobListRequest, _] = useGetJobPageRequest()
 const [deleteJobRequest, __] = useDeleteJobRequest()

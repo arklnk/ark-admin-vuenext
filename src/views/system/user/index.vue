@@ -36,7 +36,7 @@
           <template #action="{ row }">
             <ElButton type="primary" link @click="openEditUserFormDialog(row)">编辑</ElButton>
             <ElButton type="primary" link @click="openPwdDialog(row)">改密</ElButton>
-            <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
+            <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
           </template>
         </BasicTable>
       </div>
@@ -61,6 +61,7 @@ import { useGetUserPageRequest, useDeleteUserRequest } from '/@/api/system/user.
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
 import EditPwdFormDialog from './components/EditPwdFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
+import { PopConfirmButton } from '/@/components/Button'
 
 const [registerDeptTable, { getCurrentRow }] = useTable()
 const [registerUserTable, { reload }] = useTable()

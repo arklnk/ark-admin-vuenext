@@ -7,7 +7,7 @@
 
       <template #action="{ row }">
         <ElButton type="primary" link @click="openEditProfFormDialog(row)">编辑</ElButton>
-        <ElButton type="danger" link @click="handleDelete(row)">删除</ElButton>
+        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -25,6 +25,7 @@ import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
 import EditProfFormDialog from './components/EditProfFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
+import { PopConfirmButton } from '/@/components/Button'
 
 const [getProfListRequest, _] = useGetProfPageRequest()
 const [deleteProfRequest, __] = useDeleteProfRequest()
