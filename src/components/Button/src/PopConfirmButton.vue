@@ -1,27 +1,34 @@
 <script lang="ts">
 import type { ConcreteComponent } from 'vue'
-import type { ButtonProps } from './typing'
+import type { PopconfirmProps } from 'element-plus'
 
-import { omit } from 'lodash-es'
 import { defineComponent, resolveComponent, h, computed, unref } from 'vue'
 import { useTransl } from '/@/composables/core/useTransl'
 import { extendSlots } from '/@/utils/helper/tsx'
+import { buttonProps } from 'element-plus'
 
-const props = {
-  button: {
-    type: Object as PropType<ButtonProps>,
+const props = Object.assign(buttonProps, {
+  popconfirmProps: {
+    type: Object as PropType<PopconfirmProps>,
   },
-}
+})
 
 export default defineComponent({
   name: 'PopConfirmButton',
   inheritAttrs: false,
   props,
   emits: ['click'],
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots, emit, attrs }) {
     const { t } = useTransl()
 
     const getBindValues = computed(() => {
+      return {
+        ...props,
+        ...attrs,
+      }
+    })
+
+    const getPopBindValues = computed(() => {
       return Object.assign(
         {
           confirmButtonText: t('common.basic.confirm'),
@@ -29,8 +36,7 @@ export default defineComponent({
           title: t('component.button.popconfirm.title'),
         },
         {
-          ...props,
-          ...attrs, // 保持支持原有popconfirm属性
+          ...(props.popconfirmProps || {}),
           onConfirm: () => {
             emit('click')
           },
@@ -42,10 +48,9 @@ export default defineComponent({
       const ElPopconfirm = resolveComponent('ElPopconfirm') as ConcreteComponent
       const ElButton = resolveComponent('ElButton') as ConcreteComponent
 
-      const Button = h(ElButton, unref(getBindValues).button, extendSlots(slots))
+      const Button = h(ElButton, unref(getBindValues), extendSlots(slots))
 
-      const bindValues = omit(unref(getBindValues), 'button')
-      return h(ElPopconfirm, bindValues, { reference: () => Button })
+      return h(ElPopconfirm, unref(getPopBindValues), { reference: () => Button })
     }
   },
 })
