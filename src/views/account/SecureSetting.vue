@@ -6,9 +6,10 @@
     :schemas="profileSchemas"
     label-position="top"
     @register="registerForm"
+    @submit="handleSubmit"
   >
     <template #submitBefore>
-      <ElButton type="success">更新密码</ElButton>
+      <ElButton type="success" @click="submit">更新密码</ElButton>
     </template>
   </BasicForm>
 </template>
@@ -19,8 +20,32 @@ import type { FormSchema } from '/@/components/Form'
 import { BasicForm, useForm } from '/@/components/Form'
 
 import { ref } from 'vue'
+import { updateUserPasswd } from '/@/api/user'
+import { useMessage } from '/@/composables/web/useMessage'
 
-const [registerForm] = useForm()
+const [registerForm, { submit, setProps, getFieldsValue, resetFields }] = useForm()
+
+const { createMessage } = useMessage()
+
+async function handleSubmit(res: any) {
+  try {
+    setProps({ disabled: true })
+    await updateUserPasswd({
+      oldPassword: res.oldPassword,
+      newPassword: res.newPassword,
+    })
+
+    // reset
+    resetFields()
+
+    createMessage({
+      type: 'success',
+      message: '密码已修改',
+    })
+  } finally {
+    setProps({ disabled: false })
+  }
+}
 
 const profileSchemas = ref<FormSchema[]>([
   {
@@ -32,6 +57,7 @@ const profileSchemas = ref<FormSchema[]>([
       required: true,
       type: 'string',
       message: '请输入旧密码',
+      trigger: 'blur',
     },
   },
   {
@@ -43,6 +69,7 @@ const profileSchemas = ref<FormSchema[]>([
       required: true,
       type: 'string',
       message: '请输入新密码',
+      trigger: 'blur',
     },
   },
   {
@@ -52,8 +79,14 @@ const profileSchemas = ref<FormSchema[]>([
     component: 'ElInput',
     rules: {
       required: true,
-      type: 'string',
-      message: '请再次输入新密码',
+      trigger: 'blur',
+      validator: (_, value: string, cb: Fn) => {
+        if (value !== getFieldsValue().newPassword) {
+          cb(new Error('二次确认密码不一致'))
+        } else {
+          cb()
+        }
+      },
     },
   },
 ])

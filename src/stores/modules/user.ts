@@ -1,3 +1,4 @@
+import { merge } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { usePermissionStore } from './permission'
 import { getUserInfo, userLogout as logoutRequest } from '/@/api/user'
@@ -64,6 +65,9 @@ export const useUserStore = defineStore({
       permissionStore.resetState()
 
       resetRouter()
+    },
+    updateUserInfo(info: Partial<UserInfo>) {
+      this.userInfo = merge(this.userInfo, info)
     },
     resetState(): void {
       // remove storage token

@@ -35,6 +35,7 @@ import type { FormSchema } from '/@/components/Form'
 import { BasicForm, useForm } from '/@/components/Form'
 import { onMounted, ref } from 'vue'
 import { getUserProfileInfo, updateUserProfile, generateAvatar } from '/@/api/user'
+import { useUserStore } from '/@/stores/modules/user'
 
 const [registerForm, { setFormModel, submit, setProps }] = useForm()
 
@@ -49,10 +50,18 @@ async function getProfileInfo() {
   }
 }
 
+const userStore = useUserStore()
+
 async function handleSubmit(res: any) {
   try {
     setProps({ disabled: true })
     await updateUserProfile(res)
+
+    // update store
+    userStore.updateUserInfo({
+      username: res.username,
+      avatar: res.avatar,
+    })
   } finally {
     setProps({ disabled: false })
   }
