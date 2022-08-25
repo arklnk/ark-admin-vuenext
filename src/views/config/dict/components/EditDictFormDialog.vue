@@ -25,7 +25,7 @@ import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { ref, computed } from 'vue'
 import { DictValueTypes } from '../DictValueType'
-import { isNil } from 'lodash-es'
+import { isNil, omit } from 'lodash-es'
 import { useAddDictRequest, useUpdateDictRequest } from '/@/api/config/dict.api'
 
 const emit = defineEmits(['register', 'success'])
@@ -58,6 +58,12 @@ const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInn
         prop: 'status',
         hidden: currentParentId.value === 0,
       },
+      {
+        prop: 'uniqueKey',
+        componentProps: {
+          disabled: !!data.item,
+        },
+      },
     ])
 
     // is update
@@ -86,7 +92,7 @@ async function handleSubmit(res: Omit<ParamConfigResult, 'id' | 'parentId'>) {
       })
     } else {
       await updateDictRequest({
-        ...res,
+        ...omit(res, 'uniqueKey'),
         parentId: currentParentId.value,
         id: currentUpdateId.value,
       })

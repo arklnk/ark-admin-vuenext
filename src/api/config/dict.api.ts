@@ -48,7 +48,7 @@ export function useAddDictRequest(): [PromiseFn<Omit<ParamConfigResult, 'id'>>, 
   return [request, Api.add]
 }
 
-export function useUpdateDictRequest(): [PromiseFn<ParamConfigResult>, string] {
+export function useUpdateDictRequest(): [PromiseFn<Omit<ParamConfigResult, 'uniqueKey'>>, string] {
   async function request(data: ParamConfigResult) {
     return await defHttp.post({ url: Api.update, data })
   }
