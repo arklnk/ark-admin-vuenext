@@ -113,12 +113,14 @@ const columns = ref<BasicColumn[]>([
     label: '路由',
     prop: 'router',
     showTooltipWhenOverflow: true,
+    width: 240,
   },
   {
     align: 'center',
     label: '视图路径',
     prop: 'viewPath',
     showTooltipWhenOverflow: true,
+    width: 240,
   },
   {
     width: 340,
