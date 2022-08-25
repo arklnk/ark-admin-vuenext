@@ -5,7 +5,7 @@
       v-model="visibleRef"
       direction="rtl"
       :title="t('layout.setting.title')"
-      :size="380"
+      :size="320"
       append-to-body
       destroy-on-close
     >
