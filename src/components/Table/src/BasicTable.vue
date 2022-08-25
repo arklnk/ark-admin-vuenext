@@ -2,7 +2,7 @@
   <div ref="wrapRef" :class="getWrapperClass">
     <!-- header -->
     <BasicTableHeader ref="headerRef" v-if="getShowTableHeader" v-bind="getHeaderBindValues">
-      <template #[item]="data" v-for="item in Object.keys(pick($slots, 'headerTop', 'toolbar'))">
+      <template #[item]="data" v-for="item in Object.keys(pick($slots, ['headerTop', 'toolbar']))">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </BasicTableHeader>
@@ -19,7 +19,7 @@
         </template>
       </BasicTableColumn>
 
-      <!-- slot -->
+      <!-- append and empty slot -->
       <template #[item]="data" v-for="item in Object.keys(pick($slots, ['append', 'empty']))">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
