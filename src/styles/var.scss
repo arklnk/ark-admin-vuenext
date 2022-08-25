@@ -5,10 +5,7 @@ $modifier-separator: '--';
 $state-prefix: 'is-';
 
 // layout
-$sidebar-width: 230px;
-$sidebar-collapsed-width: 64px;
 $header-height: 50px;
-$app-content-fixed-width: 1200px;
 $app-bg-color: #f0f2f5;
 $app-dark-bg-color: #2a2c2c;
 
@@ -18,9 +15,6 @@ $color-black: #000000;
 
 // transition
 $transition-duration: 0.3s;
-
-// or windicss border-gray-100
-$border-color-base: rgba(243, 244, 246, 1);
 
 // css var
 :root {

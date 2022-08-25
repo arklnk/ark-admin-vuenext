@@ -52,7 +52,7 @@ $prefixCls: #{var.$namespace}-app-logo;
 
   @include when(light) {
     color: var(--el-color-primary) !important;
-    border-bottom: 1px solid var.$border-color-base;
+    border-bottom: 1px solid var(--el-fill-color);
   }
 
   @include when(dark) {
