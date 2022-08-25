@@ -1,4 +1,8 @@
+// sidebar 菜单折叠模式时宽度值
 export const SIDE_BAR_COLLAPSED_WIDTH = 64
+
+// 定宽模式下时的宽度设定值
+export const APP_CONTENT_FIXED_WIDTH = 1200
 
 // menu theme enum
 export enum ThemeEnum {

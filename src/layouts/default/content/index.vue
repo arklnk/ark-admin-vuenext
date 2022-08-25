@@ -1,5 +1,5 @@
 <template>
-  <div :class="getWrapClass">
+  <div :class="prefixCls" :style="getWrapStyle">
     <RouterView>
       <template #default="{ Component, route }">
         <transition
@@ -21,40 +21,39 @@
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from 'vue'
+
 import { computed, unref } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useRootSetting } from '/@/composables/setting/useRootSetting'
 import { useTransitionSetting } from '/@/composables/setting/useTransitionSetting'
 import { getTransitionName } from './getTransitionName'
-import { ContentEnum } from '/@/enums/appEnum'
+import { ContentEnum, APP_CONTENT_FIXED_WIDTH } from '/@/enums/appEnum'
 
 const { prefixCls } = useDesign('app-content')
 const { getContentMode } = useRootSetting()
 const { getRouterTransition, getEnableTransition } = useTransitionSetting()
 
-const getWrapClass = computed(() => {
-  return [
-    prefixCls,
-    {
-      fixed: unref(getContentMode) === ContentEnum.FIXED,
-    },
-  ]
+// fixed width style
+const getWrapStyle = computed((): CSSProperties => {
+  const style: Recordable = {}
+
+  if (unref(getContentMode) === ContentEnum.FIXED) {
+    style.width = `${APP_CONTENT_FIXED_WIDTH}px`
+    style.margin = '0 auto'
+  }
+
+  return style
 })
 </script>
 
 <style lang="scss">
 @use '/@/styles/var.scss';
-@use '/@/styles/mixins.scss' as *;
 
 $prefixCls: #{var.$namespace}-app-content;
 
 .#{$prefixCls} {
   position: relative;
   min-height: 0;
-
-  @include when(fixed) {
-    width: var.$app-content-fixed-width;
-    margin: 0 auto;
-  }
 }
 </style>

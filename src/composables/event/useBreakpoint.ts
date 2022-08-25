@@ -1,11 +1,11 @@
 import type { ComputedRef } from 'vue'
 
 import { ref, computed, unref } from 'vue'
+import { useMenuSetting } from '../setting/useMenuSetting'
+import { useRootSetting } from '../setting/useRootSetting'
 import { useEventListener } from './useEventListener'
-import { ContentEnum } from '/@/enums/appEnum'
+import { ContentEnum, APP_CONTENT_FIXED_WIDTH } from '/@/enums/appEnum'
 import { ScreenEnum, SizeEnum, screenMap } from '/@/enums/breakpointEnum'
-import { MenuModeEnum } from '/@/enums/menuEnum'
-import { useAppStore } from '/@/stores/modules/app'
 
 export interface CreateCallbackParam {
   screenRef: ComputedRef<SizeEnum | undefined>
@@ -21,17 +21,19 @@ let globalWidthRef: ComputedRef<number>
 let globalRealWidthRef: ComputedRef<number>
 
 export function useBreakpoint() {
-  const appStore = useAppStore()
+  const { getContentMode } = useRootSetting()
+  const { getRealWidth, getShowTopMenu } = useMenuSetting()
 
+  // 真正的内容宽度，单纯的css breakpoint并无法真正达到响应式布局
   const realContentWidthRef = computed((): number => {
-    // 定宽模式则固定宽度1200，与css宽度相同
-    if (appStore.getProjectConfig.contentMode === ContentEnum.FIXED) {
-      return 1200
+    // 定宽模式则固定宽度
+    if (unref(getContentMode) === ContentEnum.FIXED) {
+      return APP_CONTENT_FIXED_WIDTH
     }
 
     // 侧边栏模式时则减去宽度
-    if (appStore.getProjectConfig.menuSetting.menuMode === MenuModeEnum.SIDEBAR) {
-      const sidebarWidth = appStore.getProjectConfig.menuSetting.menuWidth
+    if (!unref(getShowTopMenu)) {
+      const sidebarWidth = unref(getRealWidth)
 
       return unref(globalRealWidthRef) - sidebarWidth
     }
