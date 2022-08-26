@@ -19,12 +19,12 @@
 
 <script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
-import type { ProfessionResult } from '/@/api/system/profession.api'
+import type { ProfessionResult } from '/@/api/system/profession'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { ref } from 'vue'
-import { useAddProfRequest, useUpdateProfRequest } from '/@/api/system/profession.api'
+import { addProfRequest, updateProfRequest } from '/@/api/system/profession'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -42,9 +42,6 @@ const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInn
     }
   }
 )
-
-const [addProfRequest, _] = useAddProfRequest()
-const [updateProfRequest, __] = useUpdateProfRequest()
 
 async function handleSubmit(res: Omit<ProfessionResult, 'id'>) {
   try {

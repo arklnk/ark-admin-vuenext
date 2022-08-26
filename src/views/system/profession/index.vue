@@ -1,13 +1,33 @@
 <template>
   <PageWrapper>
-    <BasicTable :api="getProfListRequest" :columns="columns" @register="registerTable">
+    <BasicTable :api="getProfPageRequest" :columns="columns" @register="registerTable">
       <template #toolbar>
-        <ElButton type="primary" @click="openEditProfFormDialog()">新增</ElButton>
+        <ElButton
+          type="primary"
+          @click="openEditProfFormDialog()"
+          :disabled="!hasPermission(Api.add)"
+        >
+          新增
+        </ElButton>
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="openEditProfFormDialog(row)">编辑</ElButton>
-        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
+        <ElButton
+          type="primary"
+          link
+          @click="openEditProfFormDialog(row)"
+          :disabled="!hasPermission(Api.update)"
+        >
+          编辑
+        </ElButton>
+        <PopConfirmButton
+          type="danger"
+          link
+          @click="handleDelete(row)"
+          :disabled="!hasPermission(Api.delete)"
+        >
+          删除
+        </PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -17,18 +37,18 @@
 
 <script setup lang="ts">
 import type { BasicColumn } from '/@/components/Table'
-import type { ProfessionResult } from '/@/api/system/profession.api'
+import type { ProfessionResult } from '/@/api/system/profession'
 
-import { useGetProfPageRequest, useDeleteProfRequest } from '/@/api/system/profession.api'
+import { getProfPageRequest, deleteProfRequest, Api } from '/@/api/system/profession'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
 import EditProfFormDialog from './components/EditProfFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { PopConfirmButton } from '/@/components/Button'
+import { usePermission } from '/@/composables/core/usePermission'
 
-const [getProfListRequest, _] = useGetProfPageRequest()
-const [deleteProfRequest, __] = useDeleteProfRequest()
+const { hasPermission } = usePermission()
 
 const [registerDialog, { openDialog }] = useDialog()
 const [registerTable, { reload }] = useTable()
