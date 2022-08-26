@@ -54,6 +54,13 @@ const updateUserId = ref<number | null>(null)
 const [registerForm, { submit, setProps: setFormProps, updateSchema, setFormModel }] = useForm()
 const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner(
   (data: { item?: UserResult }) => {
+    updateSchema({
+      prop: 'account',
+      componentProps: {
+        disabled: !!data.item,
+      },
+    })
+
     // is update?
     if (data.item) {
       const item = data.item
