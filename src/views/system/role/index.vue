@@ -64,12 +64,13 @@ const columns = ref<BasicColumn[]>([
   {
     label: '角色名称',
     prop: 'name',
-    width: 320,
+    width: 280,
   },
   {
     label: '角色标识',
     prop: 'uniqueKey',
-    width: 320,
+    width: 220,
+    align: 'center',
   },
   {
     align: 'center',
