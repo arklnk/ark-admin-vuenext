@@ -36,9 +36,9 @@
 
 <script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
-import type { MenuResult } from '/@/api/system/menu.api'
+import type { MenuResult } from '/@/api/system/menu'
 
-import { useAddMenuRequest, useUpdateMenuRequest } from '/@/api/system/menu.api'
+import { addMenuRequest, updateMenuRequest } from '/@/api/system/menu'
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { ref, unref } from 'vue'
@@ -51,9 +51,6 @@ import { getDynamicImportViews } from '/@/router/helper/routeHelper'
 const emit = defineEmits(['register', 'success'])
 
 const updateMenuId = ref<null | number>(null)
-
-const [addMenuRequest, _] = useAddMenuRequest()
-const [updateMenuRequest, __] = useUpdateMenuRequest()
 
 const [registerForm, { updateSchema, submit, setProps: setFormProps, setFormModel }] = useForm()
 

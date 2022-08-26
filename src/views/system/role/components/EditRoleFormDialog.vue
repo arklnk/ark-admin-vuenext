@@ -31,8 +31,7 @@ import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import AssignPermTree from './AssignPermTree.vue'
 import { ref, nextTick } from 'vue'
-import { useGetMenuListRequest } from '/@/api/system/menu.api'
-import { listToTree } from '/@/utils/helper/tree'
+import { getMenuListRequest } from '/@/api/system/menu'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -67,7 +66,6 @@ const [registerDialog, { closeDialog, setProps: setDialogProps }] = useDialogInn
 )
 
 const [addRoleRequest, _] = useAddRoleRequest()
-const [getMenuListRequest, __] = useGetMenuListRequest()
 const [updateRoleRequest, ___] = useUpdateRoleRequest()
 
 async function handleSubmit(res: Omit<RoleResult, 'id'>) {
@@ -100,8 +98,7 @@ function handleVisibleChange(visible: boolean) {
   nextTick(async () => {
     try {
       setDialogProps({ loading: true })
-      const { list } = await getMenuListRequest()
-      const permTree = listToTree(list)
+      const permTree = await getMenuListRequest()
 
       updateSchema({
         prop: 'permMenuIds',

@@ -2,7 +2,7 @@
   <PageWrapper>
     <BasicTable
       :columns="columns"
-      :api="processRequestData"
+      :api="getMenuListRequest"
       :pagination="false"
       row-key="id"
       border
@@ -10,7 +10,13 @@
     >
       <!-- toolbar -->
       <template #toolbar>
-        <ElButton type="primary" @click="openEditMenuFormDialog()">新增</ElButton>
+        <ElButton
+          type="primary"
+          @click="openEditMenuFormDialog()"
+          :disabled="!hasPermission(Api.add)"
+        >
+          新增
+        </ElButton>
       </template>
 
       <!-- column -->
@@ -29,8 +35,22 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="handleUpdate(row)">编辑</ElButton>
-        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
+        <ElButton
+          type="primary"
+          link
+          @click="openEditMenuFormDialog(row)"
+          :disabled="!hasPermission(Api.update)"
+        >
+          编辑
+        </ElButton>
+        <PopConfirmButton
+          type="danger"
+          link
+          @click="handleDelete(row)"
+          :disabled="!hasPermission(Api.delete)"
+        >
+          删除
+        </PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -45,11 +65,13 @@ import type { BasicColumn } from '/@/components/Table'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { useGetMenuListRequest, useDeleteMenuRequest } from '/@/api/system/menu.api'
-import { listToTree } from '/@/utils/helper/tree'
+import { getMenuListRequest, deleteMenuRequest, Api } from '/@/api/system/menu'
 import EditMenuFormDialog from './components/EditMenuFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { PopConfirmButton } from '/@/components/Button'
+import { usePermission } from '/@/composables/core/usePermission'
+
+const { hasPermission } = usePermission()
 
 const [registerDialog, { openDialog }] = useDialog()
 
@@ -61,8 +83,6 @@ function openEditMenuFormDialog(update?: Recordable) {
     item: update,
   })
 }
-const [menuListRequest, _] = useGetMenuListRequest()
-const [deleteMenuRequest, __] = useDeleteMenuRequest()
 
 function formatterType(type: number) {
   switch (type) {
@@ -75,19 +95,11 @@ function formatterType(type: number) {
   }
 }
 
-function handleUpdate(row: Recordable) {
-  openEditMenuFormDialog(row)
-}
-
 async function handleDelete(row: Recordable) {
   await deleteMenuRequest({ id: row.id })
   reload()
 }
 
-async function processRequestData() {
-  const { list } = await menuListRequest()
-  return listToTree(list)
-}
 const columns = ref<BasicColumn[]>([
   {
     width: 300,

@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuResult } from '/@/api/system/menu.api'
+import type { MenuResult } from '/@/api/system/menu'
 import type { ElTree } from 'element-plus'
 
 import { defineComponent, onMounted, ref, unref, watch } from 'vue'
