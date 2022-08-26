@@ -26,12 +26,12 @@
 
 <script setup lang="ts">
 import { FormSchema, useForm } from '/@/components/Form'
-import type { DeptResult } from '/@/api/system/dept.api'
+import type { DeptResult } from '../../../../api/system/dept'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm } from '/@/components/Form'
 import { ref } from 'vue'
-import { useAddDeptRequest, useUpdateDeptRequest } from '/@/api/system/dept.api'
+import { addDeptRequest, updateDeptRequest } from '/@/api/system/dept'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -64,9 +64,6 @@ const [registerDialog, { setProps, closeDialog }] = useDialogInner(
     }
   }
 )
-
-const [addDeptRequest, _] = useAddDeptRequest()
-const [updateDeptRequest, __] = useUpdateDeptRequest()
 
 async function handleSubmit(res: Omit<DeptResult, 'id'>) {
   try {

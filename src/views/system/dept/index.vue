@@ -2,13 +2,19 @@
   <PageWrapper>
     <BasicTable
       :columns="columns"
-      :api="processDeptListResult"
+      :api="getDeptListRequest"
       row-key="id"
       @register="registerTable"
       :pagination="false"
     >
       <template #toolbar>
-        <ElButton type="primary" @click="openEditDeptFormDialog()">新增</ElButton>
+        <ElButton
+          type="primary"
+          @click="openEditDeptFormDialog()"
+          :disabled="!hasPermission(Api.add)"
+        >
+          新增
+        </ElButton>
       </template>
 
       <template #type="{ row }">
@@ -16,8 +22,22 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="openEditDeptFormDialog(row)">编辑</ElButton>
-        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
+        <ElButton
+          type="primary"
+          link
+          @click="openEditDeptFormDialog(row)"
+          :disabled="!hasPermission(Api.update)"
+        >
+          编辑
+        </ElButton>
+        <PopConfirmButton
+          type="danger"
+          link
+          @click="handleDelete(row)"
+          :disabled="!hasPermission(Api.delete)"
+        >
+          删除
+        </PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -27,24 +47,18 @@
 
 <script setup lang="ts">
 import { BasicColumn, useTable } from '/@/components/Table'
-import type { DeptResult } from '/@/api/system/dept.api'
+import type { DeptResult } from '/@/api/system/dept'
 
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { useGetDeptListRequest, useDeleteDeptRequest } from '/@/api/system/dept.api'
-import { listToTree } from '/@/utils/helper/tree'
+import { getDeptListRequest, deleteDeptRequest, Api } from '/@/api/system/dept'
 import EditDeptFormDialog from './components/EditDeptFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { PopConfirmButton } from '/@/components/Button'
+import { usePermission } from '/@/composables/core/usePermission'
 
-const [getDeptListRequest, _] = useGetDeptListRequest()
-const [deleteDeptRequest, __] = useDeleteDeptRequest()
-
-async function processDeptListResult() {
-  const { list } = await getDeptListRequest()
-  return listToTree(list)
-}
+const { hasPermission } = usePermission()
 
 const [registerDialog, { openDialog }] = useDialog()
 const [registerTable, { getDataSource, reload }] = useTable()

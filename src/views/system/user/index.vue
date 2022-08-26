@@ -9,7 +9,7 @@
           container-height-fixed
           :table-setting="{ fullscreen: false }"
           :show-table-setting="true"
-          :api="processDeptListResult"
+          :api="getDeptListRequest"
           :columns="deptColumns"
           row-key="id"
           :show-header="false"
@@ -52,10 +52,9 @@
 import type { BasicColumn } from '/@/components/Table'
 import type { UserResult } from '/@/api/system/user.api'
 
-import { useGetDeptListRequest } from '/@/api/system/dept.api'
+import { getDeptListRequest } from '/@/api/system/dept'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
-import { listToTree } from '/@/utils/helper/tree'
 import { ref, nextTick } from 'vue'
 import { useGetUserPageRequest, useDeleteUserRequest } from '/@/api/system/user.api'
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
@@ -191,14 +190,6 @@ const userColumns = ref<BasicColumn[]>([
     slot: 'action',
   },
 ])
-
-// Department
-const [getDeptListRequest, _] = useGetDeptListRequest()
-
-async function processDeptListResult() {
-  const { list } = await getDeptListRequest()
-  return listToTree(list)
-}
 
 const deptColumns = ref<BasicColumn[]>([
   {
