@@ -10,9 +10,7 @@ import type { BasicColumn } from '/@/components/Table'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { useGetLoginLogPageRequest } from '/@/api/log/login'
-
-const [getLoginLogPageRequest, _] = useGetLoginLogPageRequest()
+import { getLoginLogPageRequest } from '/@/api/log/login'
 
 const columns = ref<BasicColumn[]>([
   {

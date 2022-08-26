@@ -15,13 +15,9 @@ export interface LoginLog {
   uri: string
   createTime: string
 }
-export function useGetLoginLogPageRequest(): [
-  PromiseFn<PageRequestParams, PaginationResult<LoginLog[]>>,
-  string
-] {
-  async function request(params: PageRequestParams) {
-    return await defHttp.get({ url: Api.page, params })
-  }
 
-  return [request, Api.page]
+export async function getLoginLogPageRequest(
+  params: PageRequestParams
+): Promise<PaginationResult<LoginLog[]>> {
+  return await defHttp.get({ url: Api.page, params })
 }
