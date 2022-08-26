@@ -24,9 +24,9 @@
 
 <script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
-import type { RoleResult } from '/@/api/system/role.api'
+import type { RoleResult } from '/@/api/system/role'
 
-import { useAddRoleRequest, useUpdateRoleRequest } from '/@/api/system/role.api'
+import { addRoleRequest, updateRoleRequest } from '/@/api/system/role'
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import AssignPermTree from './AssignPermTree.vue'
@@ -64,9 +64,6 @@ const [registerDialog, { closeDialog, setProps: setDialogProps }] = useDialogInn
     }
   }
 )
-
-const [addRoleRequest, _] = useAddRoleRequest()
-const [updateRoleRequest, ___] = useUpdateRoleRequest()
 
 async function handleSubmit(res: Omit<RoleResult, 'id'>) {
   try {

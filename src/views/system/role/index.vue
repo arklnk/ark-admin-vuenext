@@ -2,18 +2,38 @@
   <PageWrapper>
     <BasicTable
       :columns="columns"
-      :api="processRequestData"
+      :api="getRoleListRequest"
       row-key="id"
       @register="registerTable"
       :pagination="false"
     >
       <template #toolbar>
-        <ElButton type="primary" @click="openEditRoleFormDialog()">新增</ElButton>
+        <ElButton
+          type="primary"
+          @click="openEditRoleFormDialog()"
+          :disabled="!hasPermission(Api.add)"
+        >
+          新增
+        </ElButton>
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="handleUpdate(row)">编辑</ElButton>
-        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
+        <ElButton
+          type="primary"
+          link
+          @click="handleUpdate(row)"
+          :disabled="!hasPermission(Api.update)"
+        >
+          编辑
+        </ElButton>
+        <PopConfirmButton
+          type="danger"
+          link
+          @click="handleDelete(row)"
+          :disabled="!hasPermission(Api.delete)"
+        >
+          删除
+        </PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -27,19 +47,13 @@ import type { BasicColumn } from '/@/components/Table'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { useGetRoleListRequest, useDeleteRoleRequest } from '/@/api/system/role.api'
-import { listToTree } from '/@/utils/helper/tree'
+import { getRoleListRequest, deleteRoleRequest, Api } from '/@/api/system/role'
 import EditRoleFormDialog from './components/EditRoleFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { PopConfirmButton } from '/@/components/Button'
+import { usePermission } from '/@/composables/core/usePermission'
 
-const [getRoleListRequest, _] = useGetRoleListRequest()
-const [deleteRoleRequest, __] = useDeleteRoleRequest()
-
-async function processRequestData() {
-  const { list } = await getRoleListRequest()
-  return listToTree(list)
-}
+const { hasPermission } = usePermission()
 
 const [registerDialog, { openDialog }] = useDialog()
 const [registerTable, { getDataSource, reload }] = useTable()
