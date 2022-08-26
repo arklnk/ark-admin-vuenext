@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { getDefinePermissionList } from '/@/logics/permission/permissonHelper'
+import { getDefinePermissionList } from '/@/logics/permission/helper'
 
 export interface Config {
   value?: string

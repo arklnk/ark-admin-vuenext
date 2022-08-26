@@ -19,14 +19,14 @@
 
 <script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
-import type { ParamConfigResult } from '/@/api/config/dict.api'
+import type { ParamConfigResult } from '/@/api/config/dict'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { ref, computed } from 'vue'
 import { DictValueTypes } from '../DictValueType'
 import { isNil, omit } from 'lodash-es'
-import { useAddDictRequest, useUpdateDictRequest } from '/@/api/config/dict.api'
+import { addDictRequest, updateDictRequest } from '/@/api/config/dict'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -77,9 +77,6 @@ const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInn
   }
 )
 
-const [addDictRequest, _] = useAddDictRequest()
-const [updateDictRequest, __] = useUpdateDictRequest()
-
 async function handleSubmit(res: Omit<ParamConfigResult, 'id' | 'parentId'>) {
   try {
     setDialogProps({ confirmBtnProps: { loading: true } })
@@ -93,8 +90,8 @@ async function handleSubmit(res: Omit<ParamConfigResult, 'id' | 'parentId'>) {
     } else {
       await updateDictRequest({
         ...omit(res, 'uniqueKey'),
-        parentId: currentParentId.value,
         id: currentUpdateId.value,
+        parentId: currentParentId.value,
       })
     }
 

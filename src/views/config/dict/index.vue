@@ -31,7 +31,7 @@
           <template #toolbar>
             <ElButton
               type="primary"
-              :disabled="currentDictInfo.parentId === null"
+              :disabled="currentDictInfo.parentId === null || !hasPermission(Api.add)"
               @click="openEditDictDataFormDialog()"
             >
               新增
@@ -39,8 +39,20 @@
           </template>
 
           <template #action="{ row }">
-            <ElButton type="primary" link @click="openEditDictDataFormDialog(row)">编辑</ElButton>
-            <PopConfirmButton type="danger" link @click="handleDeleteDict(row)">
+            <ElButton
+              type="primary"
+              link
+              @click="openEditDictDataFormDialog(row)"
+              :disabled="!hasPermission(Api.update)"
+            >
+              编辑
+            </ElButton>
+            <PopConfirmButton
+              type="danger"
+              link
+              @click="handleDeleteDict(row)"
+              :disabled="!hasPermission(Api.delete)"
+            >
               删除
             </PopConfirmButton>
           </template>
@@ -57,10 +69,11 @@ import type { BasicColumn } from '/@/components/Table'
 
 import { nextTick, reactive, ref } from 'vue'
 import {
-  useGetDictListRequest,
-  useGetDictDataPageRequest,
-  useDeleteDictRequest,
-} from '/@/api/config/dict.api'
+  getDictListRequest,
+  getDictDataPageRequest,
+  deleteDictRequest,
+  Api,
+} from '/@/api/config/dict'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import IconFontistoSpinnerRefresh from '~icons/fontisto/spinner-refresh'
@@ -70,10 +83,9 @@ import EditDictFormDialog from './components/EditDictFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { DictValueTypes } from './DictValueType'
 import { PopConfirmButton } from '/@/components/Button'
+import { usePermission } from '/@/composables/core/usePermission'
 
-const [getDictListRequest, _] = useGetDictListRequest()
-const [getDictDataPageRequest, __] = useGetDictDataPageRequest()
-const [deleteDictRequest, ___] = useDeleteDictRequest()
+const { hasPermission } = usePermission()
 
 const [
   registerDictTable,

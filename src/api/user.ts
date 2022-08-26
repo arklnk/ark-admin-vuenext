@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios'
 import type { Menu } from '/@/router/typing'
 
-export const Api = {
+const Api = {
   login: '/user/login',
   captcha: '/user/login/captcha',
   info: '/user/info',
