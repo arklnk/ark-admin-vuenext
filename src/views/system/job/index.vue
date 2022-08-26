@@ -1,13 +1,33 @@
 <template>
   <PageWrapper>
-    <BasicTable :columns="columns" :api="processRequestData" @register="registerTable">
+    <BasicTable :columns="columns" :api="getJobPageRequest" @register="registerTable">
       <template #toolbar>
-        <ElButton type="primary" @click="openEditJobFormDialog()">新增</ElButton>
+        <ElButton
+          type="primary"
+          @click="openEditJobFormDialog()"
+          :disabled="!hasPermission(Api.add)"
+        >
+          新增
+        </ElButton>
       </template>
 
       <template #action="{ row }">
-        <ElButton type="primary" link @click="openEditJobFormDialog(row)">编辑</ElButton>
-        <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
+        <ElButton
+          type="primary"
+          link
+          @click="openEditJobFormDialog(row)"
+          :disabled="!hasPermission(Api.update)"
+        >
+          编辑
+        </ElButton>
+        <PopConfirmButton
+          type="danger"
+          link
+          @click="handleDelete(row)"
+          :disabled="!hasPermission(Api.delete)"
+        >
+          删除
+        </PopConfirmButton>
       </template>
     </BasicTable>
 
@@ -17,18 +37,18 @@
 
 <script setup lang="ts">
 import type { BasicColumn } from '/@/components/Table'
-import type { JobResult } from '/@/api/system/job.api'
+import type { JobResult } from '/@/api/system/job'
 
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref } from 'vue'
-import { useGetJobPageRequest, useDeleteJobRequest } from '/@/api/system/job.api'
+import { getJobPageRequest, deleteJobRequest, Api } from '/@/api/system/job'
 import EditJobFormDialog from './components/EditJobFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { PopConfirmButton } from '/@/components/Button'
+import { usePermission } from '/@/composables/core/usePermission'
 
-const [getJobListRequest, _] = useGetJobPageRequest()
-const [deleteJobRequest, __] = useDeleteJobRequest()
+const { hasPermission } = usePermission()
 
 const [registerDialog, { openDialog }] = useDialog()
 const [registerTable, { reload }] = useTable()
@@ -42,10 +62,6 @@ function openEditJobFormDialog(update?: JobResult) {
 async function handleDelete(row: JobResult) {
   await deleteJobRequest({ id: row.id })
   reload()
-}
-
-async function processRequestData(params: any) {
-  return await getJobListRequest(params)
 }
 
 const columns = ref<BasicColumn[]>([

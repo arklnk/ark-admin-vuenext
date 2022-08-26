@@ -19,12 +19,12 @@
 
 <script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
-import type { JobResult } from '/@/api/system/job.api'
+import type { JobResult } from '/@/api/system/job'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { ref } from 'vue'
-import { useAddJobRequest, useUpdateJobRequest } from '/@/api/system/job.api'
+import { addJobRequest, updateJobRequest } from '/@/api/system/job'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -42,9 +42,6 @@ const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInn
     }
   }
 )
-
-const [addJobRequest, _] = useAddJobRequest()
-const [updateJobRequest, __] = useUpdateJobRequest()
 
 async function handleSubmit(res: Omit<JobResult, 'id'>) {
   try {
