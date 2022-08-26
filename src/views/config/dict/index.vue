@@ -151,12 +151,14 @@ function handleDictRowContextmenu(row: Recordable, _: unknown, e: MouseEvent) {
     items: [
       {
         label: '编辑',
+        disabled: !hasPermission(Api.update),
         handler: () => {
           openEditDictFormDialog(row)
         },
       },
       {
         label: '删除',
+        disabled: !hasPermission(Api.delete),
         handler: async () => {
           handleDeleteDict(row)
         },
@@ -240,7 +242,11 @@ const setColumns = ref<BasicColumn[]>([
       return (
         <div class="flex flex-row">
           <span class="flex-1">{column.label}</span>
-          <span class="px-1 cursor-pointer" onClick={() => openEditDictFormDialog()}>
+          <span
+            v-permission={Api.add}
+            class="px-1 cursor-pointer"
+            onClick={() => openEditDictFormDialog()}
+          >
             <IconFluentAdd12Filled />
           </span>
           <span class="ml-1 px-1 cursor-pointer" onClick={() => reloadDictTable()}>
