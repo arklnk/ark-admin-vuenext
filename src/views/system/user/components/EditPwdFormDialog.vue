@@ -15,7 +15,7 @@ import type { FormSchema } from '/@/components/Form'
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { ref } from 'vue'
-import { useUpdateUserPwdRequest } from '/@/api/system/user.api'
+import { updateUserPwdRequest } from '/@/api/system/user'
 
 defineEmits(['register'])
 
@@ -31,8 +31,6 @@ const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInn
     }
   }
 )
-
-const [updateUserPwdRequest, _] = useUpdateUserPwdRequest()
 
 async function handleSubmit(res: Recordable) {
   try {

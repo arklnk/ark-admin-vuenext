@@ -32,22 +32,15 @@
 
 <script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
-import type { UserRequestParams, UserResult } from '/@/api/system/user.api'
+import type { UserRequestParams, UserResult } from '/@/api/system/user'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
 import { ref, nextTick } from 'vue'
 import { listToTree } from '/@/utils/helper/tree'
-import {
-  useAddUserRequest,
-  useUpdateUserRequest,
-  useGetRDPJInfoRequest,
-} from '/@/api/system/user.api'
+import { addUserRequest, updateUserRequest, getRDPJInfoRequest } from '/@/api/system/user'
 
 const emit = defineEmits(['register', 'success'])
-
-const [addUserRequest, _] = useAddUserRequest()
-const [updateUserRequest, __] = useUpdateUserRequest()
 
 const updateUserId = ref<number | null>(null)
 
@@ -105,8 +98,6 @@ async function handleSubmit(res: UserRequestParams) {
     setFormProps({ disabled: false })
   }
 }
-
-const [getRDPJInfoRequest, ___] = useGetRDPJInfoRequest()
 
 function handleVisibleChange(visible: boolean) {
   if (!visible) return

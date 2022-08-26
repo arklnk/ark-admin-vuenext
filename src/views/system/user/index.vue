@@ -31,12 +31,40 @@
           :immediate="false"
         >
           <template #toolbar>
-            <ElButton type="primary" @click="openEditUserFormDialog()">新增</ElButton>
+            <ElButton
+              type="primary"
+              @click="openEditUserFormDialog()"
+              :disabled="!hasPermission(Api.add)"
+            >
+              新增
+            </ElButton>
           </template>
+
           <template #action="{ row }">
-            <ElButton type="primary" link @click="openEditUserFormDialog(row)">编辑</ElButton>
-            <ElButton type="primary" link @click="openPwdDialog(row)">改密</ElButton>
-            <PopConfirmButton type="danger" link @click="handleDelete(row)">删除</PopConfirmButton>
+            <ElButton
+              type="primary"
+              link
+              @click="openEditUserFormDialog(row)"
+              :disabled="!hasPermission(Api.update)"
+            >
+              编辑
+            </ElButton>
+            <ElButton
+              type="primary"
+              link
+              @click="openPwdDialog(row)"
+              :disabled="!hasPermission(Api.pwd)"
+            >
+              改密
+            </ElButton>
+            <PopConfirmButton
+              type="danger"
+              link
+              @click="handleDelete(row)"
+              :disabled="!hasPermission(Api.delete)"
+            >
+              删除
+            </PopConfirmButton>
           </template>
         </BasicTable>
       </div>
@@ -50,17 +78,20 @@
 
 <script setup lang="ts">
 import type { BasicColumn } from '/@/components/Table'
-import type { UserResult } from '/@/api/system/user.api'
+import type { UserResult } from '/@/api/system/user'
 
 import { getDeptListRequest } from '/@/api/system/dept'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
 import { ref, nextTick } from 'vue'
-import { useGetUserPageRequest, useDeleteUserRequest } from '/@/api/system/user.api'
+import { getUserPageRequest, deleteUserRequest, Api } from '/@/api/system/user'
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
 import EditPwdFormDialog from './components/EditPwdFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { PopConfirmButton } from '/@/components/Button'
+import { usePermission } from '/@/composables/core/usePermission'
+
+const { hasPermission } = usePermission()
 
 const [registerDeptTable, { getCurrentRow }] = useTable()
 const [registerUserTable, { reload }] = useTable()
@@ -75,9 +106,6 @@ function openEditUserFormDialog(update?: Recordable) {
 }
 
 // User
-const [getUserPageRequest, __] = useGetUserPageRequest()
-const [deleteUserListRequest, ___] = useDeleteUserRequest()
-
 async function processUserListRequest(params: any) {
   return await getUserPageRequest({
     ...params,
@@ -86,7 +114,7 @@ async function processUserListRequest(params: any) {
 }
 
 async function handleDelete(row: Recordable) {
-  await deleteUserListRequest({ id: row.id })
+  await deleteUserRequest({ id: row.id })
   reload()
 }
 
