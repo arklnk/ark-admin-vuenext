@@ -135,6 +135,34 @@ $menu-hover-text-color: #ffffffa6;
 
       --el-menu-hover-bg-color: none;
       --el-menu-item-hover-fill: none;
+
+      .el-menu-item:hover,
+      .el-menu-item.is-active {
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: var(--el-menu-base-level-padding);
+          right: var(--el-menu-base-level-padding);
+          height: 2px;
+          background-color: var(--el-color-primary);
+        }
+      }
+
+      .el-sub-menu:hover,
+      .el-sub-menu.is-active {
+        .el-sub-menu__title {
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: var(--el-menu-base-level-padding);
+            right: var(--el-menu-base-level-padding);
+            height: 2px;
+            background-color: var(--el-color-primary);
+          }
+        }
+      }
     }
   }
 
