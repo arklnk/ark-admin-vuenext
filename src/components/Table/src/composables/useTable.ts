@@ -1,25 +1,49 @@
 // import type { BasicTableProps } from '../types/table'
 import type { BasicTableActionType, BasicTableProps, FetchParams } from '../types/table'
+import type { WatchStopHandle } from 'vue'
 
-import { ref, onUnmounted, unref } from 'vue'
+import { ref, onUnmounted, unref, watch } from 'vue'
 import { error } from '/@/utils/log'
+import { isProdMode } from '/@/utils/env'
+import { toRefableProps } from '/@/utils'
+
+type Props = Partial<RefableProps<BasicTableProps>>
 
 type Register = (instance: BasicTableActionType) => void
 
-export function useTable(): [Register, BasicTableActionType] {
+export function useTable(tableProps?: Props): [Register, BasicTableActionType] {
   const tableRef = ref<Nullable<BasicTableActionType>>(null)
   const loadedRef = ref<Nullable<boolean>>(false)
 
-  function register(instance: BasicTableActionType) {
-    onUnmounted(() => {
-      tableRef.value = null
-      loadedRef.value = null
-    })
+  let stopWatch: WatchStopHandle
 
-    if (unref(loadedRef) && instance === unref(tableRef)) return
+  function register(instance: BasicTableActionType) {
+    if (isProdMode()) {
+      onUnmounted(() => {
+        tableRef.value = null
+        loadedRef.value = null
+      })
+    }
+
+    if (unref(loadedRef) && isProdMode() && instance === unref(tableRef)) return
 
     tableRef.value = instance
     loadedRef.value = true
+
+    if (tableProps) {
+      instance.setProps(toRefableProps(tableProps))
+      stopWatch?.()
+
+      stopWatch = watch(
+        () => tableProps,
+        () => {
+          tableProps && instance.setProps(toRefableProps(tableProps))
+        },
+        {
+          deep: true,
+        }
+      )
+    }
   }
 
   function getTableInstance(): BasicTableActionType {

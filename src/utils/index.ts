@@ -1,5 +1,7 @@
 import type { App, Plugin, Component } from 'vue'
 
+import { unref } from 'vue'
+
 /**
  * / _ - 符号转换成驼峰
  */
@@ -18,6 +20,16 @@ export const withInstall = <T>(component: T, alias?: string) => {
     }
   }
   return component as T & Plugin
+}
+
+export function toRefableProps<T, U>(props: T): Partial<U> {
+  const ret: Recordable = {}
+
+  Object.keys(props).forEach((key) => {
+    ret[key] = unref(props[key])
+  })
+
+  return ret as Partial<U>
 }
 
 /**
