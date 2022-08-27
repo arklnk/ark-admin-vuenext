@@ -95,9 +95,9 @@ export function useDialogInner(callbackFn?: Fn): UseDialogInnerReturnType {
   const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
   const uidRef = ref<number>(-1)
   const loadedRef = ref<boolean>(false)
+  const currentInstance = getCurrentInstance()
 
   function register(action: BasicDialogActionType, uid: number) {
-    const currentInstance = getCurrentInstance()
     if (!currentInstance) {
       error('useDialogInner() can only be used inside setup() or functional components!')
     }
