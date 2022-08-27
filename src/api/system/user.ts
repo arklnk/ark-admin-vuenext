@@ -66,8 +66,8 @@ interface RDPJInfoResult {
   dept: IdNameRecord[]
 }
 
-export async function getRDPJInfoRequest(): Promise<RDPJInfoResult> {
-  return await defHttp.get({ url: Api.rdpj })
+export async function getRDPJInfoRequest(params?: { userId: number }): Promise<RDPJInfoResult> {
+  return await defHttp.get({ url: Api.rdpj, params })
 }
 
 export async function updateUserPwdRequest(data: { id: number; password: string }) {

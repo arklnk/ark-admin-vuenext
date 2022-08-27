@@ -1,10 +1,5 @@
 <template>
-  <BasicDialog
-    @register="registerDialog"
-    @confirm="submit"
-    title="编辑用户信息"
-    @visible-change="handleVisibleChange"
-  >
+  <BasicDialog @register="registerDialog" @confirm="submit" title="编辑用户信息">
     <BasicForm
       :schemas="schemas"
       :show-action-button-group="false"
@@ -36,7 +31,7 @@ import type { UserRequestParams, UserResult } from '/@/api/system/user'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
-import { ref, nextTick } from 'vue'
+import { ref } from 'vue'
 import { listToTree } from '/@/utils/helper/tree'
 import { addUserRequest, updateUserRequest, getRDPJInfoRequest } from '/@/api/system/user'
 
@@ -46,7 +41,47 @@ const updateUserId = ref<number | null>(null)
 
 const [registerForm, { submit, setProps: setFormProps, updateSchema, setFormModel }] = useForm()
 const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner(
-  (data: { item?: UserResult }) => {
+  async (data: { item?: UserResult }) => {
+    // 请求当前角色所拥有的角色权限、以及部门、岗位、职称列表信息
+    try {
+      setDialogProps({ loading: true })
+      const { role, dept, profession, job } = await getRDPJInfoRequest({
+        userId: data?.item ? data.item.id : 0,
+      })
+
+      const updateSchemas: FormSchema[] = [
+        {
+          prop: 'deptId',
+          componentProps: {
+            data: listToTree(dept),
+          },
+        },
+        {
+          prop: 'roleIds',
+          componentProps: {
+            data: listToTree(role),
+          },
+        },
+        {
+          prop: 'jobId',
+          componentProps: {
+            data: job,
+          },
+        },
+        {
+          prop: 'professionId',
+          componentProps: {
+            data: profession,
+          },
+        },
+      ]
+      updateSchema(updateSchemas)
+    } catch (e) {
+      closeDialog()
+    } finally {
+      setDialogProps({ loading: false })
+    }
+
     updateSchema({
       prop: 'account',
       componentProps: {
@@ -97,49 +132,6 @@ async function handleSubmit(res: UserRequestParams) {
     setDialogProps({ confirmBtnProps: { loading: false } })
     setFormProps({ disabled: false })
   }
-}
-
-function handleVisibleChange(visible: boolean) {
-  if (!visible) return
-
-  nextTick(async () => {
-    try {
-      setDialogProps({ loading: true })
-      const { role, dept, profession, job } = await getRDPJInfoRequest()
-
-      const updateSchemas: FormSchema[] = [
-        {
-          prop: 'deptId',
-          componentProps: {
-            data: listToTree(dept),
-          },
-        },
-        {
-          prop: 'roleIds',
-          componentProps: {
-            data: listToTree(role),
-          },
-        },
-        {
-          prop: 'jobId',
-          componentProps: {
-            data: job,
-          },
-        },
-        {
-          prop: 'professionId',
-          componentProps: {
-            data: profession,
-          },
-        },
-      ]
-      updateSchema(updateSchemas)
-    } catch (e) {
-      closeDialog()
-    } finally {
-      setDialogProps({ loading: false })
-    }
-  })
 }
 
 const schemas = ref<FormSchema[]>([
@@ -223,6 +215,10 @@ const schemas = ref<FormSchema[]>([
       props: {
         label: (data: Recordable): string => {
           return data.name
+        },
+        disabled: (data: Recordable): boolean => {
+          // has为0，禁止删除
+          return data.has === 0
         },
       },
     },
