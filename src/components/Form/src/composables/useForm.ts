@@ -1,10 +1,15 @@
 import type { BasicFormProps, BasicFormActionType, UseFormReturnType, FormSchema } from '../typing'
 import type { FormItemProp } from 'element-plus'
+import type { WatchStopHandle } from 'vue'
 
-import { onUnmounted, ref, unref } from 'vue'
+import { onUnmounted, ref, unref, watch } from 'vue'
 import { error } from '/@/utils/log'
+import { isProdMode } from '/@/utils/env'
+import { toRefableProps } from '/@/utils'
 
-export function useForm(): UseFormReturnType {
+type Props = Partial<RefableProps<BasicFormProps>>
+
+export function useForm(formProps?: Props): UseFormReturnType {
   const formRef = ref<Nullable<BasicFormActionType>>(null)
   const loadedRef = ref<Nullable<boolean>>(false)
 
@@ -18,15 +23,35 @@ export function useForm(): UseFormReturnType {
     return form as BasicFormActionType
   }
 
+  let stopWatch: WatchStopHandle
+
   function register(instance: BasicFormActionType) {
-    onUnmounted(() => {
-      formRef.value = null
-      loadedRef.value = null
-    })
-    if (unref(loadedRef) && instance === unref(formRef)) return
+    if (isProdMode()) {
+      onUnmounted(() => {
+        formRef.value = null
+        loadedRef.value = null
+      })
+    }
+
+    if (unref(loadedRef) && isProdMode() && instance === unref(formRef)) return
 
     formRef.value = instance
     loadedRef.value = true
+
+    if (formProps) {
+      instance.setProps(toRefableProps(formProps))
+      stopWatch?.()
+
+      stopWatch = watch(
+        () => formProps,
+        () => {
+          formProps && instance.setProps(toRefableProps(formProps))
+        },
+        {
+          deep: true,
+        }
+      )
+    }
   }
 
   const methods: BasicFormActionType = {
