@@ -149,6 +149,7 @@ const schemas = ref<FormSchema[]>([
       style: 'width: 100%;',
       nodeKey: 'id',
       data: [],
+      checkStrictly: true,
       defaultExpandAll: true,
       props: {
         label: (data: RoleResult): string => {
