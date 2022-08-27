@@ -18,6 +18,7 @@ import {
 } from 'vue'
 import { error } from '/@/utils/log'
 import { isEqual, isFunction, isNil } from 'lodash-es'
+import { isProdMode } from '/@/utils/env'
 
 // store the parameters passed when opening the pop-up window
 const store = reactive<{ [key: number]: any }>({})
@@ -28,14 +29,21 @@ export function useDialog(): UseDialogReturnType {
   const uidRef = ref<number>(-1)
 
   function register(action: BasicDialogActionType, uid: number) {
-    onUnmounted(() => {
-      dialogRef.value = null
-      loadedRef.value = false
-      store[unref(uidRef.value)] = null
-    })
+    if (!getCurrentInstance()) {
+      error('useDialog() can only be used inside setup() or functional components!')
+    }
 
     uidRef.value = uid
-    if (unref(loadedRef) && action === unref(dialogRef)) return
+
+    if (isProdMode()) {
+      onUnmounted(() => {
+        dialogRef.value = null
+        loadedRef.value = false
+        store[unref(uidRef.value)] = null
+      })
+    }
+
+    if (unref(loadedRef) && isProdMode() && action === unref(dialogRef)) return
 
     dialogRef.value = action
     loadedRef.value = true
@@ -86,16 +94,29 @@ export function useDialog(): UseDialogReturnType {
 export function useDialogInner(callbackFn?: Fn): UseDialogInnerReturnType {
   const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
   const uidRef = ref<number>(-1)
-  const currentInstance = getCurrentInstance()
+  const loadedRef = ref<boolean>(false)
 
   function register(action: BasicDialogActionType, uid: number) {
-    onUnmounted(() => {
-      dialogRef.value = null
-    })
+    const currentInstance = getCurrentInstance()
+    if (!currentInstance) {
+      error('useDialogInner() can only be used inside setup() or functional components!')
+    }
 
     uidRef.value = uid
+
+    if (isProdMode()) {
+      onUnmounted(() => {
+        dialogRef.value = null
+        loadedRef.value = false
+      })
+    }
+
+    if (unref(loadedRef) && isProdMode() && action === unref(dialogRef)) return
+
     dialogRef.value = action
-    // 二次封装BasicDialog时可再次抛出该事件，外部使用useDialog可直接再次使用
+    loadedRef.value = true
+
+    // emit current
     currentInstance?.emit('register', action, uid)
   }
 
