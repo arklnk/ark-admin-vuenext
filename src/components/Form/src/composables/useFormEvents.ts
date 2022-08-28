@@ -4,6 +4,7 @@ import type { FormInstance, FormItemProp } from 'element-plus'
 
 import { unref, toRaw } from 'vue'
 import {
+  assign,
   cloneDeep,
   get,
   hasIn,
@@ -11,7 +12,7 @@ import {
   isFunction,
   isNil,
   isPlainObject,
-  merge,
+  mergeWith,
   set,
   unset,
 } from 'lodash-es'
@@ -122,7 +123,14 @@ export function useFormEvents({
       unref(getSchema).forEach((entry, index) => {
         // find same prop replace
         if (isEqual(item.prop, entry.prop)) {
-          const newItem = merge(entry, item)
+          // https://www.lodashjs.com/docs/lodash.mergeWith
+          // componentProps 不做复杂数据合并处理
+          const newItem = mergeWith(entry, item, (objValue, srcValue, key: keyof FormSchema) => {
+            if (key === 'componentProps') {
+              return assign(objValue, srcValue)
+            }
+          })
+
           newSchema[index] = newItem
         }
       })
