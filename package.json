@@ -54,7 +54,6 @@
     "unocss": "^0.45.13",
     "vite": "^2.9.8",
     "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-svg-icons": "^2.0.1",
     "vue-eslint-parser": "^8.0.1",
     "vue-tsc": "^0.29.8"
   }

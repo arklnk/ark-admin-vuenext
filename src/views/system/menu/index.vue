@@ -31,7 +31,7 @@
         <ElTag v-for="item in row.perms" :key="item" class="mr-1 mt-0.75">{{ item }}</ElTag>
       </template>
       <template #icon="{ row }">
-        <SvgIcon v-if="row.icon" :icon="row.icon" />
+        <span v-if="row.icon" :class="`i-${row.icon}`"></span>
       </template>
 
       <template #action="{ row }">

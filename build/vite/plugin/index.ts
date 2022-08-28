@@ -3,7 +3,6 @@ import type { PluginOption } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
-import { configIconsPlugin } from './icons'
 import { configCompressionPlugin } from './compress'
 import { configUnoPlugin } from './uno'
 
@@ -12,9 +11,6 @@ export function createVitePlugins(_env: ViteEnv, isBuild: boolean) {
 
   // unocss
   vitePlugins.push(configUnoPlugin(isBuild))
-
-  // icons
-  vitePlugins.push(configIconsPlugin(isBuild))
 
   // The following plugins only work in the production environment
   if (isBuild) {
