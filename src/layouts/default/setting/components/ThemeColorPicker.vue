@@ -6,26 +6,24 @@
         :style="{ backgroundColor: color }"
         @click="handleClick(color)"
       >
-        <IconCheck v-if="cursor === color" class="text-gray-200" />
+        <span v-if="cursor === color" class="i-ic:twotone-check text-gray-300"></span>
       </span>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import IconCheck from '~icons/ic/twotone-check'
-
 const emit = defineEmits<{ (e: 'change', color: string): void }>()
 
 defineProps({
   colorList: {
     type: Array as PropType<Array<string>>,
-    default: () => []
+    default: () => [],
   },
   cursor: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 function handleClick(color: string) {

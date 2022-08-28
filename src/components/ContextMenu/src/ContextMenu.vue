@@ -45,9 +45,7 @@ const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
   return (
     <>
       {props.showIcon && Icon ? (
-        <el-icon>
-          {typeof Icon === 'string' ? <svg-icon icon={props.item.icon} /> : <Icon />}
-        </el-icon>
+        <>{typeof Icon === 'string' ? <span class={props.item.icon} /> : <Icon />}</>
       ) : null}
       <span class="ml-2">{props.item.label}</span>
     </>

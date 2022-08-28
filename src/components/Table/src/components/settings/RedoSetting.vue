@@ -1,9 +1,8 @@
 <template>
-  <IconMdiRestore @click="redo" />
+  <span class="i-mdi:restore" @click="redo"></span>
 </template>
 
 <script setup lang="ts">
-import IconMdiRestore from '~icons/mdi/restore'
 import { useTableContext } from '../../composables/useTableContext'
 
 const table = useTableContext()

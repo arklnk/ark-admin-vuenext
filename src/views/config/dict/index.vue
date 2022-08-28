@@ -76,8 +76,6 @@ import {
 } from '/@/api/config/dict'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
-import IconFontistoSpinnerRefresh from '~icons/fontisto/spinner-refresh'
-import IconFluentAdd12Filled from '~icons/fluent/add-12-filled'
 import { createContextMenu } from '/@/components/ContextMenu'
 import EditDictFormDialog from './components/EditDictFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
@@ -247,10 +245,10 @@ const setColumns = ref<BasicColumn[]>([
             class="px-1 cursor-pointer"
             onClick={() => openEditDictFormDialog()}
           >
-            <IconFluentAdd12Filled />
+            <span class="i-fluent:add-12-filled" />
           </span>
           <span class="ml-1 px-1 cursor-pointer" onClick={() => reloadDictTable()}>
-            <IconFontistoSpinnerRefresh />
+            <span class="i-fontisto:spinner-refresh" />
           </span>
         </div>
       )

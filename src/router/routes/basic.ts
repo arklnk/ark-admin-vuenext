@@ -59,7 +59,7 @@ export const DashboardRoute: RouteRecordRaw = {
       component: () => import('/@/views/dashboard/Dashboard.vue'),
       meta: {
         title: t('routes.dashboard'),
-        icon: 'dashboard',
+        icon: 'carbon:dashboard',
       },
     },
   ],
