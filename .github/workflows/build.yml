@@ -1,9 +1,8 @@
 name: Build Image
 
 on:
-  create:
-    tags:
-      - '*'
+  push:
+    branches: [main]
 
 jobs:
   docker:
