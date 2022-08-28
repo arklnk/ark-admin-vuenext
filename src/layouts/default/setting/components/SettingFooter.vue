@@ -1,12 +1,11 @@
 <template>
   <ElDivider />
-  <ElButton type="danger" class="w-full" :icon="IconFoundationRefresh" @click="handleResetSetting">
+  <ElButton type="danger" class="w-full" @click="handleResetSetting">
     {{ t('layout.setting.reset') }}
   </ElButton>
 </template>
 
 <script setup lang="ts">
-import IconFoundationRefresh from '~icons/foundation/refresh'
 import { useAppStore } from '/@/stores/modules/app'
 import defaultSetting from '/@/settings/projectSetting'
 import { useMessage } from '/@/composables/web/useMessage'

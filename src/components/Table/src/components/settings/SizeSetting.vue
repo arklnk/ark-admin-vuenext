@@ -1,6 +1,6 @@
 <template>
   <ElDropdown @command="handleCommand" trigger="click">
-    <IconMdiFormatLineSpacing />
+    <span class="i-mdi:format-line-spacing"></span>
     <template #dropdown>
       <el-dropdown-item :disabled="isDisable('small')" command="small">
         {{ t('component.table.toolbar.desityCompact') }}
@@ -18,7 +18,6 @@
 <script setup lang="ts">
 import type { SizeType } from '/#/config'
 
-import IconMdiFormatLineSpacing from '~icons/mdi/format-line-spacing'
 import { useTableContext } from '../../composables/useTableContext'
 import projectSetting from '/@/settings/projectSetting'
 import { useTransl } from '/@/composables/core/useTransl'

@@ -1,14 +1,15 @@
 <template>
-  <span class="text-center cursor-pointer text-yellow-300 dark:text-purple-300" @click="toggleDarkMode">
-    <IcBaselineWbSunny v-if="getTheme === ThemeEnum.LIGHT" />
-    <IcOutlineDarkMode v-else />
+  <span
+    class="text-center cursor-pointer text-yellow-300 dark:text-purple-300"
+    @click="toggleDarkMode"
+  >
+    <span class="i-ic:baseline-wb-sunny" v-if="getTheme === ThemeEnum.LIGHT"></span>
+    <span class="i-ic:outline-dark-mode" v-else></span>
   </span>
 </template>
 
 <script setup lang="ts">
 import { unref } from 'vue'
-import IcBaselineWbSunny from '~icons/ic/baseline-wb-sunny'
-import IcOutlineDarkMode from '~icons/ic/outline-dark-mode'
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground'
 import { updateDarkMode } from '/@/logics/theme/updateDarkMode'
 import { ThemeEnum } from '/@/enums/appEnum'

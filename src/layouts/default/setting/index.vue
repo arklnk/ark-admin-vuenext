@@ -1,6 +1,6 @@
 <template>
   <span @click="handleClick">
-    <IconSettings />
+    <span class="i-icon-park-outline:setting-two"></span>
     <ElDrawer
       v-model="visibleRef"
       direction="rtl"
@@ -122,7 +122,6 @@
 </template>
 
 <script setup lang="ts">
-import IconSettings from '~icons/icon-park-outline/setting-two'
 import ThemeColorPicker from './components/ThemeColorPicker.vue'
 import SwitchItem from './components/SwitchItem.vue'
 import MenuModePicker from './components/MenuModePicker.vue'

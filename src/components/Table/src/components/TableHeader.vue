@@ -63,7 +63,7 @@ $prefixCls: #{var.$namespace}-basic-table-header;
     padding: 8px 0;
     margin-right: 8px;
 
-    svg {
+    span {
       font-size: 20px;
       margin: 0 6px;
       cursor: pointer;

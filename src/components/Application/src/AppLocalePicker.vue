@@ -1,7 +1,7 @@
 <template>
   <ElDropdown trigger="click" @command="handleCommand">
     <span class="cursor-pointer flex items-center">
-      <IconBiTranslate />
+      <span class="i-bi:translate"></span>
       <span v-if="showText" class="ml-2">{{ getLocaleText }}</span>
     </span>
     <template #dropdown>
@@ -23,7 +23,6 @@
 import type { LocaleType } from '/#/config'
 
 import { computed, unref } from 'vue'
-import IconBiTranslate from '~icons/bi/translate'
 import { useLocale } from '/@/locales/useLocale'
 import { localeList } from '/@/settings/localeSetting'
 

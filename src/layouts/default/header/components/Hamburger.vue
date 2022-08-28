@@ -1,10 +1,9 @@
 <template>
-  <span :class="getWrapClass"><IconHamburger /></span>
+  <span :class="getWrapClass"><span class="i-icon-park-outline:indent-right"></span></span>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import IconHamburger from '~icons/icon-park-outline/indent-right'
 import { useDesign } from '/@/composables/core/useDesign'
 
 const props = defineProps({
