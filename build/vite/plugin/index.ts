@@ -2,16 +2,16 @@ import type { PluginOption } from 'vite'
 
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import unocss from 'unocss/vite'
 
 import { configIconsPlugin } from './icons'
 import { configCompressionPlugin } from './compress'
+import { configUnoPlugin } from './uno'
 
 export function createVitePlugins(_env: ViteEnv, isBuild: boolean) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [vue(), vueJsx()]
 
   // unocss
-  vitePlugins.push(unocss())
+  vitePlugins.push(configUnoPlugin(isBuild))
 
   // icons
   vitePlugins.push(configIconsPlugin(isBuild))

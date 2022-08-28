@@ -41,7 +41,6 @@
     "types/**/*.ts",
     "build/**/*.ts",
     "build/**/*.d.ts",
-    "uno.config.ts",
     "vite.config.ts"
   ],
   "exclude": ["node_modules", "dist", "**/*.js"]
