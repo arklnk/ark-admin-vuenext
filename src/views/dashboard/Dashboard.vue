@@ -12,7 +12,7 @@
         }}</ElLink>
       </div>
       <div class="text-gray-500 my-4 text-sm flex items-center">
-        使用文档:
+        后端仓库:
         <ElLink class="ml-4" type="primary" :href="ZERO_REPO_GITHUB_URL">{{
           ZERO_REPO_GITHUB_URL
         }}</ElLink>
