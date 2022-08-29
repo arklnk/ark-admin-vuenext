@@ -21,7 +21,7 @@
         </ElRadioGroup>
       </template>
       <template #viewPath="{ model }">
-        <ElSelect v-model="model.viewPath" class="w-full" clearable>
+        <ElSelect v-model="model.viewPath" class="w-full" clearable allow-create filterable>
           <el-option
             v-for="item in allDynamicImportViews"
             :key="item"

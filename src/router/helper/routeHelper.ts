@@ -8,8 +8,6 @@ import { isUrl } from '/@/utils/is'
 
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>
 
-const IFRAME_PARAM = '__iframe__'
-
 function parseDynamicImportPath(key: string): string {
   const k = key.replace('../../', '')
   // const startFlag = component.startsWith('/')
@@ -87,38 +85,30 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
       return route
     }
 
-    let needIframe = false
-
     // 外链
     if (isUrl(menu.router)) {
-      // url中存在__iframe__参数时则内嵌显示，规则可自行定义
-      if (menu.router.indexOf(IFRAME_PARAM) !== -1) {
-        needIframe = true
-      } else {
-        return {
-          path: `/external-link/${menu.id}`,
-          name: menu.router,
-          component: ParentLayout,
-          meta: {
-            single: true,
+      return {
+        path: `/external-link/${menu.id}`,
+        name: menu.router,
+        component: ParentLayout,
+        meta: {
+          single: true,
+        },
+        children: [
+          {
+            path: menu.router,
+            component: ParentLayout,
+            meta,
           },
-          children: [
-            {
-              path: menu.router,
-              component: ParentLayout,
-              meta,
-            },
-          ],
-        }
+        ],
       }
     }
 
     // 内嵌页面
-    let component: Component | null = null
-    let path = menu.router
-    if (needIframe) {
-      path = `/internal-link/${menu.id}`
-      meta.iframeSrc = menu.router
+    let component: Component
+
+    if (isUrl(menu.viewPath || '')) {
+      meta.iframeSrc = menu.viewPath
       component = IFrameLayout
     } else {
       component = dynamicImport(menu.viewPath)
@@ -127,16 +117,16 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
     if (isRoot) {
       // 需要ParentLayout包裹
       return {
-        path,
+        path: menu.router,
         name: menu.router,
         component: ParentLayout,
-        redirect: `${path}/index`,
+        redirect: `${menu.router}/index`,
         meta: {
           single: true,
         },
         children: [
           {
-            path: `${path}/index`,
+            path: `${menu.router}/index`,
             component,
             meta,
           },
@@ -144,7 +134,7 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
       }
     } else {
       return {
-        path,
+        path: menu.router,
         name: menu.router,
         component,
         meta,
