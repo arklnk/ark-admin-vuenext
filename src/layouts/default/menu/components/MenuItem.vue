@@ -5,11 +5,11 @@
     @click="handleMenuClick"
   >
     <!-- do not use el-icon wrap -->
-    <span
+    <i
       class="text-lg flex-shrink-0"
       v-if="getRoute.meta?.icon"
       :class="`i-${getRoute.meta.icon}`"
-    ></span>
+    ></i>
     <template #title>
       <span class="ml-4">{{ t(getRoute.meta?.title!) }}</span>
     </template>
@@ -17,11 +17,11 @@
   <ElSubMenu v-else-if="menuHasChildren(getRoute) && getShowMenu" :index="getRoute.path">
     <template #title>
       <!-- do not use el-icon wrap -->
-      <span
+      <i
         class="text-lg flex-shrink-0"
         v-if="getRoute.meta?.icon"
         :class="`i-${getRoute.meta.icon}`"
-      ></span>
+      ></i>
       <span class="ml-4">{{ t(getRoute.meta?.title!) }}</span>
     </template>
     <MenuItem v-for="child in getRoute.children" :key="child.path" :route="child" />
