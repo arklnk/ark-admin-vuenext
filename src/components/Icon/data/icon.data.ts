@@ -7,4 +7,5 @@ export default [
   'ic:baseline-history',
   'material-symbols:library-books-outline',
   'icon-park-outline:setting-config',
+  'material-symbols:chrome-reader-mode-outline-rounded',
 ]
