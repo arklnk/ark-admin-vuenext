@@ -1,6 +1,6 @@
 {
   "name": "ark-admin-vuenext",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "scripts": {
     "bootstrap": "pnpm install",
     "serve": "npm run dev",
