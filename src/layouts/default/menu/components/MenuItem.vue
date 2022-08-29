@@ -5,7 +5,11 @@
     @click="handleMenuClick"
   >
     <!-- do not use el-icon wrap -->
-    <SvgIcon class="text-lg flex-shrink-0" v-if="getRoute.meta?.icon" :icon="getRoute.meta.icon" />
+    <i
+      class="text-lg flex-shrink-0"
+      v-if="getRoute.meta?.icon"
+      :class="`i-${getRoute.meta.icon}`"
+    ></i>
     <template #title>
       <span class="ml-4">{{ t(getRoute.meta?.title!) }}</span>
     </template>
@@ -13,11 +17,11 @@
   <ElSubMenu v-else-if="menuHasChildren(getRoute) && getShowMenu" :index="getRoute.path">
     <template #title>
       <!-- do not use el-icon wrap -->
-      <SvgIcon
+      <i
         class="text-lg flex-shrink-0"
         v-if="getRoute.meta?.icon"
-        :icon="getRoute.meta.icon"
-      />
+        :class="`i-${getRoute.meta.icon}`"
+      ></i>
       <span class="ml-4">{{ t(getRoute.meta?.title!) }}</span>
     </template>
     <MenuItem v-for="child in getRoute.children" :key="child.path" :route="child" />

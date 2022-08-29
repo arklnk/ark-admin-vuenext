@@ -1,17 +1,14 @@
 <template>
   <template v-if="canFullscreen">
     <span @click="handleFullScreen">
-      <IconExitFullScreen v-if="fullscreen" /><IconFullScreen v-else />
+      <span class="i-radix-icons:minus" v-if="fullscreen"></span>
+      <span class="i-radix-icons:enter-full-screen" v-else></span>
     </span>
   </template>
-  <span @click="handleCancel"><IconClose /></span>
+  <span class="i-radix-icons:cross-2" @click="handleCancel"></span>
 </template>
 
 <script setup lang="ts">
-import IconFullScreen from '~icons/radix-icons/enter-full-screen'
-import IconExitFullScreen from '~icons/radix-icons/minus'
-import IconClose from '~icons/radix-icons/cross-2'
-
 defineProps({
   canFullscreen: {
     type: Boolean,

@@ -6,10 +6,10 @@
     </span>
     <template #dropdown>
       <ElDropdownMenu>
-        <ElDropdownItem :command="PageEnum.Account" :icon="IconAccount">
+        <ElDropdownItem :command="PageEnum.Account">
           {{ t('routes.account') }}
         </ElDropdownItem>
-        <ElDropdownItem divided :command="PageEnum.Logout" :icon="IconTablerPower">
+        <ElDropdownItem divided :command="PageEnum.Logout">
           {{ t('layout.header.userDropdown.logout') }}
         </ElDropdownItem>
       </ElDropdownMenu>
@@ -20,9 +20,6 @@
 <script setup lang="ts">
 import { computed, ref, unref } from 'vue'
 import { ElLoading } from 'element-plus'
-
-import IconTablerPower from '~icons/tabler/power'
-import IconAccount from '~icons/mdi/shield-account-outline'
 
 import { useUserStore } from '/@/stores/modules/user'
 import DefaultAvatar from '/@/assets/svg/user-default-avatar.svg'

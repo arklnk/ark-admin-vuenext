@@ -6,12 +6,15 @@
     readonly
     :placeholder="t('component.icon.placeholder')"
   >
-    <template #prepend>{{ getIconPrefixRef }}</template>
+    <template #prepend>{{ prefix }}</template>
 
     <template #append>
       <ElPopover :width="280" trigger="click" placement="bottom">
         <template #reference>
-          <ElButton :icon="getActiveIconRef" />
+          <ElButton>
+            <span v-if="getActiveIconRef" :class="getActiveIconRef"></span>
+            <span v-else class="'i-gg:menu-grid-r'"></span>
+          </ElButton>
         </template>
 
         <div class="flex flex-row px-1 mb-2">
@@ -25,16 +28,16 @@
         </div>
         <ElScrollbar height="180px">
           <ul
-            v-if="getSvgIconsRef.length > 0"
+            v-if="getIconsRef.length > 0"
             class="flex flex-wrap flex-row list-none px-0.25 m-1 text-sm"
           >
             <li
-              v-for="icon in getSvgIconsRef"
+              v-for="icon in getIconsRef"
               :key="icon"
               @click="handleClick(icon)"
               class="w-1/8 inline-flex items-center justify-center border border-solid box-border mr-1 mb-1 p-2 cursor-pointer border-gray-200 hover:dark:border-primary hover:border-primary dark:border-dark-100"
             >
-              <SvgIcon :icon="icon" />
+              <span :class="`${prefix}${icon}`"></span>
             </li>
           </ul>
           <ElEmpty v-else style="height: 180px" :image-size="60" />
@@ -45,11 +48,10 @@
 </template>
 
 <script lang="tsx">
-import IconHealthiconsUiMenuGrid from '~icons/healthicons/ui-menu-grid'
 import { computed, defineComponent, ref, unref, watch, watchEffect } from 'vue'
 
-import svgIcons from 'virtual:svg-icons-names'
 import { useTransl } from '/@/composables/core/useTransl'
+import iconData from '../data/icon.data'
 
 export default defineComponent({
   name: 'IconPicker',
@@ -60,7 +62,7 @@ export default defineComponent({
     },
     prefix: {
       type: String,
-      default: 'icon',
+      default: 'i-',
     },
   },
   emits: ['update:modelValue', 'change'],
@@ -70,25 +72,19 @@ export default defineComponent({
 
     const { t } = useTransl()
 
-    const getIconPrefixRef = computed((): string => {
-      return `${props.prefix}-`
-    })
-
-    const getSvgIconsRef = computed((): string[] => {
-      const icons = svgIcons.map((icon) => icon.replace(unref(getIconPrefixRef), ''))
-
+    const getIconsRef = computed((): string[] => {
       if (!unref(searchRef)) {
-        return icons
+        return iconData
       }
 
-      return icons.filter((i) => i.includes(unref(searchRef)))
+      return iconData.filter((i) => i.includes(unref(searchRef)))
     })
 
     const getActiveIconRef = computed(() => {
       if (unref(currentSelectRef)) {
-        return <svg-icon icon={unref(currentSelectRef)} />
+        return `${props.prefix}${unref(currentSelectRef)}`
       }
-      return IconHealthiconsUiMenuGrid
+      return null
     })
 
     function handleClick(icon: string) {
@@ -114,9 +110,8 @@ export default defineComponent({
     return {
       currentSelectRef,
       searchRef,
-      getSvgIconsRef,
+      getIconsRef,
       getActiveIconRef,
-      getIconPrefixRef,
       handleClick,
       handleClear,
       t,

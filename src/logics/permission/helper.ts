@@ -11,7 +11,7 @@ let definePermissionList: string[] | null = null
 export function getDefinePermissionList(): string[] {
   if (definePermissionList === null) {
     // define permssion api modules
-    const defineModules: Record<string, ApiRecord> = import.meta.globEager('../../api/**/*.ts')
+    const defineModules: Record<string, ApiRecord> = import.meta.glob('../../api/**/*.ts', { eager: true })
 
     const keys = Object.keys(defineModules)
     let permList: string[] = []

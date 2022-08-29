@@ -6,7 +6,7 @@ import { warn } from '/@/utils/log'
 export const backModuleMap: Record<string, Component> = {}
 export const roleRoutes: RouteRecordRaw[] = []
 
-const roleModules = import.meta.globEager('./modules/**/*.ts')
+const roleModules: Recordable = import.meta.glob('./modules/**/*.ts', { eager: true })
 
 /**
  * 角色权限路由时使用
