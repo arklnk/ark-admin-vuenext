@@ -10,7 +10,7 @@
 
 ## 在线体验
 
-在线体验地址: [http://arkadmin.si-yee.com/](http://arkadmin.si-yee.com/)
+在线体验地址: [http://arkadmin.si-yee.com](http://arkadmin.si-yee.com)
 
 | 账号 | 密码   | 备注     |
 | ---- | ------ | -------- |
