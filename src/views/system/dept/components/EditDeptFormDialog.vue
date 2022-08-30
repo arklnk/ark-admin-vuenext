@@ -1,12 +1,6 @@
 <template>
   <BasicDialog @register="registerDialog" title="编辑部门信息" @confirm="submit">
-    <BasicForm
-      :schemas="schemas"
-      label-width="100px"
-      :show-action-button-group="false"
-      @register="registerForm"
-      @submit="handleSubmit"
-    >
+    <BasicForm @register="registerForm" @submit="handleSubmit">
       <template #status="{ model }">
         <ElRadioGroup v-model="model.status">
           <ElRadio :label="1">启用</ElRadio>
@@ -25,11 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import { FormSchema, useForm } from '/@/components/Form'
-import type { DeptResult } from '../../../../api/system/dept'
+import type { DeptResult } from '/@/api/system/dept'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
-import { BasicForm } from '/@/components/Form'
+import { BasicForm, useForm } from '/@/components/Form'
 import { ref } from 'vue'
 import { addDeptRequest, updateDeptRequest } from '/@/api/system/dept'
 
@@ -37,7 +30,113 @@ const emit = defineEmits(['register', 'success'])
 
 const updateDeptId = ref<number | null>(null)
 
-const [registerForm, { updateSchema, submit, setProps: setFormProps, setFormModel }] = useForm()
+const [registerForm, { updateSchema, submit, setProps: setFormProps, setFormModel }] = useForm({
+  showActionButtonGroup: false,
+  labelWidth: '100px',
+  schemas: [
+    {
+      label: '部门名称',
+      defaultValue: '',
+      prop: 'name',
+      colProps: {
+        span: 12,
+      },
+      component: 'ElInput',
+      rules: {
+        required: true,
+        type: 'string',
+        message: '请输入部门名称',
+      },
+    },
+    {
+      label: '部门标识',
+      defaultValue: '',
+      prop: 'uniqueKey',
+      component: 'ElInput',
+      colProps: {
+        span: 12,
+      },
+      rules: {
+        required: true,
+        type: 'string',
+        message: '请输入部门标识',
+      },
+    },
+    {
+      label: '父级部门',
+      defaultValue: 0,
+      prop: 'parentId',
+      component: 'ElTreeSelect',
+      componentProps: {
+        style: 'width: 100%;',
+        nodeKey: 'id',
+        data: [],
+        checkStrictly: true,
+        defaultExpandAll: true,
+        props: {
+          label: (data: DeptResult): string => {
+            return data.name
+          },
+        },
+      },
+      rules: {
+        required: true,
+        type: 'number',
+        min: 0,
+      },
+    },
+    {
+      label: '部门类型',
+      defaultValue: 1,
+      prop: 'type',
+      slot: 'type',
+      colProps: {
+        span: 12,
+      },
+    },
+    {
+      label: '部门全称',
+      defaultValue: '',
+      prop: 'fullName',
+      component: 'ElInput',
+      colProps: {
+        span: 12,
+      },
+    },
+    {
+      label: '备注',
+      prop: 'remark',
+      defaultValue: '',
+      component: 'ElInput',
+      componentProps: {
+        type: 'textarea',
+        rows: 3,
+      },
+    },
+    {
+      label: '状态',
+      defaultValue: 1,
+      prop: 'status',
+      slot: 'status',
+      colProps: {
+        span: 12,
+      },
+    },
+    {
+      label: '排序',
+      defaultValue: 0,
+      prop: 'orderNum',
+      component: 'ElInputNumber',
+      componentProps: {
+        min: 0,
+      },
+      colProps: {
+        span: 12,
+      },
+    },
+  ],
+})
+
 const [registerDialog, { setProps, closeDialog }] = useDialogInner(
   (data: { list: DeptResult[]; item: DeptResult }) => {
     const deptTree = [
@@ -87,107 +186,4 @@ async function handleSubmit(res: Omit<DeptResult, 'id'>) {
     setProps({ confirmBtnProps: { loading: false } })
   }
 }
-
-const schemas = ref<FormSchema[]>([
-  {
-    label: '部门名称',
-    defaultValue: '',
-    prop: 'name',
-    colProps: {
-      span: 12,
-    },
-    component: 'ElInput',
-    rules: {
-      required: true,
-      type: 'string',
-      message: '请输入部门名称',
-    },
-  },
-  {
-    label: '部门标识',
-    defaultValue: '',
-    prop: 'uniqueKey',
-    component: 'ElInput',
-    colProps: {
-      span: 12,
-    },
-    rules: {
-      required: true,
-      type: 'string',
-      message: '请输入部门标识',
-    },
-  },
-  {
-    label: '父级部门',
-    defaultValue: 0,
-    prop: 'parentId',
-    component: 'ElTreeSelect',
-    componentProps: {
-      style: 'width: 100%;',
-      nodeKey: 'id',
-      data: [],
-      checkStrictly: true,
-      defaultExpandAll: true,
-      props: {
-        label: (data: DeptResult): string => {
-          return data.name
-        },
-      },
-    },
-    rules: {
-      required: true,
-      type: 'number',
-      min: 0,
-    },
-  },
-  {
-    label: '部门类型',
-    defaultValue: 1,
-    prop: 'type',
-    slot: 'type',
-    colProps: {
-      span: 12,
-    },
-  },
-  {
-    label: '部门全称',
-    defaultValue: '',
-    prop: 'fullName',
-    component: 'ElInput',
-    colProps: {
-      span: 12,
-    },
-  },
-  {
-    label: '备注',
-    prop: 'remark',
-    defaultValue: '',
-    component: 'ElInput',
-    componentProps: {
-      type: 'textarea',
-      rows: 3,
-    },
-  },
-  {
-    label: '状态',
-    defaultValue: 1,
-    prop: 'status',
-    slot: 'status',
-    colProps: {
-      span: 12,
-    },
-  },
-  {
-    label: '排序',
-    defaultValue: 0,
-    prop: 'orderNum',
-    component: 'ElInputNumber',
-    componentProps: {
-      min: 0,
-    },
-    colProps: {
-      span: 12,
-    },
-  },
-])
 </script>

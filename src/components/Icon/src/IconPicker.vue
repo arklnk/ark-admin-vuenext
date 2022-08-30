@@ -12,8 +12,8 @@
       <ElPopover :width="280" trigger="click" placement="bottom">
         <template #reference>
           <ElButton>
-            <span v-if="getActiveIconRef" :class="getActiveIconRef"></span>
-            <span v-else class="'i-gg:menu-grid-r'"></span>
+            <span v-if="currentSelectRef" :class="`${prefix}${currentSelectRef}`"></span>
+            <span v-else class="i-gg:menu-grid-r"></span>
           </ElButton>
         </template>
 
@@ -80,13 +80,6 @@ export default defineComponent({
       return iconData.filter((i) => i.includes(unref(searchRef)))
     })
 
-    const getActiveIconRef = computed(() => {
-      if (unref(currentSelectRef)) {
-        return `${props.prefix}${unref(currentSelectRef)}`
-      }
-      return null
-    })
-
     function handleClick(icon: string) {
       currentSelectRef.value = icon
     }
@@ -111,7 +104,6 @@ export default defineComponent({
       currentSelectRef,
       searchRef,
       getIconsRef,
-      getActiveIconRef,
       handleClick,
       handleClear,
       t,

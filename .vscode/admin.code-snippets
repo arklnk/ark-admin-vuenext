@@ -32,12 +32,8 @@
     "scope": "typescript",
     "prefix": "defreq",
     "body": [
-      "export function use$1Request(): [PromiseFn, string] {",
-      "  async function request() {",
-      "    return await defHttp.$2({ url: Api.$3 })",
-      "  }",
-      "",
-      "  return [request, Api.$3]",
+      "export async function $1Request(): Promise<void> {",
+      "  return await defHttp.$2({ url: Api.$3 })",
       "}"
     ],
     "description": "define api request"
@@ -47,7 +43,7 @@
     "prefix": "defformdlg",
     "body": [
       "<template>",
-      "  <BasicDialog @register=\"registerDialog\" @confirm=\"submit\" :title=\"t($1)\">",
+      "  <BasicDialog @register=\"registerDialog\" @confirm=\"submit\" :title=\"'$1'\">",
       "    <BasicForm",
       "      :schemas=\"schemas\"",
       "      :show-action-button-group=\"false\"",
@@ -62,12 +58,9 @@
       "",
       "import { BasicDialog, useDialogInner } from '/@/components/Dialog'",
       "import { BasicForm, useForm } from '/@/components/Form'",
-      "import { useTransl } from '/@/composables/core/useTransl'",
       "import { ref } from 'vue'",
       "",
       "defineEmits(['register'])",
-      "",
-      "const { t } = useTransl()",
       "",
       "const [registerForm, { submit, setProps: setFormProps }] = useForm()",
       "const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner()",

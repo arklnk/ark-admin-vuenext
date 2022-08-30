@@ -41,12 +41,13 @@ import type { MenuResult } from '/@/api/system/menu'
 import { addMenuRequest, updateMenuRequest } from '/@/api/system/menu'
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
-import { ref, unref } from 'vue'
+import { ref } from 'vue'
 import { IconPicker } from '/@/components/Icon'
 import { usePermissionCascader } from '/@/composables/component/usePermissionCascader'
-import { filter } from '/@/utils/helper/tree'
+import { filter, treeToList } from '/@/utils/helper/tree'
 import { isUrl } from '/@/utils/is'
 import { getDynamicImportViews } from '/@/router/helper/routeHelper'
+import { flatten } from 'lodash-es'
 
 const emit = defineEmits(['register', 'success'])
 
@@ -54,13 +55,13 @@ const updateMenuId = ref<null | number>(null)
 
 const [registerForm, { updateSchema, submit, setProps: setFormProps, setFormModel }] = useForm()
 
-const { getOptionsRef, transformValues, reverseValues } = usePermissionCascader()
+const { transformValues, reverseValues, getOptions } = usePermissionCascader()
 
 const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner(
   (data: { list?: MenuResult[]; item?: MenuResult }) => {
     const menus = filter<MenuResult>(data.list || [], (item): boolean => {
       // 过滤权限节点，权限节点不能作为父级
-      return item.type === 0 || item.type === 1
+      return (item.type === 0 || item.type === 1) && item.has !== 0
     })
     const menuTree = [
       {
@@ -70,13 +71,29 @@ const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInn
       },
     ]
 
+    // 获取可操作的权限
+    const perms: string[] = flatten(
+      treeToList(filter(data.list || [], (item): boolean => item.type === 2 && item.has !== 0)).map(
+        (item: MenuResult) => item.perms
+      )
+    )
+    const options = getOptions(perms)
+
     // update tree props data
-    updateSchema({
-      prop: 'parentId',
-      componentProps: {
-        data: menuTree,
+    updateSchema([
+      {
+        prop: 'parentId',
+        componentProps: {
+          data: menuTree,
+        },
       },
-    })
+      {
+        prop: 'perms',
+        componentProps: {
+          options,
+        },
+      },
+    ])
 
     // is update?
     if (data.item) {
@@ -234,7 +251,7 @@ const schemas = ref<FormSchema[]>([
     changeEvent: 'change',
     componentProps: {
       style: 'width: 100%;',
-      options: unref(getOptionsRef),
+      options: [],
       clearable: true,
       props: {
         expandTrigger: 'hover',

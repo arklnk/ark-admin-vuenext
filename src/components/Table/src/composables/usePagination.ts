@@ -13,15 +13,17 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   watch(
     () => unref(getProps).pagination,
     (pagination) => {
-      // pagenation props can be a null, it will be use default config
-      if (!isBoolean(pagination) && pagination) {
+      // check pagination props type, if is true or null will use default config
+      // if false will disable pagination
+      if (isBoolean(pagination) && !pagination) {
+        showRef.value = false
+      } else {
         configRef.value = {
           ...unref(configRef),
-          ...(pagination || {}),
+          ...(isBoolean(pagination) ? {} : pagination),
         }
-      } else if (isBoolean(pagination) && !pagination) {
-        // check is boolean and value is false
-        showRef.value = false
+
+        showRef.value = true
       }
     },
     {
@@ -31,9 +33,7 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   )
 
   const getPaginationRef = computed((): Nullable<PaginationProps> => {
-    const { pagination } = unref(getProps)
-
-    if (!unref(showRef) || (isBoolean(pagination) && !pagination)) {
+    if (!unref(showRef)) {
       return
     }
 
@@ -41,7 +41,6 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
       total: 0,
       currentPage: 1,
       ...DEFAULT_PAGINATION,
-      ...(isBoolean(pagination) ? {} : pagination),
       ...unref(configRef),
     }
 
