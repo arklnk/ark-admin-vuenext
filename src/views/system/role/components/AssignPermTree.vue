@@ -15,9 +15,6 @@ import type { MenuResult } from '/@/api/system/menu'
 import type { ElTree } from 'element-plus'
 
 import { defineComponent, onMounted, ref, unref, watch } from 'vue'
-import { useTransl } from '/@/composables/core/useTransl'
-
-const { t } = useTransl()
 
 const props = defineProps({
   data: Array,
@@ -26,11 +23,14 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const treeProps = ref({
+const treeProps: any = {
   label: (data: MenuResult): string => {
-    return t(data.name)
+    return data.name
   },
-})
+  disabled: (data: MenuResult): boolean => {
+    return data.has === 0
+  },
+}
 
 const treeRef = ref<InstanceType<typeof ElTree>>()
 

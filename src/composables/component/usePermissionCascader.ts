@@ -1,18 +1,19 @@
+import { uniq } from 'lodash-es'
 import { computed } from 'vue'
 import { getDefinePermissionList } from '/@/logics/permission/helper'
+import { isProdMode } from '/@/utils/env'
 
 export interface Config {
   value?: string
   label?: string
   children?: string
+  disabled?: string
 }
 
 const SEPARATOR = '/'
 
 export function usePermissionCascader(config?: Config) {
   // 所有定义的权限集合：['sys/user/info', 'sys/user/add']
-  const perms = getDefinePermissionList()
-
   const getConfig = computed((): Config => {
     return {
       value: 'value',
@@ -51,10 +52,15 @@ export function usePermissionCascader(config?: Config) {
     }
   }
 
-  const getOptionsRef = computed((): Recordable[] => {
+  function getOptions(hasPerms: string[]) {
     const auth: Recordable[] = []
 
-    perms.forEach((item) => {
+    // 开发模式下则直接获取全局已经定义的权限，避免需要新增api时无法进行操作
+    // 但在生产模式下则严格执行，避免越权操作
+    // const handlePerms: string[] = uniq(hasPerms)
+    const handlePerms: string[] = isProdMode() ? uniq(hasPerms) : getDefinePermissionList()
+
+    handlePerms.forEach((item) => {
       const s = item.startsWith(SEPARATOR) ? item.replace(SEPARATOR, '') : item
 
       const arr = s.split(SEPARATOR)
@@ -63,18 +69,18 @@ export function usePermissionCascader(config?: Config) {
     })
 
     return auth
-  })
-
-  function transformValues(values: string[][], separator = '/'): string[] {
-    return values.map((e) => e.join(separator))
   }
 
-  function reverseValues(values: string[], separator = '/'): string[][] {
-    return values.map((e) => e.split(separator))
+  function transformValues(values: string[][]): string[] {
+    return values.map((e) => e.join(SEPARATOR))
+  }
+
+  function reverseValues(values: string[]): string[][] {
+    return values.map((e) => e.split(SEPARATOR))
   }
 
   return {
-    getOptionsRef,
+    getOptions,
     transformValues,
     reverseValues,
   }

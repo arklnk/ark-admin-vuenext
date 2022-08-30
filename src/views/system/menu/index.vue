@@ -39,7 +39,7 @@
           type="primary"
           link
           @click="openEditMenuFormDialog(row)"
-          :disabled="!hasPermission(Api.update)"
+          :disabled="row.has === 0 || !hasPermission(Api.update)"
         >
           编辑
         </ElButton>

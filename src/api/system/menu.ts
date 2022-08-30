@@ -20,6 +20,7 @@ export interface MenuResult {
   viewPath: string
   isShow: boolean
   activeRouter: string
+  has: number // 0 is not pass auth
 }
 
 export async function getMenuListRequest(): Promise<(MenuResult & { children?: MenuResult[] })[]> {
