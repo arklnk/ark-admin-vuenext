@@ -82,13 +82,6 @@ const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInn
       setDialogProps({ loading: false })
     }
 
-    updateSchema({
-      prop: 'account',
-      componentProps: {
-        disabled: !!data.item,
-      },
-    })
-
     // is update?
     if (data.item) {
       const item = data.item
@@ -144,6 +137,9 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'string',
       message: '请输入账号',
+    },
+    disabled: () => {
+      return updateUserId.value !== null
     },
     colProps: {
       span: 12,

@@ -58,12 +58,6 @@ const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInn
         prop: 'status',
         hidden: currentParentId.value === 0,
       },
-      {
-        prop: 'uniqueKey',
-        componentProps: {
-          disabled: !!data.item,
-        },
-      },
     ])
 
     // is update
@@ -128,6 +122,9 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'string',
       message: '请输入标识',
+    },
+    disabled: () => {
+      return currentUpdateId.value !== null
     },
     colProps: {
       span: 12,
