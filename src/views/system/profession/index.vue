@@ -1,6 +1,6 @@
 <template>
   <PageWrapper>
-    <BasicTable :api="getProfPageRequest" :columns="columns" @register="registerTable">
+    <BasicTable :api="getProfPageRequest" @register="registerTable">
       <template #toolbar>
         <ElButton
           type="primary"
@@ -36,13 +36,11 @@
 </template>
 
 <script setup lang="ts">
-import type { BasicColumn } from '/@/components/Table'
 import type { ProfessionResult } from '/@/api/system/profession'
 
 import { getProfPageRequest, deleteProfRequest, Api } from '/@/api/system/profession'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
-import { ref } from 'vue'
 import EditProfFormDialog from './components/EditProfFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { PopConfirmButton } from '/@/components/Button'
@@ -51,7 +49,36 @@ import { usePermission } from '/@/composables/core/usePermission'
 const { hasPermission } = usePermission()
 
 const [registerDialog, { openDialog }] = useDialog()
-const [registerTable, { reload }] = useTable()
+const [registerTable, { reload }] = useTable({
+  columns: [
+    {
+      label: '职称',
+      prop: 'name',
+      minWidth: 300,
+      align: 'center',
+    },
+    {
+      align: 'center',
+      label: '状态',
+      prop: 'status',
+      formatter: (row: Recordable) => {
+        return row.status === 0 ? '禁用' : '启用'
+      },
+    },
+    {
+      align: 'center',
+      label: '排序',
+      prop: 'orderNum',
+    },
+    {
+      align: 'center',
+      label: '操作',
+      slot: 'action',
+      width: 140,
+      fixed: 'right',
+    },
+  ],
+})
 
 function openEditProfFormDialog(update?: Recordable) {
   openDialog({
@@ -63,33 +90,4 @@ async function handleDelete(row: ProfessionResult) {
   await deleteProfRequest({ id: row.id })
   reload()
 }
-
-const columns = ref<BasicColumn[]>([
-  {
-    label: '职称',
-    prop: 'name',
-    minWidth: 300,
-    align: 'center',
-  },
-  {
-    align: 'center',
-    label: '状态',
-    prop: 'status',
-    formatter: (row: Recordable) => {
-      return row.status === 0 ? '禁用' : '启用'
-    },
-  },
-  {
-    align: 'center',
-    label: '排序',
-    prop: 'orderNum',
-  },
-  {
-    align: 'center',
-    label: '操作',
-    slot: 'action',
-    width: 140,
-    fixed: 'right',
-  },
-])
 </script>

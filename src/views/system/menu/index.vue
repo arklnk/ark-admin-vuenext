@@ -1,7 +1,6 @@
 <template>
   <PageWrapper>
     <BasicTable
-      :columns="columns"
       :api="getMenuListRequest"
       :pagination="false"
       row-key="id"
@@ -60,11 +59,8 @@
 </template>
 
 <script setup lang="ts">
-import type { BasicColumn } from '/@/components/Table'
-
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable } from '/@/components/Table'
-import { ref } from 'vue'
 import { getMenuListRequest, deleteMenuRequest, Api } from '/@/api/system/menu'
 import EditMenuFormDialog from './components/EditMenuFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
@@ -75,7 +71,64 @@ const { hasPermission } = usePermission()
 
 const [registerDialog, { openDialog }] = useDialog()
 
-const [registerTable, { getDataSource, reload }] = useTable()
+const [registerTable, { getDataSource, reload }] = useTable({
+  columns: [
+    {
+      width: 300,
+      label: '菜单名称',
+      prop: 'name',
+      slot: 'name',
+    },
+    {
+      align: 'center',
+      width: 120,
+      label: '类型',
+      prop: 'type',
+      slot: 'type',
+    },
+    {
+      width: 80,
+      align: 'center',
+      label: '图标',
+      prop: 'icon',
+      slot: 'icon',
+    },
+    {
+      align: 'center',
+      label: '路由',
+      prop: 'router',
+      showTooltipWhenOverflow: true,
+      minWidth: 240,
+    },
+    {
+      align: 'center',
+      label: '视图路径',
+      prop: 'viewPath',
+      showTooltipWhenOverflow: true,
+      minWidth: 240,
+    },
+    {
+      width: 340,
+      align: 'center',
+      label: '权限',
+      prop: 'perms',
+      slot: 'perms',
+    },
+    {
+      width: 80,
+      align: 'center',
+      label: '排序',
+      prop: 'orderNum',
+    },
+    {
+      width: 140,
+      align: 'center',
+      label: '操作',
+      slot: 'action',
+      fixed: 'right',
+    },
+  ],
+})
 
 function openEditMenuFormDialog(update?: Recordable) {
   openDialog({
@@ -99,61 +152,4 @@ async function handleDelete(row: Recordable) {
   await deleteMenuRequest({ id: row.id })
   reload()
 }
-
-const columns = ref<BasicColumn[]>([
-  {
-    width: 300,
-    label: '菜单名称',
-    prop: 'name',
-    slot: 'name',
-  },
-  {
-    align: 'center',
-    width: 120,
-    label: '类型',
-    prop: 'type',
-    slot: 'type',
-  },
-  {
-    width: 80,
-    align: 'center',
-    label: '图标',
-    prop: 'icon',
-    slot: 'icon',
-  },
-  {
-    align: 'center',
-    label: '路由',
-    prop: 'router',
-    showTooltipWhenOverflow: true,
-    minWidth: 240,
-  },
-  {
-    align: 'center',
-    label: '视图路径',
-    prop: 'viewPath',
-    showTooltipWhenOverflow: true,
-    minWidth: 240,
-  },
-  {
-    width: 340,
-    align: 'center',
-    label: '权限',
-    prop: 'perms',
-    slot: 'perms',
-  },
-  {
-    width: 80,
-    align: 'center',
-    label: '排序',
-    prop: 'orderNum',
-  },
-  {
-    width: 140,
-    align: 'center',
-    label: '操作',
-    slot: 'action',
-    fixed: 'right',
-  },
-])
 </script>
