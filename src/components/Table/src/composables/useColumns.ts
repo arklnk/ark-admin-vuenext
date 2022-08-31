@@ -1,14 +1,14 @@
 import type { ComputedRef } from 'vue'
 import type { BasicTableProps } from '../types/table'
-import type { BasicColumn } from '../types/column'
+import type { TableColumn } from '../types/column'
 
 import { ref, unref, computed, watch } from 'vue'
 import { cloneDeep } from 'lodash-es'
 
 export function useColumns(getProps: ComputedRef<BasicTableProps>) {
-  const columnsRef = ref<Nullable<BasicColumn[]>>(unref(getProps).columns)
+  const columnsRef = ref<Nullable<TableColumn[]>>(unref(getProps).columns)
 
-  const getColumnsRef = computed((): BasicColumn[] => {
+  const getColumnsRef = computed((): TableColumn[] => {
     const columns = cloneDeep(unref(columnsRef))
 
     if (!columns) {
@@ -18,7 +18,7 @@ export function useColumns(getProps: ComputedRef<BasicTableProps>) {
     return columns
   })
 
-  function setColumns(columns: BasicColumn[]) {
+  function setColumns(columns: TableColumn[]) {
     if (!Array.isArray(columns)) return
 
     columnsRef.value = []
