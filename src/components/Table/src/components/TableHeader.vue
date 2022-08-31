@@ -11,6 +11,7 @@
       <div v-if="showTableSetting" :class="`${prefixCls}__toolbar`">
         <RedoSetting v-if="getSetting.redo" />
         <SizeSetting v-if="getSetting.size" />
+        <ColumnSetting v-if="getSetting.setting" />
         <FullscreenSetting v-if="getSetting.fullscreen" />
       </div>
     </div>
@@ -24,6 +25,7 @@ import { useDesign } from '/@/composables/core/useDesign'
 import RedoSetting from './settings/RedoSetting.vue'
 import SizeSetting from './settings/SizeSetting.vue'
 import FullscreenSetting from './settings/FullscreenSetting.vue'
+import ColumnSetting from './settings/ColumnSetting.vue'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -42,6 +44,7 @@ const getSetting = computed((): TableSetting => {
     size: true,
     redo: true,
     fullscreen: true,
+    setting: true,
     ...(props.tableSetting || {}),
   }
 })
@@ -67,6 +70,7 @@ $prefixCls: #{var.$namespace}-basic-table-header;
       font-size: 20px;
       margin: 0 6px;
       cursor: pointer;
+      color: var(--el-text-color-primary);
     }
   }
 }

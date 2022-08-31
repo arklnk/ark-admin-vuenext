@@ -7,6 +7,7 @@ export interface TableSetting {
   redo?: boolean
   size?: boolean
   fullscreen?: boolean
+  setting?: boolean
 }
 
 export interface FetchSetting {
