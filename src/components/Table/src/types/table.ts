@@ -1,6 +1,7 @@
 import type { basicProps } from '../props'
 import type { ExtractPropTypes } from 'vue'
 import type { SizeType } from '/#/config'
+import type { TableColumn } from './column'
 
 export interface TableSetting {
   redo?: boolean
@@ -30,6 +31,12 @@ export type Key = string | number
 
 export type GetRowKey<T = Recordable> = (record: T, index?: number) => Key
 
+export interface GetColumnsParams {
+  ignoreIndex?: boolean
+  ignoreSelection?: boolean
+  ignoreExpand?: boolean
+}
+
 export interface TableRowSelection {
   selectedRowKeys?: Key[]
   // 多选 / 单选
@@ -55,4 +62,6 @@ export interface BasicTableActionType {
   redoHeight: () => void
   setCurrentRow: (row: Recordable) => void
   getCurrentRow: () => Nullable<Recordable>
+  setColumns: (columns: TableColumn[]) => void
+  getColumns: (params?: GetColumnsParams) => TableColumn[]
 }

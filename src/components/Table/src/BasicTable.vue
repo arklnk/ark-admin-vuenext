@@ -10,7 +10,7 @@
     <!-- table -->
     <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
       <!-- column -->
-      <BasicTableColumn :columns="getColumnsRef">
+      <BasicTableColumn :columns="getViewColumnsRef">
         <template
           #[item]="data"
           v-for="item in Object.keys(omit($slots, ['headerTop', 'toolbar', 'append', 'empty']))"
@@ -127,7 +127,7 @@ export default defineComponent({
       emit
     )
 
-    const { getColumnsRef } = useColumns(getProps)
+    const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps)
 
     const { getTableHeight, redoHeight } = useTableHeight(
       getProps,
@@ -210,6 +210,8 @@ export default defineComponent({
       redoHeight,
       setCurrentRow,
       getCurrentRow,
+      setColumns,
+      getColumns,
     }
 
     createTableContext({ ...tableAction, wrapRef, tableRef, getBindValues })
@@ -230,7 +232,7 @@ export default defineComponent({
       getShowTableHeader,
       getPaginationRef,
       getShowPaginationRef,
-      getColumnsRef,
+      getViewColumnsRef,
       getLoading,
       omit,
       pick,
