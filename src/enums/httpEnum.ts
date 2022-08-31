@@ -13,13 +13,7 @@ export enum ResultEnum {
   /**
    * @description token error related
    */
-  TOKEN_INVALID = 11001,
-  TOKEN_EXPIRE = 11002,
-
-  /**
-   * @description permission error related
-   */
-  PERMISSION_FORBIDDEN = 11003,
+  TOKEN_INVALID = 1026,
 }
 
 /**
