@@ -158,6 +158,9 @@ const transform: AxiosTransform = {
     // 检查status
     const status = response?.status
     switch (status) {
+      case 401:
+        errMessage = t('common.http.errMsg401')
+        break
       case 403:
         errMessage = t('common.http.errMsg403')
         break
@@ -222,7 +225,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>): SAxios {
           ignoreCancelToken: true,
           withToken: true,
           retryRequest: {
-            useRetry: true,
+            useRetry: false,
             waitTime: 100,
             count: 3,
           },

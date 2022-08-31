@@ -8,9 +8,11 @@ export default {
     requestTimeout: 'The interface request timed out, please refresh the page and try again!',
     networkException: 'Please check if your network connection is normal! The network is abnormal',
 
-    errMsg403: 'The user is authorized, but access is forbidden!',
+    errMsg401: 'The authorization has expired!',
+    errMsg403: 'Insufficient privileges!',
     errMsg404: 'Network request error, the resource was not found!',
     errMsg405: 'Network request error, request method not allowed!',
+    errMsg408: 'Network request timed out!',
     errMsg500: 'Server error, please contact the administrator!',
     errMsg503: 'The service is unavailable, the server is temporarily overloaded or maintained!',
   },
