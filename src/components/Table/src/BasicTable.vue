@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapRef" :class="getWrapperClass">
+  <div ref="wrapRef" v-loading="getLoading" :class="getWrapperClass">
     <!-- header -->
     <BasicTableHeader ref="headerRef" v-if="getShowTableHeader" v-bind="getHeaderBindValues">
       <template #[item]="data" v-for="item in Object.keys(pick($slots, ['headerTop', 'toolbar']))">
@@ -105,7 +105,7 @@ export default defineComponent({
       return { ...props, ...unref(innerPropsRef) } as BasicTableProps
     })
 
-    const { setLoading } = useLoading(getProps, tableRef)
+    const { setLoading, getLoading } = useLoading(getProps)
 
     const {
       getPaginationRef,
@@ -234,6 +234,7 @@ export default defineComponent({
       getPaginationRef,
       getShowPaginationRef,
       getViewColumnsRef,
+      getLoading,
       omit,
       pick,
       handlePageChange,
