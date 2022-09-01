@@ -8,7 +8,7 @@
     </BasicTableHeader>
 
     <!-- table -->
-    <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
+    <ElTable ref="tableRef" v-bind="getBindValues">
       <!-- column -->
       <BasicTableColumn :columns="getViewColumnsRef">
         <template
@@ -105,7 +105,8 @@ export default defineComponent({
       return { ...props, ...unref(innerPropsRef) } as BasicTableProps
     })
 
-    const { setLoading, getLoading } = useLoading(getProps)
+    const { setLoading } = useLoading(getProps, tableRef)
+
     const {
       getPaginationRef,
       setPagination,
@@ -233,7 +234,6 @@ export default defineComponent({
       getPaginationRef,
       getShowPaginationRef,
       getViewColumnsRef,
-      getLoading,
       omit,
       pick,
       handlePageChange,
