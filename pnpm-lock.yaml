@@ -7,6 +7,7 @@ specifiers:
   '@types/node': ^17.0.9
   '@types/nprogress': ^0.2.0
   '@types/qs': ^6.9.7
+  '@types/sortablejs': ^1.13.0
   '@typescript-eslint/eslint-plugin': ^5.9.1
   '@typescript-eslint/parser': ^5.9.1
   '@unocss/preset-icons': ^0.45.13
@@ -67,6 +68,7 @@ devDependencies:
   '@types/node': 17.0.45
   '@types/nprogress': 0.2.0
   '@types/qs': 6.9.7
+  '@types/sortablejs': 1.13.0
   '@typescript-eslint/eslint-plugin': 5.35.1_pfwtupu3r4wxmgbx6hj7gwmyuu
   '@typescript-eslint/parser': 5.35.1_yqf6kl63nyoq5megxukfnom5rm
   '@unocss/preset-icons': 0.45.13
@@ -637,6 +639,10 @@ packages:
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
+    dev: true
+
+  /@types/sortablejs/1.13.0:
+    resolution: {integrity: sha512-C3064MH72iEfeGCYEGCt7FCxXoAXaMPG0QPnstcxvPmbl54erpISu06d++FY37Smja64iWy5L8wOyHHBghWbJQ==}
     dev: true
 
   /@types/web-bluetooth/0.0.15:
