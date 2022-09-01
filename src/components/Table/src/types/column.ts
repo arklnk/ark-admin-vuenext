@@ -21,7 +21,7 @@ export interface TableColumn
   align?: 'left' | 'right' | 'center'
   headerAlign?: 'left' | 'right' | 'center'
   // 固定列，重写用于ts提示
-  fixed?: true | 'left' | 'right'
+  fixed?: boolean | 'left' | 'right'
   // 自定义列的内容
   render?: (data: BasicTableColumnData) => VueNode
   // 自定义表头内容

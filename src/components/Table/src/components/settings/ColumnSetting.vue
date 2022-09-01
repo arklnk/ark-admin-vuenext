@@ -8,20 +8,24 @@
     <ElScrollbar height="240px" view-style="padding-right: 10px;" style="margin-right: -10px">
       <ElCheckboxGroup ref="columnRef" v-model="checkedList" size="default">
         <template v-for="item in options" :key="item.prop || item.label">
-          <div class="w-full flex flex-row items-center text-sm text-primarytext">
+          <div class="w-full flex flex-row items-center text-base text-primarytext">
             <span class="mr-2 i-fluent:drag-24-filled drag-icon cursor-move"></span>
             <ElCheckbox :label="item.prop || item.label">
               <span class="text-primarytext hover:text-primary font-normal">{{ item.label }}</span>
             </ElCheckbox>
             <div class="flex-1"><!--holder--></div>
             <span
-              class="cursor-pointer ml-2 i-bx:bxs-arrow-to-left"
-              :class="[item.fixed === 'left' ? 'text-primary' : '']"
+              class="cursor-pointer ml-2 i-bx:arrow-to-left"
+              :class="{
+                'text-primary': item.fixed === 'left',
+              }"
               @click="handleColumnFixed(item, 'left')"
             ></span>
             <span
-              class="cursor-pointer rotate-180 ml-2 i-bx:bxs-arrow-to-left"
-              :class="[item.fixed === 'right' ? 'text-primary' : '']"
+              class="cursor-pointer rotate-180 ml-2 i-bx:arrow-to-left"
+              :class="{
+                'text-primary': item.fixed === 'right',
+              }"
               @click="handleColumnFixed(item, 'right')"
             ></span>
           </div>
@@ -34,7 +38,7 @@
 <script setup lang="ts">
 import type { TableColumn } from '../../types/column'
 
-import { nextTick, reactive, ref, unref, watchEffect } from 'vue'
+import { nextTick, ref, unref, watchEffect } from 'vue'
 import { useTableContext } from '../../composables/useTableContext'
 import SortableJs from 'sortablejs'
 import { cloneDeep, isNil } from 'lodash-es'
@@ -51,13 +55,30 @@ const sortOptions = ref<TableColumn[]>([])
 
 const columnRef = ref<ComponentEl>()
 
-function init() {
-  const columns = table.getColumns()
+function getColumns() {
+  const columns = cloneDeep(table.getColumns()).map((item) => {
+    // init value to be reactive
+    if (isNil(item.fixed)) {
+      item.fixed = false
+    }
+    return item
+  })
 
+  return columns
+}
+
+function init() {
+  const columns = getColumns()
+
+  // checked
   checkedList.value = columns.map((item) => item.prop || item.label).filter(Boolean) as string[]
-  options.value = columns.map((e) => reactive(e))
+
+  // view options
+  options.value = columns
+  // record sort options
   sortOptions.value = columns
 
+  // init done
   isInitedColumn.value = true
 }
 
@@ -70,7 +91,7 @@ watchEffect(() => {
 })
 
 function handleColumnFixed(item: TableColumn, fixed?: 'left' | 'right') {
-  const isFixed = item.fixed === fixed ? undefined : fixed
+  const isFixed = item.fixed === fixed ? false : fixed
   const columns = table.getColumns()
 
   const index = columns.findIndex((col) => col.prop === item.prop)
@@ -96,19 +117,22 @@ function handleShow() {
         const { oldIndex, newIndex } = event
         if (isNil(oldIndex) || isNil(newIndex) || oldIndex === newIndex) return
 
-        const newColumns = cloneDeep(unref(options))
+        const cols = cloneDeep(unref(sortOptions))
 
+        // swap
         if (oldIndex > newIndex) {
-          newColumns.splice(newIndex, 0, newColumns[oldIndex])
-          newColumns.splice(oldIndex + 1, 1)
+          cols.splice(newIndex, 0, cols[oldIndex])
+          cols.splice(oldIndex + 1, 1)
         } else {
-          newColumns.splice(newIndex + 1, 0, newColumns[oldIndex])
-          newColumns.splice(oldIndex, 1)
+          cols.splice(newIndex + 1, 0, cols[oldIndex])
+          cols.splice(oldIndex, 1)
         }
 
-        options.value = newColumns
+        options.value = cols
 
-        table.setColumns(newColumns)
+        table.setColumns(
+          cols.filter((item) => unref(checkedList).includes(item.prop || item.label!))
+        )
       },
     })
 
