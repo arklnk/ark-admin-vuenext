@@ -12,6 +12,9 @@ import { getLoginLogPageRequest } from '/@/api/log/login'
 const [register] = useTable({
   columns: [
     {
+      type: 'index',
+    },
+    {
       label: '操作账号',
       prop: 'account',
     },
