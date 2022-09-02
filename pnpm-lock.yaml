@@ -7,7 +7,6 @@ specifiers:
   '@types/node': ^17.0.9
   '@types/nprogress': ^0.2.0
   '@types/qs': ^6.9.7
-  '@types/sortablejs': ^1.13.0
   '@typescript-eslint/eslint-plugin': ^5.9.1
   '@typescript-eslint/parser': ^5.9.1
   '@unocss/preset-icons': ^0.45.13
@@ -32,7 +31,6 @@ specifiers:
   qs: ^6.10.3
   rimraf: ^3.0.2
   sass: ^1.54.5
-  sortablejs: ^1.15.0
   terser: ^5.15.0
   typescript: ^4.7.4
   unocss: ^0.45.13
@@ -57,7 +55,6 @@ dependencies:
   nprogress: 0.2.0
   pinia: 2.0.21_bw4xur2vyhvhfd4whxbr7emp4u
   qs: 6.11.0
-  sortablejs: 1.15.0
   vue: 3.2.37
   vue-i18n: 9.2.2_vue@3.2.37
   vue-router: 4.1.5_vue@3.2.37
@@ -68,7 +65,6 @@ devDependencies:
   '@types/node': 17.0.45
   '@types/nprogress': 0.2.0
   '@types/qs': 6.9.7
-  '@types/sortablejs': 1.13.0
   '@typescript-eslint/eslint-plugin': 5.35.1_pfwtupu3r4wxmgbx6hj7gwmyuu
   '@typescript-eslint/parser': 5.35.1_yqf6kl63nyoq5megxukfnom5rm
   '@unocss/preset-icons': 0.45.13
@@ -639,10 +635,6 @@ packages:
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
-    dev: true
-
-  /@types/sortablejs/1.13.0:
-    resolution: {integrity: sha512-C3064MH72iEfeGCYEGCt7FCxXoAXaMPG0QPnstcxvPmbl54erpISu06d++FY37Smja64iWy5L8wOyHHBghWbJQ==}
     dev: true
 
   /@types/web-bluetooth/0.0.15:
@@ -2622,10 +2614,6 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
     dev: true
-
-  /sortablejs/1.15.0:
-    resolution: {integrity: sha512-bv9qgVMjUMf89wAvM6AxVvS/4MX3sPeN0+agqShejLU5z5GX4C75ow1O2e5k4L6XItUyAK3gH6AxSbXrOM5e8w==}
-    dev: false
 
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
