@@ -6,6 +6,7 @@ import type { TableColumn } from '../types/column'
 import { ref, unref, computed, watch, toRaw } from 'vue'
 import { cloneDeep, isBoolean, isFunction } from 'lodash-es'
 import { useTransl } from '/@/composables/core/useTransl'
+import { filter } from '/@/utils/helper/tree'
 
 function processIndexColumn(
   getPaginationRef: ComputedRef<Nullable<PaginationProps>>,
@@ -85,7 +86,7 @@ export function useColumns(
   const getViewColumnsRef = computed((): TableColumn[] => {
     const viewColumns = cloneDeep(unref(getColumnsRef))
 
-    return viewColumns.filter((col) => {
+    return filter(viewColumns, (col) => {
       return !isHidden(col)
     })
   })
@@ -117,7 +118,7 @@ export function useColumns(
     let columns = toRaw(unref(getColumnsRef))
 
     if (ignore.length > 0) {
-      columns = columns.filter((c) => {
+      columns = filter(columns, (c) => {
         return !(c.type && ignore.includes(c.type))
       })
     }
