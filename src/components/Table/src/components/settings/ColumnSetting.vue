@@ -5,7 +5,7 @@
     </template>
 
     <!-- column list -->
-    <ElScrollbar height="240px" view-style="padding-right: 10px;" style="margin-right: -10px">
+    <ElScrollbar max-height="240px" view-style="padding-right: 10px;" style="margin-right: -10px">
       <ElCheckboxGroup ref="columnRef" v-model="checkedList" size="default">
         <template v-for="item in options" :key="item.prop || item.label">
           <div class="w-full flex flex-row items-center text-base text-primarytext">

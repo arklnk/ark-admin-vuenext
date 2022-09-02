@@ -16,6 +16,7 @@ export default {
       desityDefault: '默认',
       desityLoose: '宽松',
     },
+    index: '序号',
   },
 
   button: {

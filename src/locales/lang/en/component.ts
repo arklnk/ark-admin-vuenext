@@ -16,6 +16,7 @@ export default {
       desityDefault: 'Default',
       desityLoose: 'Loose',
     },
+    index: 'Index',
   },
 
   button: {

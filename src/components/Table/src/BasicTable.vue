@@ -128,7 +128,7 @@ export default defineComponent({
       emit
     )
 
-    const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps)
+    const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps, getPaginationRef)
 
     const { getTableHeight, redoHeight } = useTableHeight(
       getProps,
