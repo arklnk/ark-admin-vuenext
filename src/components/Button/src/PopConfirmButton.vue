@@ -33,7 +33,6 @@ export default defineComponent({
         {
           confirmButtonText: t('common.basic.confirm'),
           cancelButtonText: t('common.basic.cancel'),
-          title: t('component.button.popconfirm.title'),
         },
         {
           ...(props.popconfirmProps || {}),
