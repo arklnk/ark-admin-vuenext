@@ -3,7 +3,7 @@ import TableActionComp from './src/components/TableAction.vue'
 
 import { withInstall } from '/@/utils'
 
-export const TableAction = withInstall(TableActionComp)
+export const BasicTableAction = withInstall(TableActionComp)
 export const BasicTable = withInstall(BasicTableComp)
 
 export { useTable } from './src/composables/useTable'

@@ -17,11 +17,6 @@ export default {
       desityLoose: '宽松',
     },
     index: '序号',
-  },
-
-  button: {
-    popconfirm: {
-      title: '确定执行操作?',
-    },
+    confirmMsg: '确定执行操作?',
   },
 }

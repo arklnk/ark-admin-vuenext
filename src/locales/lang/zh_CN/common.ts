@@ -39,6 +39,7 @@ export default {
 
   // common basic words
   basic: {
+    warning: '警告',
     add: '新增',
     update: '更新',
     delete: '删除',

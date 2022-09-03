@@ -17,11 +17,6 @@ export default {
       desityLoose: 'Loose',
     },
     index: 'Index',
-  },
-
-  button: {
-    popconfirm: {
-      title: 'Sure perform operations?',
-    },
+    confirmMsg: 'Sure perform operations?',
   },
 }

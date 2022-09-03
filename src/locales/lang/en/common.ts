@@ -41,6 +41,7 @@ export default {
 
   // common basic words
   basic: {
+    warning: 'Warning',
     add: 'Add',
     update: 'Update',
     delete: 'Delete',
