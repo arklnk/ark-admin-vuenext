@@ -38,6 +38,10 @@
             </ElButton>
           </template>
 
+          <template #roles="{ row }">
+            <ElTag v-for="role in row.roles" :key="role.id" type="success">{{ role.name }}</ElTag>
+          </template>
+
           <template #action="{ row }">
             <BasicTableAction
               :actions="[
@@ -123,10 +127,8 @@ const [registerUserTable, { reload }] = useTable({
       label: '所属角色',
       prop: 'roles',
       align: 'center',
-      width: 200,
-      formatter: (row: UserResult) => {
-        return row.roles.map((e) => e.name).join(',')
-      },
+      width: 240,
+      slot: 'roles',
     },
     {
       label: '职称',
