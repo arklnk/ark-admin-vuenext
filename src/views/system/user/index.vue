@@ -39,30 +39,29 @@
           </template>
 
           <template #action="{ row }">
-            <ElButton
-              type="primary"
-              link
-              @click="openEditUserFormDialog(row)"
-              :disabled="!hasPermission(Api.update)"
-            >
-              编辑
-            </ElButton>
-            <ElButton
-              type="primary"
-              link
-              @click="openPwdDialog(row)"
-              :disabled="!hasPermission(Api.pwd)"
-            >
-              改密
-            </ElButton>
-            <PopConfirmButton
-              type="danger"
-              link
-              @click="handleDelete(row)"
-              :disabled="!hasPermission(Api.delete)"
-            >
-              删除
-            </PopConfirmButton>
+            <BasicTableAction
+              :actions="[
+                {
+                  label: '编辑',
+                  onClick: openEditUserFormDialog.bind(null, row),
+                  disabled: !hasPermission(Api.update),
+                },
+              ]"
+              :dropdown-actions="[
+                {
+                  label: '更改密码',
+                  onClick: openPwdDialog.bind(null, row),
+                  disabled: !hasPermission(Api.pwd),
+                },
+                {
+                  label: '删除',
+                  popconfirm: true,
+                  type: 'danger',
+                  onClick: handleDelete.bind(null, row),
+                  disabled: !hasPermission(Api.delete),
+                },
+              ]"
+            />
           </template>
         </BasicTable>
       </div>
@@ -79,13 +78,12 @@ import type { UserResult } from '/@/api/system/user'
 
 import { getDeptListRequest } from '/@/api/system/dept'
 import { PageWrapper } from '/@/components/Page'
-import { BasicTable, useTable } from '/@/components/Table'
+import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import { nextTick } from 'vue'
 import { getUserPageRequest, deleteUserRequest, Api } from '/@/api/system/user'
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
 import EditPwdFormDialog from './components/EditPwdFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-import { PopConfirmButton } from '/@/components/Button'
 import { usePermission } from '/@/composables/core/usePermission'
 
 const { hasPermission } = usePermission()
@@ -184,7 +182,7 @@ const [registerUserTable, { reload }] = useTable({
     {
       label: '操作',
       align: 'center',
-      width: 200,
+      width: 120,
       fixed: 'right',
       slot: 'action',
     },

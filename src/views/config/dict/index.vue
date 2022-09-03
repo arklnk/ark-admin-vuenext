@@ -37,22 +37,22 @@
           </template>
 
           <template #action="{ row }">
-            <ElButton
-              type="primary"
-              link
-              @click="openEditDictDataFormDialog(row)"
-              :disabled="!hasPermission(Api.update)"
-            >
-              编辑
-            </ElButton>
-            <PopConfirmButton
-              type="danger"
-              link
-              @click="handleDeleteDict(row)"
-              :disabled="!hasPermission(Api.delete)"
-            >
-              删除
-            </PopConfirmButton>
+            <BasicTableAction
+              :actions="[
+                {
+                  label: '编辑',
+                  onClick: openEditDictDataFormDialog.bind(null, row),
+                  disabled: !hasPermission(Api.update),
+                },
+                {
+                  label: '删除',
+                  popconfirm: true,
+                  type: 'danger',
+                  onClick: handleDeleteDict.bind(null, row),
+                  disabled: !hasPermission(Api.delete),
+                },
+              ]"
+            />
           </template>
         </BasicTable>
       </div>
@@ -71,12 +71,11 @@ import {
   Api,
 } from '/@/api/config/dict'
 import { PageWrapper } from '/@/components/Page'
-import { BasicTable, useTable } from '/@/components/Table'
+import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import { createContextMenu } from '/@/components/ContextMenu'
 import EditDictFormDialog from './components/EditDictFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { DictValueTypes } from './DictValueType'
-import { PopConfirmButton } from '/@/components/Button'
 import { usePermission } from '/@/composables/core/usePermission'
 
 const { hasPermission } = usePermission()

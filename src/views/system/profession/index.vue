@@ -12,22 +12,22 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton
-          type="primary"
-          link
-          @click="openEditProfFormDialog(row)"
-          :disabled="!hasPermission(Api.update)"
-        >
-          编辑
-        </ElButton>
-        <PopConfirmButton
-          type="danger"
-          link
-          @click="handleDelete(row)"
-          :disabled="!hasPermission(Api.delete)"
-        >
-          删除
-        </PopConfirmButton>
+        <BasicTableAction
+          :actions="[
+            {
+              label: '编辑',
+              onClick: openEditProfFormDialog.bind(null, row),
+              disabled: !hasPermission(Api.update),
+            },
+            {
+              label: '删除',
+              popconfirm: true,
+              type: 'danger',
+              onClick: handleDelete.bind(null, row),
+              disabled: !hasPermission(Api.delete),
+            },
+          ]"
+        />
       </template>
     </BasicTable>
 
@@ -40,10 +40,9 @@ import type { ProfessionResult } from '/@/api/system/profession'
 
 import { getProfPageRequest, deleteProfRequest, Api } from '/@/api/system/profession'
 import { PageWrapper } from '/@/components/Page'
-import { BasicTable, useTable } from '/@/components/Table'
+import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import EditProfFormDialog from './components/EditProfFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-import { PopConfirmButton } from '/@/components/Button'
 import { usePermission } from '/@/composables/core/usePermission'
 
 const { hasPermission } = usePermission()

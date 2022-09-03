@@ -34,22 +34,22 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton
-          type="primary"
-          link
-          @click="openEditMenuFormDialog(row)"
-          :disabled="row.has === 0 || !hasPermission(Api.update)"
-        >
-          编辑
-        </ElButton>
-        <PopConfirmButton
-          type="danger"
-          link
-          @click="handleDelete(row)"
-          :disabled="!hasPermission(Api.delete)"
-        >
-          删除
-        </PopConfirmButton>
+        <BasicTableAction
+          :actions="[
+            {
+              label: '编辑',
+              onClick: openEditMenuFormDialog.bind(null, row),
+              disabled: row.has === 0 || !hasPermission(Api.update),
+            },
+            {
+              label: '删除',
+              popconfirm: true,
+              type: 'danger',
+              onClick: handleDelete.bind(null, row),
+              disabled: row.has === 0 || !hasPermission(Api.delete),
+            },
+          ]"
+        />
       </template>
     </BasicTable>
 
@@ -60,11 +60,10 @@
 
 <script setup lang="ts">
 import { PageWrapper } from '/@/components/Page'
-import { BasicTable, useTable } from '/@/components/Table'
+import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import { getMenuListRequest, deleteMenuRequest, Api } from '/@/api/system/menu'
 import EditMenuFormDialog from './components/EditMenuFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-import { PopConfirmButton } from '/@/components/Button'
 import { usePermission } from '/@/composables/core/usePermission'
 
 const { hasPermission } = usePermission()

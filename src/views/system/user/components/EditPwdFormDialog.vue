@@ -1,5 +1,5 @@
 <template>
-  <BasicDialog @register="registerDialog" @confirm="submit" title="更改密码" width="30%">
+  <BasicDialog @register="registerDialog" @confirm="submit" :title="getTitle" width="30%">
     <BasicForm
       :schemas="schemas"
       :show-action-button-group="false"
@@ -14,18 +14,22 @@ import type { FormSchema } from '/@/components/Form'
 
 import { BasicDialog, useDialogInner } from '/@/components/Dialog'
 import { BasicForm, useForm } from '/@/components/Form'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { updateUserPwdRequest } from '/@/api/system/user'
 
 defineEmits(['register'])
 
 const updateUserId = ref<number | null>(null)
+const updateUserAccount = ref('')
+
+const getTitle = computed(() => `更改${updateUserAccount.value}密码`)
 
 const [registerForm, { submit, setProps: setFormProps }] = useForm()
 const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner(
-  (data: { id: number }) => {
+  (data: { id: number; account: string }) => {
     if (data?.id) {
       updateUserId.value = data.id
+      updateUserAccount.value = data.account
     } else {
       closeDialog()
     }
