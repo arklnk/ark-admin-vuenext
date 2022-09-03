@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapRef" :class="getWrapperClass">
+  <div ref="wrapRef" v-loading="getLoading" :class="getWrapperClass">
     <!-- header -->
     <BasicTableHeader ref="headerRef" v-if="getShowTableHeader" v-bind="getHeaderBindValues">
       <template #[item]="data" v-for="item in Object.keys(pick($slots, ['headerTop', 'toolbar']))">
@@ -8,9 +8,9 @@
     </BasicTableHeader>
 
     <!-- table -->
-    <ElTable ref="tableRef" v-loading="getLoading" v-bind="getBindValues">
+    <ElTable ref="tableRef" v-bind="getBindValues">
       <!-- column -->
-      <BasicTableColumn :columns="getColumnsRef">
+      <BasicTableColumn :columns="getViewColumnsRef">
         <template
           #[item]="data"
           v-for="item in Object.keys(omit($slots, ['headerTop', 'toolbar', 'append', 'empty']))"
@@ -106,6 +106,7 @@ export default defineComponent({
     })
 
     const { setLoading, getLoading } = useLoading(getProps)
+
     const {
       getPaginationRef,
       setPagination,
@@ -127,7 +128,7 @@ export default defineComponent({
       emit
     )
 
-    const { getColumnsRef } = useColumns(getProps)
+    const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps, getPaginationRef)
 
     const { getTableHeight, redoHeight } = useTableHeight(
       getProps,
@@ -210,6 +211,8 @@ export default defineComponent({
       redoHeight,
       setCurrentRow,
       getCurrentRow,
+      setColumns,
+      getColumns,
     }
 
     createTableContext({ ...tableAction, wrapRef, tableRef, getBindValues })
@@ -230,7 +233,7 @@ export default defineComponent({
       getShowTableHeader,
       getPaginationRef,
       getShowPaginationRef,
-      getColumnsRef,
+      getViewColumnsRef,
       getLoading,
       omit,
       pick,

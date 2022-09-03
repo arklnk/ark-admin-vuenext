@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { ConcreteComponent } from 'vue'
-import type { PopconfirmProps } from 'element-plus'
+import type { PopconfirmProps } from './typing'
 
 import { defineComponent, resolveComponent, h, computed, unref } from 'vue'
 import { useTransl } from '/@/composables/core/useTransl'
@@ -33,7 +33,6 @@ export default defineComponent({
         {
           confirmButtonText: t('common.basic.confirm'),
           cancelButtonText: t('common.basic.cancel'),
-          title: t('component.button.popconfirm.title'),
         },
         {
           ...(props.popconfirmProps || {}),

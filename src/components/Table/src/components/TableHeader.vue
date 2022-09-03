@@ -67,6 +67,7 @@ $prefixCls: #{var.$namespace}-basic-table-header;
       font-size: 20px;
       margin: 0 6px;
       cursor: pointer;
+      color: var(--el-text-color-primary);
     }
   }
 }

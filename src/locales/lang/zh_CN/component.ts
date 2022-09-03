@@ -16,11 +16,7 @@ export default {
       desityDefault: '默认',
       desityLoose: '宽松',
     },
-  },
-
-  button: {
-    popconfirm: {
-      title: '确定执行操作?',
-    },
+    index: '序号',
+    confirmMsg: '确定执行操作?',
   },
 }

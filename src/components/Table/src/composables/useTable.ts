@@ -1,6 +1,11 @@
-// import type { BasicTableProps } from '../types/table'
-import type { BasicTableActionType, BasicTableProps, FetchParams } from '../types/table'
+import type {
+  BasicTableActionType,
+  BasicTableProps,
+  FetchParams,
+  GetColumnsParams,
+} from '../types/table'
 import type { WatchStopHandle } from 'vue'
+import type { TableColumn } from '../types/column'
 
 import { ref, onUnmounted, unref, watch } from 'vue'
 import { error } from '/@/utils/log'
@@ -87,6 +92,12 @@ export function useTable(tableProps?: Props): [Register, BasicTableActionType] {
     },
     getCurrentRow: () => {
       return getTableInstance().getCurrentRow()
+    },
+    setColumns: (columns: TableColumn[]) => {
+      return getTableInstance().setColumns(columns)
+    },
+    getColumns: (params?: GetColumnsParams): TableColumn[] => {
+      return getTableInstance().getColumns(params)
     },
   }
 

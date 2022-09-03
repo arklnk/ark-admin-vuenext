@@ -30,7 +30,6 @@ export interface FormSchema {
   inlineMessage?: boolean
   // size
   size?: SizeType
-
   // extend config
   helpMessage?: string | ((params: RenderCallbackParams) => string)
   // variable name bound to v-model default value, default modelValue
@@ -47,6 +46,8 @@ export interface FormSchema {
   render?: (params: RenderCallbackParams) => VueNode
   // component props
   componentProps?: Recordable | ((params: RenderCallbackParams) => Recordable)
+  // will merge to componentProps
+  disabled?: boolean | ((params: RenderCallbackParams) => boolean)
   // slot in basic form
   slot?: string
   // el-col props

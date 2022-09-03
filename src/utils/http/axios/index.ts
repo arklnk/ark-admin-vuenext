@@ -52,7 +52,6 @@ const transform: AxiosTransform = {
     // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
     switch (code) {
       case ResultEnum.TOKEN_INVALID:
-      case ResultEnum.TOKEN_EXPIRE:
         // Token过期或Token无效则清除
         const userStore = useUserStore()
         const permissionStore = usePermissionStore()
@@ -159,6 +158,9 @@ const transform: AxiosTransform = {
     // 检查status
     const status = response?.status
     switch (status) {
+      case 401:
+        errMessage = t('common.http.errMsg401')
+        break
       case 403:
         errMessage = t('common.http.errMsg403')
         break
@@ -223,7 +225,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>): SAxios {
           ignoreCancelToken: true,
           withToken: true,
           retryRequest: {
-            useRetry: true,
+            useRetry: false,
             waitTime: 100,
             count: 3,
           },

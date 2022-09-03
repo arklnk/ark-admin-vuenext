@@ -16,22 +16,22 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton
-          type="primary"
-          link
-          @click="openEditDeptFormDialog(row)"
-          :disabled="!hasPermission(Api.update)"
-        >
-          编辑
-        </ElButton>
-        <PopConfirmButton
-          type="danger"
-          link
-          @click="handleDelete(row)"
-          :disabled="!hasPermission(Api.delete)"
-        >
-          删除
-        </PopConfirmButton>
+        <BasicTableAction
+          :actions="[
+            {
+              label: '编辑',
+              onClick: openEditDeptFormDialog.bind(null, row),
+              disabled: !hasPermission(Api.update),
+            },
+            {
+              label: '删除',
+              popconfirm: true,
+              type: 'danger',
+              disabled: !hasPermission(Api.delete),
+              onClick: handleDelete.bind(null, row),
+            },
+          ]"
+        />
       </template>
     </BasicTable>
 
@@ -43,11 +43,10 @@
 import type { DeptResult } from '/@/api/system/dept'
 
 import { PageWrapper } from '/@/components/Page'
-import { BasicTable, useTable } from '/@/components/Table'
+import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import { getDeptListRequest, deleteDeptRequest, Api } from '/@/api/system/dept'
 import EditDeptFormDialog from './components/EditDeptFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-import { PopConfirmButton } from '/@/components/Button'
 import { usePermission } from '/@/composables/core/usePermission'
 
 const { hasPermission } = usePermission()

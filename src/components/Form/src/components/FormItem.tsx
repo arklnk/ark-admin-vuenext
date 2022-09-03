@@ -51,6 +51,21 @@ export default defineComponent({
       return componentProps
     })
 
+    const getDisabled = computed((): boolean => {
+      const { disabled: globalDisabled } = props.formProps
+      const { disabled: schemaDisabled } = props.schema
+      const { disabled: propsDisabled = false } = unref(getComponentProps)
+
+      if (isBoolean(schemaDisabled)) {
+        return schemaDisabled
+      }
+      if (isFunction(schemaDisabled)) {
+        return schemaDisabled(unref(getParams))
+      }
+
+      return !!globalDisabled || propsDisabled
+    })
+
     function processRules(): Arrayable<FormItemRule> {
       const { rules = [] } = props.schema
 
@@ -110,6 +125,7 @@ export default defineComponent({
       const propsData: Recordable = {
         ...unref(getComponentProps),
         size,
+        disabled: unref(getDisabled),
       }
 
       // like v-model support

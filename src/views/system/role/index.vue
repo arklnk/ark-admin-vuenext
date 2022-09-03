@@ -1,7 +1,6 @@
 <template>
   <PageWrapper>
     <BasicTable
-      :columns="columns"
       :api="getRoleListRequest"
       row-key="id"
       @register="registerTable"
@@ -18,22 +17,22 @@
       </template>
 
       <template #action="{ row }">
-        <ElButton
-          type="primary"
-          link
-          @click="handleUpdate(row)"
-          :disabled="!hasPermission(Api.update)"
-        >
-          编辑
-        </ElButton>
-        <PopConfirmButton
-          type="danger"
-          link
-          @click="handleDelete(row)"
-          :disabled="!hasPermission(Api.delete)"
-        >
-          删除
-        </PopConfirmButton>
+        <BasicTableAction
+          :actions="[
+            {
+              label: '编辑',
+              onClick: openEditRoleFormDialog.bind(null, row),
+              disabled: !hasPermission(Api.update),
+            },
+            {
+              label: '删除',
+              popconfirm: true,
+              type: 'danger',
+              onClick: handleDelete.bind(null, row),
+              disabled: !hasPermission(Api.delete),
+            },
+          ]"
+        />
       </template>
     </BasicTable>
 
@@ -42,21 +41,59 @@
 </template>
 
 <script setup lang="ts">
-import type { BasicColumn } from '/@/components/Table'
-
 import { PageWrapper } from '/@/components/Page'
-import { BasicTable, useTable } from '/@/components/Table'
-import { ref } from 'vue'
+import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import { getRoleListRequest, deleteRoleRequest, Api } from '/@/api/system/role'
 import EditRoleFormDialog from './components/EditRoleFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
-import { PopConfirmButton } from '/@/components/Button'
 import { usePermission } from '/@/composables/core/usePermission'
 
 const { hasPermission } = usePermission()
 
 const [registerDialog, { openDialog }] = useDialog()
-const [registerTable, { getDataSource, reload }] = useTable()
+const [registerTable, { getDataSource, reload }] = useTable({
+  columns: [
+    {
+      label: '角色名称',
+      prop: 'name',
+      width: 280,
+    },
+    {
+      label: '角色标识',
+      prop: 'uniqueKey',
+      width: 220,
+      align: 'center',
+    },
+    {
+      align: 'center',
+      width: 100,
+      label: '状态',
+      prop: 'status',
+      formatter: (row: Recordable): string => {
+        return row.status === 0 ? '禁用' : '启用'
+      },
+    },
+    {
+      align: 'center',
+      label: '备注',
+      prop: 'remark',
+      showTooltipWhenOverflow: true,
+    },
+    {
+      width: 100,
+      align: 'center',
+      label: '排序',
+      prop: 'orderNum',
+    },
+    {
+      width: 140,
+      align: 'center',
+      label: '操作',
+      slot: 'action',
+      fixed: 'right',
+    },
+  ],
+})
 
 function openEditRoleFormDialog(update?: Recordable) {
   openDialog({
@@ -65,54 +102,8 @@ function openEditRoleFormDialog(update?: Recordable) {
   })
 }
 
-function handleUpdate(row: Recordable) {
-  openEditRoleFormDialog(row)
-}
-
 async function handleDelete(row: Recordable) {
   await deleteRoleRequest({ id: row.id })
   reload()
 }
-
-const columns = ref<BasicColumn[]>([
-  {
-    label: '角色名称',
-    prop: 'name',
-    width: 280,
-  },
-  {
-    label: '角色标识',
-    prop: 'uniqueKey',
-    width: 220,
-    align: 'center',
-  },
-  {
-    align: 'center',
-    width: 100,
-    label: '状态',
-    prop: 'status',
-    formatter: (row: Recordable): string => {
-      return row.status === 0 ? '禁用' : '启用'
-    },
-  },
-  {
-    align: 'center',
-    label: '备注',
-    prop: 'remark',
-    showTooltipWhenOverflow: true,
-  },
-  {
-    width: 100,
-    align: 'center',
-    label: '排序',
-    prop: 'orderNum',
-  },
-  {
-    width: 140,
-    align: 'center',
-    label: '操作',
-    slot: 'action',
-    fixed: 'right',
-  },
-])
 </script>
