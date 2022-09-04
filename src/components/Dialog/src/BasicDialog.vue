@@ -163,7 +163,7 @@ export default defineComponent({
       ])
     })
 
-    async function handleCancel(e: Event) {
+    async function handleCancel() {
       if (props.closeFunc && isFunction(props.closeFunc)) {
         const isClose: boolean = await props.closeFunc()
         visibleRef.value = !isClose
@@ -171,11 +171,11 @@ export default defineComponent({
       }
 
       visibleRef.value = false
-      emit('cancel', e)
+      emit('cancel')
     }
 
-    function handleConfirm(e: Event) {
-      emit('confirm', e)
+    function handleConfirm() {
+      emit('confirm')
     }
 
     function handleFullscreen(_e: Event) {
