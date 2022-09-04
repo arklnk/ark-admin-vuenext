@@ -123,7 +123,7 @@ export default defineComponent({
         // basic setting
         modelValue: unref(visibleRef),
         fullscreen: unref(fullscreenRef),
-        customClass: prefixCls,
+        class: prefixCls,
         center: false,
         showClose: false,
       }
