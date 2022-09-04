@@ -22,7 +22,7 @@ export const NotFoundRoute: RouteRecordRaw = {
 export const LoginRoute: RouteRecordRaw = {
   path: PageEnum.Login,
   name: toHump(PageEnum.Login),
-  component: () => import('/@/views/login/Login.vue'),
+  component: () => import('/@/views/basic/login/Login.vue'),
   meta: {
     title: t('routes.login'),
     hidden: true,
@@ -35,7 +35,7 @@ export const LoginRoute: RouteRecordRaw = {
 export const Error404Route: RouteRecordRaw = {
   path: PageEnum.NotFound,
   name: toHump(PageEnum.NotFound),
-  component: () => import('/@/views/error/Error404.vue'),
+  component: () => import('/@/views/basic/error/Error404.vue'),
   meta: {
     title: t('routes.notfound'),
     hidden: true,
@@ -56,7 +56,7 @@ export const DashboardRoute: RouteRecordRaw = {
   children: [
     {
       path: PageEnum.Dashboard,
-      component: () => import('/@/views/dashboard/Dashboard.vue'),
+      component: () => import('/@/views/basic/dashboard/Dashboard.vue'),
       meta: {
         title: t('routes.dashboard'),
         icon: 'carbon:dashboard',
@@ -79,7 +79,7 @@ const RedirectRoute: RouteRecordRaw = {
     {
       path: '/redirect/:path(.*)',
       name: 'Redirect',
-      component: () => import('/@/views/redirect/Redirect.vue'),
+      component: () => import('/@/views/basic/redirect/Redirect.vue'),
       meta: {
         title: t('routes.redirect'),
       },
@@ -99,7 +99,7 @@ const ProfileRoute: RouteRecordRaw = {
     {
       path: 'center',
       name: toHump(`${PageEnum.Account}/center`),
-      component: () => import('/@/views/account/Account.vue'),
+      component: () => import('/@/views/basic/account/Account.vue'),
       meta: {
         title: t('routes.account'),
       },

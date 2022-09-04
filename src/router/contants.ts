@@ -16,4 +16,4 @@ export const EmptyLayout = () => import('/@/layouts/empty/index.vue')
 /**
  * @description view exception
  */
-export const ViewNotImpl = () => import('/@/views/error/ViewNotImpl.vue')
+export const ViewNotImpl = () => import('/@/views/basic/error/ViewNotImpl.vue')
