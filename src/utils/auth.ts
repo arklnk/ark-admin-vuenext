@@ -1,13 +1,14 @@
+import WebStorage from './cache'
 import { KEY_TOKEN } from '/@/enums/cacheEnum'
 
 export function getToken(): string {
-  return localStorage.getItem(KEY_TOKEN) || ''
+  return WebStorage.get(KEY_TOKEN, '', true) || ''
 }
 
 export function setToken(token: string) {
-  localStorage.setItem(KEY_TOKEN, token)
+  WebStorage.set(KEY_TOKEN, token, null, true)
 }
 
 export function removeToken() {
-  localStorage.removeItem(KEY_TOKEN)
+  WebStorage.remove(KEY_TOKEN)
 }

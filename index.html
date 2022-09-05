@@ -15,8 +15,8 @@
     <script>
       ;(function () {
         var __htmlRoot = document.getElementById('htmlRoot')
-        var __theme = window.localStorage.getItem('APP_DARK_MODE__')
-        if (__htmlRoot && __theme) {
+        var __theme = window.localStorage.getItem('__APP_DARK_MODE__')
+        if (__htmlRoot && __theme === 'dark') {
           __originalCls = __htmlRoot.className.replace(__theme, '')
           __htmlRoot.className = (__originalCls + ' ' + __theme).trim()
           __theme = __htmlRoot = null

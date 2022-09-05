@@ -4,6 +4,7 @@ import { merge } from 'lodash-es'
 import { KEY_SETTING, KEY_APP_DARK_MODE } from '/@/enums/cacheEnum'
 import { ThemeEnum } from '/@/enums/appEnum'
 import { themeMode } from '/@/settings/designSetting'
+import WebStorage from '/@/utils/cache'
 
 interface AppState {
   projectConfig: Nullable<ProjectConfig>
@@ -18,6 +19,7 @@ export const useAppStore = defineStore({
   }),
   getters: {
     getDarkMode(): ThemeEnum | string {
+      // index.html中需要获取该值，只允许使用localStorage获取
       return this.darkMode || localStorage.getItem(KEY_APP_DARK_MODE) || themeMode
     },
     getProjectConfig(): ProjectConfig {
@@ -36,12 +38,13 @@ export const useAppStore = defineStore({
   actions: {
     setDarkMode(mode: ThemeEnum) {
       this.darkMode = mode
+      // index.html中需要获取该值，只允许使用localStorage设置
       localStorage.setItem(KEY_APP_DARK_MODE, mode)
     },
     setProjectConfig(config: DeepPartial<ProjectConfig>): void {
       this.projectConfig = merge(this.projectConfig || {}, config) as ProjectConfig
       // store
-      localStorage.setItem(KEY_SETTING, JSON.stringify(this.getProjectConfig))
+      WebStorage.set(KEY_SETTING, this.getProjectConfig)
     },
   },
 })
