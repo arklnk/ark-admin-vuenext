@@ -80,7 +80,7 @@ export default defineComponent({
   inheritAttrs: false,
   props: basicProps,
   emits: ['register', 'confirm', 'cancel', 'update:visible', 'visible-change'],
-  setup(props, { emit, attrs }) {
+  setup(props, { emit, attrs, expose }) {
     const visibleRef = ref(false)
     const fullscreenRef = ref(false)
 
@@ -198,6 +198,7 @@ export default defineComponent({
       setProps,
     }
 
+    expose(dialogAction)
     const instance = getCurrentInstance()
     if (instance) {
       emit('register', dialogAction, instance.uid)
