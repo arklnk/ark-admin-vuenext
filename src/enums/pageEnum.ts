@@ -10,4 +10,5 @@ export enum PageEnum {
   Forbidden = '/403',
   Account = '/account',
   Logout = '/logout',
+  Error = '/error',
 }

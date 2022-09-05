@@ -104,6 +104,42 @@ const ProfileRoute: RouteRecordRaw = {
   ],
 }
 
+const ExceptionRoute: RouteRecordRaw = {
+  path: PageEnum.Error,
+  name: toHump(PageEnum.Error),
+  component: ParentLayout,
+  redirect: `${PageEnum.Error}/404`,
+  meta: {
+    hidden: true,
+  },
+  children: [
+    {
+      path: '403',
+      name: 'error403',
+      component: ExceptionComponent,
+      props: {
+        status: 403,
+      },
+    },
+    {
+      path: '404',
+      name: 'error404',
+      component: ExceptionComponent,
+      props: {
+        status: 404,
+      },
+    },
+    {
+      path: '500',
+      name: 'error500',
+      component: ExceptionComponent,
+      props: {
+        status: 500,
+      },
+    },
+  ],
+}
+
 /**
  * @description basic routing without permission
  */
@@ -112,4 +148,5 @@ export const basicRoutes: RouteRecordRaw[] = [
   RedirectRoute,
   DashboardRoute,
   ProfileRoute,
+  ExceptionRoute,
 ]
