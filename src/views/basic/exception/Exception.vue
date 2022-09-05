@@ -49,7 +49,7 @@ const statusMapRef = ref(new Map<StatusCode, StatusMapItem>())
 
 // 204 status
 unref(statusMapRef).set(204, {
-  title: t('routes.exception.noDataTitle'),
+  title: t('common.exception.noDataTitle'),
   btnText: t('common.basic.redo'),
   icon: noDataSvg,
   handler: () => redo(),
@@ -58,8 +58,8 @@ unref(statusMapRef).set(204, {
 // 403 status
 unref(statusMapRef).set(403, {
   title: '403',
-  subTitle: t('routes.exception.subTitle403'),
-  btnText: t('routes.exception.backHome'),
+  subTitle: t('common.exception.subTitle403'),
+  btnText: t('common.exception.backHome'),
   icon: withoutPermissonSvg,
   handler: () => go(PageEnum.Dashboard),
 })
@@ -67,15 +67,15 @@ unref(statusMapRef).set(403, {
 // 404 status
 unref(statusMapRef).set(404, {
   title: '404',
-  subTitle: t('routes.exception.subTitle404'),
-  btnText: t('routes.exception.backHome'),
+  subTitle: t('common.exception.subTitle404'),
+  btnText: t('common.exception.backHome'),
   icon: pageNotFoundSvg,
   handler: () => go(PageEnum.Dashboard),
 })
 
 unref(statusMapRef).set(408, {
-  title: t('routes.exception.networkErrorTitle'),
-  subTitle: t('routes.exception.networkErrorSubTitle'),
+  title: t('common.exception.networkErrorTitle'),
+  subTitle: t('common.exception.networkErrorSubTitle'),
   btnText: t('common.basic.redo'),
   icon: netErrorSvg,
   handler: () => redo(),
@@ -84,8 +84,8 @@ unref(statusMapRef).set(408, {
 // 500 status
 unref(statusMapRef).set(500, {
   title: '500',
-  subTitle: t('routes.exception.subTitle500'),
-  btnText: t('routes.exception.backHome'),
+  subTitle: t('common.exception.subTitle500'),
+  btnText: t('common.exception.backHome'),
   icon: serverErrorSvg,
   handler: () => go(PageEnum.Dashboard),
 })

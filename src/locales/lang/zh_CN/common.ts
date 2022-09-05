@@ -17,15 +17,15 @@ export default {
     errMsg503: '服务不可用，服务器暂时过载或维护!',
   },
 
+  // exception view
   exception: {
-    // page 404
     backHome: '返回首页',
-    pageNotFound: '页面没有找到',
-    pageNotFoundDesc: '请检查链接是否输入正确, 或点击按钮返回首页',
-
-    // view not impl
-    dynamicImport: '页面动态载入失败',
-    dynamicImportDesc: '请检查对应动态载入页面路径下的文件是否存在',
+    noDataTitle: '无数据',
+    subTitle403: '抱歉，您无权访问此页面。',
+    subTitle404: '抱歉，您访问的页面不存在。',
+    subTitle500: '抱歉，服务器报告错误。',
+    networkErrorTitle: '网络错误',
+    networkErrorSubTitle: '抱歉，您的网络连接已断开，请检查您的网络！',
   },
 
   // login page
