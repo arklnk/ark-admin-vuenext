@@ -39,7 +39,9 @@
           </template>
 
           <template #roles="{ row }">
-            <ElTag v-for="role in row.roles" :key="role.id" type="success">{{ role.name }}</ElTag>
+            <ElTag class="mr-1 mt-0.75" v-for="role in row.roles" :key="role.id" type="success">
+              {{ role.name }}
+            </ElTag>
           </template>
 
           <template #action="{ row }">

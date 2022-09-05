@@ -1,6 +1,7 @@
+import type { ProjectConfig } from '/#/config'
+
 import { useAppStore } from '/@/stores/modules/app'
 import { useUserStore } from '/@/stores/modules/user'
-
 import defaultSetting from '/@/settings/projectSetting'
 import { getToken } from '/@/utils/auth'
 import { updateTheme } from './theme/updateTheme'
@@ -8,11 +9,11 @@ import { updateGrayMode } from './theme/updateGrayMode'
 import { updateColorWeak } from './theme/updateColorWeak'
 import { updateHeaderBgColor, updateSidebarBgColor } from './theme/updateBackground'
 import { KEY_SETTING } from '/@/enums/cacheEnum'
-import { ProjectConfig } from '/#/config'
 import { merge } from 'lodash-es'
 import { updateDarkMode } from './theme/updateDarkMode'
 import { ThemeEnum } from '../enums/appEnum'
 import { useLocaleStore } from '../stores/modules/locale'
+import WebStorage from '/@/utils/cache'
 
 /**
  * Initial project configuration
@@ -24,7 +25,7 @@ export function initAppConfig() {
 
   // setup global config
   try {
-    const config = JSON.parse(localStorage.getItem(KEY_SETTING) || '{}') as ProjectConfig
+    const config = WebStorage.get(KEY_SETTING, {}) as ProjectConfig
     appStore.setProjectConfig(merge({}, defaultSetting, config))
   } catch (err) {
     appStore.setProjectConfig(defaultSetting)

@@ -1,18 +1,11 @@
-import type { ComposerTranslation } from 'vue-i18n'
+import type { Composer } from 'vue-i18n'
 
 import { i18n } from '/@/locales/setupI18n'
 
 /**
  * https://vue-i18n.intlify.dev/api/injection.html#t-key
  */
-type I18nGlobalTranslation = {
-  (key: string): string
-  (key: string, locale: string): string
-  (key: string, locale: string, list: unknown[]): string
-  (key: string, locale: string, named: Record<string, unknown>): string
-  (key: string, list: unknown[]): string
-  (key: string, named: Record<string, unknown>): string
-}
+type I18nGlobalTranslation = Composer['t']
 
 function getKey(namespace: string | undefined, key: string) {
   if (!namespace) return key
@@ -38,7 +31,7 @@ export function useTransl(namespace?: string) {
     if (!key) return ''
     if (!key.includes('.') && !namespace) return key
 
-    return (t as ComposerTranslation)(getKey(namespace, key), ...(args as [string, any]))
+    return (t as I18nGlobalTranslation)(getKey(namespace, key), ...(args as [string, any]))
   }
 
   return {
