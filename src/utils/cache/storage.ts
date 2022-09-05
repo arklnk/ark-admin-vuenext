@@ -1,4 +1,6 @@
 import { isNil } from 'lodash-es'
+import { createAESCipherOptions, decryptByAES, encryptByAES } from '../cipher'
+import { CipherIv, CipherKey } from '/@/settings/encryptionSetting'
 
 export interface CreateStorageParams {
   storage: Storage
@@ -8,10 +10,16 @@ export interface CreateStorageParams {
 class WebStorage {
   private storage: Storage
   private prefixKey: string
+  private cipherOptions: Recordable
+  private cipherKey: string
 
   constructor({ storage, prefixKey = '' }: CreateStorageParams) {
     this.storage = storage
     this.prefixKey = prefixKey
+
+    // aes cipher
+    this.cipherOptions = createAESCipherOptions(CipherIv)
+    this.cipherKey = CipherKey
   }
 
   private getKey(key: string) {
@@ -24,14 +32,19 @@ class WebStorage {
    * @param value cache value
    * @param expire expire time in seconds
    */
-  set(key: string, value: any, expire: number | null): void {
+  set(key: string, value: any, expire: number | null, encrypt = false): void {
     const stringData = JSON.stringify({
       value,
       time: Date.now(),
       expire: isNil(expire) ? null : new Date().getTime() + expire * 1000,
     })
 
-    this.storage.setItem(this.getKey(key), stringData)
+    // aes encrypt value or narmal value
+    const storageValue = encrypt
+      ? encryptByAES(stringData, this.cipherKey, this.cipherOptions)
+      : stringData
+
+    this.storage.setItem(this.getKey(key), storageValue)
   }
 
   /**
@@ -40,12 +53,15 @@ class WebStorage {
    * @param def default value
    * @returns cache value
    */
-  get<T = any>(key: string, def: any = null): T | null {
+  get<T = any>(key: string, def: any = null, encrypt = false): T | null {
     const val = this.storage.getItem(this.getKey(key))
     if (!val) return def
 
     try {
-      const data = JSON.parse(val)
+      // aes decrypt or normal value
+      const devVal = encrypt ? decryptByAES(val, this.cipherKey, this.cipherOptions) : val
+      const data = JSON.parse(devVal)
+
       const { value, expire } = data
 
       // value is expire
