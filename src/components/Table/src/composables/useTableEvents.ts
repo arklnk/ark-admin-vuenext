@@ -59,8 +59,6 @@ export function useTableEvents(
       event.target instanceof HTMLElement &&
       event.target.className.includes('cell')
     ) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       unref(tableRef)?.toggleRowExpansion(row)
     }
 
