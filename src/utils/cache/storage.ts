@@ -32,7 +32,7 @@ class WebStorage {
    * @param value cache value
    * @param expire expire time in seconds
    */
-  set(key: string, value: any, expire: number | null, encrypt = false): void {
+  set(key: string, value: any, expire: number | null = null, encrypt = false): void {
     const stringData = JSON.stringify({
       value,
       time: Date.now(),
