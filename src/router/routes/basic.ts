@@ -117,6 +117,9 @@ const ExceptionRoute: RouteRecordRaw = {
       path: '403',
       name: 'error403',
       component: ExceptionComponent,
+      meta: {
+        title: '403',
+      },
       props: {
         status: 403,
       },
@@ -125,6 +128,9 @@ const ExceptionRoute: RouteRecordRaw = {
       path: '404',
       name: 'error404',
       component: ExceptionComponent,
+      meta: {
+        title: '404',
+      },
       props: {
         status: 404,
       },
@@ -133,6 +139,9 @@ const ExceptionRoute: RouteRecordRaw = {
       path: '500',
       name: 'error500',
       component: ExceptionComponent,
+      meta: {
+        title: '500',
+      },
       props: {
         status: 500,
       },
