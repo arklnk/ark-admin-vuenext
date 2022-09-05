@@ -3,14 +3,29 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { useGo } from '/@/composables/web/useGo'
+import { unref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const { params, query } = useRoute()
-const { path } = params
+const { currentRoute, replace } = useRouter()
+
+const { params, query } = unref(currentRoute)
+const { path, _redirect_type = 'path' } = params
+
+Reflect.deleteProperty(params, '__redirect_type__')
+Reflect.deleteProperty(params, 'path')
 
 const _path = Array.isArray(path) ? path.join('/') : path
 
-const go = useGo()
-go({ path: _path, query }, true)
+if (_redirect_type === 'name') {
+  replace({
+    name: _path,
+    query,
+    params,
+  })
+} else {
+  replace({
+    path: _path.startsWith('/') ? _path : '/' + _path,
+    query,
+  })
+}
 </script>

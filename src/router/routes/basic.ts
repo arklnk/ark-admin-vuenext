@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { ParentLayout } from '../contants'
+import { ExceptionComponent, ParentLayout } from '../contants'
 import { t } from '/@/composables/core/useTransl'
-import { NotFoundRouteName, PageEnum } from '/@/enums/pageEnum'
+import { NotFoundRouteName, PageEnum, RedirectRouteName } from '/@/enums/pageEnum'
 import { toHump } from '/@/utils'
 
 /**
@@ -10,10 +10,20 @@ import { toHump } from '/@/utils'
 export const NotFoundRoute: RouteRecordRaw = {
   path: '/:path(.*)*',
   name: NotFoundRouteName,
-  redirect: PageEnum.NotFound,
+  component: ParentLayout,
   meta: {
     hidden: true,
   },
+  children: [
+    {
+      path: '/:path(.*)*',
+      name: NotFoundRouteName,
+      component: ExceptionComponent,
+      meta: {
+        title: '404',
+      },
+    },
+  ],
 }
 
 /**
@@ -25,19 +35,6 @@ export const LoginRoute: RouteRecordRaw = {
   component: () => import('/@/views/basic/login/Login.vue'),
   meta: {
     title: t('routes.login'),
-    hidden: true,
-  },
-}
-
-/**
- * @description 404 page route
- */
-export const Error404Route: RouteRecordRaw = {
-  path: PageEnum.NotFound,
-  name: toHump(PageEnum.NotFound),
-  component: () => import('/@/views/basic/error/Error404.vue'),
-  meta: {
-    title: t('routes.notfound'),
     hidden: true,
   },
 }
@@ -78,7 +75,7 @@ const RedirectRoute: RouteRecordRaw = {
   children: [
     {
       path: '/redirect/:path(.*)',
-      name: 'Redirect',
+      name: RedirectRouteName,
       component: () => import('/@/views/basic/redirect/Redirect.vue'),
       meta: {
         title: t('routes.redirect'),
@@ -112,7 +109,6 @@ const ProfileRoute: RouteRecordRaw = {
  */
 export const basicRoutes: RouteRecordRaw[] = [
   LoginRoute,
-  Error404Route,
   RedirectRoute,
   DashboardRoute,
   ProfileRoute,
