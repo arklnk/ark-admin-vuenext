@@ -1,5 +1,7 @@
 export const NotFoundRouteName = Symbol('NotFound')
 
+export const RedirectRouteName = Symbol('RedirectTo')
+
 export enum PageEnum {
   Root = '/',
   Login = '/login',
@@ -8,4 +10,5 @@ export enum PageEnum {
   Forbidden = '/403',
   Account = '/account',
   Logout = '/logout',
+  Error = '/error',
 }

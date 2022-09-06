@@ -17,17 +17,16 @@ export default {
     errMsg503: 'The service is unavailable, the server is temporarily overloaded or maintained!',
   },
 
+  // exception view
   exception: {
-    // page 404
-    backHome: 'Back homepage',
-    pageNotFound: 'Page not found',
-    pageNotFoundDesc:
-      'Please check whether the link is entered correctly or click the button to return to the home page',
-
-    // view not impl
-    dynamicImport: 'Page dynamic loading failed',
-    dynamicImportDesc:
-      'Please check whether the file in the corresponding dynamic load page path exists',
+    backHome: 'Back Home',
+    noDataTitle: 'No data',
+    subTitle403: 'Sorry, you don\'t have access to this page.',
+    subTitle404: 'Sorry, the page you visited does not exist.',
+    subTitle500: 'Sorry, the server is reporting an error.',
+    networkErrorTitle: 'Network Error',
+    networkErrorSubTitle:
+      'Sorry, Your network connection has been disconnected, please check your network!',
   },
 
   // login page

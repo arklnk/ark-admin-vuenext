@@ -24,6 +24,7 @@
 
     <!-- action -->
     <div class="flex flex-row h-full" :class="`${prefixCls}-action`">
+      <Redo class="item" />
       <AppLocalePicker v-if="localeStore.getShowPicker" class="item" />
       <FullScreen v-if="getShowFullScreen" class="item" />
       <UserDropdown class="item" />
@@ -37,7 +38,7 @@ import type { CSSProperties } from 'vue'
 
 import { ref, onMounted, computed, unref } from 'vue'
 import { AppLogo } from '/@/components/Application'
-import { FullScreen, Hamburger, UserDropdown } from './components'
+import { FullScreen, Hamburger, UserDropdown, Redo } from './components'
 import ProjectConfig from '../setting/index.vue'
 import Menu from '../menu/index.vue'
 import { useLayoutHeight } from '../content/useLayoutHeight'
