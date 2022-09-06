@@ -56,7 +56,7 @@
               :dropdown-actions="[
                 {
                   label: '更改密码',
-                  onClick: openPwdDialog.bind(null, row),
+                  onClick: handleUpdatePwd.bind(null, row),
                   disabled: !hasPermission(Api.pwd),
                 },
                 {
@@ -74,8 +74,6 @@
     </div>
 
     <EditUserFormDialog @register="registerDialog" @success="reload" />
-
-    <EditPwdFormDialog @register="registerPwdDialog" />
   </PageWrapper>
 </template>
 
@@ -86,11 +84,16 @@ import { getDeptListRequest } from '/@/api/system/dept'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import { nextTick } from 'vue'
-import { getUserPageRequest, deleteUserRequest, Api } from '/@/api/system/user'
+import {
+  getUserPageRequest,
+  deleteUserRequest,
+  updateUserPwdRequest,
+  Api,
+} from '/@/api/system/user'
 import EditUserFormDialog from './components/EditUserFormDialog.vue'
-import EditPwdFormDialog from './components/EditPwdFormDialog.vue'
 import { useDialog } from '/@/components/Dialog'
 import { usePermission } from '/@/composables/core/usePermission'
+import { createFormDialog } from '/@/components/Form'
 
 const { hasPermission } = usePermission()
 
@@ -194,7 +197,48 @@ const [registerUserTable, { reload }] = useTable({
 })
 
 const [registerDialog, { openDialog }] = useDialog()
-const [registerPwdDialog, { openDialog: openPwdDialog }] = useDialog()
+
+function handleUpdatePwd(row: Recordable) {
+  const [FormDialogRender] = createFormDialog({
+    dialogProps: {
+      title: `更改账号${row.account}的密码`,
+      width: '40%',
+    },
+    formProps: {
+      schemas: [
+        {
+          label: '新密码',
+          prop: 'password',
+          component: 'ElInput',
+          rules: {
+            required: true,
+            type: 'string',
+            min: 6,
+            max: 12,
+            message: '请输入新密码,长度6-12位',
+          },
+        },
+      ],
+    },
+    handleSubmit: async (res, dialogAction, formAction) => {
+      try {
+        dialogAction.setProps({ confirmBtnProps: { loading: true } })
+        formAction.setProps({ disabled: true })
+
+        await updateUserPwdRequest({
+          id: row.id,
+          password: res.password,
+        })
+
+        FormDialogRender.close()
+      } finally {
+        dialogAction.setProps({ confirmBtnProps: { loading: false } })
+        formAction.setProps({ disabled: false })
+      }
+    },
+  })
+  FormDialogRender.open()
+}
 
 function openEditUserFormDialog(update?: Recordable) {
   openDialog({
