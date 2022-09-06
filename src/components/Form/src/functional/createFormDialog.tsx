@@ -11,7 +11,11 @@ import { isFunction, merge } from 'lodash-es'
 interface FormDialogProps {
   formProps: BasicFormProps
   dialogProps: BasicDialogProps
-  onSubmit: (res: Recordable) => void | Promise<void>
+  handleSubmit: (
+    res: Recordable,
+    dialogAction: BasicDialogActionType,
+    formAction: BasicFormActionType
+  ) => void | Promise<void>
 }
 
 type OnOpenFn = (
@@ -20,36 +24,45 @@ type OnOpenFn = (
 ) => void | Promise<void>
 
 export function createFormDialog(createProps?: Partial<FormDialogProps>) {
-  let _fdInstance: ComponentInternalInstance
-
   const dialogRef = ref<BasicDialogActionType>()
   const formRef = ref<BasicFormActionType>()
 
   // FormDialog FunctionalComponent
-  const FormDialogRender = (props: Partial<FormDialogProps>, { slots, attrs }: SetupContext) => {
+  const FormDialogRender = (props: Partial<FormDialogProps>, context: SetupContext) => {
     const dialogProps = {
       destroyOnClose: true,
       ...(props.dialogProps || {}),
       onConfirm: unref(formRef)?.submit,
     }
 
+    // hook onSubmit
+    function handleSubmit(res: Recordable) {
+      context.emit('submit', res, unref(dialogRef)!, unref(formRef)!)
+
+      if (props.handleSubmit && isFunction(props.handleSubmit)) {
+        props.handleSubmit(res, unref(dialogRef)!, unref(formRef)!)
+      }
+    }
+
     const formProps = {
       ...(props.formProps || {}),
       showActionButtonGroup: false,
-      onSubmit: props.onSubmit,
+      onSubmit: handleSubmit,
     }
 
     return (
-      <BasicDialog ref={dialogRef} {...{ ...dialogProps, ...attrs }}>
-        <BasicForm ref={formRef} {...{ ...formProps }} v-slots={slots} />
+      <BasicDialog ref={dialogRef} {...dialogProps}>
+        <BasicForm ref={formRef} {...{ ...formProps }} v-slots={context.slots} />
       </BasicDialog>
     )
   }
 
   // normalized to camelCase unless the props option is specified.
-  FormDialogRender.props = ['dialogProps', 'formProps', 'onSubmit']
+  FormDialogRender.props = ['dialogProps', 'formProps', 'handleSubmit']
+  FormDialogRender.emits = ['submit']
 
   // init vnode without template
+  let _fdInstance: ComponentInternalInstance
   function initVNode() {
     // 不传参数时将默认为在模板中使用，那么无需手动初始化，直接操作使用FormDialogRender操作即可
     // 非模板使用会在关掉dialog时自动回收不会存在该dom节点
