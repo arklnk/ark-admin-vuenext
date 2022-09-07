@@ -16,9 +16,9 @@ export default defineRoleModule([
         name: 'docstypeorm',
         component: IFrameLayout,
         meta: {
-          title: 'TypeOrm文档(内嵌)',
-          icon: 'docs',
-          iframeSrc: 'https://www.bookstack.cn/read/TypeORM-0.2.20-zh/README.md',
+          title: '官方文档(内嵌)',
+          icon: 'carbon:application-web',
+          iframeSrc: 'https://docs.arklnk.com/',
         },
       },
     ],
