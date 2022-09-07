@@ -127,6 +127,7 @@ export const usePermissionStore = defineStore({
           // 移除 meta.ignoreRoute 项
           routeList = filter(routeList, routeRemoveIgnoreFilter)
 
+          // 增加 404 Not found 路由
           routes = [NotFoundRoute, ...routeList]
 
           // 按钮级别权限数据
@@ -136,6 +137,9 @@ export const usePermissionStore = defineStore({
         // 角色路由模式
         case PermissionModeEnum.ROLE:
           routes = filter(roleRoutes, routeRoleFilter)
+
+          // 增加 404 Not found 路由
+          routes = [NotFoundRoute, ...routes]
           break
       }
 
