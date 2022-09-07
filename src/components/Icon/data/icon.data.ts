@@ -8,4 +8,5 @@ export default [
   'material-symbols:library-books-outline',
   'icon-park-outline:setting-config',
   'material-symbols:chrome-reader-mode-outline-rounded',
+  'carbon:application-web',
 ]
