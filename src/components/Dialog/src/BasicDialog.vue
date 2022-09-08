@@ -3,7 +3,7 @@
     <!-- header -->
     <template #header="{ titleId, titleClass }">
       <div :id="titleId" :class="titleClass">
-        <DialogHeader
+        <BasicHeading
           v-if="!$slots.title"
           :title="getMergeProps.title"
           :help-message="getMergeProps.helpMessage"
@@ -63,19 +63,19 @@ import type { CSSProperties } from 'vue'
 import { computed, defineComponent, ref, unref, watch, watchEffect, getCurrentInstance } from 'vue'
 import { basicProps } from './props'
 import { useDesign } from '/@/composables/core/useDesign'
-import DialogHeader from './components/DialogHeader.vue'
 import DialogFooter from './components/DialogFooter.vue'
 import DialogClose from './components/DialogClose.vue'
 import { isFunction, merge, omit } from 'lodash-es'
 import { useAppInject } from '/@/composables/core/useAppInject'
 import { createDialogContext } from './composables/useDialogContext'
+import { BasicHeading } from '/@/components/Heading'
 
 export default defineComponent({
   name: 'BasicDialog',
   components: {
-    DialogHeader,
     DialogClose,
     DialogFooter,
+    BasicHeading,
   },
   inheritAttrs: false,
   props: basicProps,
