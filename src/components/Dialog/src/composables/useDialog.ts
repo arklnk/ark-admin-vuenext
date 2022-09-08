@@ -123,7 +123,7 @@ export function useDialogInner(callbackFn?: Fn): UseDialogInnerReturnType {
   const getInstance = () => {
     const instance = unref(dialogRef)
     if (!instance) {
-      error('useDialog instance is undefined!')
+      error('useDialogInner instance is undefined!')
     }
     return instance
   }
