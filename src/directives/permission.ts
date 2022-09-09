@@ -2,7 +2,7 @@ import type { App, Directive, DirectiveBinding } from 'vue'
 import { usePermission } from '/@/composables/core/usePermission'
 
 /**
- * @description Support .and .or directive modifiers
+ * @description Support .and directive modifiers
  * @usage
  *    <element v-permission="sys/user/add" />
  *    <element v-permission.and="['sys/user/add']" />
