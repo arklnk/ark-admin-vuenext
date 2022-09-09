@@ -27,12 +27,20 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
   const dialogRef = ref<BasicDialogActionType>()
   const formRef = ref<BasicFormActionType>()
 
+  const isRendered = ref(false)
+
   // FormDialog FunctionalComponent
   const FormDialogRender = (props: Partial<FormDialogProps>, context: SetupContext) => {
+    isRendered.value = true
+
     const dialogProps = {
       destroyOnClose: true,
       ...(props.dialogProps || {}),
       onConfirm: unref(formRef)?.submit,
+      onVisibleChange: (visible: boolean) => {
+        // 不可视时重置表单值
+        !visible && unref(formRef)?.resetFields()
+      },
     }
 
     // hook onSubmit
@@ -62,35 +70,41 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
   FormDialogRender.emits = ['submit']
 
   // init vnode without template
-  let _fdInstance: ComponentInternalInstance
-  function initVNode() {
-    // 不传参数时将默认为在模板中使用，那么无需手动初始化，直接操作使用FormDialogRender操作即可
-    // 非模板使用会在关掉dialog时自动回收不会存在该dom节点
-    // 可用于一些比较简单表单场景
-    if (!createProps) return
+  let _fdInstance: ComponentInternalInstance | null
 
-    // is inited
+  function initVNode() {
+    // 在模板中使用，那么无需手动初始化，直接操作使用FormDialogRender操作即可
+    // 如果不在模板中使用则需要手动创建节点
+    // 手动创建节点会在关闭Dialog时直接销毁DOM节点，避免无法销毁导致内存泄漏
+    if (isRendered.value) return
+
+    // vnode is created
     if (_fdInstance) return
 
     const container = document.createElement('div')
 
-    // hack onClosed to gc
+    // hack onClosed hook to gc this dom
     function onClosed() {
       nextTick(() => {
         render(null, container)
         document.body.removeChild(container)
+
+        // reset
+        isRendered.value = false
+        _fdInstance = null
       })
     }
-    const fdProps = merge(createProps, { dialogProps: { onClosed } })
+
+    const vnodeProps = merge(createProps, { dialogProps: { onClosed } })
 
     // vnode
-    const vm = createVNode(FormDialogRender, fdProps)
+    const vm = createVNode(FormDialogRender, vnodeProps)
     // useing App context
     vm.appContext = globalAppContext
     render(vm, container)
     document.body.appendChild(container)
 
-    // init done
+    // created done
     _fdInstance = vm.component!
   }
 
