@@ -1,5 +1,5 @@
 <template>
-  <span class="flex flex-row items-center select-none">
+  <span class="inline-flex flex-row items-center select-none">
     <template v-if="title">{{ title }}</template>
     <slot v-else></slot>
     <ElTooltip v-if="helpMessage" :content="helpMessage" :placement="helpPlacement">
