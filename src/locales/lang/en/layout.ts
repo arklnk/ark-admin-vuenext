@@ -1,6 +1,6 @@
 export default {
   setting: {
-    reset: 'Reset',
+    clearCache: 'Clear cache and return to login',
     resetSuccess: 'Reset succeeded, the refresh must take effect',
     on: 'On',
     off: 'Off',
