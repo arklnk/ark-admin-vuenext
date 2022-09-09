@@ -1,14 +1,25 @@
 import type { App, Directive, DirectiveBinding } from 'vue'
 import { usePermission } from '/@/composables/core/usePermission'
 
+/**
+ * @description Support .and .or directive modifiers
+ * @usage
+ *    <element v-permission="sys/user/add" />
+ *    <element v-permission.and="['sys/user/add']" />
+ */
 const directive: Directive = {
   mounted: (el: Element, binding: DirectiveBinding<any>) => {
     const { hasPermission } = usePermission()
 
-    const value = binding.value
-    if (!value) return
+    const { value, modifiers } = binding
 
-    if (!hasPermission(value)) {
+    // and or to compare
+    let nor: 'or' | 'and' = 'or'
+    if (modifiers.and) {
+      nor = 'and'
+    }
+
+    if (!hasPermission(value, nor)) {
       el.parentNode?.removeChild(el)
     }
   },
