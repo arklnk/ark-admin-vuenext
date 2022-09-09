@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@element-plus/icons-vue': ^2.0.6
   '@iconify/json': ^2.1.100
   '@types/crypto-js': ^4.1.1
   '@types/lodash-es': ^4.17.5
@@ -45,7 +44,6 @@ specifiers:
   vue-tsc: ^0.40.4
 
 dependencies:
-  '@element-plus/icons-vue': 2.0.9_vue@3.2.37
   '@unocss/reset': 0.45.13
   '@vueuse/core': 9.1.1_vue@3.2.37
   axios: 0.24.0

@@ -14,7 +14,6 @@
     "reinstall": "rimraf yarn.lock && rimraf package-lock.json && rimraf node_modules && npm run bootstrap"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.0.6",
     "@unocss/reset": "^0.45.13",
     "@vueuse/core": "^9.1.1",
     "axios": "^0.24.0",
