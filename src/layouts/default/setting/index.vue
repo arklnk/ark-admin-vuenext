@@ -1,13 +1,15 @@
 <template>
   <span @click="handleClick">
     <span class="i-icon-park-outline:setting-two"></span>
-    <ElDrawer
-      v-model="visibleRef"
+    <BasicDrawer
       direction="rtl"
       :title="t('layout.setting.title')"
       :size="320"
       append-to-body
       destroy-on-close
+      :show-cancel-btn="false"
+      :show-confirm-btn="false"
+      @register="register"
     >
       <div class="w-full overflow-hidden text-black flex flex-col">
         <ElDivider>{{ t('layout.setting.darkMode') }}</ElDivider>
@@ -117,7 +119,7 @@
       </div>
 
       <SettingFooter v-if="isDevMode()" />
-    </ElDrawer>
+    </BasicDrawer>
   </span>
 </template>
 
@@ -126,8 +128,9 @@ import ThemeColorPicker from './components/ThemeColorPicker.vue'
 import SwitchItem from './components/SwitchItem.vue'
 import MenuModePicker from './components/MenuModePicker.vue'
 import SettingFooter from './components/SettingFooter.vue'
+import { BasicDrawer, useDrawer } from '/@/components/Drawer'
 
-import { ref, computed, nextTick } from 'vue'
+import { computed, nextTick } from 'vue'
 import {
   APP_PRESET_COLOR_LIST,
   HEADER_PRESET_BG_COLOR_LIST,
@@ -153,9 +156,10 @@ import { useTransl } from '/@/composables/core/useTransl'
 const { t } = useTransl()
 const { getIsMobile } = useAppInject()
 
-const visibleRef = ref(false)
+const [register, { openDrawer, closeDrawer }] = useDrawer()
+
 function handleClick() {
-  visibleRef.value = true
+  openDrawer()
 }
 
 const {
@@ -195,7 +199,7 @@ function handleContentModeChange(contentMode: ContentEnum) {
   setRootSetting({ contentMode })
 }
 function handleFullContentChange(fullContent: boolean) {
-  visibleRef.value = false
+  closeDrawer()
 
   // wait for apply
   nextTick(() => {
