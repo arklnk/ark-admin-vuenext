@@ -11,17 +11,8 @@ import { isFunction, merge } from 'lodash-es'
 interface FormDialogProps {
   formProps: BasicFormProps
   dialogProps: BasicDialogProps
-  handleSubmit: (
-    res: Recordable,
-    dialogAction: BasicDialogActionType,
-    formAction: BasicFormActionType
-  ) => void | Promise<void>
+  handleSubmit: (res: Recordable) => void | Promise<void>
 }
-
-type OnOpenFn = (
-  dialogAction: BasicDialogActionType,
-  formAction: BasicFormActionType
-) => void | Promise<void>
 
 export function createFormDialog(createProps?: Partial<FormDialogProps>) {
   const dialogRef = ref<BasicDialogActionType>()
@@ -45,10 +36,10 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
 
     // hook onSubmit
     function handleSubmit(res: Recordable) {
-      context.emit('submit', res, unref(dialogRef)!, unref(formRef)!)
+      context.emit('submit', res)
 
       if (props.handleSubmit && isFunction(props.handleSubmit)) {
-        props.handleSubmit(res, unref(dialogRef)!, unref(formRef)!)
+        props.handleSubmit(res)
       }
     }
 
@@ -120,12 +111,12 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
     unref(formRef)?.setProps(props)
   }
 
-  function open(onOpen?: OnOpenFn) {
+  function open(onOpen?: Fn) {
     setDialogProps({ visible: true })
 
     if (isFunction(onOpen)) {
       nextTick(() => {
-        onOpen(unref(dialogRef)!, unref(formRef)!)
+        onOpen()
       })
     }
   }
