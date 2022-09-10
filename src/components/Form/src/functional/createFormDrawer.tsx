@@ -146,7 +146,7 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
   FormDrawerRender.setFormProps = setFormProps
   FormDrawerRender.open = open
   FormDrawerRender.close = close
-  FormDrawerRender.getDialogAction = getDrawerAction
+  FormDrawerRender.getDrawerAction = getDrawerAction
   FormDrawerRender.getFormAction = getFormAction
 
   return FormDrawerRender
