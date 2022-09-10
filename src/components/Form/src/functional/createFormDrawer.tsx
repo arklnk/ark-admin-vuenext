@@ -133,11 +133,21 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
     setDrawerProps({ visible: false })
   }
 
+  function getDrawerAction() {
+    return unref(drawerRef)
+  }
+
+  function getFormAction() {
+    return unref(formRef)
+  }
+
   // mouted action
   FormDrawerRender.setDrawerProps = setDrawerProps
   FormDrawerRender.setFormProps = setFormProps
   FormDrawerRender.open = open
   FormDrawerRender.close = close
+  FormDrawerRender.getDialogAction = getDrawerAction
+  FormDrawerRender.getFormAction = getFormAction
 
   return [FormDrawerRender, drawerRef, formRef] as [
     typeof FormDrawerRender,

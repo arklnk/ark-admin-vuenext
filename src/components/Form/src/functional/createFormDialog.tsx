@@ -134,15 +134,21 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
     setDialogProps({ visible: false })
   }
 
+  function getDialogAction() {
+    return unref(dialogRef)
+  }
+
+  function getFormAction() {
+    return unref(formRef)
+  }
+
   // mouted action
   FormDialogRender.setDialogProps = setDialogProps
   FormDialogRender.setFormProps = setFormProps
   FormDialogRender.open = open
   FormDialogRender.close = close
+  FormDialogRender.getDialogAction = getDialogAction
+  FormDialogRender.getFormAction = getFormAction
 
-  return [FormDialogRender, dialogRef, formRef] as [
-    typeof FormDialogRender,
-    typeof dialogRef,
-    typeof formRef
-  ]
+  return FormDialogRender
 }
