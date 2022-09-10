@@ -149,9 +149,5 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
   FormDrawerRender.getDialogAction = getDrawerAction
   FormDrawerRender.getFormAction = getFormAction
 
-  return [FormDrawerRender, drawerRef, formRef] as [
-    typeof FormDrawerRender,
-    typeof drawerRef,
-    typeof formRef
-  ]
+  return FormDrawerRender
 }
