@@ -31,7 +31,18 @@
       </template>
     </BasicTable>
 
-    <EditJobFormDialog @register="registerDialog" @success="reload" />
+    <FormDialogRender
+      :form-props="{ schemas, labelWidth: '100px' }"
+      :dialog-props="{ title: '编辑岗位信息' }"
+      :handle-submit="handleSubmit"
+    >
+      <template #status="{ model }">
+        <ElRadioGroup v-model="model.status">
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
+        </ElRadioGroup>
+      </template>
+    </FormDialogRender>
   </PageWrapper>
 </template>
 
@@ -40,49 +51,58 @@ import type { JobResult } from '/@/api/system/job'
 
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
-import { getJobPageRequest, deleteJobRequest, Api } from '/@/api/system/job'
-import EditJobFormDialog from './components/EditJobFormDialog.vue'
-import { useDialog } from '/@/components/Dialog'
+import {
+  getJobPageRequest,
+  deleteJobRequest,
+  addJobRequest,
+  updateJobRequest,
+  Api,
+} from '/@/api/system/job'
 import { usePermission } from '/@/composables/core/usePermission'
+import { columns } from './columns'
+import { createFormDialog } from '/@/components/Form'
+import { schemas } from './schemas'
+import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
-const [registerDialog, { openDialog }] = useDialog()
-const [registerTable, { reload }] = useTable({
-  columns: [
-    {
-      label: '岗位名称',
-      prop: 'name',
-      minWidth: 300,
-      align: 'center',
-    },
-    {
-      align: 'center',
-      label: '状态',
-      prop: 'status',
-      formatter: (row: Recordable) => {
-        return row.status === 0 ? '禁用' : '启用'
-      },
-    },
-    {
-      align: 'center',
-      label: '排序',
-      prop: 'orderNum',
-    },
-    {
-      align: 'center',
-      label: '操作',
-      slot: 'action',
-      width: 140,
-      fixed: 'right',
-    },
-  ],
-})
+const [registerTable, { reload }] = useTable({ columns })
+
+const FormDialogRender = createFormDialog()
+
+const updateJobId = ref<number | null>(null)
 
 function openEditJobFormDialog(update?: JobResult) {
-  openDialog({
-    item: update,
+  FormDialogRender.open((_, formAction) => {
+    if (update) {
+      updateJobId.value = update.id
+      formAction.setFormModel(update)
+    } else {
+      updateJobId.value = null
+    }
   })
+}
+
+async function handleSubmit(res: Omit<JobResult, 'id'>) {
+  try {
+    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
+    FormDialogRender.setFormProps({ disabled: true })
+
+    if (updateJobId.value === null) {
+      await addJobRequest(res)
+    } else {
+      await updateJobRequest({
+        ...res,
+        id: updateJobId.value,
+      })
+    }
+
+    FormDialogRender.close()
+    reload()
+  } finally {
+    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
+    FormDialogRender.setFormProps({ disabled: false })
+  }
 }
 
 async function handleDelete(row: JobResult) {
