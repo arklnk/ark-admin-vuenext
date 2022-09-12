@@ -73,152 +73,183 @@
       </div>
     </div>
 
-    <EditUserFormDialog @register="registerDialog" @success="reload" />
+    <EditUserFormDialogRender
+      :dialog-props="{ title: '编辑用户信息' }"
+      :form-props="{ labelWidth: '100px', schemas }"
+      :handle-submit="handleSubmit"
+    >
+      <template #gender="{ model }">
+        <ElSelect v-model="model.gender" class="w-full">
+          <ElOption label="保密" :value="0" />
+          <ElOption label="女" :value="1" />
+          <ElOption label="男" :value="2" />
+        </ElSelect>
+      </template>
+
+      <template #status="{ model }">
+        <ElRadioGroup v-model="model.status">
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
+        </ElRadioGroup>
+      </template>
+    </EditUserFormDialogRender>
   </PageWrapper>
 </template>
 
 <script setup lang="ts">
-import type { UserResult } from '/@/api/system/user'
+import { UserRequestParams } from '/@/api/system/user'
+import type { FormSchema } from '/@/components/Form'
 
 import { getDeptListRequest } from '/@/api/system/dept'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
-import { nextTick } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import {
   getUserPageRequest,
   deleteUserRequest,
   updateUserPwdRequest,
+  getRDPJInfoRequest,
+  addUserRequest,
+  updateUserRequest,
   Api,
 } from '/@/api/system/user'
-import EditUserFormDialog from './components/EditUserFormDialog.vue'
-import { useDialog } from '/@/components/Dialog'
 import { usePermission } from '/@/composables/core/usePermission'
 import { createFormDialog } from '/@/components/Form'
+import { deptColumns, userColumns } from './columns'
+import { schemas, pwdSchemas } from './schemas'
+import { listToTree } from '/@/utils/helper/tree'
 
 const { hasPermission } = usePermission()
 
 const [registerDeptTable, { getCurrentRow }] = useTable({
-  columns: [
-    {
-      label: '部门名称',
-      prop: 'name',
-    },
-  ],
+  columns: deptColumns,
 })
 const [registerUserTable, { reload }] = useTable({
-  columns: [
-    {
-      label: '账号',
-      prop: 'account',
-      align: 'center',
-      width: 160,
-    },
-    {
-      label: '姓名',
-      prop: 'username',
-      align: 'center',
-      width: 160,
-    },
-    {
-      label: '所属部门',
-      prop: 'dept',
-      align: 'center',
-      width: 180,
-      formatter: (row: UserResult) => {
-        return row.dept.name
-      },
-    },
-    {
-      label: '所属角色',
-      prop: 'roles',
-      align: 'center',
-      width: 240,
-      slot: 'roles',
-    },
-    {
-      label: '职称',
-      prop: 'profession',
-      align: 'center',
-      width: 180,
-      formatter: (row: UserResult) => {
-        return row.profession.name
-      },
-    },
-    {
-      label: '岗位',
-      prop: 'job',
-      align: 'center',
-      width: 180,
-      formatter: (row: UserResult) => {
-        return row.job.name
-      },
-    },
-    {
-      label: '性别',
-      align: 'center',
-      prop: 'gender',
-      width: 120,
-      formatter: (row: UserResult) => {
-        if (row.gender === 1) {
-          return '女'
-        } else if (row.gender === 2) {
-          return '难'
-        } else {
-          return '保密'
-        }
-      },
-    },
-    {
-      label: '手机号',
-      prop: 'mobile',
-      align: 'center',
-      width: 180,
-    },
-    {
-      label: '昵称',
-      prop: 'nickname',
-      align: 'center',
-      width: 160,
-    },
-    {
-      label: '邮箱',
-      prop: 'email',
-      align: 'center',
-      width: 180,
-    },
-    {
-      label: '操作',
-      align: 'center',
-      width: 120,
-      fixed: 'right',
-      slot: 'action',
-    },
-  ],
+  columns: userColumns,
 })
 
-const [registerDialog, { openDialog }] = useDialog()
+const updateUserId = ref<number | null>(null)
+
+const EditUserFormDialogRender = createFormDialog()
+
+function openEditUserFormDialog(update?: Recordable) {
+  EditUserFormDialogRender.open(async (_, formAction) => {
+    // 请求当前角色所拥有的角色权限、以及部门、岗位、职称列表信息
+    try {
+      EditUserFormDialogRender.setDialogProps({ loading: true })
+      const { role, dept, profession, job } = await getRDPJInfoRequest({
+        userId: update ? update.id : 0,
+      })
+
+      const updateSchemas: FormSchema[] = [
+        {
+          prop: 'deptId',
+          componentProps: {
+            data: listToTree(dept),
+          },
+        },
+        {
+          prop: 'roleIds',
+          componentProps: {
+            data: listToTree(role),
+          },
+        },
+        {
+          prop: 'jobId',
+          componentProps: {
+            data: job,
+          },
+        },
+        {
+          prop: 'professionId',
+          componentProps: {
+            data: profession,
+          },
+        },
+        {
+          prop: 'account',
+          disabled: !!update,
+        },
+      ]
+      formAction.updateSchema(updateSchemas)
+    } catch (e) {
+      EditUserFormDialogRender.close()
+    } finally {
+      EditUserFormDialogRender.setDialogProps({ loading: false })
+    }
+
+    // is update?
+    if (update) {
+      const item = update
+
+      formAction.setFormModel({
+        ...item,
+        jobId: item.job.id,
+        professionId: item.profession.id,
+        deptId: item.dept.id,
+        roleIds: item.roles.map((e) => e.id),
+      } as UserRequestParams)
+
+      updateUserId.value = item.id
+    } else {
+      updateUserId.value = null
+    }
+  })
+}
+
+// User
+async function processUserListRequest(params: any) {
+  return await getUserPageRequest({
+    ...params,
+    deptId: getCurrentRow()?.id || 0,
+  })
+}
+
+async function handleSubmit(res: UserRequestParams) {
+  try {
+    EditUserFormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
+    EditUserFormDialogRender.setFormProps({ disabled: true })
+
+    // set default
+    res.avatar = ''
+
+    if (updateUserId.value === null) {
+      await addUserRequest(res)
+    } else {
+      await updateUserRequest({
+        ...res,
+        id: updateUserId.value,
+      })
+    }
+
+    EditUserFormDialogRender.close()
+
+    reload()
+  } finally {
+    EditUserFormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
+    EditUserFormDialogRender.setFormProps({ disabled: false })
+  }
+}
+
+async function handleDelete(row: Recordable) {
+  await deleteUserRequest({ id: row.id })
+  reload()
+}
+
+function handleDeptChange() {
+  nextTick(() => {
+    reload({ page: 1 })
+  })
+}
 
 function handleUpdatePwd(row: Recordable) {
-  const [FormDialogRender] = createFormDialog({
+  const FormDialogRender = createFormDialog({
     dialogProps: {
       title: `更改账号${row.account}的密码`,
       width: '40%',
     },
     formProps: {
-      schemas: [
-        {
-          label: '新密码',
-          prop: 'password',
-          component: 'ElInput',
-          rules: {
-            required: true,
-            type: 'string',
-            min: 6,
-            max: 12,
-            message: '请输入新密码,长度6-12位',
-          },
-        },
-      ],
+      schemas: pwdSchemas,
     },
     handleSubmit: async (res, dialogAction, formAction) => {
       try {
@@ -240,32 +271,7 @@ function handleUpdatePwd(row: Recordable) {
   FormDialogRender.open()
 }
 
-function openEditUserFormDialog(update?: Recordable) {
-  openDialog({
-    item: update,
-  })
-}
-
-// User
-async function processUserListRequest(params: any) {
-  return await getUserPageRequest({
-    ...params,
-    deptId: getCurrentRow()?.id || 0,
-  })
-}
-
-async function handleDelete(row: Recordable) {
-  await deleteUserRequest({ id: row.id })
-  reload()
-}
-
-function handleDeptChange() {
-  nextTick(() => {
-    reload({ page: 1 })
-  })
-}
-
-nextTick(() => {
+onMounted(() => {
   reload()
 })
 </script>

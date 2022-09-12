@@ -1,133 +1,6 @@
-<template>
-  <BasicDialog @register="registerDialog" @confirm="submit" title="编辑用户信息">
-    <BasicForm
-      :schemas="schemas"
-      :show-action-button-group="false"
-      @submit="handleSubmit"
-      @register="registerForm"
-      label-width="100px"
-    >
-      <template #gender="{ model }">
-        <ElSelect v-model="model.gender" class="w-full">
-          <ElOption label="保密" :value="0" />
-          <ElOption label="女" :value="1" />
-          <ElOption label="男" :value="2" />
-        </ElSelect>
-      </template>
-
-      <template #status="{ model }">
-        <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">启用</ElRadio>
-          <ElRadio :label="0">禁用</ElRadio>
-        </ElRadioGroup>
-      </template>
-    </BasicForm>
-  </BasicDialog>
-</template>
-
-<script setup lang="ts">
 import type { FormSchema } from '/@/components/Form'
-import type { UserRequestParams, UserResult } from '/@/api/system/user'
 
-import { BasicDialog, useDialogInner } from '/@/components/Dialog'
-import { BasicForm, useForm } from '/@/components/Form'
-import { ref } from 'vue'
-import { listToTree } from '/@/utils/helper/tree'
-import { addUserRequest, updateUserRequest, getRDPJInfoRequest } from '/@/api/system/user'
-
-const emit = defineEmits(['register', 'success'])
-
-const updateUserId = ref<number | null>(null)
-
-const [registerForm, { submit, setProps: setFormProps, updateSchema, setFormModel }] = useForm()
-const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner(
-  async (data: { item?: UserResult }) => {
-    // 请求当前角色所拥有的角色权限、以及部门、岗位、职称列表信息
-    try {
-      setDialogProps({ loading: true })
-      const { role, dept, profession, job } = await getRDPJInfoRequest({
-        userId: data?.item ? data.item.id : 0,
-      })
-
-      const updateSchemas: FormSchema[] = [
-        {
-          prop: 'deptId',
-          componentProps: {
-            data: listToTree(dept),
-          },
-        },
-        {
-          prop: 'roleIds',
-          componentProps: {
-            data: listToTree(role),
-          },
-        },
-        {
-          prop: 'jobId',
-          componentProps: {
-            data: job,
-          },
-        },
-        {
-          prop: 'professionId',
-          componentProps: {
-            data: profession,
-          },
-        },
-      ]
-      updateSchema(updateSchemas)
-    } catch (e) {
-      closeDialog()
-    } finally {
-      setDialogProps({ loading: false })
-    }
-
-    // is update?
-    if (data.item) {
-      const item = data.item
-
-      setFormModel({
-        ...item,
-        jobId: item.job.id,
-        professionId: item.profession.id,
-        deptId: item.dept.id,
-        roleIds: item.roles.map((e) => e.id),
-      } as UserRequestParams)
-
-      updateUserId.value = item.id
-    } else {
-      updateUserId.value = null
-    }
-  }
-)
-
-async function handleSubmit(res: UserRequestParams) {
-  try {
-    setDialogProps({ confirmBtnProps: { loading: true } })
-    setFormProps({ disabled: true })
-
-    // set default
-    res.avatar = ''
-
-    if (updateUserId.value === null) {
-      await addUserRequest(res)
-    } else {
-      await updateUserRequest({
-        ...res,
-        id: updateUserId.value,
-      })
-    }
-
-    closeDialog()
-
-    emit('success')
-  } finally {
-    setDialogProps({ confirmBtnProps: { loading: false } })
-    setFormProps({ disabled: false })
-  }
-}
-
-const schemas = ref<FormSchema[]>([
+export const schemas: FormSchema[] = [
   {
     label: '账号',
     prop: 'account',
@@ -137,9 +10,6 @@ const schemas = ref<FormSchema[]>([
       required: true,
       type: 'string',
       message: '请输入账号',
-    },
-    disabled: () => {
-      return updateUserId.value !== null
     },
     colProps: {
       span: 12,
@@ -335,5 +205,19 @@ const schemas = ref<FormSchema[]>([
       rows: 2,
     },
   },
-])
-</script>
+]
+
+export const pwdSchemas: FormSchema[] = [
+  {
+    label: '新密码',
+    prop: 'password',
+    component: 'ElInput',
+    rules: {
+      required: true,
+      type: 'string',
+      min: 6,
+      max: 12,
+      message: '请输入新密码,长度6-12位',
+    },
+  },
+]
