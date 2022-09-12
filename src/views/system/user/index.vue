@@ -246,7 +246,8 @@ function handleUpdatePwd(row: Recordable) {
   const FormDialogRender = createFormDialog({
     dialogProps: {
       title: `更改账号${row.account}的密码`,
-      width: '40%',
+      width: '30%',
+      canFullscreen: false,
     },
     formProps: {
       schemas: pwdSchemas,
