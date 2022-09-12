@@ -31,58 +31,82 @@
       </template>
     </BasicTable>
 
-    <EditProfFormDialog @register="registerDialog" @success="reload" />
+    <FormDialogRender
+      :dialog-props="{ title: '编辑职称信息' }"
+      :form-props="{ labelWidth: '100px', schemas }"
+      :handle-submit="handleSubmit"
+    >
+      <template #status="{ model }">
+        <ElRadioGroup v-model="model.status">
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
+        </ElRadioGroup>
+      </template>
+    </FormDialogRender>
   </PageWrapper>
 </template>
 
 <script setup lang="ts">
 import type { ProfessionResult } from '/@/api/system/profession'
 
-import { getProfPageRequest, deleteProfRequest, Api } from '/@/api/system/profession'
+import {
+  getProfPageRequest,
+  deleteProfRequest,
+  addProfRequest,
+  updateProfRequest,
+  Api,
+} from '/@/api/system/profession'
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
-import EditProfFormDialog from './components/EditProfFormDialog.vue'
-import { useDialog } from '/@/components/Dialog'
 import { usePermission } from '/@/composables/core/usePermission'
+import { columns } from './columns'
+import { schemas } from './schemas'
+import { createFormDialog } from '/@/components/Form'
+import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
-const [registerDialog, { openDialog }] = useDialog()
+const FormDialogRender = createFormDialog()
+
 const [registerTable, { reload }] = useTable({
-  columns: [
-    {
-      label: '职称',
-      prop: 'name',
-      minWidth: 300,
-      align: 'center',
-    },
-    {
-      align: 'center',
-      label: '状态',
-      prop: 'status',
-      formatter: (row: Recordable) => {
-        return row.status === 0 ? '禁用' : '启用'
-      },
-    },
-    {
-      align: 'center',
-      label: '排序',
-      prop: 'orderNum',
-    },
-    {
-      align: 'center',
-      label: '操作',
-      slot: 'action',
-      width: 140,
-      fixed: 'right',
-    },
-  ],
+  columns,
 })
 
+const updateProfId = ref<number | null>(null)
+
 function openEditProfFormDialog(update?: Recordable) {
-  openDialog({
-    item: update,
+  FormDialogRender.open((_, formAction) => {
+    // is update?
+    if (update) {
+      formAction.setFormModel(update)
+      updateProfId.value = update.id
+    } else {
+      updateProfId.value = null
+    }
   })
+}
+
+async function handleSubmit(res: Omit<ProfessionResult, 'id'>) {
+  try {
+    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
+    FormDialogRender.setFormProps({ disabled: true })
+
+    if (updateProfId.value === null) {
+      await addProfRequest(res)
+    } else {
+      await updateProfRequest({
+        ...res,
+        id: updateProfId.value,
+      })
+    }
+
+    FormDialogRender.close()
+
+    reload()
+  } finally {
+    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
+    FormDialogRender.setFormProps({ disabled: false })
+  }
 }
 
 async function handleDelete(row: ProfessionResult) {
