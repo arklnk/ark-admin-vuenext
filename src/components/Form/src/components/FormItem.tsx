@@ -5,7 +5,7 @@ import { computed, defineComponent, unref, resolveComponent } from 'vue'
 import { get, isBoolean, isFunction, upperFirst } from 'lodash-es'
 import { getSlot } from '/@/utils/helper/tsx'
 import { error } from '/@/utils/log'
-import { Warning } from '@element-plus/icons-vue'
+import { BasicHeading } from '/@/components/Heading'
 
 export default defineComponent({
   name: 'BasicFormItem',
@@ -156,18 +156,7 @@ export default defineComponent({
 
       const helpMessageStr = isFunction(helpMessage) ? helpMessage(unref(getParams)) : helpMessage
 
-      return (
-        <span class="inline-flex flex-row items-center">
-          {label}
-          {helpMessageStr ? (
-            <el-tooltip content={helpMessageStr} placement="right">
-              <el-icon class="mx-1">
-                <Warning />
-              </el-icon>
-            </el-tooltip>
-          ) : null}
-        </span>
-      )
+      return <BasicHeading helpMessage={helpMessageStr} title={label} />
     }
 
     // render form item

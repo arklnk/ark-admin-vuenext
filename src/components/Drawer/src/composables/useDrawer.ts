@@ -1,9 +1,9 @@
 import type {
-  BasicDialogActionType,
-  BasicDialogProps,
-  ExtraBasicDialogActionType,
-  UseDialogReturnType,
-  UseDialogInnerReturnType,
+  BasicDrawerActionType,
+  UseDrawerReturnType,
+  UseDrawerInnerReturnType,
+  ExtraBasicDrawerActionType,
+  BasicDrawerProps,
 } from '../typing'
 
 import {
@@ -17,48 +17,48 @@ import {
   watchEffect,
 } from 'vue'
 import { error } from '/@/utils/log'
-import { isEqual, isFunction, isNil } from 'lodash-es'
 import { isProdMode } from '/@/utils/env'
+import { isEqual, isFunction, isNil } from 'lodash-es'
 
 // store the parameters passed when opening the pop-up window
 const store = reactive<{ [key: number]: any }>({})
 
-export function useDialog(): UseDialogReturnType {
-  const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
+export function useDrawer(): UseDrawerReturnType {
+  const drawerRef = ref<Nullable<BasicDrawerActionType>>(null)
   const loadedRef = ref<boolean>(false)
   const uidRef = ref<number>(-1)
 
-  function register(action: BasicDialogActionType, uid: number) {
+  function register(action: BasicDrawerActionType, uid: number) {
     if (!getCurrentInstance()) {
-      error('useDialog() can only be used inside setup() or functional components!')
+      error('useDrawer() can only be used inside setup() or functional components!')
     }
 
     uidRef.value = uid
 
     if (isProdMode()) {
       onUnmounted(() => {
-        dialogRef.value = null
+        drawerRef.value = null
         loadedRef.value = false
         store[unref(uidRef.value)] = null
       })
     }
 
-    if (unref(loadedRef) && isProdMode() && action === unref(dialogRef)) return
+    if (unref(loadedRef) && isProdMode() && action === unref(drawerRef)) return
 
-    dialogRef.value = action
+    drawerRef.value = action
     loadedRef.value = true
   }
 
   const getInstance = () => {
-    const instance = unref(dialogRef)
+    const instance = unref(drawerRef)
     if (!instance) {
-      error('useDialog instance is undefined!')
+      error('useDrawer instance is undefined!')
     }
     return instance
   }
 
-  const methods: ExtraBasicDialogActionType = {
-    setProps: (props: Partial<BasicDialogProps>) => {
+  const methods: ExtraBasicDrawerActionType = {
+    setProps: (props: Partial<BasicDrawerProps>) => {
       getInstance()?.setProps(props)
     },
     setLoading: (loading = true) => {
@@ -67,7 +67,7 @@ export function useDialog(): UseDialogReturnType {
     setConfirmLoading: (loading = true) => {
       getInstance()?.setProps({ confirmBtnProps: { loading } })
     },
-    openDialog: <T = any>(data?: T, openOnSet = true) => {
+    openDrawer: <T = any>(data?: T, openOnSet = true) => {
       getInstance()?.setProps({ visible: true })
 
       if (!data) return
@@ -83,7 +83,7 @@ export function useDialog(): UseDialogReturnType {
         store[id] = toRaw(data)
       }
     },
-    closeDialog: () => {
+    closeDrawer: () => {
       getInstance()?.setProps({ visible: false })
     },
   }
@@ -91,29 +91,29 @@ export function useDialog(): UseDialogReturnType {
   return [register, methods]
 }
 
-export function useDialogInner(callbackFn?: Fn): UseDialogInnerReturnType {
-  const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
-  const uidRef = ref<number>(-1)
+export function useDrawerInner(callbackFn?: Fn): UseDrawerInnerReturnType {
+  const drawerRef = ref<Nullable<BasicDrawerActionType>>(null)
   const loadedRef = ref<boolean>(false)
+  const uidRef = ref<number>(-1)
   const currentInstance = getCurrentInstance()
 
-  function register(action: BasicDialogActionType, uid: number) {
+  function register(action: BasicDrawerActionType, uid: number) {
     if (!currentInstance) {
-      error('useDialogInner() can only be used inside setup() or functional components!')
+      error('useDrawerInner() can only be used inside setup() or functional components!')
     }
 
     uidRef.value = uid
 
     if (isProdMode()) {
       onUnmounted(() => {
-        dialogRef.value = null
+        drawerRef.value = null
         loadedRef.value = false
       })
     }
 
-    if (unref(loadedRef) && isProdMode() && action === unref(dialogRef)) return
+    if (unref(loadedRef) && isProdMode() && action === unref(drawerRef)) return
 
-    dialogRef.value = action
+    drawerRef.value = action
     loadedRef.value = true
 
     // emit current
@@ -121,9 +121,9 @@ export function useDialogInner(callbackFn?: Fn): UseDialogInnerReturnType {
   }
 
   const getInstance = () => {
-    const instance = unref(dialogRef)
+    const instance = unref(drawerRef)
     if (!instance) {
-      error('useDialogInner instance is undefined!')
+      error('useDrawerInner instance is undefined!')
     }
     return instance
   }
@@ -141,7 +141,7 @@ export function useDialogInner(callbackFn?: Fn): UseDialogInnerReturnType {
   return [
     register,
     {
-      setProps: (props: Partial<BasicDialogProps>) => {
+      setProps: (props: Partial<BasicDrawerProps>) => {
         getInstance()?.setProps(props)
       },
       setLoading: (loading = true) => {
@@ -150,7 +150,7 @@ export function useDialogInner(callbackFn?: Fn): UseDialogInnerReturnType {
       setConfirmLoading: (loading = true) => {
         getInstance()?.setProps({ confirmBtnProps: { loading } })
       },
-      closeDialog: () => {
+      closeDrawer: () => {
         getInstance()?.setProps({ visible: false })
       },
     },

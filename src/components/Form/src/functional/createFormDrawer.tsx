@@ -1,41 +1,40 @@
 import type { BasicFormActionType, BasicFormProps } from '../typing'
-import type { BasicDialogProps, BasicDialogActionType } from '/@/components/Dialog'
+import type { BasicDrawerActionType, BasicDrawerProps } from '/@/components/Drawer'
 import type { SetupContext, ComponentInternalInstance } from 'vue'
 
-import { BasicDialog } from '/@/components/Dialog'
+import { BasicDrawer } from '/@/components/Drawer'
 import BasicForm from '../BasicForm.vue'
-import { ref, unref, render, createVNode, nextTick } from 'vue'
-import { globalAppContext } from '/@/components/registerGlobalComp'
+import { ref, unref, nextTick, render, createVNode } from 'vue'
 import { isFunction, merge } from 'lodash-es'
+import { globalAppContext } from '/@/components/registerGlobalComp'
 
-interface FormDialogProps {
+interface FormDrawerProps {
   formProps: BasicFormProps
-  dialogProps: BasicDialogProps
+  drawerProps: BasicDrawerProps
   handleSubmit: (
     res: Recordable,
-    dialogAction: BasicDialogActionType,
+    drawerAction: BasicDrawerActionType,
     formAction: BasicFormActionType
   ) => void | Promise<void>
 }
 
 type OnOpenFn = (
-  dialogAction: BasicDialogActionType,
+  drawerAction: BasicDrawerActionType,
   formAction: BasicFormActionType
 ) => void | Promise<void>
 
-export function createFormDialog(createProps?: Partial<FormDialogProps>) {
-  const dialogRef = ref<BasicDialogActionType>()
+export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
+  const drawerRef = ref<BasicDrawerActionType>()
   const formRef = ref<BasicFormActionType>()
 
   const isRendered = ref(false)
 
-  // FormDialog FunctionalComponent
-  const FormDialogRender = (props: Partial<FormDialogProps>, context: SetupContext) => {
+  const FormDrawerRender = (props: Partial<FormDrawerProps>, context: SetupContext) => {
     isRendered.value = true
 
-    const dialogProps = {
+    const drawerProps = {
       destroyOnClose: true,
-      ...(props.dialogProps || {}),
+      ...(props.drawerProps || {}),
       onConfirm: unref(formRef)?.submit,
       onVisibleChange: (visible: boolean) => {
         // 不可视时重置表单值
@@ -45,10 +44,10 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
 
     // hook onSubmit
     function handleSubmit(res: Recordable) {
-      context.emit('submit', res, unref(dialogRef)!, unref(formRef)!)
+      context.emit('submit', res, unref(drawerRef)!, unref(formRef)!)
 
       if (props.handleSubmit && isFunction(props.handleSubmit)) {
-        props.handleSubmit(res, unref(dialogRef)!, unref(formRef)!)
+        props.handleSubmit(res, unref(drawerRef)!, unref(formRef)!)
       }
     }
 
@@ -59,23 +58,23 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
     }
 
     return (
-      <BasicDialog ref={dialogRef} {...dialogProps}>
+      <BasicDrawer ref={drawerRef} {...drawerProps}>
         <BasicForm ref={formRef} {...{ ...formProps }} v-slots={context.slots} />
-      </BasicDialog>
+      </BasicDrawer>
     )
   }
 
   // normalized to camelCase unless the props option is specified.
-  FormDialogRender.props = ['dialogProps', 'formProps', 'handleSubmit']
-  FormDialogRender.emits = ['submit']
+  FormDrawerRender.props = ['drawerProps', 'formProps', 'handleSubmit']
+  FormDrawerRender.emits = ['submit']
 
   // init vnode without template
   let _fdInstance: ComponentInternalInstance | null
 
   function initVNode() {
-    // 在模板中使用，那么无需手动初始化，直接操作使用FormDialogRender操作即可
+    // 在模板中使用，那么无需手动初始化，直接操作使用FormDrawerRender操作即可
     // 如果不在模板中使用则需要手动创建节点
-    // 手动创建节点会在关闭Dialog时直接销毁DOM节点，避免无法销毁导致内存泄漏
+    // 手动创建节点会在关闭Drawer时直接销毁DOM节点，避免无法销毁导致内存泄漏
     if (isRendered.value) return
 
     // vnode is created
@@ -95,10 +94,10 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
       })
     }
 
-    const vnodeProps = merge(createProps, { dialogProps: { onClosed } })
+    const vnodeProps = merge(createProps, { drawerProps: { onClosed } })
 
     // vnode
-    const vm = createVNode(FormDialogRender, vnodeProps)
+    const vm = createVNode(FormDrawerRender, vnodeProps)
     // useing App context
     vm.appContext = globalAppContext
     render(vm, container)
@@ -108,10 +107,10 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
     _fdInstance = vm.component!
   }
 
-  function setDialogProps(props: BasicDialogProps) {
+  function setDrawerProps(props: BasicDrawerProps) {
     initVNode()
 
-    unref(dialogRef)?.setProps(props)
+    unref(drawerRef)?.setProps(props)
   }
 
   function setFormProps(props: BasicFormProps) {
@@ -121,21 +120,21 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
   }
 
   function open(onOpen?: OnOpenFn) {
-    setDialogProps({ visible: true })
+    setDrawerProps({ visible: true })
 
     if (isFunction(onOpen)) {
       nextTick(() => {
-        onOpen(unref(dialogRef)!, unref(formRef)!)
+        onOpen(unref(drawerRef)!, unref(formRef)!)
       })
     }
   }
 
   function close() {
-    setDialogProps({ visible: false })
+    setDrawerProps({ visible: false })
   }
 
-  function getDialogAction() {
-    return unref(dialogRef)
+  function getDrawerAction() {
+    return unref(drawerRef)
   }
 
   function getFormAction() {
@@ -143,12 +142,12 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
   }
 
   // mouted action
-  FormDialogRender.setDialogProps = setDialogProps
-  FormDialogRender.setFormProps = setFormProps
-  FormDialogRender.open = open
-  FormDialogRender.close = close
-  FormDialogRender.getDialogAction = getDialogAction
-  FormDialogRender.getFormAction = getFormAction
+  FormDrawerRender.setDrawerProps = setDrawerProps
+  FormDrawerRender.setFormProps = setFormProps
+  FormDrawerRender.open = open
+  FormDrawerRender.close = close
+  FormDrawerRender.getDrawerAction = getDrawerAction
+  FormDrawerRender.getFormAction = getFormAction
 
-  return FormDialogRender
+  return FormDrawerRender
 }

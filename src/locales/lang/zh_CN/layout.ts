@@ -1,6 +1,6 @@
 export default {
   setting: {
-    reset: '重置',
+    clearCache: '清空缓存并返回登录',
     resetSuccess: '重置成功,需刷新生效',
     on: '开',
     off: '关',

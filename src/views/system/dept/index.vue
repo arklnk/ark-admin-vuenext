@@ -35,7 +35,25 @@
       </template>
     </BasicTable>
 
-    <EditDeptFormDialog @register="registerDialog" @success="reload" />
+    <FormDialogRender
+      :form-props="{ labelWidth: '100px', schemas }"
+      :dialog-props="{ title: '编辑部门信息' }"
+      :handle-submit="handleSubmit"
+    >
+      <template #status="{ model }">
+        <ElRadioGroup v-model="model.status">
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
+        </ElRadioGroup>
+      </template>
+      <template #type="{ model }">
+        <ElSelect v-model="model.type" class="w-full">
+          <ElOption label="公司" :value="1" />
+          <ElOption label="子公司" :value="2" />
+          <ElOption label="部门" :value="3" />
+        </ElSelect>
+      </template>
+    </FormDialogRender>
   </PageWrapper>
 </template>
 
@@ -44,83 +62,85 @@ import type { DeptResult } from '/@/api/system/dept'
 
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
-import { getDeptListRequest, deleteDeptRequest, Api } from '/@/api/system/dept'
-import EditDeptFormDialog from './components/EditDeptFormDialog.vue'
-import { useDialog } from '/@/components/Dialog'
+import {
+  getDeptListRequest,
+  deleteDeptRequest,
+  addDeptRequest,
+  updateDeptRequest,
+  Api,
+} from '/@/api/system/dept'
 import { usePermission } from '/@/composables/core/usePermission'
+import { columns } from './columns'
+import { createFormDialog } from '/@/components/Form'
+import { schemas } from './schemas'
+import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
-const [registerDialog, { openDialog }] = useDialog()
 const [registerTable, { getDataSource, reload }] = useTable({
   api: getDeptListRequest,
   rowKey: 'id',
   pagination: false,
-  columns: [
-    {
-      width: 300,
-      label: '部门名称',
-      prop: 'name',
-    },
-    {
-      align: 'center',
-      width: 140,
-      label: '部门标识',
-      prop: 'uniqueKey',
-    },
-    {
-      align: 'center',
-      width: 300,
-      label: '部门全称',
-      prop: 'fullName',
-    },
-    {
-      align: 'center',
-      width: 120,
-      label: '部门类型',
-      prop: 'type',
-      slot: 'type',
-    },
-    {
-      align: 'center',
-      width: 100,
-      label: '状态',
-      prop: 'status',
-      formatter: (row: Recordable) => {
-        return row.status === 0 ? '禁用' : '启用'
-      },
-    },
-    {
-      align: 'center',
-      width: 80,
-      label: '排序',
-      prop: 'orderNum',
-    },
-    {
-      align: 'center',
-      label: '备注',
-      prop: 'remark',
-    },
-    {
-      width: 140,
-      align: 'center',
-      label: '操作',
-      fixed: 'right',
-      slot: 'action',
-    },
-  ],
+  columns,
 })
 
+const FormDialogRender = createFormDialog()
+
+const updateDeptId = ref<number | null>(null)
+
 function openEditDeptFormDialog(update?: DeptResult) {
-  openDialog({
-    list: getDataSource(),
-    item: update,
+  FormDialogRender.open((_, formAction) => {
+    const deptTree = [
+      {
+        id: 0,
+        name: '#',
+        children: getDataSource(),
+      },
+    ]
+
+    formAction.updateSchema({
+      prop: 'parentId',
+      componentProps: {
+        data: deptTree,
+      },
+    })
+
+    // is update?
+    if (update) {
+      updateDeptId.value = update.id
+      formAction.setFormModel(update)
+    } else {
+      updateDeptId.value = null
+    }
   })
 }
 
 async function handleDelete(row: DeptResult) {
   await deleteDeptRequest({ id: row.id })
   reload()
+}
+
+async function handleSubmit(res: Omit<DeptResult, 'id'>) {
+  try {
+    FormDialogRender.setFormProps({ disabled: true })
+    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
+
+    if (updateDeptId.value === null) {
+      await addDeptRequest(res)
+    } else {
+      await updateDeptRequest({
+        ...res,
+        id: updateDeptId.value,
+      })
+    }
+
+    FormDialogRender.close()
+
+    reload()
+  } finally {
+    FormDialogRender.setFormProps({ disabled: false })
+    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
+  }
 }
 
 function formatterType(type: number) {

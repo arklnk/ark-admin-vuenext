@@ -3,7 +3,7 @@
     <!-- header -->
     <template #header="{ titleId, titleClass }">
       <div :id="titleId" :class="titleClass">
-        <DialogHeader
+        <BasicHeading
           v-if="!$slots.title"
           :title="getMergeProps.title"
           :help-message="getMergeProps.helpMessage"
@@ -23,7 +23,7 @@
     </template>
 
     <!-- footer -->
-    <template #footer>
+    <template v-if="getShowFooter" #footer>
       <div :class="`${prefixCls}-footer`">
         <DialogFooter
           v-if="!$slots.footer"
@@ -63,34 +63,29 @@ import type { CSSProperties } from 'vue'
 import { computed, defineComponent, ref, unref, watch, watchEffect, getCurrentInstance } from 'vue'
 import { basicProps } from './props'
 import { useDesign } from '/@/composables/core/useDesign'
-import DialogHeader from './components/DialogHeader.vue'
 import DialogFooter from './components/DialogFooter.vue'
 import DialogClose from './components/DialogClose.vue'
 import { isFunction, merge, omit } from 'lodash-es'
 import { useAppInject } from '/@/composables/core/useAppInject'
-import { createDialogContext } from './composables/useDialogContext'
+import { BasicHeading } from '/@/components/Heading'
 
 export default defineComponent({
   name: 'BasicDialog',
   components: {
-    DialogHeader,
     DialogClose,
     DialogFooter,
+    BasicHeading,
   },
   inheritAttrs: false,
   props: basicProps,
-  emits: ['register', 'confirm', 'cancel', 'update:visible', 'visible-change'],
-  setup(props, { emit, attrs, expose }) {
+  emits: ['register', 'confirm', 'cancel', 'update:visible', 'visible-change', 'fullscreen-change'],
+  setup(props, { emit, attrs, expose, slots }) {
     const visibleRef = ref(false)
     const fullscreenRef = ref(false)
 
     const innerPropsRef = ref<Partial<BasicDialogProps>>()
     const { prefixCls } = useDesign('basic-dialog')
     const { getIsMobile } = useAppInject()
-
-    createDialogContext({
-      visibleRef,
-    })
 
     const getMergeProps = computed((): BasicDialogProps => {
       return {
@@ -163,6 +158,18 @@ export default defineComponent({
       ])
     })
 
+    const getShowFooter = computed((): boolean => {
+      const mergeProps = unref(getMergeProps)
+      return (
+        mergeProps.showCancelBtn ||
+        mergeProps.showCancelBtn ||
+        !!slots.footer ||
+        !!slots.prependFooter ||
+        !!slots.centerFooter ||
+        !!slots.appendFooter
+      )
+    })
+
     async function handleCancel() {
       if (props.closeFunc && isFunction(props.closeFunc)) {
         const isClose: boolean = await props.closeFunc()
@@ -217,12 +224,20 @@ export default defineComponent({
       }
     )
 
+    watch(
+      () => unref(fullscreenRef),
+      (v) => {
+        emit('fullscreen-change', v)
+      }
+    )
+
     return {
       prefixCls,
       fullscreenRef,
       getBindValue,
       getMergeProps,
       getWrapperStyle,
+      getShowFooter,
       handleCancel,
       handleConfirm,
       handleFullscreen,

@@ -36,70 +36,114 @@
       </template>
     </BasicTable>
 
-    <EditRoleFormDialog @register="registerDialog" @success="reload" />
+    <FormDialogRender
+      :dialog-props="{ title: '编辑角色信息' }"
+      :form-props="{ schemas, labelWidth: '100px' }"
+      :handle-submit="handleSubmit"
+    >
+      <template #status="{ model }">
+        <ElRadioGroup v-model="model.status">
+          <ElRadio :label="1">启用</ElRadio>
+          <ElRadio :label="0">禁用</ElRadio>
+        </ElRadioGroup>
+      </template>
+    </FormDialogRender>
   </PageWrapper>
 </template>
 
 <script setup lang="ts">
+import type { RoleResult } from '/@/api/system/role'
+
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
-import { getRoleListRequest, deleteRoleRequest, Api } from '/@/api/system/role'
-import EditRoleFormDialog from './components/EditRoleFormDialog.vue'
-import { useDialog } from '/@/components/Dialog'
+import {
+  getRoleListRequest,
+  deleteRoleRequest,
+  Api,
+  addRoleRequest,
+  updateRoleRequest,
+} from '/@/api/system/role'
 import { usePermission } from '/@/composables/core/usePermission'
+import { columns } from './columns'
+import { schemas } from './schemas'
+import { createFormDialog } from '/@/components/Form'
+import { ref } from 'vue'
+import { getMenuListRequest } from '/@/api/system/menu'
 
 const { hasPermission } = usePermission()
 
-const [registerDialog, { openDialog }] = useDialog()
 const [registerTable, { getDataSource, reload }] = useTable({
-  columns: [
-    {
-      label: '角色名称',
-      prop: 'name',
-      width: 280,
-    },
-    {
-      label: '角色标识',
-      prop: 'uniqueKey',
-      width: 220,
-      align: 'center',
-    },
-    {
-      align: 'center',
-      width: 100,
-      label: '状态',
-      prop: 'status',
-      formatter: (row: Recordable): string => {
-        return row.status === 0 ? '禁用' : '启用'
-      },
-    },
-    {
-      align: 'center',
-      label: '备注',
-      prop: 'remark',
-      showTooltipWhenOverflow: true,
-    },
-    {
-      width: 100,
-      align: 'center',
-      label: '排序',
-      prop: 'orderNum',
-    },
-    {
-      width: 140,
-      align: 'center',
-      label: '操作',
-      slot: 'action',
-      fixed: 'right',
-    },
-  ],
+  columns,
 })
 
+const FormDialogRender = createFormDialog()
+
+const updateRoleId = ref<number | null>(null)
+
 function openEditRoleFormDialog(update?: Recordable) {
-  openDialog({
-    list: getDataSource(),
-    item: update,
+  FormDialogRender.open(async (_, formAction) => {
+    try {
+      FormDialogRender.setDialogProps({ loading: true })
+      const permTree = await getMenuListRequest()
+
+      formAction.updateSchema({
+        prop: 'permMenuIds',
+        componentProps: {
+          data: permTree,
+        },
+      })
+    } catch (e) {
+      FormDialogRender.close()
+    } finally {
+      FormDialogRender.setDialogProps({ loading: false })
+    }
+
+    const roleTree = [
+      {
+        id: 0,
+        name: '#',
+        children: getDataSource() || [],
+      },
+    ]
+
+    formAction.updateSchema({
+      prop: 'parentId',
+      componentProps: {
+        data: roleTree,
+      },
+    })
+
+    // is update?
+    if (update) {
+      formAction.setFormModel(update)
+      updateRoleId.value = update.id
+    } else {
+      updateRoleId.value = null
+    }
   })
+}
+
+async function handleSubmit(res: Omit<RoleResult, 'id'>) {
+  try {
+    FormDialogRender.setFormProps({ disabled: true })
+    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
+
+    if (updateRoleId.value === null) {
+      await addRoleRequest(res)
+    } else {
+      await updateRoleRequest({
+        ...res,
+        id: updateRoleId.value!,
+      })
+    }
+
+    FormDialogRender.close()
+
+    reload()
+  } finally {
+    FormDialogRender.setFormProps({ disabled: false })
+    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
+  }
 }
 
 async function handleDelete(row: Recordable) {
