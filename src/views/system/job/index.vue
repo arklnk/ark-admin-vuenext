@@ -66,7 +66,7 @@ import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
-const [registerTable, { reload }] = useTable({ columns })
+const [registerTable, { reload }] = useTable({ columns, rowKey: 'id' })
 
 const FormDialogRender = createFormDialog()
 
