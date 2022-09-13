@@ -33,7 +33,6 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
     isRendered.value = true
 
     const drawerProps = {
-      destroyOnClose: true,
       ...(props.drawerProps || {}),
       onConfirm: unref(formRef)?.submit,
       onVisibleChange: (visible: boolean) => {

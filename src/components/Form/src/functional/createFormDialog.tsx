@@ -34,7 +34,6 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
     isRendered.value = true
 
     const dialogProps = {
-      destroyOnClose: true,
       ...(props.dialogProps || {}),
       onConfirm: unref(formRef)?.submit,
       onVisibleChange: (visible: boolean) => {
