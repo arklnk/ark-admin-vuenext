@@ -20,9 +20,8 @@
       </BasicTableColumn>
 
       <!-- append and empty slot -->
-      <template #[item]="data" v-for="item in Object.keys(pick($slots, ['append', 'empty']))">
-        <slot :name="item" v-bind="data || {}"></slot>
-      </template>
+      <template v-if="$slots.append" #append><slot name="append"></slot></template>
+      <template v-if="$slots.empty" #empty><slot name="empty"></slot></template>
     </ElTable>
 
     <!-- footer -->
