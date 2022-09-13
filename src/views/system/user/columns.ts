@@ -82,6 +82,15 @@ export const userColumns: TableColumn[] = [
     width: 180,
   },
   {
+    align: 'center',
+    width: 100,
+    label: '状态',
+    prop: 'status',
+    formatter: (row: Recordable) => {
+      return row.status === 0 ? '禁用' : '启用'
+    },
+  },
+  {
     label: '排序',
     prop: 'orderNum',
     align: 'center',
