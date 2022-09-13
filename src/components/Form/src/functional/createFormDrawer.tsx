@@ -84,8 +84,9 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
     // hack onClosed hook to gc this dom
     function onClosed() {
       nextTick(() => {
+        // here we were suppose to call document.body.removeChild(container.firstElementChild)
+        // but render(null, container) did that job for us. so that we do not call that directly
         render(null, container)
-        document.body.removeChild(container)
 
         // reset
         isRendered.value = false
@@ -100,7 +101,7 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
     // useing App context
     vm.appContext = globalAppContext
     render(vm, container)
-    document.body.appendChild(container)
+    document.body.appendChild(container.firstElementChild!)
 
     // created done
     _fdInstance = vm.component!
