@@ -57,6 +57,7 @@ import { useTableEvents } from './composables/useTableEvents'
 import { useCurrentRow } from './composables/useCurrentRow'
 import { warn } from '/@/utils/log'
 import { useRowSelection } from './composables/useRowSelection'
+import { useTableExpand } from './composables/useTableExpand'
 
 export default defineComponent({
   name: 'BasicTable',
@@ -151,7 +152,9 @@ export default defineComponent({
     const { clearSelection, getSelectionRows, toggleRowSelection, toggleAllSelection } =
       useRowSelection(tableRef)
 
-    const { onTableEvent } = useTableEvents(emit, getProps, tableRef, setCurrentRowRef)
+    const { handleRowClickToggleExpand, toggleRowExpansion } = useTableExpand(getProps, tableRef)
+
+    const { onTableEvent } = useTableEvents(emit, { setCurrentRowRef, handleRowClickToggleExpand })
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -229,6 +232,7 @@ export default defineComponent({
       getSelectionRows,
       toggleRowSelection,
       toggleAllSelection,
+      toggleRowExpansion,
     }
 
     createTableContext({ ...tableAction, wrapRef, tableRef, getBindValues })

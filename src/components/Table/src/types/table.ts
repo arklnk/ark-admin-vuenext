@@ -52,6 +52,7 @@ export interface BasicTableActionType {
   getSelectionRows: <T = Recordable>() => T[]
   toggleRowSelection: (row: Recordable, selected?: boolean) => void
   toggleAllSelection: () => void
+  toggleRowExpansion: (row: Recordable, expanded?: boolean) => void
   setColumns: (columns: TableColumn[]) => void
   getColumns: (params?: GetColumnsParams) => TableColumn[]
 }
