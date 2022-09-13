@@ -29,26 +29,12 @@ export type BasicTableProps = Partial<ExtractPropTypes<typeof basicProps>>
 
 export type Key = string | number
 
-export type GetRowKey<T = Recordable> = (record: T, index?: number) => Key
+export type GetRowKey = (record: Recordable, index?: number) => Key
 
 export interface GetColumnsParams {
   ignoreIndex?: boolean
   ignoreSelection?: boolean
   ignoreExpand?: boolean
-}
-
-export interface TableRowSelection {
-  selectedRowKeys?: Key[]
-  // 多选 / 单选
-  type?: 'checkbox' | 'radio'
-  fixed?: boolean
-  // 隐藏全选，多选下启用
-  hideSelectAll?: boolean
-  columnWidth?: string | number
-  clearOnPageChange?: boolean
-  align?: 'center' | 'left' | 'right'
-  resizable?: boolean
-  selectable?: (row: Recordable) => boolean
 }
 
 export interface BasicTableActionType {
@@ -62,6 +48,10 @@ export interface BasicTableActionType {
   redoHeight: () => void
   setCurrentRow: (row: Recordable) => void
   getCurrentRow: () => Nullable<Recordable>
+  clearSelection: () => void
+  getSelectionRows: <T = Recordable>() => T[]
+  toggleRowSelection: (row: Recordable, selected?: boolean) => void
+  toggleAllSelection: () => void
   setColumns: (columns: TableColumn[]) => void
   getColumns: (params?: GetColumnsParams) => TableColumn[]
 }

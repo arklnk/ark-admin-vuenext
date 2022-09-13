@@ -93,6 +93,18 @@ export function useTable(tableProps?: Props): [Register, BasicTableActionType] {
     getCurrentRow: () => {
       return getTableInstance().getCurrentRow()
     },
+    clearSelection: () => {
+      getTableInstance().clearSelection()
+    },
+    getSelectionRows: () => {
+      return getTableInstance().getSelectionRows()
+    },
+    toggleRowSelection: (row: Recordable, selected?: boolean) => {
+      getTableInstance().toggleRowSelection(row, selected)
+    },
+    toggleAllSelection: () => {
+      getTableInstance().toggleAllSelection()
+    },
     setColumns: (columns: TableColumn[]) => {
       return getTableInstance().setColumns(columns)
     },
