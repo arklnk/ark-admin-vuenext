@@ -27,24 +27,19 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
   const drawerRef = ref<BasicDrawerActionType>()
   const formRef = ref<BasicFormActionType>()
 
-  const isRendered = ref(false)
-
   const FormDrawerRender = (props: Partial<FormDrawerProps>, context: SetupContext) => {
-    isRendered.value = true
-
     const drawerProps = {
       ...(props.drawerProps || {}),
+      destroyOnClose: true,
       onConfirm: unref(formRef)?.submit,
-      onVisibleChange: (visible: boolean) => {
+      onCancel: () => {
         // 不可视时重置表单值
-        !visible && unref(formRef)?.resetFields()
+        unref(formRef)?.resetFields()
       },
     }
 
     // hook onSubmit
     function handleSubmit(res: Recordable) {
-      context.emit('submit', res, unref(drawerRef)!, unref(formRef)!)
-
       if (props.handleSubmit && isFunction(props.handleSubmit)) {
         props.handleSubmit(res, unref(drawerRef)!, unref(formRef)!)
       }
@@ -58,7 +53,7 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
 
     return (
       <BasicDrawer ref={drawerRef} {...drawerProps}>
-        <BasicForm ref={formRef} {...{ ...formProps }} v-slots={context.slots} />
+        <BasicForm ref={formRef} {...formProps} v-slots={context.slots} />
       </BasicDrawer>
     )
   }
@@ -72,9 +67,10 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
 
   function initVNode() {
     // 在模板中使用，那么无需手动初始化，直接操作使用FormDrawerRender操作即可
+    // 但请注意使用时机，必须保证在mounted后操作
     // 如果不在模板中使用则需要手动创建节点
     // 手动创建节点会在关闭Drawer时直接销毁DOM节点，避免无法销毁导致内存泄漏
-    if (isRendered.value) return
+    if (unref(drawerRef)) return
 
     // vnode is created
     if (_fdInstance) return
@@ -87,9 +83,6 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
         // here we were suppose to call document.body.removeChild(container.firstElementChild)
         // but render(null, container) did that job for us. so that we do not call that directly
         render(null, container)
-
-        // reset
-        isRendered.value = false
         _fdInstance = null
       })
     }
@@ -133,21 +126,11 @@ export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
     setDrawerProps({ visible: false })
   }
 
-  function getDrawerAction() {
-    return unref(drawerRef)
-  }
-
-  function getFormAction() {
-    return unref(formRef)
-  }
-
   // mouted action
   FormDrawerRender.setDrawerProps = setDrawerProps
   FormDrawerRender.setFormProps = setFormProps
   FormDrawerRender.open = open
   FormDrawerRender.close = close
-  FormDrawerRender.getDrawerAction = getDrawerAction
-  FormDrawerRender.getFormAction = getFormAction
 
   return FormDrawerRender
 }
