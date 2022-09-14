@@ -123,9 +123,11 @@ const { hasPermission } = usePermission()
 
 const [registerDeptTable, { getCurrentRow }] = useTable({
   columns: deptColumns,
+  rowKey: 'id',
 })
 const [registerUserTable, { reload }] = useTable({
   columns: userColumns,
+  rowKey: 'id',
 })
 
 const updateUserId = ref<number | null>(null)

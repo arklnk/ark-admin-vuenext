@@ -10,6 +10,7 @@ import { BasicTable, useTable } from '/@/components/Table'
 import { getLoginLogPageRequest } from '/@/api/log/login'
 
 const [register] = useTable({
+  rowKey: 'id',
   columns: [
     {
       type: 'index',

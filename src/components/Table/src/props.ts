@@ -1,5 +1,5 @@
 import type { PaginationProps } from './types/pagination'
-import type { TableSetting, FetchSetting, TableRowSelection } from './types/table'
+import type { TableSetting, FetchSetting } from './types/table'
 import type { TableColumn } from './types/column'
 
 import defaultProps from 'element-plus/lib/components/table/src/table/defaults'
@@ -75,14 +75,6 @@ export const basicProps = {
   loading: {
     type: Boolean,
     default: false,
-  },
-  /**
-   * 自定义的多选功能，支持单选模式，不允许与原有的type="selection"共用，因为自定义的也是使用了原定义的事件
-   * 默认为null则不启用
-   */
-  rowSelection: {
-    type: Object as PropType<TableRowSelection>,
-    default: null,
   },
   /**
    * 支持代码方式传入column属性渲染

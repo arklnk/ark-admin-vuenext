@@ -37,17 +37,16 @@
 </template>
 
 <script lang="ts">
-import type { BasicTableActionType, BasicTableProps } from './types/table'
+import type { BasicTableActionType, BasicTableProps, GetRowKey } from './types/table'
 import type { SizeType } from '/#/config'
 
 import { computed, defineComponent, ref, unref } from 'vue'
-import { omit, pick } from 'lodash-es'
+import { get, isFunction, omit, pick } from 'lodash-es'
 import { useLoading } from './composables/useLoading'
 import { basicProps } from './props'
 import { usePagination } from './composables/usePagination'
 import { useDataSource } from './composables/useDataSource'
 import { useDesign } from '/@/composables/core/useDesign'
-import { useRowSelection } from './composables/useRowSelection'
 import { useColumns } from './composables/useColumns'
 import { createTableContext } from './composables/useTableContext'
 import { useTableHeight } from './composables/useTableHeight'
@@ -56,6 +55,9 @@ import BasicTableHeader from './components/TableHeader.vue'
 import BasicTableFooter from './components/TableFooter.vue'
 import { useTableEvents } from './composables/useTableEvents'
 import { useCurrentRow } from './composables/useCurrentRow'
+import { warn } from '/@/utils/log'
+import { useRowSelection } from './composables/useRowSelection'
+import { useTableExpand } from './composables/useTableExpand'
 
 export default defineComponent({
   name: 'BasicTable',
@@ -105,7 +107,18 @@ export default defineComponent({
       return { ...props, ...unref(innerPropsRef) } as BasicTableProps
     })
 
-    const { setLoading, getLoading } = useLoading(getProps)
+    // 设置默认RowKey为id
+    const getRowKey = computed((): GetRowKey => {
+      if (!unref(getProps).rowKey) {
+        warn('BasicTable rowKey prop not specify')
+      }
+
+      if (isFunction(unref(getProps).rowKey)) {
+        return unref(getProps).rowKey as GetRowKey
+      }
+
+      return (record: Recordable) => get(record, unref(getProps).rowKey as string)
+    })
 
     const {
       getPaginationRef,
@@ -115,20 +128,16 @@ export default defineComponent({
       getShowPaginationRef,
     } = usePagination(getProps)
 
-    const { clearSelectedKeys } = useRowSelection(getProps, tableDataRef, emit)
+    const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps, getPaginationRef)
+
+    const { setLoading, getLoading } = useLoading(getProps)
 
     const {
       getDataSourceRef,
       getDataSource,
       handleTableChange: onTableChange,
       reload,
-    } = useDataSource(
-      getProps,
-      { getPaginationRef, setPagination, setLoading, tableDataRef, clearSelectedKeys },
-      emit
-    )
-
-    const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps, getPaginationRef)
+    } = useDataSource(getProps, { getPaginationRef, setPagination, setLoading, tableDataRef }, emit)
 
     const { getTableHeight, redoHeight } = useTableHeight(
       getProps,
@@ -140,7 +149,12 @@ export default defineComponent({
 
     const { setCurrentRowRef, setCurrentRow, getCurrentRow } = useCurrentRow(tableRef)
 
-    const { onTableEvent } = useTableEvents(emit, getProps, tableRef, setCurrentRowRef)
+    const { clearSelection, getSelectionRows, toggleRowSelection, toggleAllSelection } =
+      useRowSelection(tableRef)
+
+    const { handleRowClickToggleExpand, toggleRowExpansion } = useTableExpand(getProps, tableRef)
+
+    const { onTableEvent } = useTableEvents(emit, { setCurrentRowRef, handleRowClickToggleExpand })
 
     const getBindValues = computed(() => {
       const data = unref(getDataSourceRef)
@@ -149,6 +163,7 @@ export default defineComponent({
         ...unref(getProps),
         ...(unref(getTableHeight) ? { height: unref(getTableHeight) } : {}),
         ...onTableEvent,
+        rowKey: unref(getRowKey),
         data,
       }
 
@@ -213,6 +228,11 @@ export default defineComponent({
       getCurrentRow,
       setColumns,
       getColumns,
+      clearSelection,
+      getSelectionRows,
+      toggleRowSelection,
+      toggleAllSelection,
+      toggleRowExpansion,
     }
 
     createTableContext({ ...tableAction, wrapRef, tableRef, getBindValues })

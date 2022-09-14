@@ -116,10 +116,12 @@ const [
   registerDictTable,
   { setCurrentRow, getDataSource: getSetDataSource, getCurrentRow, reload: reloadDictTable },
 ] = useTable({
+  rowKey: 'id',
   columns: dictColumns,
 })
 
 const [registerItemTable, { reload }] = useTable({
+  rowKey: 'id',
   columns,
 })
 

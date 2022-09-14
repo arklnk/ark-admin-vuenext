@@ -70,6 +70,7 @@ const FormDialogRender = createFormDialog()
 
 const [registerTable, { reload }] = useTable({
   columns,
+  rowKey: 'id',
 })
 
 const updateProfId = ref<number | null>(null)

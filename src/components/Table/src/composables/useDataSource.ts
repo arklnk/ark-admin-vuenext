@@ -10,13 +10,12 @@ interface ActionType {
   getPaginationRef: ComputedRef<Nullable<PaginationProps>>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
-  clearSelectedKeys: () => void
   tableDataRef: Ref<Recordable[]>
 }
 
 export function useDataSource(
   getProps: ComputedRef<BasicTableProps>,
-  { setLoading, getPaginationRef, setPagination, tableDataRef, clearSelectedKeys }: ActionType,
+  { setLoading, getPaginationRef, setPagination, tableDataRef }: ActionType,
   emit: EmitFn
 ) {
   const dataSourceRef = ref<Recordable[]>([])
@@ -39,10 +38,6 @@ export function useDataSource(
   })
 
   function handleTableChange(pagination: Partial<PaginationProps>) {
-    if (unref(getProps).rowSelection?.clearOnPageChange) {
-      clearSelectedKeys()
-    }
-
     setPagination(pagination)
 
     fetch()

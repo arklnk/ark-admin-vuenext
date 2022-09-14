@@ -74,6 +74,7 @@ const { hasPermission } = usePermission()
 
 const [registerTable, { getDataSource, reload }] = useTable({
   columns,
+  rowKey: 'id',
 })
 
 const FormDialogRender = createFormDialog()

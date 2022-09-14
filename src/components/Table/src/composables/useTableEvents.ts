@@ -1,23 +1,15 @@
-import type { ComputedRef, Ref } from 'vue'
-import type { BasicTableProps } from '../types/table'
-import type { ElTable } from 'element-plus'
-
-import { unref, computed } from 'vue'
-import { DEFAULT_CHILDREN_KEY } from '../const'
+interface ActionType {
+  setCurrentRowRef: Fn
+  handleRowClickToggleExpand: Fn
+}
 
 /**
  * 注册原有的ElTable事件
  */
 export function useTableEvents(
   emit: EmitFn,
-  getProps: ComputedRef<BasicTableProps>,
-  tableRef: Ref<Nullable<InstanceType<typeof ElTable>>>,
-  setCurrentRowRef: Fn
+  { setCurrentRowRef, handleRowClickToggleExpand }: ActionType
 ) {
-  const getChildrenName = computed(() => {
-    return unref(getProps).treeProps?.children || DEFAULT_CHILDREN_KEY
-  })
-
   function handleSelect(...args: any[]) {
     emit('select', ...args)
   }
@@ -51,16 +43,7 @@ export function useTableEvents(
   }
 
   function handleRowClick(row: Recordable, column: any, event: Event) {
-    // tree table and must be a cell target， a blank is in effect
-    // highlightCurrentRow is true then do not process
-    if (
-      !unref(getProps).highlightCurrentRow &&
-      Reflect.has(row, unref(getChildrenName)) &&
-      event.target instanceof HTMLElement &&
-      event.target.className.includes('cell')
-    ) {
-      unref(tableRef)?.toggleRowExpansion(row)
-    }
+    handleRowClickToggleExpand(row, event)
 
     emit('row-click', row, column, event)
   }
@@ -90,7 +73,6 @@ export function useTableEvents(
   }
 
   function handleCurrentChange(currentRow: Recordable, oldCurrentRow: Recordable) {
-    // update current row
     setCurrentRowRef(currentRow)
 
     emit('current-change', currentRow, oldCurrentRow)
