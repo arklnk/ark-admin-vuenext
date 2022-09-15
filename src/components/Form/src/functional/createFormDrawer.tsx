@@ -7,6 +7,7 @@ import BasicForm from '../BasicForm.vue'
 import { ref, unref, nextTick, render, createVNode } from 'vue'
 import { isFunction, merge } from 'lodash-es'
 import { globalAppContext } from '/@/components/registerGlobalComp'
+import { tryOnUnmounted } from '@vueuse/core'
 
 interface FormDrawerProps {
   formProps: BasicFormProps
@@ -24,8 +25,13 @@ type OnOpenFn = (
 ) => void | Promise<void>
 
 export function createFormDrawer(createProps: Partial<FormDrawerProps>) {
-  const drawerRef = ref<BasicDrawerActionType>()
-  const formRef = ref<BasicFormActionType>()
+  const drawerRef = ref<Nullable<BasicDrawerActionType>>()
+  const formRef = ref<Nullable<BasicFormActionType>>()
+
+  tryOnUnmounted(() => {
+    drawerRef.value = null
+    formRef.value = null
+  })
 
   const FormDrawerRender = (props: Partial<FormDrawerProps>, context: SetupContext) => {
     const drawerProps = {

@@ -7,6 +7,7 @@ import BasicForm from '../BasicForm.vue'
 import { ref, unref, render, createVNode, nextTick } from 'vue'
 import { globalAppContext } from '/@/components/registerGlobalComp'
 import { isFunction, merge } from 'lodash-es'
+import { tryOnUnmounted } from '@vueuse/core'
 
 interface FormDialogProps {
   formProps: BasicFormProps
@@ -24,8 +25,13 @@ type OnOpenFn = (
 ) => void | Promise<void>
 
 export function createFormDialog(createProps?: Partial<FormDialogProps>) {
-  const dialogRef = ref<BasicDialogActionType | null>(null)
-  const formRef = ref<BasicFormActionType | null>(null)
+  const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
+  const formRef = ref<Nullable<BasicFormActionType>>(null)
+
+  tryOnUnmounted(() => {
+    dialogRef.value = null
+    formRef.value = null
+  })
 
   // FormDialog FunctionalComponent
   const FormDialogRender = (props: Partial<FormDialogProps>, context: SetupContext) => {

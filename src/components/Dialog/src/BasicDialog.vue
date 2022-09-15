@@ -123,16 +123,6 @@ export default defineComponent({
         showClose: false,
       }
 
-      // 设置手机端行为：手机端行为下默认全屏
-      const isMobile = unref(getIsMobile)
-      if (isMobile) {
-        opt.fullscreen = true
-        setProps({ canFullscreen: false })
-      } else {
-        // 还原回原来的默认值
-        opt.canFullscreen && setProps({ canFullscreen: props.canFullscreen })
-      }
-
       // 当 modal 的值为 false 时，请一定要确保 append-to-body 属性为 true
       if (props.modal === false) {
         opt.appendToBody = true
@@ -215,6 +205,24 @@ export default defineComponent({
       visibleRef.value = !!props.visible
       fullscreenRef.value = !!props.defaultFullscreen
     })
+
+    watch(
+      () => unref(getIsMobile),
+      (v) => {
+        if (v) {
+          // 设置手机端行为：手机端行为下默认全屏
+          // 禁止还原非全屏
+          fullscreenRef.value = true
+          setProps({ canFullscreen: false })
+        } else {
+          // 还原回原来的默认值
+          setProps({ canFullscreen: props.canFullscreen })
+        }
+      },
+      {
+        immediate: true,
+      }
+    )
 
     watch(
       () => unref(visibleRef),
