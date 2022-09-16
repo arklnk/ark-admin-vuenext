@@ -16,7 +16,14 @@ export const schemas: FormSchema[] = [
     label: '状态',
     defaultValue: 1,
     prop: 'status',
-    slot: 'status',
+    render: ({ model }) => {
+      return (
+        <el-radio-group v-model={model.status}>
+          <el-radio label={1}>启用</el-radio>
+          <el-radio label={0}>禁用</el-radio>
+        </el-radio-group>
+      )
+    },
     colProps: {
       span: 12,
     },

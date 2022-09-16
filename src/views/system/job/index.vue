@@ -30,19 +30,6 @@
         />
       </template>
     </BasicTable>
-
-    <FormDialogRender
-      :form-props="{ schemas, labelWidth: '100px' }"
-      :dialog-props="{ title: '编辑岗位信息' }"
-      :handle-submit="handleSubmit"
-    >
-      <template #status="{ model }">
-        <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">启用</ElRadio>
-          <ElRadio :label="0">禁用</ElRadio>
-        </ElRadioGroup>
-      </template>
-    </FormDialogRender>
   </PageWrapper>
 </template>
 
@@ -68,41 +55,42 @@ const { hasPermission } = usePermission()
 
 const [registerTable, { reload }] = useTable({ columns, rowKey: 'id' })
 
-const FormDialogRender = createFormDialog()
+const fdInstance = createFormDialog({
+  formProps: { schemas, labelWidth: '100px' },
+  dialogProps: { title: '编辑岗位信息' },
+  submit: async (res: Omit<JobResult, 'id'>, { showLoading, hideLoading, close }) => {
+    try {
+      showLoading()
+
+      if (updateJobId.value === null) {
+        await addJobRequest(res)
+      } else {
+        await updateJobRequest({
+          ...res,
+          id: updateJobId.value,
+        })
+      }
+
+      close()
+
+      reload()
+    } finally {
+      hideLoading()
+    }
+  },
+})
 
 const updateJobId = ref<number | null>(null)
 
 function openEditJobFormDialog(update?: JobResult) {
-  FormDialogRender.open((_, formAction) => {
+  fdInstance.open(({ getFormAction }) => {
     if (update) {
       updateJobId.value = update.id
-      formAction.setFormModel(update)
+      getFormAction()?.setFormModel(update)
     } else {
       updateJobId.value = null
     }
   })
-}
-
-async function handleSubmit(res: Omit<JobResult, 'id'>) {
-  try {
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
-    FormDialogRender.setFormProps({ disabled: true })
-
-    if (updateJobId.value === null) {
-      await addJobRequest(res)
-    } else {
-      await updateJobRequest({
-        ...res,
-        id: updateJobId.value,
-      })
-    }
-
-    FormDialogRender.close()
-    reload()
-  } finally {
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
-    FormDialogRender.setFormProps({ disabled: false })
-  }
 }
 
 async function handleDelete(row: JobResult) {

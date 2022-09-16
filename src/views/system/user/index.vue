@@ -72,27 +72,6 @@
         </BasicTable>
       </div>
     </div>
-
-    <EditUserFormDialogRender
-      :dialog-props="{ title: '编辑用户信息' }"
-      :form-props="{ labelWidth: '100px', schemas }"
-      :handle-submit="handleSubmit"
-    >
-      <template #gender="{ model }">
-        <ElSelect v-model="model.gender" class="w-full">
-          <ElOption label="保密" :value="0" />
-          <ElOption label="女" :value="1" />
-          <ElOption label="男" :value="2" />
-        </ElSelect>
-      </template>
-
-      <template #status="{ model }">
-        <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">启用</ElRadio>
-          <ElRadio :label="0">禁用</ElRadio>
-        </ElRadioGroup>
-      </template>
-    </EditUserFormDialogRender>
   </PageWrapper>
 </template>
 
@@ -132,13 +111,39 @@ const [registerUserTable, { reload }] = useTable({
 
 const updateUserId = ref<number | null>(null)
 
-const EditUserFormDialogRender = createFormDialog()
+const fdInstance = createFormDialog({
+  dialogProps: { title: '编辑用户信息' },
+  formProps: { labelWidth: '100px', schemas },
+  submit: async (res: UserRequestParams, { showLoading, hideLoading, close }) => {
+    try {
+      showLoading()
+
+      // set default
+      res.avatar = ''
+
+      if (updateUserId.value === null) {
+        await addUserRequest(res)
+      } else {
+        await updateUserRequest({
+          ...res,
+          id: updateUserId.value,
+        })
+      }
+
+      close()
+
+      reload()
+    } finally {
+      hideLoading()
+    }
+  },
+})
 
 function openEditUserFormDialog(update?: Recordable) {
-  EditUserFormDialogRender.open(async (_, formAction) => {
+  fdInstance.open(async ({ showLoading, close, getFormAction, hideLoading }) => {
     // 请求当前角色所拥有的角色权限、以及部门、岗位、职称列表信息
     try {
-      EditUserFormDialogRender.setDialogProps({ loading: true })
+      showLoading()
       const { role, dept, profession, job } = await getRDPJInfoRequest({
         userId: update ? update.id : 0,
       })
@@ -173,18 +178,18 @@ function openEditUserFormDialog(update?: Recordable) {
           disabled: !!update,
         },
       ]
-      formAction.updateSchema(updateSchemas)
+      getFormAction()?.updateSchema(updateSchemas)
     } catch (e) {
-      EditUserFormDialogRender.close()
+      close()
     } finally {
-      EditUserFormDialogRender.setDialogProps({ loading: false })
+      hideLoading()
     }
 
     // is update?
     if (update) {
       const item = update
 
-      formAction.setFormModel({
+      getFormAction()?.setFormModel({
         ...item,
         jobId: item.job.id,
         professionId: item.profession.id,
@@ -207,32 +212,6 @@ async function processUserListRequest(params: any) {
   })
 }
 
-async function handleSubmit(res: UserRequestParams) {
-  try {
-    EditUserFormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
-    EditUserFormDialogRender.setFormProps({ disabled: true })
-
-    // set default
-    res.avatar = ''
-
-    if (updateUserId.value === null) {
-      await addUserRequest(res)
-    } else {
-      await updateUserRequest({
-        ...res,
-        id: updateUserId.value,
-      })
-    }
-
-    EditUserFormDialogRender.close()
-
-    reload()
-  } finally {
-    EditUserFormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
-    EditUserFormDialogRender.setFormProps({ disabled: false })
-  }
-}
-
 async function handleDelete(row: Recordable) {
   await deleteUserRequest({ id: row.id })
   reload()
@@ -245,7 +224,7 @@ function handleDeptChange() {
 }
 
 function handleUpdatePwd(row: Recordable) {
-  const FormDialogRender = createFormDialog({
+  createFormDialog({
     dialogProps: {
       title: `更改账号${row.account}的密码`,
       width: '30%',
@@ -254,24 +233,21 @@ function handleUpdatePwd(row: Recordable) {
     formProps: {
       schemas: pwdSchemas,
     },
-    handleSubmit: async (res, dialogAction, formAction) => {
+    submit: async (res, { showLoading, close, hideLoading }) => {
       try {
-        dialogAction.setProps({ confirmBtnProps: { loading: true } })
-        formAction.setProps({ disabled: true })
+        showLoading()
 
         await updateUserPwdRequest({
           id: row.id,
           password: res.password,
         })
 
-        FormDialogRender.close()
+        close()
       } finally {
-        dialogAction.setProps({ confirmBtnProps: { loading: false } })
-        formAction.setProps({ disabled: false })
+        hideLoading()
       }
     },
-  })
-  FormDialogRender.open()
+  }).open()
 }
 
 onMounted(() => {

@@ -34,26 +34,6 @@
         />
       </template>
     </BasicTable>
-
-    <FormDialogRender
-      :form-props="{ labelWidth: '100px', schemas }"
-      :dialog-props="{ title: '编辑部门信息' }"
-      :handle-submit="handleSubmit"
-    >
-      <template #status="{ model }">
-        <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">启用</ElRadio>
-          <ElRadio :label="0">禁用</ElRadio>
-        </ElRadioGroup>
-      </template>
-      <template #type="{ model }">
-        <ElSelect v-model="model.type" class="w-full">
-          <ElOption label="公司" :value="1" />
-          <ElOption label="子公司" :value="2" />
-          <ElOption label="部门" :value="3" />
-        </ElSelect>
-      </template>
-    </FormDialogRender>
   </PageWrapper>
 </template>
 
@@ -84,12 +64,35 @@ const [registerTable, { getDataSource, reload }] = useTable({
   columns,
 })
 
-const FormDialogRender = createFormDialog()
-
 const updateDeptId = ref<number | null>(null)
 
+const fdInstance = createFormDialog({
+  formProps: { labelWidth: '100px', schemas },
+  dialogProps: { title: '编辑部门信息' },
+  submit: async (res: Omit<DeptResult, 'id'>, { showLoading, hideLoading, close }) => {
+    try {
+      showLoading()
+
+      if (updateDeptId.value === null) {
+        await addDeptRequest(res)
+      } else {
+        await updateDeptRequest({
+          ...res,
+          id: updateDeptId.value,
+        })
+      }
+
+      close()
+
+      reload()
+    } finally {
+      hideLoading()
+    }
+  },
+})
+
 function openEditDeptFormDialog(update?: DeptResult) {
-  FormDialogRender.open((_, formAction) => {
+  fdInstance.open(({ getFormAction }) => {
     const deptTree = [
       {
         id: 0,
@@ -98,7 +101,7 @@ function openEditDeptFormDialog(update?: DeptResult) {
       },
     ]
 
-    formAction.updateSchema({
+    getFormAction()?.updateSchema({
       prop: 'parentId',
       componentProps: {
         data: deptTree,
@@ -108,7 +111,7 @@ function openEditDeptFormDialog(update?: DeptResult) {
     // is update?
     if (update) {
       updateDeptId.value = update.id
-      formAction.setFormModel(update)
+      getFormAction()?.setFormModel(update)
     } else {
       updateDeptId.value = null
     }
@@ -118,29 +121,6 @@ function openEditDeptFormDialog(update?: DeptResult) {
 async function handleDelete(row: DeptResult) {
   await deleteDeptRequest({ id: row.id })
   reload()
-}
-
-async function handleSubmit(res: Omit<DeptResult, 'id'>) {
-  try {
-    FormDialogRender.setFormProps({ disabled: true })
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
-
-    if (updateDeptId.value === null) {
-      await addDeptRequest(res)
-    } else {
-      await updateDeptRequest({
-        ...res,
-        id: updateDeptId.value,
-      })
-    }
-
-    FormDialogRender.close()
-
-    reload()
-  } finally {
-    FormDialogRender.setFormProps({ disabled: false })
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
-  }
 }
 
 function formatterType(type: number) {

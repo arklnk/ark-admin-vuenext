@@ -2,14 +2,74 @@ import type { MenuResult } from '/@/api/system/menu'
 import type { FormSchema } from '/@/components/Form'
 
 import { IconPicker } from '/@/components/Icon'
+import { getDynamicImportViews } from '/@/router/helper/routeHelper'
+import { isProdMode } from '/@/utils/env'
 import { isUrl } from '/@/utils/is'
+
+const allDynamicImportViews = getDynamicImportViews()
+
+export function createPermSchema(): FormSchema {
+  const schema: FormSchema = {
+    label: '权限',
+    defaultValue: [],
+    prop: 'perms',
+    hidden: ({ model }) => {
+      return model.type === 1 || model.type === 0
+    },
+    rules: {
+      required: true,
+      type: 'array',
+      min: 1,
+      message: '请选择权限',
+    },
+  }
+
+  if (isProdMode()) {
+    // 生产环境下严格按照当前用户具有的权限进行分配
+    schema.component = 'ElCascader'
+    schema.changeEvent = 'change'
+    schema.componentProps = {
+      style: 'width: 100%;',
+      options: [],
+      clearable: true,
+      props: {
+        expandTrigger: 'click',
+        multiple: true,
+      },
+    }
+  } else {
+    // 开发环境下具有自定义性
+    schema.render = ({ model }) => {
+      function handleInput(e: string) {
+        model.perms = e.split(',').map((e) => e.trim())
+      }
+      return (
+        <el-input
+          modelValue={(model.perms || []).join(',')}
+          onInput={handleInput}
+          placeholder="请指定权限,多个权限使用逗号分隔"
+        />
+      )
+    }
+  }
+
+  return schema
+}
 
 export const schemas: FormSchema[] = [
   {
     label: '类型',
     defaultValue: 0,
     prop: 'type',
-    slot: 'type',
+    render: ({ model }) => {
+      return (
+        <el-radio-group v-model={model.type}>
+          <el-radio label={0}>目录</el-radio>
+          <el-radio label={1}>菜单</el-radio>
+          <el-radio label={2}>权限</el-radio>
+        </el-radio-group>
+      )
+    },
     rules: {
       required: true,
       min: 0,
@@ -81,7 +141,15 @@ export const schemas: FormSchema[] = [
     hidden: ({ model }) => {
       return model.type === 2 || model.type === 0
     },
-    slot: 'viewPath',
+    render: ({ model }) => {
+      return (
+        <el-select v-model={model.viewPath} style="width: 100%" clearable allow-create filterable>
+          {allDynamicImportViews.map((item) => (
+            <el-option label={item} value={item} />
+          ))}
+        </el-select>
+      )
+    },
   },
   {
     label: '图标',
@@ -92,6 +160,7 @@ export const schemas: FormSchema[] = [
     },
     component: IconPicker,
   },
+  createPermSchema(),
   {
     label: '状态',
     prop: 'isShow',
@@ -99,31 +168,13 @@ export const schemas: FormSchema[] = [
     hidden: ({ model }) => {
       return model.type === 2
     },
-    slot: 'isShow',
-  },
-  {
-    label: '权限',
-    defaultValue: [],
-    prop: 'perms',
-    hidden: ({ model }) => {
-      return model.type === 1 || model.type === 0
-    },
-    component: 'ElCascader',
-    changeEvent: 'change',
-    componentProps: {
-      style: 'width: 100%;',
-      options: [],
-      clearable: true,
-      props: {
-        expandTrigger: 'hover',
-        multiple: true,
-      },
-    },
-    rules: {
-      required: true,
-      type: 'array',
-      min: 1,
-      message: '请选择权限',
+    render: ({ model }) => {
+      return (
+        <el-radio-group v-model={model.isShow}>
+          <el-radio label={1}>显示</el-radio>
+          <el-radio label={0}>隐藏</el-radio>
+        </el-radio-group>
+      )
     },
   },
   {

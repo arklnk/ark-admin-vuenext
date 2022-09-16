@@ -30,19 +30,6 @@
         />
       </template>
     </BasicTable>
-
-    <FormDialogRender
-      :dialog-props="{ title: '编辑职称信息' }"
-      :form-props="{ labelWidth: '100px', schemas }"
-      :handle-submit="handleSubmit"
-    >
-      <template #status="{ model }">
-        <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">启用</ElRadio>
-          <ElRadio :label="0">禁用</ElRadio>
-        </ElRadioGroup>
-      </template>
-    </FormDialogRender>
   </PageWrapper>
 </template>
 
@@ -66,8 +53,6 @@ import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
-const FormDialogRender = createFormDialog()
-
 const [registerTable, { reload }] = useTable({
   columns,
   rowKey: 'id',
@@ -75,39 +60,41 @@ const [registerTable, { reload }] = useTable({
 
 const updateProfId = ref<number | null>(null)
 
+const fdInstance = createFormDialog({
+  dialogProps: { title: '编辑职称信息' },
+  formProps: { labelWidth: '100px', schemas },
+  submit: async (res: Omit<ProfessionResult, 'id'>, { showLoading, hideLoading, close }) => {
+    try {
+      showLoading()
+
+      if (updateProfId.value === null) {
+        await addProfRequest(res)
+      } else {
+        await updateProfRequest({
+          ...res,
+          id: updateProfId.value,
+        })
+      }
+
+      close()
+
+      reload()
+    } finally {
+      hideLoading()
+    }
+  },
+})
+
 function openEditProfFormDialog(update?: Recordable) {
-  FormDialogRender.open((_, formAction) => {
+  fdInstance.open(({ getFormAction }) => {
     // is update?
     if (update) {
-      formAction.setFormModel(update)
+      getFormAction()?.setFormModel(update)
       updateProfId.value = update.id
     } else {
       updateProfId.value = null
     }
   })
-}
-
-async function handleSubmit(res: Omit<ProfessionResult, 'id'>) {
-  try {
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
-    FormDialogRender.setFormProps({ disabled: true })
-
-    if (updateProfId.value === null) {
-      await addProfRequest(res)
-    } else {
-      await updateProfRequest({
-        ...res,
-        id: updateProfId.value,
-      })
-    }
-
-    FormDialogRender.close()
-
-    reload()
-  } finally {
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
-    FormDialogRender.setFormProps({ disabled: false })
-  }
 }
 
 async function handleDelete(row: ProfessionResult) {
