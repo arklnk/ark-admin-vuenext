@@ -73,26 +73,13 @@
         </BasicTable>
       </div>
     </div>
-
-    <FormDialogRender
-      :dialog-props="{ title: getTitle }"
-      :form-props="{ labelWidth: '110px', schemas }"
-      :handle-submit="handleSubmit"
-    >
-      <template #status="{ model }">
-        <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">启用</ElRadio>
-          <ElRadio :label="0">禁用</ElRadio>
-        </ElRadioGroup>
-      </template>
-    </FormDialogRender>
   </PageWrapper>
 </template>
 
 <script setup lang="tsx">
 import type { ParamConfigResult } from '/@/api/config/dict'
 
-import { computed, nextTick, reactive, ref } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import {
   getDictListRequest,
   getDictDataPageRequest,
@@ -125,7 +112,40 @@ const [registerItemTable, { reload }] = useTable({
   columns,
 })
 
-const FormDialogRender = createFormDialog()
+const fdInstance = createFormDialog({
+  formProps: { labelWidth: '110px', schemas },
+  submit: async (
+    res: Omit<ParamConfigResult, 'id' | 'parentId'>,
+    { showLoading, hideLoading, close }
+  ) => {
+    try {
+      showLoading()
+
+      if (currentUpdateId.value === null) {
+        await addDictRequest({
+          ...res,
+          parentId: currentParentId.value,
+        })
+      } else {
+        await updateDictRequest({
+          ...omit(res, 'uniqueKey'),
+          id: currentUpdateId.value,
+          parentId: currentParentId.value,
+        })
+      }
+
+      close()
+
+      if (currentParentId.value === 0) {
+        reloadDictTable()
+      } else {
+        reload({ page: 1 })
+      }
+    } finally {
+      hideLoading()
+    }
+  },
+})
 
 const currentDictInfo = reactive({
   parentId: null,
@@ -135,17 +155,16 @@ const currentUpdateId = ref<number | null>(null)
 // 0 为新增或者更新字典
 const currentParentId = ref<number>(0)
 
-const getTitle = computed(() =>
-  currentDictInfo.parentId === 0 ? '编辑字典信息' : '编辑字典项信息'
-)
-
 // 是否为更新字典项
 function openEditDictFormDialog(isData: boolean, update?: Recordable) {
-  FormDialogRender.open((_, formAction) => {
+  fdInstance.open(({ getFormAction, getDialogAction }) => {
     // dict id
     currentParentId.value = isData ? currentDictInfo.parentId! : 0
+    getDialogAction()?.setProps({
+      title: currentDictInfo.parentId === 0 ? '编辑字典信息' : '编辑字典项信息',
+    })
 
-    formAction.updateSchema([
+    getFormAction()?.updateSchema([
       {
         prop: 'type',
         hidden: !isData,
@@ -166,7 +185,7 @@ function openEditDictFormDialog(isData: boolean, update?: Recordable) {
 
     // is update
     if (update) {
-      formAction.setFormModel(update)
+      getFormAction()?.setFormModel(update)
 
       currentUpdateId.value = update.id
     } else {
@@ -177,37 +196,6 @@ function openEditDictFormDialog(isData: boolean, update?: Recordable) {
 
 function resetCurrentDictId() {
   currentDictInfo.parentId = null
-}
-
-async function handleSubmit(res: Omit<ParamConfigResult, 'id' | 'parentId'>) {
-  try {
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
-    FormDialogRender.setFormProps({ disabled: true })
-
-    if (currentUpdateId.value === null) {
-      await addDictRequest({
-        ...res,
-        parentId: currentParentId.value,
-      })
-    } else {
-      await updateDictRequest({
-        ...omit(res, 'uniqueKey'),
-        id: currentUpdateId.value,
-        parentId: currentParentId.value,
-      })
-    }
-
-    FormDialogRender.close()
-
-    if (currentParentId.value === 0) {
-      reloadDictTable()
-    } else {
-      reload({ page: 1 })
-    }
-  } finally {
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
-    FormDialogRender.setFormProps({ disabled: false })
-  }
 }
 
 async function handleDeleteDict(row: Recordable) {

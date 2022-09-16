@@ -52,32 +52,6 @@
         />
       </template>
     </BasicTable>
-
-    <!-- form -->
-    <FormDialogRender
-      :form-props="{ schemas, labelWidth: '110px' }"
-      :dialog-props="{ title: '编辑菜单信息 ' }"
-      :handle-submit="handleSubmit"
-    >
-      <template #type="{ model }">
-        <ElRadioGroup v-model="model.type">
-          <ElRadio :label="0">目录</ElRadio>
-          <ElRadio :label="1">菜单</ElRadio>
-          <ElRadio :label="2">权限</ElRadio>
-        </ElRadioGroup>
-      </template>
-      <template #isShow="{ model }">
-        <ElRadioGroup v-model="model.isShow">
-          <ElRadio :label="1">显示</ElRadio>
-          <ElRadio :label="0">隐藏</ElRadio>
-        </ElRadioGroup>
-      </template>
-      <template #viewPath="{ model }">
-        <ElSelect v-model="model.viewPath" class="w-full" clearable allow-create filterable>
-          <ElOption v-for="item in allDynamicImportViews" :key="item" :label="item" :value="item" />
-        </ElSelect>
-      </template>
-    </FormDialogRender>
   </PageWrapper>
 </template>
 
@@ -93,37 +67,66 @@ import {
   addMenuRequest,
   updateMenuRequest,
 } from '/@/api/system/menu'
-import { getDynamicImportViews } from '/@/router/helper/routeHelper'
 import { usePermission } from '/@/composables/core/usePermission'
 import { columns } from './columns'
 import { schemas } from './schemas'
 import { createFormDialog } from '/@/components/Form'
-import { filter, treeToList } from '/@/utils/helper/tree'
-import { flatten } from 'lodash-es'
+import { filter } from '/@/utils/helper/tree'
 import { ref } from 'vue'
-import { usePermissionCascader } from '/@/composables/component/usePermissionCascader'
+import { reverseValues, transformCascaderOptions, transformValues } from './cascaderUtil'
+import { isProdMode } from '/@/utils/env'
 
 const { hasPermission } = usePermission()
-
-const allDynamicImportViews = getDynamicImportViews()
-const { transformValues, reverseValues, getOptions } = usePermissionCascader()
 
 const [registerTable, { getDataSource, reload }] = useTable({
   columns,
   rowKey: 'id',
 })
 
-const FormDialogRender = createFormDialog()
+const fdInstance = createFormDialog({
+  dialogProps: { title: '编辑菜单信息 ' },
+  formProps: { schemas, labelWidth: '110px' },
+  submit: async (res: Omit<MenuResult, 'id'>, { showLoading, hideLoading, close }) => {
+    try {
+      showLoading()
+
+      // 转换权限值
+      if (res.type === 2 && isProdMode()) {
+        res.perms = transformValues(res.perms as unknown as string[][])
+      }
+
+      // 未实现，默认处理
+      res.activeRouter = ''
+
+      if (updateMenuId.value === null) {
+        await addMenuRequest(res)
+      } else {
+        await updateMenuRequest({
+          ...res,
+          id: updateMenuId.value,
+        })
+      }
+
+      // close
+      close()
+
+      reload()
+    } finally {
+      hideLoading()
+    }
+  },
+})
 
 const updateMenuId = ref<null | number>(null)
 
 function openEditMenuFormDialog(update?: Recordable) {
-  FormDialogRender.open((_, formAction) => {
+  fdInstance.open(({ getFormAction }) => {
     const tableData = getDataSource() || []
     const menus = filter(tableData, (item): boolean => {
       // 过滤权限节点，权限节点不能作为父级
       return (item.type === 0 || item.type === 1) && item.has !== 0
     })
+
     const menuTree = [
       {
         id: 0,
@@ -132,76 +135,46 @@ function openEditMenuFormDialog(update?: Recordable) {
       },
     ]
 
-    // 获取可操作的权限
-    const perms: string[] = flatten(
-      treeToList(filter(tableData, (item): boolean => item.type === 2 && item.has !== 0)).map(
-        (item: MenuResult) => item.perms
-      )
-    )
-
-    // 转换成ElCascader所需要的options格式
-    const options = getOptions(perms)
-
-    // update tree props data
-    formAction.updateSchema([
+    const updateSchema: any[] = [
       {
         prop: 'parentId',
         componentProps: {
           data: menuTree,
         },
       },
-      {
+    ]
+
+    if (isProdMode()) {
+      // 转换成ElCascader所需要的options格式
+      const options = transformCascaderOptions(tableData)
+
+      updateSchema.push({
         prop: 'perms',
         componentProps: {
           options,
         },
-      },
-    ])
+      })
+    }
+
+    // update tree props data
+    getFormAction()?.updateSchema(updateSchema)
 
     // is update?
     if (update) {
       const values = {
         ...update,
-        perms: reverseValues(update.perms),
       }
-      formAction.setFormModel(values)
+
+      if (isProdMode()) {
+        values.perms = reverseValues(update.perms)
+      }
+
+      getFormAction()?.setFormModel(values)
       updateMenuId.value = update.id
     } else {
       updateMenuId.value = null
     }
   })
-}
-
-async function handleSubmit(res: Omit<MenuResult, 'id'>) {
-  try {
-    FormDialogRender.setFormProps({ disabled: true })
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
-
-    // 转换权限值
-    if (res.type === 2) {
-      res.perms = transformValues(res.perms as unknown as string[][])
-    }
-
-    // 未实现，默认处理
-    res.activeRouter = ''
-
-    if (updateMenuId.value === null) {
-      await addMenuRequest(res)
-    } else {
-      await updateMenuRequest({
-        ...res,
-        id: updateMenuId.value,
-      })
-    }
-
-    // close
-    FormDialogRender.close()
-
-    reload()
-  } finally {
-    FormDialogRender.setFormProps({ disabled: false })
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
-  }
 }
 
 async function handleDelete(row: Recordable) {

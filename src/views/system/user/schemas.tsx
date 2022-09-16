@@ -33,7 +33,15 @@ export const schemas: FormSchema[] = [
     label: '性别',
     prop: 'gender',
     defaultValue: 0,
-    slot: 'gender',
+    render: ({ model }) => {
+      return (
+        <el-select v-model={model.gender} style="width: 100%">
+          <el-option label="保密" value={0} />
+          <el-option label="女" value={1} />
+          <el-option label="男" value={2} />
+        </el-select>
+      )
+    },
     colProps: {
       span: 12,
     },
@@ -190,7 +198,14 @@ export const schemas: FormSchema[] = [
     label: '状态',
     defaultValue: 1,
     prop: 'status',
-    slot: 'status',
+    render: ({ model }) => {
+      return (
+        <el-radio-group v-model={model.status}>
+          <el-radio label={1}>启用</el-radio>
+          <el-radio label={0}>禁用</el-radio>
+        </el-radio-group>
+      )
+    },
     colProps: {
       span: 12,
     },

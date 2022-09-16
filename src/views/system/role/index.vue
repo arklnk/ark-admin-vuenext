@@ -35,19 +35,6 @@
         />
       </template>
     </BasicTable>
-
-    <FormDialogRender
-      :dialog-props="{ title: '编辑角色信息' }"
-      :form-props="{ schemas, labelWidth: '100px' }"
-      :handle-submit="handleSubmit"
-    >
-      <template #status="{ model }">
-        <ElRadioGroup v-model="model.status">
-          <ElRadio :label="1">启用</ElRadio>
-          <ElRadio :label="0">禁用</ElRadio>
-        </ElRadioGroup>
-      </template>
-    </FormDialogRender>
   </PageWrapper>
 </template>
 
@@ -77,17 +64,40 @@ const [registerTable, { getDataSource, reload }] = useTable({
   rowKey: 'id',
 })
 
-const FormDialogRender = createFormDialog()
+const FormDialogRender = createFormDialog({
+  dialogProps: { title: '编辑角色信息' },
+  formProps: { schemas, labelWidth: '100px' },
+  submit: async (res: Omit<RoleResult, 'id'>, { showLoading, hideLoading, close }) => {
+    try {
+      showLoading()
+
+      if (updateRoleId.value === null) {
+        await addRoleRequest(res)
+      } else {
+        await updateRoleRequest({
+          ...res,
+          id: updateRoleId.value!,
+        })
+      }
+
+      close()
+
+      reload()
+    } finally {
+      hideLoading()
+    }
+  },
+})
 
 const updateRoleId = ref<number | null>(null)
 
 function openEditRoleFormDialog(update?: Recordable) {
-  FormDialogRender.open(async (_, formAction) => {
+  FormDialogRender.open(async ({ getFormAction, showLoading, hideLoading }) => {
     try {
-      FormDialogRender.setDialogProps({ loading: true })
+      showLoading()
       const permTree = await getMenuListRequest()
 
-      formAction.updateSchema({
+      getFormAction()?.updateSchema({
         prop: 'permMenuIds',
         componentProps: {
           data: permTree,
@@ -96,7 +106,7 @@ function openEditRoleFormDialog(update?: Recordable) {
     } catch (e) {
       FormDialogRender.close()
     } finally {
-      FormDialogRender.setDialogProps({ loading: false })
+      hideLoading()
     }
 
     const roleTree = [
@@ -107,7 +117,7 @@ function openEditRoleFormDialog(update?: Recordable) {
       },
     ]
 
-    formAction.updateSchema({
+    getFormAction()?.updateSchema({
       prop: 'parentId',
       componentProps: {
         data: roleTree,
@@ -116,35 +126,12 @@ function openEditRoleFormDialog(update?: Recordable) {
 
     // is update?
     if (update) {
-      formAction.setFormModel(update)
+      getFormAction()?.setFormModel(update)
       updateRoleId.value = update.id
     } else {
       updateRoleId.value = null
     }
   })
-}
-
-async function handleSubmit(res: Omit<RoleResult, 'id'>) {
-  try {
-    FormDialogRender.setFormProps({ disabled: true })
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: true } })
-
-    if (updateRoleId.value === null) {
-      await addRoleRequest(res)
-    } else {
-      await updateRoleRequest({
-        ...res,
-        id: updateRoleId.value!,
-      })
-    }
-
-    FormDialogRender.close()
-
-    reload()
-  } finally {
-    FormDialogRender.setFormProps({ disabled: false })
-    FormDialogRender.setDialogProps({ confirmBtnProps: { loading: false } })
-  }
 }
 
 async function handleDelete(row: Recordable) {

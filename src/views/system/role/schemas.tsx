@@ -1,37 +1,39 @@
-import type { DeptResult } from '/@/api/system/dept'
+import type { RoleResult } from '/@/api/system/role'
 import type { FormSchema } from '/@/components/Form'
+
+import AssignPermTree from './AssignPermTree.vue'
 
 export const schemas: FormSchema[] = [
   {
-    label: '部门名称',
-    defaultValue: '',
+    label: '角色名称',
     prop: 'name',
-    colProps: {
-      span: 12,
-    },
-    component: 'ElInput',
-    rules: {
-      required: true,
-      type: 'string',
-      message: '请输入部门名称',
-    },
-  },
-  {
-    label: '部门标识',
     defaultValue: '',
-    prop: 'uniqueKey',
     component: 'ElInput',
-    colProps: {
-      span: 12,
-    },
     rules: {
       required: true,
       type: 'string',
-      message: '请输入部门标识',
+      message: '请输入角色名称',
+    },
+    colProps: {
+      span: 12,
     },
   },
   {
-    label: '父级部门',
+    label: '角色标识',
+    prop: 'uniqueKey',
+    defaultValue: '',
+    component: 'ElInput',
+    rules: {
+      required: true,
+      type: 'string',
+      message: '请输入角色标识',
+    },
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    label: '父级角色',
     defaultValue: 0,
     prop: 'parentId',
     component: 'ElTreeSelect',
@@ -42,7 +44,7 @@ export const schemas: FormSchema[] = [
       checkStrictly: true,
       defaultExpandAll: true,
       props: {
-        label: (data: DeptResult): string => {
+        label: (data: RoleResult): string => {
           return data.name
         },
       },
@@ -54,21 +56,12 @@ export const schemas: FormSchema[] = [
     },
   },
   {
-    label: '部门类型',
-    defaultValue: 1,
-    prop: 'type',
-    slot: 'type',
-    colProps: {
-      span: 12,
-    },
-  },
-  {
-    label: '部门全称',
-    defaultValue: '',
-    prop: 'fullName',
-    component: 'ElInput',
-    colProps: {
-      span: 12,
+    label: '分配权限',
+    defaultValue: [],
+    prop: 'permMenuIds',
+    component: AssignPermTree,
+    componentProps: {
+      data: [],
     },
   },
   {
@@ -82,15 +75,6 @@ export const schemas: FormSchema[] = [
     },
   },
   {
-    label: '状态',
-    defaultValue: 1,
-    prop: 'status',
-    slot: 'status',
-    colProps: {
-      span: 12,
-    },
-  },
-  {
     label: '排序',
     defaultValue: 0,
     prop: 'orderNum',
@@ -98,8 +82,18 @@ export const schemas: FormSchema[] = [
     componentProps: {
       min: 0,
     },
-    colProps: {
-      span: 12,
+  },
+  {
+    label: '状态',
+    prop: 'status',
+    defaultValue: 1,
+    render: ({ model }) => {
+      return (
+        <el-radio-group v-model={model.status}>
+          <el-radio label={1}>启用</el-radio>
+          <el-radio label={0}>禁用</el-radio>
+        </el-radio-group>
+      )
     },
   },
 ]
