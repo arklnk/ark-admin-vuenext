@@ -1,43 +1,42 @@
 import type { BasicFormActionType, BasicFormProps } from '../typing'
 import type { BasicDialogProps, BasicDialogActionType } from '/@/components/Dialog'
-import type { SetupContext, ComponentInternalInstance } from 'vue'
+import type { ComponentInternalInstance } from 'vue'
 
 import { BasicDialog } from '/@/components/Dialog'
 import BasicForm from '../BasicForm.vue'
-import { ref, unref, render, createVNode, nextTick } from 'vue'
+import { ref, unref, render, createVNode, nextTick, getCurrentInstance, onUnmounted } from 'vue'
 import { globalAppContext } from '/@/components/registerGlobalComp'
 import { isFunction, merge } from 'lodash-es'
-import { tryOnUnmounted } from '@vueuse/core'
 
-interface FormDialogProps {
-  formProps: BasicFormProps
-  dialogProps: BasicDialogProps
-  handleSubmit: (
-    res: Recordable,
-    dialogAction: BasicDialogActionType,
-    formAction: BasicFormActionType
-  ) => void | Promise<void>
-}
+type OnSubmitFn = (
+  res: Recordable,
+  dialogAction: BasicDialogActionType,
+  formAction: BasicFormActionType
+) => void | Promise<void>
 
 type OnOpenFn = (
   dialogAction: BasicDialogActionType,
   formAction: BasicFormActionType
 ) => void | Promise<void>
 
+interface FormDialogProps {
+  formProps: BasicFormProps
+  dialogProps: BasicDialogProps
+  submit: OnSubmitFn
+}
+
 export function createFormDialog(createProps?: Partial<FormDialogProps>) {
   const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
   const formRef = ref<Nullable<BasicFormActionType>>(null)
 
-  tryOnUnmounted(() => {
-    dialogRef.value = null
-    formRef.value = null
-  })
+  // 判断是否在setup中调用，用于判断是否能在生命周期中释放资源
+  const isRunInSetup = !!getCurrentInstance()
 
   // FormDialog FunctionalComponent
-  const FormDialogRender = (props: Partial<FormDialogProps>, context: SetupContext) => {
+  const FormDialogRender = (props: Partial<FormDialogProps>) => {
     const dialogProps = {
-      ...(props.dialogProps || {}),
       destroyOnClose: true,
+      ...(props.dialogProps || {}),
       onConfirm: unref(formRef)?.submit,
       onCancel: () => {
         //关闭时重置表单值
@@ -47,8 +46,8 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
 
     // hook onSubmit
     function handleSubmit(res: Recordable) {
-      if (props.handleSubmit && isFunction(props.handleSubmit)) {
-        props.handleSubmit(res, unref(dialogRef)!, unref(formRef)!)
+      if (props.submit && isFunction(props.submit)) {
+        props.submit(res, unref(dialogRef)!, unref(formRef)!)
       }
     }
 
@@ -60,53 +59,56 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
 
     return (
       <BasicDialog ref={dialogRef} {...dialogProps}>
-        <BasicForm ref={formRef} {...formProps} v-slots={context.slots} />
+        <BasicForm ref={formRef} {...formProps} />
       </BasicDialog>
     )
   }
 
   // normalized to camelCase unless the props option is specified.
   FormDialogRender.props = ['dialogProps', 'formProps', 'handleSubmit']
-  FormDialogRender.emits = ['submit']
 
-  // init vnode without template
-  let _fdInstance: ComponentInternalInstance | null
+  const container = document.createElement('div')
+  let _componentInstance: ComponentInternalInstance | null = null
 
-  function initVNode() {
-    // 在模板中使用，那么无需手动初始化，直接操作使用FormDialogRender操作即可
-    // 但请注意使用时机，必须保证在mounted后操作
-    // 如果不在模板中使用则需要手动创建节点
-    // 手动创建节点会在关闭Dialog时直接销毁DOM节点，避免无法销毁导致内存泄漏
-    if (unref(dialogRef)) return
+  function release() {
+    // here we were suppose to call document.body.removeChild(container.firstElementChild)
+    // but render(null, container) did that job for us. so that we do not call that directly
+    render(null, container)
 
-    // vnode is created
-    if (_fdInstance) return
+    dialogRef.value = null
+    formRef.value = null
+    _componentInstance = null
+  }
 
-    const container = document.createElement('div')
-
+  if (!isRunInSetup) {
     // hack onClosed hook to gc this dom
     function onClosed() {
       nextTick(() => {
-        // here we were suppose to call document.body.removeChild(container.firstElementChild)
-        // but render(null, container) did that job for us. so that we do not call that directly
-        render(null, container)
-        _fdInstance = null
+        release()
       })
     }
 
-    const vnodeProps = merge(createProps, { dialogProps: { onClosed } })
+    createProps = merge(createProps, { dialogProps: { onClosed } })
+  } else {
+    onUnmounted(() => {
+      release()
+    })
+  }
 
-    // vnode
-    const vm = createVNode(FormDialogRender, vnodeProps)
-    // useing App context
+  // lazy init
+  function initVNode() {
+    if (_componentInstance) return
+
+    const vm = createVNode(FormDialogRender, createProps)
     vm.appContext = globalAppContext
+
     render(vm, container)
     document.body.appendChild(container.firstElementChild!)
 
-    // created done
-    _fdInstance = vm.component!
+    _componentInstance = vm.component!
   }
 
+  // expose operate function
   function setDialogProps(props: BasicDialogProps) {
     initVNode()
 
@@ -122,7 +124,7 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
   function open(onOpen?: OnOpenFn) {
     setDialogProps({ visible: true })
 
-    if (isFunction(onOpen)) {
+    if (onOpen && isFunction(onOpen)) {
       nextTick(() => {
         onOpen(unref(dialogRef)!, unref(formRef)!)
       })
@@ -133,11 +135,10 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
     setDialogProps({ visible: false })
   }
 
-  // mouted action
-  FormDialogRender.setDialogProps = setDialogProps
-  FormDialogRender.setFormProps = setFormProps
-  FormDialogRender.open = open
-  FormDialogRender.close = close
-
-  return FormDialogRender
+  return {
+    setDialogProps,
+    setFormProps,
+    open,
+    close,
+  }
 }
