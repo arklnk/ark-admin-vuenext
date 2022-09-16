@@ -8,16 +8,9 @@ import { ref, unref, render, createVNode, nextTick, getCurrentInstance, onUnmoun
 import { globalAppContext } from '/@/components/registerGlobalComp'
 import { isFunction, merge } from 'lodash-es'
 
-type OnSubmitFn = (
-  res: Recordable,
-  dialogAction: BasicDialogActionType,
-  formAction: BasicFormActionType
-) => void | Promise<void>
+type OnSubmitFn = (res: Recordable, ist: FormDialogInstance) => void | Promise<void>
 
-type OnOpenFn = (
-  dialogAction: BasicDialogActionType,
-  formAction: BasicFormActionType
-) => void | Promise<void>
+type OnOpenFn = (ist: FormDialogInstance) => void | Promise<void>
 
 interface FormDialogProps {
   formProps: BasicFormProps
@@ -25,7 +18,16 @@ interface FormDialogProps {
   submit: OnSubmitFn
 }
 
-export function createFormDialog(createProps?: Partial<FormDialogProps>) {
+interface FormDialogInstance {
+  open: (fn?: OnOpenFn) => void | Promise<void>
+  close: () => void
+  showLoading: () => void
+  hideLoading: () => void
+  getDialogAction: () => Nullable<BasicDialogActionType>
+  getFormAction: () => Nullable<BasicFormActionType>
+}
+
+export function createFormDialog(createProps?: Partial<FormDialogProps>): FormDialogInstance {
   const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
   const formRef = ref<Nullable<BasicFormActionType>>(null)
 
@@ -47,7 +49,7 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
     // hook onSubmit
     function handleSubmit(res: Recordable) {
       if (props.submit && isFunction(props.submit)) {
-        props.submit(res, unref(dialogRef)!, unref(formRef)!)
+        props.submit(res, action)
       }
     }
 
@@ -97,6 +99,7 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
 
   // lazy init
   function initVNode() {
+    // inited return
     if (_componentInstance) return
 
     const vm = createVNode(FormDialogRender, createProps)
@@ -108,37 +111,49 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
     _componentInstance = vm.component!
   }
 
+  function getDialogAction() {
+    initVNode()
+
+    return unref(dialogRef)
+  }
+
+  function getFormAction() {
+    initVNode()
+
+    return unref(formRef)
+  }
+
   // expose operate function
-  function setDialogProps(props: BasicDialogProps) {
-    initVNode()
-
-    unref(dialogRef)?.setProps(props)
-  }
-
-  function setFormProps(props: BasicFormProps) {
-    initVNode()
-
-    unref(formRef)?.setProps(props)
-  }
-
   function open(onOpen?: OnOpenFn) {
-    setDialogProps({ visible: true })
+    getDialogAction()?.setProps({ visible: true })
 
     if (onOpen && isFunction(onOpen)) {
       nextTick(() => {
-        onOpen(unref(dialogRef)!, unref(formRef)!)
+        onOpen(action)
       })
     }
   }
 
   function close() {
-    setDialogProps({ visible: false })
+    getDialogAction()?.setProps({ visible: false })
   }
 
-  return {
-    setDialogProps,
-    setFormProps,
+  function showLoading() {
+    getDialogAction()?.setProps({ loading: true, confirmBtnProps: { loading: true } })
+  }
+
+  function hideLoading() {
+    getDialogAction()?.setProps({ loading: false, confirmBtnProps: { loading: false } })
+  }
+
+  const action: FormDialogInstance = {
+    getDialogAction,
+    getFormAction,
     open,
     close,
+    showLoading,
+    hideLoading,
   }
+
+  return action
 }
