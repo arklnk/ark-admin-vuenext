@@ -65,7 +65,7 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>) {
   }
 
   // normalized to camelCase unless the props option is specified.
-  FormDialogRender.props = ['dialogProps', 'formProps', 'handleSubmit']
+  FormDialogRender.props = ['dialogProps', 'formProps', 'submit']
 
   const container = document.createElement('div')
   let _componentInstance: ComponentInternalInstance | null = null
