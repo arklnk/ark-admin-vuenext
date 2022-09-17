@@ -1,8 +1,8 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { PaginationProps } from '../types/pagination'
 import type { BasicTableProps, FetchParams } from '../types/table'
 
-import { watch, unref, ref, onMounted, watchEffect, computed } from 'vue'
+import { watch, unref, ref, onMounted, computed } from 'vue'
 import { get, isFunction, merge } from 'lodash-es'
 import { DEFAULT_PAGINATION, FETCH_SETTING } from '../const'
 
@@ -10,12 +10,11 @@ interface ActionType {
   getPaginationRef: ComputedRef<Nullable<PaginationProps>>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
-  tableDataRef: Ref<Recordable[]>
 }
 
 export function useDataSource(
   getProps: ComputedRef<BasicTableProps>,
-  { setLoading, getPaginationRef, setPagination, tableDataRef }: ActionType,
+  { setLoading, getPaginationRef, setPagination }: ActionType,
   emit: EmitFn
 ) {
   const dataSourceRef = ref<Recordable[]>([])
@@ -32,10 +31,6 @@ export function useDataSource(
       immediate: true,
     }
   )
-
-  watchEffect(() => {
-    tableDataRef.value = unref(dataSourceRef)
-  })
 
   function handleTableChange(pagination: Partial<PaginationProps>) {
     setPagination(pagination)
