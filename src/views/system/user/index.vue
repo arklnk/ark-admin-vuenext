@@ -94,18 +94,18 @@ import {
 } from '/@/api/system/user'
 import { usePermission } from '/@/composables/core/usePermission'
 import { createFormDialog } from '/@/components/Form'
-import { deptColumns, userColumns } from './columns'
-import { schemas, pwdSchemas } from './schemas'
+import { createDeptColumns, createUserColumns } from './columns'
+import { createUserSchemas, createUpdatePwdSchemas } from './schemas'
 import { listToTree } from '/@/utils/helper/tree'
 
 const { hasPermission } = usePermission()
 
 const [registerDeptTable, { getCurrentRow }] = useTable({
-  columns: deptColumns,
+  columns: createDeptColumns(),
   rowKey: 'id',
 })
 const [registerUserTable, { reload }] = useTable({
-  columns: userColumns,
+  columns: createUserColumns(),
   rowKey: 'id',
 })
 
@@ -113,7 +113,7 @@ const updateUserId = ref<number | null>(null)
 
 const fdInstance = createFormDialog({
   dialogProps: { title: '编辑用户信息' },
-  formProps: { labelWidth: '100px', schemas },
+  formProps: { labelWidth: '100px', schemas: createUserSchemas() },
   submit: async (res: UserRequestParams, { showLoading, hideLoading, close }) => {
     try {
       showLoading()
@@ -231,7 +231,7 @@ function handleUpdatePwd(row: Recordable) {
       canFullscreen: false,
     },
     formProps: {
-      schemas: pwdSchemas,
+      schemas: createUpdatePwdSchemas(),
     },
     submit: async (res, { showLoading, close, hideLoading }) => {
       try {

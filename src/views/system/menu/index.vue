@@ -68,25 +68,24 @@ import {
   updateMenuRequest,
 } from '/@/api/system/menu'
 import { usePermission } from '/@/composables/core/usePermission'
-import { columns } from './columns'
-import { schemas } from './schemas'
+import { createColumns } from './columns'
+import { createSchemas } from './schemas'
 import { createFormDialog } from '/@/components/Form'
 import { filter } from '/@/utils/helper/tree'
 import { ref } from 'vue'
 import { reverseValues, transformCascaderOptions, transformValues } from './cascaderUtil'
 import { isProdMode } from '/@/utils/env'
-import { cloneDeep } from 'lodash-es'
 
 const { hasPermission } = usePermission()
 
 const [registerTable, { getDataSource, reload }] = useTable({
-  columns,
+  columns: createColumns(),
   rowKey: 'id',
 })
 
 const fdInstance = createFormDialog({
   dialogProps: { title: '编辑菜单信息 ' },
-  formProps: { schemas, labelWidth: '110px' },
+  formProps: { schemas: createSchemas(), labelWidth: '110px' },
   submit: async (res: Omit<MenuResult, 'id'>, { showLoading, hideLoading, close }) => {
     try {
       showLoading()
@@ -122,7 +121,7 @@ const updateMenuId = ref<null | number>(null)
 
 function openEditMenuFormDialog(update?: Recordable) {
   fdInstance.open(({ getFormAction }) => {
-    const tableData = cloneDeep(getDataSource() || [])
+    const tableData = getDataSource() || []
     const menus = filter(tableData, (item): boolean => {
       // 过滤权限节点，权限节点不能作为父级
       return (item.type === 0 || item.type === 1) && item.has !== 0

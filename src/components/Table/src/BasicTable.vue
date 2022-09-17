@@ -99,7 +99,6 @@ export default defineComponent({
     const footerRef = ref()
 
     const innerPropsRef = ref<Partial<BasicTableProps>>()
-    const tableDataRef = ref<Recordable[]>([])
 
     const { prefixCls } = useDesign('basic-table')
 
@@ -137,7 +136,7 @@ export default defineComponent({
       getDataSource,
       handleTableChange: onTableChange,
       reload,
-    } = useDataSource(getProps, { getPaginationRef, setPagination, setLoading, tableDataRef }, emit)
+    } = useDataSource(getProps, { getPaginationRef, setPagination, setLoading }, emit)
 
     const { getTableHeight, redoHeight } = useTableHeight(
       getProps,

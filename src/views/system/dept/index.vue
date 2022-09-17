@@ -50,9 +50,9 @@ import {
   Api,
 } from '/@/api/system/dept'
 import { usePermission } from '/@/composables/core/usePermission'
-import { columns } from './columns'
 import { createFormDialog } from '/@/components/Form'
-import { schemas } from './schemas'
+import { createColumns } from './columns'
+import { createSchemas } from './schemas'
 import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
@@ -61,13 +61,13 @@ const [registerTable, { getDataSource, reload }] = useTable({
   api: getDeptListRequest,
   rowKey: 'id',
   pagination: false,
-  columns,
+  columns: createColumns(),
 })
 
 const updateDeptId = ref<number | null>(null)
 
 const fdInstance = createFormDialog({
-  formProps: { labelWidth: '100px', schemas },
+  formProps: { labelWidth: '100px', schemas: createSchemas() },
   dialogProps: { title: '编辑部门信息' },
   submit: async (res: Omit<DeptResult, 'id'>, { showLoading, hideLoading, close }) => {
     try {

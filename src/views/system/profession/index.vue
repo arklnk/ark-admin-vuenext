@@ -46,15 +46,15 @@ import {
 import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import { usePermission } from '/@/composables/core/usePermission'
-import { columns } from './columns'
-import { schemas } from './schemas'
+import { createColumns } from './columns'
+import { createSchemas } from './schemas'
 import { createFormDialog } from '/@/components/Form'
 import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
 const [registerTable, { reload }] = useTable({
-  columns,
+  columns: createColumns(),
   rowKey: 'id',
 })
 
@@ -62,7 +62,7 @@ const updateProfId = ref<number | null>(null)
 
 const fdInstance = createFormDialog({
   dialogProps: { title: '编辑职称信息' },
-  formProps: { labelWidth: '100px', schemas },
+  formProps: { labelWidth: '100px', schemas: createSchemas() },
   submit: async (res: Omit<ProfessionResult, 'id'>, { showLoading, hideLoading, close }) => {
     try {
       showLoading()

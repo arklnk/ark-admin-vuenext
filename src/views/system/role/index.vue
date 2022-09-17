@@ -51,8 +51,8 @@ import {
   updateRoleRequest,
 } from '/@/api/system/role'
 import { usePermission } from '/@/composables/core/usePermission'
-import { columns } from './columns'
-import { schemas } from './schemas'
+import { createColumns } from './columns'
+import { createSchemas } from './schemas'
 import { createFormDialog } from '/@/components/Form'
 import { ref } from 'vue'
 import { getMenuListRequest } from '/@/api/system/menu'
@@ -60,13 +60,13 @@ import { getMenuListRequest } from '/@/api/system/menu'
 const { hasPermission } = usePermission()
 
 const [registerTable, { getDataSource, reload }] = useTable({
-  columns,
+  columns: createColumns(),
   rowKey: 'id',
 })
 
-const FormDialogRender = createFormDialog({
+const fdInstance = createFormDialog({
   dialogProps: { title: '编辑角色信息' },
-  formProps: { schemas, labelWidth: '100px' },
+  formProps: { schemas: createSchemas(), labelWidth: '100px' },
   submit: async (res: Omit<RoleResult, 'id'>, { showLoading, hideLoading, close }) => {
     try {
       showLoading()
@@ -92,7 +92,7 @@ const FormDialogRender = createFormDialog({
 const updateRoleId = ref<number | null>(null)
 
 function openEditRoleFormDialog(update?: Recordable) {
-  FormDialogRender.open(async ({ getFormAction, showLoading, hideLoading }) => {
+  fdInstance.open(async ({ getFormAction, showLoading, hideLoading, close }) => {
     try {
       showLoading()
       const permTree = await getMenuListRequest()
@@ -104,7 +104,7 @@ function openEditRoleFormDialog(update?: Recordable) {
         },
       })
     } catch (e) {
-      FormDialogRender.close()
+      close()
     } finally {
       hideLoading()
     }
@@ -113,7 +113,7 @@ function openEditRoleFormDialog(update?: Recordable) {
       {
         id: 0,
         name: '#',
-        children: getDataSource() || [],
+        children: getDataSource(),
       },
     ]
 

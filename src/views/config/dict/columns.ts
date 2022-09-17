@@ -2,69 +2,73 @@ import type { TableColumn } from '/@/components/Table'
 
 import { DictValueTypes } from './DictValueType'
 
-export const columns: TableColumn[] = [
-  {
-    label: '字典项名称',
-    prop: 'name',
-    width: 220,
-  },
-  {
-    label: '字典项标识',
-    prop: 'uniqueKey',
-    width: 120,
-    align: 'center',
-  },
-  {
-    label: '值类型',
-    prop: 'type',
-    width: 200,
-    align: 'center',
-    formatter: (row: Recordable) => {
-      return DictValueTypes.find((e) => e.value === row.type)!.label
+export function createDictItemColumns(): TableColumn[] {
+  return [
+    {
+      label: '字典项名称',
+      prop: 'name',
+      width: 220,
     },
-  },
-  {
-    label: '字典项值',
-    prop: 'value',
-    width: 340,
-    showTooltipWhenOverflow: true,
-    align: 'center',
-  },
-  {
-    align: 'center',
-    label: '状态',
-    prop: 'status',
-    width: 120,
-    formatter: (row: Recordable) => {
-      return row.status === 0 ? '禁用' : '启用'
+    {
+      label: '字典项标识',
+      prop: 'uniqueKey',
+      width: 120,
+      align: 'center',
     },
-  },
-  {
-    align: 'center',
-    label: '备注',
-    prop: 'remark',
-    width: 300,
-    showTooltipWhenOverflow: true,
-  },
-  {
-    align: 'center',
-    label: '排序',
-    width: 100,
-    prop: 'orderNum',
-  },
-  {
-    align: 'center',
-    label: '操作',
-    width: 140,
-    fixed: 'right',
-    slot: 'action',
-  },
-]
+    {
+      label: '值类型',
+      prop: 'type',
+      width: 200,
+      align: 'center',
+      formatter: (row: Recordable) => {
+        return DictValueTypes.find((e) => e.value === row.type)!.label
+      },
+    },
+    {
+      label: '字典项值',
+      prop: 'value',
+      width: 340,
+      showTooltipWhenOverflow: true,
+      align: 'center',
+    },
+    {
+      align: 'center',
+      label: '状态',
+      prop: 'status',
+      width: 120,
+      formatter: (row: Recordable) => {
+        return row.status === 0 ? '禁用' : '启用'
+      },
+    },
+    {
+      align: 'center',
+      label: '备注',
+      prop: 'remark',
+      width: 300,
+      showTooltipWhenOverflow: true,
+    },
+    {
+      align: 'center',
+      label: '排序',
+      width: 100,
+      prop: 'orderNum',
+    },
+    {
+      align: 'center',
+      label: '操作',
+      width: 140,
+      fixed: 'right',
+      slot: 'action',
+    },
+  ]
+}
 
-export const dictColumns: TableColumn[] = [
-  {
-    label: '字典名称',
-    prop: 'name',
-    headerSlot: 'dictHeader',
-  },
-]
+export function createDictColumns(): TableColumn[] {
+  return [
+    {
+      label: '字典名称',
+      prop: 'name',
+      headerSlot: 'dictHeader',
+    },
+  ]
+}
