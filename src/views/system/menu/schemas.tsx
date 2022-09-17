@@ -6,8 +6,6 @@ import { getDynamicImportViews } from '/@/router/helper/routeHelper'
 import { isProdMode } from '/@/utils/env'
 import { isUrl } from '/@/utils/is'
 
-const allDynamicImportViews = getDynamicImportViews()
-
 export function createPermSchema(): FormSchema {
   const schema: FormSchema = {
     label: '权限',
@@ -142,6 +140,8 @@ export const schemas: FormSchema[] = [
       return model.type === 2 || model.type === 0
     },
     render: ({ model }) => {
+      const allDynamicImportViews = getDynamicImportViews()
+
       return (
         <el-select v-model={model.viewPath} style="width: 100%" clearable allow-create filterable>
           {allDynamicImportViews.map((item) => (
