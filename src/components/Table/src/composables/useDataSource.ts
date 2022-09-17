@@ -118,7 +118,7 @@ export function useDataSource(
   }
 
   function getDataSource<T = Recordable>() {
-    return dataSourceRef.value as T[]
+    return getDataSourceRef.value as T[]
   }
 
   async function reload(opt?: FetchParams) {
