@@ -68,8 +68,8 @@ import {
   updateMenuRequest,
 } from '/@/api/system/menu'
 import { usePermission } from '/@/composables/core/usePermission'
-import { columns } from './columns'
-import { schemas } from './schemas'
+import { createColumns } from './columns'
+import { createSchemas } from './schemas'
 import { createFormDialog } from '/@/components/Form'
 import { filter } from '/@/utils/helper/tree'
 import { ref } from 'vue'
@@ -79,13 +79,13 @@ import { isProdMode } from '/@/utils/env'
 const { hasPermission } = usePermission()
 
 const [registerTable, { getDataSource, reload }] = useTable({
-  columns,
+  columns: createColumns(),
   rowKey: 'id',
 })
 
 const fdInstance = createFormDialog({
   dialogProps: { title: '编辑菜单信息 ' },
-  formProps: { schemas, labelWidth: '110px' },
+  formProps: { schemas: createSchemas(), labelWidth: '110px' },
   submit: async (res: Omit<MenuResult, 'id'>, { showLoading, hideLoading, close }) => {
     try {
       showLoading()

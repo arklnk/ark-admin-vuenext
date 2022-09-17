@@ -46,17 +46,17 @@ import {
   Api,
 } from '/@/api/system/job'
 import { usePermission } from '/@/composables/core/usePermission'
-import { columns } from './columns'
+import { createColumns } from './columns'
+import { createSchemas } from './schemas'
 import { createFormDialog } from '/@/components/Form'
-import { schemas } from './schemas'
 import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
-const [registerTable, { reload }] = useTable({ columns, rowKey: 'id' })
+const [registerTable, { reload }] = useTable({ columns: createColumns(), rowKey: 'id' })
 
 const fdInstance = createFormDialog({
-  formProps: { schemas, labelWidth: '100px' },
+  formProps: { schemas: createSchemas(), labelWidth: '100px' },
   dialogProps: { title: '编辑岗位信息' },
   submit: async (res: Omit<JobResult, 'id'>, { showLoading, hideLoading, close }) => {
     try {

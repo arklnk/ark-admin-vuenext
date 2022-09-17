@@ -92,9 +92,9 @@ import { PageWrapper } from '/@/components/Page'
 import { BasicTable, useTable, BasicTableAction } from '/@/components/Table'
 import { createContextMenu } from '/@/components/ContextMenu'
 import { usePermission } from '/@/composables/core/usePermission'
-import { columns, dictColumns } from './columns'
+import { createDictColumns, createDictItemColumns } from './columns'
+import { createDictSchemas } from './schemas'
 import { createFormDialog } from '/@/components/Form'
-import { schemas } from './schemas'
 import { omit } from 'lodash-es'
 
 const { hasPermission } = usePermission()
@@ -104,16 +104,16 @@ const [
   { setCurrentRow, getDataSource: getSetDataSource, getCurrentRow, reload: reloadDictTable },
 ] = useTable({
   rowKey: 'id',
-  columns: dictColumns,
+  columns: createDictColumns(),
 })
 
 const [registerItemTable, { reload }] = useTable({
   rowKey: 'id',
-  columns,
+  columns: createDictItemColumns(),
 })
 
 const fdInstance = createFormDialog({
-  formProps: { labelWidth: '110px', schemas },
+  formProps: { labelWidth: '110px', schemas: createDictSchemas() },
   submit: async (
     res: Omit<ParamConfigResult, 'id' | 'parentId'>,
     { showLoading, hideLoading, close }
