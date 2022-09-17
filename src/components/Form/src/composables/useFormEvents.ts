@@ -14,6 +14,7 @@ import {
   isPlainObject,
   mergeWith,
   set,
+  uniqWith,
   unset,
 } from 'lodash-es'
 import { error } from '/@/utils/log'
@@ -118,26 +119,30 @@ export function useFormEvents({
     }
 
     // 只会更新存在的，不存在的不会新增
-    const newSchema: FormSchema[] = cloneDeep(unref(getSchema))
+    let newSchema: FormSchema[] = []
+
     updated.forEach((item) => {
-      unref(getSchema).forEach((entry, index) => {
+      unref(getSchema).forEach((entry) => {
         // find same prop replace
         if (isEqual(item.prop, entry.prop)) {
           // https://www.lodashjs.com/docs/lodash.mergeWith
           // componentProps 不做复杂数据合并处理
           const newItem = mergeWith(entry, item, (objValue, srcValue, key: keyof FormSchema) => {
             if (key === 'componentProps') {
-              return assign(objValue, srcValue)
+              return assign({}, objValue, srcValue)
             }
           })
-
-          newSchema[index] = newItem
+          newSchema.push(newItem)
+        } else {
+          newSchema.push(entry)
         }
       })
     })
 
-    _setDefaultValue(newSchema)
+    // filter uniq
+    newSchema = uniqWith(newSchema, (v1, v2) => isEqual(v1.prop, v2.prop))
 
+    _setDefaultValue(newSchema)
     schemaRef.value = newSchema
   }
 
