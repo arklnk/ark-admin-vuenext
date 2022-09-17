@@ -75,7 +75,6 @@ import { filter } from '/@/utils/helper/tree'
 import { ref } from 'vue'
 import { reverseValues, transformCascaderOptions, transformValues } from './cascaderUtil'
 import { isProdMode } from '/@/utils/env'
-import { cloneDeep } from 'lodash-es'
 
 const { hasPermission } = usePermission()
 
@@ -122,7 +121,7 @@ const updateMenuId = ref<null | number>(null)
 
 function openEditMenuFormDialog(update?: Recordable) {
   fdInstance.open(({ getFormAction }) => {
-    const tableData = cloneDeep(getDataSource() || [])
+    const tableData = getDataSource() || []
     const menus = filter(tableData, (item): boolean => {
       // 过滤权限节点，权限节点不能作为父级
       return (item.type === 0 || item.type === 1) && item.has !== 0
