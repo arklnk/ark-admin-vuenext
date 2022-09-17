@@ -1,14 +1,11 @@
 import type { MenuResult } from '/@/api/system/menu'
 
-import { cloneDeep, flatten, uniq } from 'lodash-es'
+import { flatten, uniq } from 'lodash-es'
 import { treeToList, filter } from '/@/utils/helper/tree'
 
 const SEPARATOR = '/'
 
-export function transformCascaderOptions(rawTableData: Recordable[]) {
-  // need clone cause oom
-  const tableData = cloneDeep(rawTableData)
-
+export function transformCascaderOptions(tableData: Recordable[]) {
   // 获取可操作的权限
   const perms: string[] = flatten(
     treeToList(filter(tableData, (item): boolean => item.type === 2 && item.has !== 0)).map(
