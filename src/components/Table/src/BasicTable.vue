@@ -28,8 +28,8 @@
     <!-- footer -->
     <BasicTableFooter
       ref="footerRef"
-      v-if="getShowPaginationRef"
-      :pagination="getPaginationRef!"
+      v-if="getPaginationRef"
+      :pagination="getPaginationRef"
       @current-page="handlePageChange"
       @page-size="handleSizeChange"
     />
@@ -106,7 +106,6 @@ export default defineComponent({
       return { ...props, ...unref(innerPropsRef) } as BasicTableProps
     })
 
-    // 设置默认RowKey为id
     const getRowKey = computed((): GetRowKey => {
       if (!unref(getProps).rowKey) {
         warn('BasicTable rowKey prop not specify')
@@ -119,13 +118,8 @@ export default defineComponent({
       return (record: Recordable) => get(record, unref(getProps).rowKey as string)
     })
 
-    const {
-      getPaginationRef,
-      setPagination,
-      getShowPagination,
-      setShowPagination,
-      getShowPaginationRef,
-    } = usePagination(getProps)
+    const { getPaginationRef, setPagination, getShowPagination, setShowPagination } =
+      usePagination(getProps)
 
     const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps, getPaginationRef)
 
@@ -251,7 +245,6 @@ export default defineComponent({
       getHeaderBindValues,
       getShowTableHeader,
       getPaginationRef,
-      getShowPaginationRef,
       getViewColumnsRef,
       getLoading,
       omit,
