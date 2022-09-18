@@ -53,10 +53,10 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   })
 
   function setPagination(pagination: Partial<PaginationProps>) {
-    const prev = unref(getPaginationRef)
+    const prev = unref(configRef)
 
     configRef.value = {
-      ...(!isBoolean(prev) ? prev : {}),
+      ...prev,
       ...pagination,
     }
   }
@@ -76,7 +76,6 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   return {
     setShowPagination,
     getShowPagination,
-    getShowPaginationRef: showRef,
 
     setPagination,
     getPagination,
