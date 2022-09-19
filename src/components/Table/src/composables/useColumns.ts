@@ -7,7 +7,7 @@ import { ref, unref, computed, watch, toRaw } from 'vue'
 import { cloneDeep, isBoolean, isFunction } from 'lodash-es'
 import { useTransl } from '/@/composables/core/useTransl'
 import { filter } from '/@/utils/helper/tree'
-import { DEFAULT_PAGINATION } from '../const'
+import { DEFAULT_PAGE_SIZE } from '../const'
 
 function processIndexColumn(
   getPaginationRef: ComputedRef<Nullable<PaginationProps>>,
@@ -45,7 +45,7 @@ function processIndexColumn(
       if (!getPagination) {
         return i + 1
       }
-      const { currentPage = 1, pageSize = DEFAULT_PAGINATION.pageSize } = getPagination
+      const { currentPage = 1, pageSize = DEFAULT_PAGE_SIZE } = getPagination
 
       return ((currentPage < 1 ? 1 : currentPage) - 1) * pageSize + i + 1
     },

@@ -37,8 +37,8 @@ export default defineComponent({
     const getBindValues = computed(() => {
       return {
         ...omit(props.pagination, 'position'),
-        onCurrentPage,
-        onPageSize,
+        'onUpdate:currentPage': onCurrentPage,
+        'onUpdate:pageSize': onPageSize,
       }
     })
 
