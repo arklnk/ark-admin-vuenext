@@ -36,11 +36,6 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
       ...unref(configRef),
     }
 
-    // 检查pageSize属性是否存在于pageSizes中
-    if (!info.pageSizes!.includes(info.pageSize!) && info.pageSizes!.length > 0) {
-      info.pageSize = info.pageSizes![0]
-    }
-
     return info
   })
 
