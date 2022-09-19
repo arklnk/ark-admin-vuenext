@@ -34,7 +34,8 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
     }
 
     const { pagination } = unref(getProps)
-    const info: PaginationProps = {
+
+    return {
       total: 0,
       currentPage: 1,
       pageSizes: DEFAULT_PAGE_SIZES_OPTIONS,
@@ -45,8 +46,6 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
       ...(isBoolean(pagination) ? {} : pagination),
       ...unref(configRef),
     }
-
-    return info
   })
 
   function setPagination(info: Partial<PaginationProps>) {
