@@ -4,7 +4,13 @@ import type { PaginationProps } from '../types/pagination'
 
 import { ref, watch, unref, computed } from 'vue'
 import { isBoolean } from 'lodash-es'
-import { DEFAULT_PAGINATION } from '../const'
+import {
+  DEFAULT_PAGE_BG,
+  DEFAULT_PAGE_LAYOUT,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_SIZES_OPTIONS,
+  DEFAULT_PAGE_SMALL,
+} from '../const'
 
 export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   const configRef = ref<PaginationProps>({})
@@ -31,7 +37,11 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
     const info: PaginationProps = {
       total: 0,
       currentPage: 1,
-      ...DEFAULT_PAGINATION,
+      pageSizes: DEFAULT_PAGE_SIZES_OPTIONS,
+      pageSize: DEFAULT_PAGE_SIZE,
+      layout: DEFAULT_PAGE_LAYOUT,
+      background: DEFAULT_PAGE_BG,
+      small: DEFAULT_PAGE_SMALL,
       ...(isBoolean(pagination) ? {} : pagination),
       ...unref(configRef),
     }
@@ -39,12 +49,12 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
     return info
   })
 
-  function setPagination(pagination: Partial<PaginationProps>) {
-    const prev = unref(configRef)
+  function setPagination(info: Partial<PaginationProps>) {
+    const prev = unref(getPaginationRef)
 
     configRef.value = {
       ...prev,
-      ...pagination,
+      ...info,
     }
   }
 

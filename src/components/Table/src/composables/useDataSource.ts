@@ -4,7 +4,7 @@ import type { BasicTableProps, FetchParams } from '../types/table'
 
 import { watch, unref, ref, onMounted, computed } from 'vue'
 import { get, isFunction, merge } from 'lodash-es'
-import { DEFAULT_PAGINATION, FETCH_SETTING } from '../const'
+import { FETCH_SETTING, DEFAULT_PAGE_SIZE } from '../const'
 
 interface ActionType {
   getPaginationRef: ComputedRef<Nullable<PaginationProps>>
@@ -59,7 +59,7 @@ export function useDataSource(
       const pageParams: Recordable = {}
       // set page params info
       if (unref(getPaginationRef)) {
-        const { currentPage = 1, pageSize = DEFAULT_PAGINATION.pageSize } = unref(
+        const { currentPage = 1, pageSize = DEFAULT_PAGE_SIZE } = unref(
           getPaginationRef
         ) as PaginationProps
 
