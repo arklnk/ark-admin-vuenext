@@ -40,7 +40,7 @@ export function createColumns(): TableColumn[] {
       label: '备注',
       prop: 'remark',
       minWidth: 280,
-      showTooltipWhenOverflow: true,
+      showOverflowTooltip: true,
     },
     {
       align: 'center',

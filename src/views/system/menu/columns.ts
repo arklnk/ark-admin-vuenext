@@ -26,14 +26,14 @@ export function createColumns(): TableColumn[] {
       align: 'center',
       label: '路由',
       prop: 'router',
-      showTooltipWhenOverflow: true,
+      showOverflowTooltip: true,
       minWidth: 240,
     },
     {
       align: 'center',
       label: '视图路径',
       prop: 'viewPath',
-      showTooltipWhenOverflow: true,
+      showOverflowTooltip: true,
       minWidth: 240,
     },
     {
