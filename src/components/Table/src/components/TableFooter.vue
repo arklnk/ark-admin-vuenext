@@ -1,38 +1,53 @@
 <template>
   <div :class="getFooterClass">
-    <ElPagination
-      v-bind="pagination"
-      @update:current-page="handlePageChange"
-      @update:page-size="handleSizeChange"
-    />
+    <ElPagination v-bind="getBindValues" />
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import type { PaginationProps } from '../types/pagination'
 
-import { computed } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useDesign } from '/@/composables/core/useDesign'
+import { omit } from 'lodash-es'
 
-const props = defineProps({
+const props = {
   pagination: {
     type: Object as PropType<PaginationProps>,
   },
+}
+
+export default defineComponent({
+  name: 'BasicTableFooter',
+  props,
+  emits: ['current-page', 'page-size'],
+  setup(props, { emit }) {
+    const { prefixCls } = useDesign('basic-table-footer')
+
+    const getFooterClass = computed(() => [prefixCls, props.pagination?.position || 'right'])
+
+    function onCurrentPage(page: number) {
+      emit('current-page', page)
+    }
+
+    function onPageSize(size: number) {
+      emit('page-size', size)
+    }
+
+    const getBindValues = computed(() => {
+      return {
+        ...omit(props.pagination, 'position'),
+        onCurrentPage,
+        onPageSize,
+      }
+    })
+
+    return {
+      getFooterClass,
+      getBindValues,
+    }
+  },
 })
-
-const emit = defineEmits(['current-page', 'page-size'])
-
-const { prefixCls } = useDesign('basic-table-footer')
-
-const getFooterClass = computed(() => [prefixCls, props.pagination?.position || 'right'])
-
-function handlePageChange(page: number) {
-  emit('current-page', page)
-}
-
-function handleSizeChange(size: number) {
-  emit('page-size', size)
-}
 </script>
 
 <style lang="scss">
