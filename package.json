@@ -40,8 +40,8 @@
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
     "@unocss/preset-icons": "^0.45.21",
-    "@vitejs/plugin-vue": "^3.0.3",
-    "@vitejs/plugin-vue-jsx": "^2.0.0",
+    "@vitejs/plugin-vue": "^3.1.0",
+    "@vitejs/plugin-vue-jsx": "^2.0.1",
     "autoprefixer": "^10.4.2",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.5.0",
@@ -56,6 +56,6 @@
     "vite": "^3.1.2",
     "vite-plugin-compression": "^0.5.1",
     "vue-eslint-parser": "^8.0.1",
-    "vue-tsc": "^0.40.4"
+    "vue-tsc": "^0.40.13"
   }
 }
