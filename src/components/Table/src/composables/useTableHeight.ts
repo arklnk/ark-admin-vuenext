@@ -43,7 +43,7 @@ export function useTableHeight(
 
     // 启用分页时，计算footer高度
     let footerHeight = 0
-    if (!isBoolean(pagination)) {
+    if (!(isBoolean(pagination) && !pagination)) {
       const footerEl = unref(footerElRef)?.$el
       if (footerEl) {
         footerHeight += footerEl.offsetHeight || 0
