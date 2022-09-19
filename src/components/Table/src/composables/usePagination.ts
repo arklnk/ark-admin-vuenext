@@ -15,11 +15,7 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
     (pagination) => {
       // check pagination props type, if is true or null will use default config
       // if false will disable pagination
-      if (isBoolean(pagination) && !pagination) {
-        showRef.value = false
-      } else {
-        showRef.value = true
-      }
+      showRef.value = !(isBoolean(pagination) && !pagination)
     },
     {
       immediate: true,

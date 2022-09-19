@@ -41,7 +41,7 @@ import type { BasicTableActionType, BasicTableProps, GetRowKey } from './types/t
 import type { SizeType } from '/#/config'
 
 import { computed, defineComponent, ref, unref } from 'vue'
-import { get, isFunction, omit, pick } from 'lodash-es'
+import { omit, pick } from 'lodash-es'
 import { useLoading } from './composables/useLoading'
 import { basicProps } from './props'
 import { usePagination } from './composables/usePagination'
@@ -106,16 +106,13 @@ export default defineComponent({
       return { ...props, ...unref(innerPropsRef) } as BasicTableProps
     })
 
-    const getRowKey = computed((): GetRowKey => {
-      if (!unref(getProps).rowKey) {
+    const getRowKey = computed((): GetRowKey | string | undefined => {
+      const rowKey = unref(getProps).rowKey
+      if (!rowKey) {
         warn('BasicTable rowKey prop not specify')
       }
 
-      if (isFunction(unref(getProps).rowKey)) {
-        return unref(getProps).rowKey as GetRowKey
-      }
-
-      return (record: Recordable) => get(record, unref(getProps).rowKey as string)
+      return rowKey
     })
 
     const { getPaginationRef, setPagination, getShowPagination, setShowPagination } =

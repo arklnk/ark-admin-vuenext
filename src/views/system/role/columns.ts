@@ -26,7 +26,7 @@ export function createColumns(): TableColumn[] {
       align: 'center',
       label: '备注',
       prop: 'remark',
-      showTooltipWhenOverflow: true,
+      showOverflowTooltip: true,
     },
     {
       width: 100,

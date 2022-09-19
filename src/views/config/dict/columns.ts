@@ -28,7 +28,7 @@ export function createDictItemColumns(): TableColumn[] {
       label: '字典项值',
       prop: 'value',
       width: 340,
-      showTooltipWhenOverflow: true,
+      showOverflowTooltip: true,
       align: 'center',
     },
     {
@@ -45,7 +45,7 @@ export function createDictItemColumns(): TableColumn[] {
       label: '备注',
       prop: 'remark',
       width: 300,
-      showTooltipWhenOverflow: true,
+      showOverflowTooltip: true,
     },
     {
       align: 'center',
