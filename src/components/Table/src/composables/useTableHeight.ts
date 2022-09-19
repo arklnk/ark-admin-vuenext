@@ -103,7 +103,7 @@ export function useTableHeight(
   useWindowSizeFn(calcTableHeight, 280)
 
   watch(
-    () => unref(getProps).adaptiveHeight,
+    () => [unref(getProps).adaptiveHeight, unref(getProps).pagination],
     () => {
       redoHeight()
     },
