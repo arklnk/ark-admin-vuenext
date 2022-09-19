@@ -15,7 +15,9 @@ export function useRowSelection(tableRef: Ref<Nullable<InstanceType<typeof ElTab
   }
 
   function toggleRowSelection(row: Recordable, selected?: boolean) {
-    unref(tableRef)?.toggleRowExpansion(row, selected)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    unref(tableRef)?.toggleRowSelection(row, selected)
   }
 
   function toggleAllSelection() {
