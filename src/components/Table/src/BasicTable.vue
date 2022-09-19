@@ -108,7 +108,7 @@ export default defineComponent({
 
     const getRowKey = computed((): GetRowKey | string | undefined => {
       const rowKey = unref(getProps).rowKey
-      if (rowKey) {
+      if (!rowKey) {
         warn('BasicTable rowKey prop not specify')
       }
 
