@@ -146,20 +146,16 @@ export default defineComponent({
 
     const { onTableEvent } = useTableEvents(emit, { setCurrentRowRef, handleRowClickToggleExpand })
 
-    const getBindValues = computed(() => {
+    const getBindValues = computed((): Recordable => {
       const data = unref(getDataSourceRef)
-      let propsData: Recordable = {
-        ...attrs,
+
+      return {
         ...unref(getProps),
         ...(unref(getTableHeight) ? { height: unref(getTableHeight) } : {}),
         ...onTableEvent,
         rowKey: unref(getRowKey),
         data,
       }
-
-      propsData = omit(propsData, ['class'])
-
-      return propsData
     })
 
     const getHeaderBindValues = computed(() => {
