@@ -29,9 +29,7 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
   )
 
   const getPaginationRef = computed((): Nullable<PaginationProps> => {
-    if (!unref(showRef)) {
-      return null
-    }
+    if (!unref(showRef)) return null
 
     const { pagination } = unref(getProps)
 
@@ -69,9 +67,14 @@ export function usePagination(getProps: ComputedRef<BasicTableProps>) {
     return unref(showRef)
   }
 
+  const getShowPaginationRef = computed(() => {
+    return unref(showRef)
+  })
+
   return {
     setShowPagination,
     getShowPagination,
+    getShowPaginationRef,
 
     setPagination,
     getPagination,

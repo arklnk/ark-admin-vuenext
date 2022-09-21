@@ -78,6 +78,9 @@ export function useTable(tableProps?: Props): [Register, BasicTableActionType] {
     getShowPagination: () => {
       return getTableInstance().getShowPagination()
     },
+    getPagination: () => {
+      return getTableInstance().getPagination()
+    },
     getDataSource: () => {
       return getTableInstance().getDataSource()
     },
