@@ -1,6 +1,12 @@
 <template>
   <PageWrapper>
-    <BasicTable @register="registerTable">
+    <BasicTable
+      @register="registerTable"
+      :api="getDeptListRequest"
+      row-key="id"
+      :pagination="false"
+      :columns="createColumns()"
+    >
       <template #toolbar>
         <ElButton
           type="primary"
@@ -57,12 +63,7 @@ import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
-const [registerTable, { getDataSource, reload }] = useTable({
-  api: getDeptListRequest,
-  rowKey: 'id',
-  pagination: false,
-  columns: createColumns(),
-})
+const [registerTable, { getDataSource, reload }] = useTable()
 
 const updateDeptId = ref<number | null>(null)
 

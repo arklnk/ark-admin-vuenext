@@ -14,6 +14,7 @@
           :show-header="false"
           @current-change="handleDeptChange"
           @register="registerDeptTable"
+          :columns="createDeptColumns()"
         >
           <template #toolbar>
             <span class="ml-1 text-sm">部门架构</span>
@@ -27,6 +28,8 @@
           :api="processUserListRequest"
           @register="registerUserTable"
           :immediate="false"
+          row-key="id"
+          :columns="createUserColumns()"
         >
           <template #toolbar>
             <ElButton
@@ -100,14 +103,8 @@ import { listToTree } from '/@/utils/helper/tree'
 
 const { hasPermission } = usePermission()
 
-const [registerDeptTable, { getCurrentRow }] = useTable({
-  columns: createDeptColumns(),
-  rowKey: 'id',
-})
-const [registerUserTable, { reload }] = useTable({
-  columns: createUserColumns(),
-  rowKey: 'id',
-})
+const [registerDeptTable, { getCurrentRow }] = useTable()
+const [registerUserTable, { reload }] = useTable()
 
 const updateUserId = ref<number | null>(null)
 

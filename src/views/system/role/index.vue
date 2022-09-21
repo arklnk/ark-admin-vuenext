@@ -5,6 +5,7 @@
       row-key="id"
       @register="registerTable"
       :pagination="false"
+      :columns="createColumns()"
     >
       <template #toolbar>
         <ElButton
@@ -59,10 +60,7 @@ import { getMenuListRequest } from '/@/api/system/menu'
 
 const { hasPermission } = usePermission()
 
-const [registerTable, { getDataSource, reload }] = useTable({
-  columns: createColumns(),
-  rowKey: 'id',
-})
+const [registerTable, { getDataSource, reload }] = useTable()
 
 const fdInstance = createFormDialog({
   dialogProps: { title: '编辑角色信息' },
