@@ -1,5 +1,13 @@
 <template>
-  <BasicForm class="w-[450px] mt-4 ml-6" @register="registerForm" @submit="handleSubmit">
+  <BasicForm
+    class="w-[450px] mt-4 ml-6"
+    @register="registerForm"
+    @submit="handleSubmit"
+    :show-reset-button="false"
+    :show-submit-button="false"
+    label-position="top"
+    :schemas="schemas"
+  >
     <template #submitBefore>
       <ElButton type="primary" @click="submit">更新信息</ElButton>
     </template>
@@ -22,61 +30,17 @@
 </template>
 
 <script setup lang="ts">
+import type { FormSchema } from '/@/components/Form'
+
 import { BasicForm, useForm } from '/@/components/Form'
 import { onMounted, ref } from 'vue'
 import { getUserProfileInfo, updateUserProfile, generateAvatar } from '/@/api/user'
 import { useUserStore } from '/@/stores/modules/user'
 
-const [registerForm, { setFormModel, submit, setProps }] = useForm({
-  showResetButton: false,
-  showSubmitButton: false,
-  labelPosition: 'top',
-  schemas: [
-    {
-      prop: 'avatar',
-      label: '头像',
-      defaultValue: '',
-      slot: 'avatar',
-    },
-    {
-      prop: 'username',
-      label: '姓名',
-      defaultValue: '',
-      component: 'ElInput',
-      rules: {
-        required: true,
-        type: 'string',
-        message: '请输入姓名',
-      },
-    },
-    {
-      prop: 'nickname',
-      label: '昵称',
-      defaultValue: '',
-      component: 'ElInput',
-    },
-    {
-      prop: 'gender',
-      label: '性别',
-      defaultValue: 0,
-      slot: 'gender',
-    },
-    {
-      prop: 'email',
-      label: '邮箱',
-      defaultValue: '',
-      component: 'ElInput',
-    },
-    {
-      prop: 'mobile',
-      label: '手机号',
-      defaultValue: '',
-      component: 'ElInput',
-    },
-  ],
-})
+const [registerForm, { setFormModel, submit, setProps }] = useForm()
 
 const loadingRef = ref(false)
+
 async function getProfileInfo() {
   try {
     loadingRef.value = true
@@ -114,4 +78,48 @@ async function handleGenAvatar() {
 onMounted(() => {
   getProfileInfo()
 })
+
+const schemas = ref<FormSchema[]>([
+  {
+    prop: 'avatar',
+    label: '头像',
+    defaultValue: '',
+    slot: 'avatar',
+  },
+  {
+    prop: 'username',
+    label: '姓名',
+    defaultValue: '',
+    component: 'ElInput',
+    rules: {
+      required: true,
+      type: 'string',
+      message: '请输入姓名',
+    },
+  },
+  {
+    prop: 'nickname',
+    label: '昵称',
+    defaultValue: '',
+    component: 'ElInput',
+  },
+  {
+    prop: 'gender',
+    label: '性别',
+    defaultValue: 0,
+    slot: 'gender',
+  },
+  {
+    prop: 'email',
+    label: '邮箱',
+    defaultValue: '',
+    component: 'ElInput',
+  },
+  {
+    prop: 'mobile',
+    label: '手机号',
+    defaultValue: '',
+    component: 'ElInput',
+  },
+])
 </script>
