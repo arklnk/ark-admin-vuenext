@@ -41,13 +41,13 @@ export default defineComponent({
     })
 
     const getComponentProps = computed((): Recordable => {
-      const { schema } = props
-      let { componentProps = {} } = schema
+      let { componentProps = {} } = props.schema
 
       // function exec
       if (isFunction(componentProps)) {
-        componentProps = componentProps(unref(getParams))
+        componentProps = componentProps(unref(getParams)) ?? {}
       }
+
       return componentProps
     })
 
@@ -93,23 +93,12 @@ export default defineComponent({
     function renderContent() {
       const {
         component,
-        slot: slotName,
-        render,
+        renderComponentContent,
         size,
         modelField = 'modelValue',
         changeEvent = 'update:modelValue',
         prop,
       } = props.schema
-
-      // slot
-      if (slotName) {
-        return getSlot(slots, slotName, unref(getParams))
-      }
-
-      // render function
-      if (isFunction(render)) {
-        return render(unref(getParams))
-      }
 
       // render component
       if (!component) {
@@ -148,7 +137,16 @@ export default defineComponent({
         ...on,
         ...bindValue,
       }
-      return <Comp {...compAttr}></Comp>
+
+      if (!renderComponentContent) return <Comp {...compAttr} />
+
+      const compSlot = isFunction(renderComponentContent)
+        ? { ...renderComponentContent(unref(getParams)) }
+        : {
+            default: () => renderComponentContent,
+          }
+
+      return <Comp {...compAttr} v-slots={compSlot} />
     }
 
     function renderLabel() {
@@ -161,11 +159,35 @@ export default defineComponent({
 
     // render form item
     function renderItem() {
-      const { prop, label, labelWidth, required, error, showMessage, inlineMessage, size } =
-        props.schema
+      const {
+        prop,
+        label,
+        labelWidth,
+        required,
+        error,
+        showMessage,
+        inlineMessage,
+        size,
+        render,
+        slot,
+      } = props.schema
 
       // process
       const isRequired = isFunction(required) ? required(unref(getParams)) : required
+
+      const getContent = () => {
+        // slot
+        if (slot) {
+          return getSlot(slots, slot, unref(getParams))
+        }
+
+        // render function
+        if (isFunction(render)) {
+          return render(unref(getParams))
+        }
+
+        return renderContent()
+      }
 
       return (
         <el-form-item
@@ -180,7 +202,7 @@ export default defineComponent({
           size={size}
         >
           {{
-            default: () => renderContent(),
+            default: () => getContent(),
             label: () => renderLabel(),
           }}
         </el-form-item>

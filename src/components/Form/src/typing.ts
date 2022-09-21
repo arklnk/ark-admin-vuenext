@@ -44,6 +44,10 @@ export interface FormSchema {
   component?: string | Component
   // render function
   render?: (params: RenderCallbackParams) => VueNode
+  // render component slot
+  renderComponentContent?:
+    | ((params: RenderCallbackParams) => Recordable<(...args: any[]) => VueNode>)
+    | VueNode
   // component props
   componentProps?: Recordable | ((params: RenderCallbackParams) => Recordable)
   // will merge to componentProps
