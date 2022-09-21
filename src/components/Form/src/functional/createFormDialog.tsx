@@ -1,22 +1,39 @@
 import type { BasicFormActionType, BasicFormProps } from '../typing'
 import type { BasicDialogProps, BasicDialogActionType } from '/@/components/Dialog'
-import type { ComponentInternalInstance } from 'vue'
+import type { ComponentInternalInstance, Ref, ExtractPropTypes } from 'vue'
 
 import { BasicDialog } from '/@/components/Dialog'
 import BasicForm from '../BasicForm.vue'
-import { ref, unref, render, createVNode, nextTick, getCurrentInstance, onUnmounted } from 'vue'
+import {
+  unref,
+  render,
+  createVNode,
+  nextTick,
+  getCurrentInstance,
+  onUnmounted,
+  ref,
+  defineComponent,
+} from 'vue'
 import { globalAppContext } from '/@/components/registerGlobalComp'
 import { isFunction, merge } from 'lodash-es'
+
+const basicProps = {
+  formProps: {
+    type: Object as PropType<BasicFormProps>,
+  },
+  dialogProps: {
+    type: Object as PropType<BasicDialogProps>,
+  },
+  submit: {
+    type: Function as PropType<OnSubmitFn>,
+  },
+}
 
 type OnSubmitFn = (res: Recordable, ist: FormDialogInstance) => void | Promise<void>
 
 type OnOpenFn = (ist: FormDialogInstance) => void | Promise<void>
 
-interface FormDialogProps {
-  formProps: BasicFormProps
-  dialogProps: BasicDialogProps
-  submit: OnSubmitFn
-}
+type FormDialogProps = ExtractPropTypes<typeof basicProps>
 
 interface FormDialogInstance {
   open: (fn?: OnOpenFn) => void | Promise<void>
@@ -27,47 +44,12 @@ interface FormDialogInstance {
   getFormAction: () => Nullable<BasicFormActionType>
 }
 
-export function createFormDialog(createProps?: Partial<FormDialogProps>): FormDialogInstance {
-  const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
-  const formRef = ref<Nullable<BasicFormActionType>>(null)
-
+export function createFormDialog(
+  createProps?: Partial<FormDialogProps>,
+  fdRef?: Ref<Nullable<FormDialogInstance>>
+) {
   // 判断是否在setup中调用，用于判断是否能在生命周期中释放资源
   const isRunInSetup = !!getCurrentInstance()
-
-  // FormDialog FunctionalComponent
-  const FormDialogRender = (props: Partial<FormDialogProps>) => {
-    const dialogProps = {
-      destroyOnClose: true,
-      ...(props.dialogProps || {}),
-      onConfirm: unref(formRef)?.submit,
-      onCancel: () => {
-        //关闭时重置表单值
-        unref(formRef)?.resetFields()
-      },
-    }
-
-    // hook onSubmit
-    function handleSubmit(res: Recordable) {
-      if (props.submit && isFunction(props.submit)) {
-        props.submit(res, action)
-      }
-    }
-
-    const formProps = {
-      ...(props.formProps || {}),
-      showActionButtonGroup: false,
-      onSubmit: handleSubmit,
-    }
-
-    return (
-      <BasicDialog ref={dialogRef} {...dialogProps}>
-        <BasicForm ref={formRef} {...formProps} />
-      </BasicDialog>
-    )
-  }
-
-  // normalized to camelCase unless the props option is specified.
-  FormDialogRender.props = ['dialogProps', 'formProps', 'submit']
 
   const container = document.createElement('div')
   let _componentInstance: ComponentInternalInstance | null = null
@@ -77,8 +59,6 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>): FormDi
     // but render(null, container) did that job for us. so that we do not call that directly
     render(null, container)
 
-    dialogRef.value = null
-    formRef.value = null
     _componentInstance = null
   }
 
@@ -97,63 +77,124 @@ export function createFormDialog(createProps?: Partial<FormDialogProps>): FormDi
     })
   }
 
-  // lazy init
-  function initVNode() {
+  function getInstance(): Nullable<FormDialogInstance> {
+    if (fdRef) return unref(fdRef)
+
     // inited return
-    if (_componentInstance) return
+    if (!_componentInstance) {
+      const vm = createVNode(BasicFormDialog, createProps)
+      vm.appContext = globalAppContext
 
-    const vm = createVNode(FormDialogRender, createProps)
-    vm.appContext = globalAppContext
+      render(vm, container)
+      document.body.appendChild(container.firstElementChild!)
 
-    render(vm, container)
-    document.body.appendChild(container.firstElementChild!)
+      _componentInstance = vm.component!
+    }
 
-    _componentInstance = vm.component!
+    return _componentInstance.exposed as Nullable<FormDialogInstance>
   }
 
-  function getDialogAction() {
-    initVNode()
-
-    return unref(dialogRef)
+  return {
+    open: (fn?: OnOpenFn) => {
+      getInstance()?.open(fn)
+    },
+    close: () => {
+      getInstance()?.close()
+    },
+    getDialogAction: () => {
+      return getInstance()?.getDialogAction()
+    },
+    getFormAction: () => {
+      return getInstance()?.getFormAction()
+    },
+    showLoading: () => {
+      getInstance()?.showLoading()
+    },
+    hideLoading: () => {
+      getInstance()?.hideLoading()
+    },
   }
+}
 
-  function getFormAction() {
-    initVNode()
+export const BasicFormDialog = defineComponent({
+  name: 'BasicFormDialog',
+  inheritAttrs: false,
+  props: basicProps,
+  setup(props, { expose, slots }) {
+    const dialogRef = ref<Nullable<BasicDialogActionType>>(null)
+    const formRef = ref<Nullable<BasicFormActionType>>(null)
 
-    return unref(formRef)
-  }
+    const action = {
+      getDialogAction,
+      getFormAction,
+      open,
+      close,
+      showLoading,
+      hideLoading,
+    }
 
-  // expose operate function
-  function open(onOpen?: OnOpenFn) {
-    getDialogAction()?.setProps({ visible: true })
+    function getDialogAction() {
+      return unref(dialogRef)
+    }
 
-    if (onOpen && isFunction(onOpen)) {
+    function getFormAction() {
+      return unref(formRef)
+    }
+
+    // expose operate function
+    function open(open?: OnOpenFn) {
+      getDialogAction()?.setProps({ visible: true })
+
       nextTick(() => {
-        onOpen(action)
+        if (open && isFunction(open)) {
+          open(action)
+        }
       })
     }
-  }
 
-  function close() {
-    getDialogAction()?.setProps({ visible: false })
-  }
+    function close() {
+      getDialogAction()?.setProps({ visible: false })
+    }
 
-  function showLoading() {
-    getDialogAction()?.setProps({ loading: true, confirmBtnProps: { loading: true } })
-  }
+    function showLoading() {
+      getDialogAction()?.setProps({ loading: true, confirmBtnProps: { loading: true } })
+    }
 
-  function hideLoading() {
-    getDialogAction()?.setProps({ loading: false, confirmBtnProps: { loading: false } })
-  }
+    function hideLoading() {
+      getDialogAction()?.setProps({ loading: false, confirmBtnProps: { loading: false } })
+    }
 
-  const action: FormDialogInstance = {
-    getDialogAction,
-    getFormAction,
-    open,
-    close,
-    showLoading,
-    hideLoading,
-  }
+    expose(action)
 
-  return action
-}
+    return () => {
+      const dialogProps = {
+        destroyOnClose: true,
+        ...(props.dialogProps || {}),
+        onConfirm: unref(formRef)?.submit,
+        onCancel: () => {
+          //关闭时重置表单值
+          unref(formRef)?.resetFields()
+        },
+      }
+
+      // hook onSubmit
+      function handleSubmit(res: Recordable) {
+        if (props.submit && isFunction(props.submit)) {
+          props.submit(res, action)
+        }
+      }
+
+      const formProps = {
+        ...(props.formProps || {}),
+        showActionButtonGroup: false,
+        onSubmit: handleSubmit,
+      }
+
+      return (
+        <BasicDialog ref={dialogRef} {...dialogProps}>
+          <BasicForm ref={formRef} {...formProps} v-slots={slots} />
+        </BasicDialog>
+      )
+    }
+  },
+})

@@ -28,7 +28,7 @@
     <!-- footer -->
     <BasicTableFooter
       ref="footerRef"
-      v-if="getPaginationRef"
+      v-if="getShowPaginationRef"
       :pagination="getPaginationRef"
       @current-page="handlePageChange"
       @page-size="handleSizeChange"
@@ -115,10 +115,16 @@ export default defineComponent({
       return rowKey
     })
 
-    const { getPaginationRef, setPagination, getShowPagination, setShowPagination } =
-      usePagination(getProps)
+    const {
+      getPaginationRef,
+      setPagination,
+      getShowPagination,
+      setShowPagination,
+      getPagination,
+      getShowPaginationRef,
+    } = usePagination(getProps)
 
-    const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps, getPaginationRef)
+    const { getViewColumnsRef, setColumns, getColumns } = useColumns(getProps, getPagination)
 
     const { setLoading, getLoading } = useLoading(getProps)
 
@@ -127,7 +133,7 @@ export default defineComponent({
       getDataSource,
       handleTableChange: onTableChange,
       reload,
-    } = useDataSource(getProps, { getPaginationRef, setPagination, setLoading }, emit)
+    } = useDataSource(getProps, { getPagination, setPagination, setLoading }, emit)
 
     const { getTableHeight, redoHeight } = useTableHeight(
       getProps,
@@ -146,20 +152,16 @@ export default defineComponent({
 
     const { onTableEvent } = useTableEvents(emit, { setCurrentRowRef, handleRowClickToggleExpand })
 
-    const getBindValues = computed(() => {
+    const getBindValues = computed((): Recordable => {
       const data = unref(getDataSourceRef)
-      let propsData: Recordable = {
-        ...attrs,
+
+      return {
         ...unref(getProps),
         ...(unref(getTableHeight) ? { height: unref(getTableHeight) } : {}),
         ...onTableEvent,
         rowKey: unref(getRowKey),
         data,
       }
-
-      propsData = omit(propsData, ['class'])
-
-      return propsData
     })
 
     const getHeaderBindValues = computed(() => {
@@ -210,6 +212,7 @@ export default defineComponent({
       setProps,
       setShowPagination,
       getShowPagination,
+      getPagination,
       reload,
       getDataSource,
       getSize: () => unref(getProps).size as SizeType,
@@ -242,6 +245,7 @@ export default defineComponent({
       getHeaderBindValues,
       getShowTableHeader,
       getPaginationRef,
+      getShowPaginationRef,
       getViewColumnsRef,
       getLoading,
       omit,

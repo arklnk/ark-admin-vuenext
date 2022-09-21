@@ -6,6 +6,7 @@
       row-key="id"
       border
       @register="registerTable"
+      :columns="createColumns()"
     >
       <!-- toolbar -->
       <template #toolbar>
@@ -78,10 +79,7 @@ import { isProdMode } from '/@/utils/env'
 
 const { hasPermission } = usePermission()
 
-const [registerTable, { getDataSource, reload }] = useTable({
-  columns: createColumns(),
-  rowKey: 'id',
-})
+const [registerTable, { getDataSource, reload }] = useTable()
 
 const fdInstance = createFormDialog({
   dialogProps: { title: '编辑菜单信息 ' },

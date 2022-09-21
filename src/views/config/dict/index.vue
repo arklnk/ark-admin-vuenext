@@ -15,6 +15,8 @@
           @current-change="handleDictChange"
           @row-contextmenu="handleDictRowContextmenu"
           :before-fetch="resetCurrentDictId"
+          :columns="createDictColumns()"
+          row-key="id"
         >
           <template #dictHeader="{ column }">
             <div class="flex flex-row">
@@ -41,6 +43,8 @@
           :immediate="false"
           @register="registerItemTable"
           :search-info="currentDictInfo"
+          row-key="id"
+          :columns="createDictItemColumns()"
         >
           <template #toolbar>
             <ElButton
@@ -102,15 +106,9 @@ const { hasPermission } = usePermission()
 const [
   registerDictTable,
   { setCurrentRow, getDataSource: getSetDataSource, getCurrentRow, reload: reloadDictTable },
-] = useTable({
-  rowKey: 'id',
-  columns: createDictColumns(),
-})
+] = useTable()
 
-const [registerItemTable, { reload }] = useTable({
-  rowKey: 'id',
-  columns: createDictItemColumns(),
-})
+const [registerItemTable, { reload }] = useTable()
 
 const fdInstance = createFormDialog({
   formProps: { labelWidth: '110px', schemas: createDictSchemas() },

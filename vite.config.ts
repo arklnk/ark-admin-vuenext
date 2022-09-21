@@ -2,7 +2,7 @@ import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
 import dayjs from 'dayjs'
 
-import { createViteProxy } from './build/vite/proxy'
+import { createServerOptions, createPreviewOptions } from './build/vite/server'
 import { createVitePlugins } from './build/vite/plugin'
 
 import { dependencies, devDependencies, version } from './package.json'
@@ -63,7 +63,8 @@ export default defineConfig(({ command, mode }) => {
       ],
     },
 
-    server: createViteProxy(env),
+    server: createServerOptions(env),
+    preview: createPreviewOptions(env),
 
     build: {
       target: 'es2015',

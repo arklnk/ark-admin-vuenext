@@ -56,7 +56,7 @@ export default defineComponent({
   emits: ['register', 'reset', 'submit', 'submit-failed', 'prop-value-change'],
   setup(props, { emit, attrs, expose }) {
     const innerPropsRef = ref<Partial<BasicFormProps>>()
-    const schemaRef = ref<Nullable<FormSchema[]>>(null)
+    const schemaRef = ref<FormSchema[]>()
     const formModel = reactive<Recordable>({})
     const defaultValueRef = ref<Recordable>({})
     const formElRef = ref<Nullable<FormInstance>>(null)

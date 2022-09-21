@@ -4,23 +4,17 @@ import type {
   FetchParams,
   GetColumnsParams,
 } from '../types/table'
-import type { WatchStopHandle } from 'vue'
 import type { TableColumn } from '../types/column'
 
-import { ref, onUnmounted, unref, watch } from 'vue'
+import { ref, onUnmounted, unref } from 'vue'
 import { error } from '/@/utils/log'
 import { isProdMode } from '/@/utils/env'
-import { toRefableProps } from '/@/utils'
-
-type Props = Partial<RefableProps<BasicTableProps>>
 
 type Register = (instance: BasicTableActionType) => void
 
-export function useTable(tableProps?: Props): [Register, BasicTableActionType] {
+export function useTable(): [Register, BasicTableActionType] {
   const tableRef = ref<Nullable<BasicTableActionType>>(null)
   const loadedRef = ref<Nullable<boolean>>(false)
-
-  let stopWatch: WatchStopHandle
 
   function register(instance: BasicTableActionType) {
     if (isProdMode()) {
@@ -34,21 +28,6 @@ export function useTable(tableProps?: Props): [Register, BasicTableActionType] {
 
     tableRef.value = instance
     loadedRef.value = true
-
-    if (tableProps) {
-      instance.setProps(toRefableProps(tableProps))
-      stopWatch?.()
-
-      stopWatch = watch(
-        () => tableProps,
-        () => {
-          tableProps && instance.setProps(toRefableProps(tableProps))
-        },
-        {
-          deep: true,
-        }
-      )
-    }
   }
 
   function getTableInstance(): BasicTableActionType {
@@ -77,6 +56,9 @@ export function useTable(tableProps?: Props): [Register, BasicTableActionType] {
     },
     getShowPagination: () => {
       return getTableInstance().getShowPagination()
+    },
+    getPagination: () => {
+      return getTableInstance().getPagination()
     },
     getDataSource: () => {
       return getTableInstance().getDataSource()

@@ -10,8 +10,8 @@ import { filter } from '/@/utils/helper/tree'
 import { DEFAULT_PAGE_SIZE } from '../const'
 
 function processIndexColumn(
-  getPaginationRef: ComputedRef<Nullable<PaginationProps>>,
-  columns: TableColumn[]
+  columns: TableColumn[],
+  getPagination: () => Nullable<PaginationProps>
 ) {
   const { t } = useTransl()
 
@@ -22,7 +22,7 @@ function processIndexColumn(
   columns.forEach((col) => {
     if (Reflect.has(col, 'children') && col.children && col.children.length > 0) {
       // deep process
-      processIndexColumn(getPaginationRef, col.children)
+      processIndexColumn(col.children, getPagination)
     }
 
     if (col.type !== 'index') return
@@ -41,11 +41,11 @@ function processIndexColumn(
     align: 'center',
     width: 80,
     index: (i: number) => {
-      const getPagination = unref(getPaginationRef)
-      if (!getPagination) {
+      const pagination = getPagination()
+      if (!pagination) {
         return i + 1
       }
-      const { currentPage = 1, pageSize = DEFAULT_PAGE_SIZE } = getPagination
+      const { currentPage = 1, pageSize = DEFAULT_PAGE_SIZE } = pagination
 
       return ((currentPage < 1 ? 1 : currentPage) - 1) * pageSize + i + 1
     },
@@ -55,7 +55,7 @@ function processIndexColumn(
 
 export function useColumns(
   getProps: ComputedRef<BasicTableProps>,
-  getPaginationRef: ComputedRef<Nullable<PaginationProps>>
+  getPagination: () => Nullable<PaginationProps>
 ) {
   const columnsRef = ref<TableColumn[]>(unref(getProps).columns || [])
 
@@ -75,7 +75,7 @@ export function useColumns(
     const columns = cloneDeep(unref(columnsRef))
 
     // 处理序号列
-    processIndexColumn(getPaginationRef, columns)
+    processIndexColumn(columns, getPagination)
 
     if (!columns) {
       return []

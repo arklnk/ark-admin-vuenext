@@ -1,22 +1,39 @@
 import type { BasicFormActionType, BasicFormProps } from '../typing'
 import type { BasicDrawerProps, BasicDrawerActionType } from '/@/components/Drawer'
-import type { ComponentInternalInstance } from 'vue'
+import type { ComponentInternalInstance, Ref, ExtractPropTypes } from 'vue'
 
 import { BasicDrawer } from '/@/components/Drawer'
 import BasicForm from '../BasicForm.vue'
-import { ref, unref, render, createVNode, nextTick, getCurrentInstance, onUnmounted } from 'vue'
+import {
+  unref,
+  render,
+  createVNode,
+  nextTick,
+  getCurrentInstance,
+  onUnmounted,
+  ref,
+  defineComponent,
+} from 'vue'
 import { globalAppContext } from '/@/components/registerGlobalComp'
 import { isFunction, merge } from 'lodash-es'
+
+const basicProps = {
+  formProps: {
+    type: Object as PropType<BasicFormProps>,
+  },
+  drawerProps: {
+    type: Object as PropType<BasicDrawerProps>,
+  },
+  submit: {
+    type: Function as PropType<OnSubmitFn>,
+  },
+}
 
 type OnSubmitFn = (res: Recordable, ist: FormDrawerInstance) => void | Promise<void>
 
 type OnOpenFn = (ist: FormDrawerInstance) => void | Promise<void>
 
-interface FormDrawerProps {
-  formProps: BasicFormProps
-  drawerProps: BasicDrawerProps
-  submit: OnSubmitFn
-}
+type FormDrawerProps = ExtractPropTypes<typeof basicProps>
 
 interface FormDrawerInstance {
   open: (fn?: OnOpenFn) => void | Promise<void>
@@ -27,47 +44,12 @@ interface FormDrawerInstance {
   getFormAction: () => Nullable<BasicFormActionType>
 }
 
-export function createFormDrawer(createProps?: Partial<FormDrawerProps>): FormDrawerInstance {
-  const drawerRef = ref<Nullable<BasicDrawerActionType>>(null)
-  const formRef = ref<Nullable<BasicFormActionType>>(null)
-
+export function createFormDrawer(
+  createProps?: Partial<FormDrawerProps>,
+  fdRef?: Ref<Nullable<FormDrawerInstance>>
+) {
   // 判断是否在setup中调用，用于判断是否能在生命周期中释放资源
   const isRunInSetup = !!getCurrentInstance()
-
-  // FormDrawer FunctionalComponent
-  const FormDrawerRender = (props: Partial<FormDrawerProps>) => {
-    const drawerProps = {
-      destroyOnClose: true,
-      ...(props.drawerProps || {}),
-      onConfirm: unref(formRef)?.submit,
-      onCancel: () => {
-        //关闭时重置表单值
-        unref(formRef)?.resetFields()
-      },
-    }
-
-    // hook onSubmit
-    function handleSubmit(res: Recordable) {
-      if (props.submit && isFunction(props.submit)) {
-        props.submit(res, action)
-      }
-    }
-
-    const formProps = {
-      ...(props.formProps || {}),
-      showActionButtonGroup: false,
-      onSubmit: handleSubmit,
-    }
-
-    return (
-      <BasicDrawer ref={drawerRef} {...drawerProps}>
-        <BasicForm ref={formRef} {...formProps} />
-      </BasicDrawer>
-    )
-  }
-
-  // normalized to camelCase unless the props option is specified.
-  FormDrawerRender.props = ['drawerProps', 'formProps', 'submit']
 
   const container = document.createElement('div')
   let _componentInstance: ComponentInternalInstance | null = null
@@ -77,8 +59,6 @@ export function createFormDrawer(createProps?: Partial<FormDrawerProps>): FormDr
     // but render(null, container) did that job for us. so that we do not call that directly
     render(null, container)
 
-    drawerRef.value = null
-    formRef.value = null
     _componentInstance = null
   }
 
@@ -97,63 +77,124 @@ export function createFormDrawer(createProps?: Partial<FormDrawerProps>): FormDr
     })
   }
 
-  // lazy init
-  function initVNode() {
+  function getInstance(): Nullable<FormDrawerInstance> {
+    if (fdRef) return unref(fdRef)
+
     // inited return
-    if (_componentInstance) return
+    if (!_componentInstance) {
+      const vm = createVNode(BasicFormDrawer, createProps)
+      vm.appContext = globalAppContext
 
-    const vm = createVNode(FormDrawerRender, createProps)
-    vm.appContext = globalAppContext
+      render(vm, container)
+      document.body.appendChild(container.firstElementChild!)
 
-    render(vm, container)
-    document.body.appendChild(container.firstElementChild!)
+      _componentInstance = vm.component!
+    }
 
-    _componentInstance = vm.component!
+    return _componentInstance.exposed as Nullable<FormDrawerInstance>
   }
 
-  function getDrawerAction() {
-    initVNode()
-
-    return unref(drawerRef)
+  return {
+    open: (fn?: OnOpenFn) => {
+      getInstance()?.open(fn)
+    },
+    close: () => {
+      getInstance()?.close()
+    },
+    getDrawerAction: () => {
+      return getInstance()?.getDrawerAction()
+    },
+    getFormAction: () => {
+      return getInstance()?.getFormAction()
+    },
+    showLoading: () => {
+      getInstance()?.showLoading()
+    },
+    hideLoading: () => {
+      getInstance()?.hideLoading()
+    },
   }
+}
 
-  function getFormAction() {
-    initVNode()
+export const BasicFormDrawer = defineComponent({
+  name: 'BasicFormDrawer',
+  inheritAttrs: false,
+  props: basicProps,
+  setup(props, { expose, slots }) {
+    const drawerRef = ref<Nullable<BasicDrawerActionType>>(null)
+    const formRef = ref<Nullable<BasicFormActionType>>(null)
 
-    return unref(formRef)
-  }
+    const action = {
+      getDrawerAction,
+      getFormAction,
+      open,
+      close,
+      showLoading,
+      hideLoading,
+    }
 
-  // expose operate function
-  function open(onOpen?: OnOpenFn) {
-    getDrawerAction()?.setProps({ visible: true })
+    function getDrawerAction() {
+      return unref(drawerRef)
+    }
 
-    if (onOpen && isFunction(onOpen)) {
+    function getFormAction() {
+      return unref(formRef)
+    }
+
+    // expose operate function
+    function open(open?: OnOpenFn) {
+      getDrawerAction()?.setProps({ visible: true })
+
       nextTick(() => {
-        onOpen(action)
+        if (open && isFunction(open)) {
+          open(action)
+        }
       })
     }
-  }
 
-  function close() {
-    getDrawerAction()?.setProps({ visible: false })
-  }
+    function close() {
+      getDrawerAction()?.setProps({ visible: false })
+    }
 
-  function showLoading() {
-    getDrawerAction()?.setProps({ loading: true, confirmBtnProps: { loading: true } })
-  }
+    function showLoading() {
+      getDrawerAction()?.setProps({ loading: true, confirmBtnProps: { loading: true } })
+    }
 
-  function hideLoading() {
-    getDrawerAction()?.setProps({ loading: false, confirmBtnProps: { loading: false } })
-  }
+    function hideLoading() {
+      getDrawerAction()?.setProps({ loading: false, confirmBtnProps: { loading: false } })
+    }
 
-  const action: FormDrawerInstance = {
-    getDrawerAction,
-    getFormAction,
-    open,
-    close,
-    showLoading,
-    hideLoading,
-  }
+    expose(action)
 
-  return action
-}
+    return () => {
+      const drawerProps = {
+        destroyOnClose: true,
+        ...(props.drawerProps || {}),
+        onConfirm: unref(formRef)?.submit,
+        onCancel: () => {
+          //关闭时重置表单值
+          unref(formRef)?.resetFields()
+        },
+      }
+
+      // hook onSubmit
+      function handleSubmit(res: Recordable) {
+        if (props.submit && isFunction(props.submit)) {
+          props.submit(res, action)
+        }
+      }
+
+      const formProps = {
+        ...(props.formProps || {}),
+        showActionButtonGroup: false,
+        onSubmit: handleSubmit,
+      }
+
+      return (
+        <BasicDrawer ref={drawerRef} {...drawerProps}>
+          <BasicForm ref={formRef} {...formProps} v-slots={slots} />
+        </BasicDrawer>
+      )
+    }
+  },
+})

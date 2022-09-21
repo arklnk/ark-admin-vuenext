@@ -1,7 +1,5 @@
 import type { App, Plugin, Component } from 'vue'
 
-import { unref } from 'vue'
-
 export const noop = () => {}
 
 /**
@@ -22,16 +20,6 @@ export const withInstall = <T>(component: T, alias?: string) => {
     }
   }
   return component as T & Plugin
-}
-
-export function toRefableProps(props: Recordable): Partial<Recordable> {
-  const ret: Recordable = {}
-
-  Object.keys(props).forEach((key) => {
-    ret[key] = unref(props[key])
-  })
-
-  return ret
 }
 
 /**

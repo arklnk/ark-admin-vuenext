@@ -25,7 +25,6 @@ export function createSchemas(): FormSchema[] {
   if (isProdMode()) {
     // 生产环境下严格按照当前用户具有的权限进行分配
     permSchema.component = 'ElCascader'
-    permSchema.changeEvent = 'change'
     permSchema.componentProps = {
       style: 'width: 100%;',
       options: [],
@@ -50,6 +49,8 @@ export function createSchemas(): FormSchema[] {
       )
     }
   }
+
+  const allDynamicImportViews = getDynamicImportViews()
 
   return [
     {
@@ -137,8 +138,6 @@ export function createSchemas(): FormSchema[] {
         return model.type === 2 || model.type === 0
       },
       render: ({ model }) => {
-        const allDynamicImportViews = getDynamicImportViews()
-
         return (
           <el-select v-model={model.viewPath} style="width: 100%" clearable allow-create filterable>
             {allDynamicImportViews.map((item) => (

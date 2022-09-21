@@ -1,6 +1,11 @@
 <template>
   <PageWrapper>
-    <BasicTable :api="getJobPageRequest" @register="registerTable">
+    <BasicTable
+      :api="getJobPageRequest"
+      @register="registerTable"
+      row-key="id"
+      :columns="createColumns()"
+    >
       <template #toolbar>
         <ElButton
           type="primary"
@@ -53,7 +58,7 @@ import { ref } from 'vue'
 
 const { hasPermission } = usePermission()
 
-const [registerTable, { reload }] = useTable({ columns: createColumns(), rowKey: 'id' })
+const [registerTable, { reload }] = useTable()
 
 const fdInstance = createFormDialog({
   formProps: { schemas: createSchemas(), labelWidth: '100px' },

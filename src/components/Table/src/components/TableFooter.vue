@@ -13,12 +13,14 @@ import { omit } from 'lodash-es'
 
 const props = {
   pagination: {
-    type: Object as PropType<PaginationProps>,
+    type: Object as PropType<Nullable<PaginationProps>>,
+    default: null,
   },
 }
 
 export default defineComponent({
   name: 'BasicTableFooter',
+  inheritAttrs: false,
   props,
   emits: ['current-page', 'page-size'],
   setup(props, { emit }) {

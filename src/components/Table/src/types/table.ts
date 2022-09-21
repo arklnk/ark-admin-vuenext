@@ -2,6 +2,7 @@ import type { basicProps } from '../props'
 import type { ExtractPropTypes } from 'vue'
 import type { SizeType } from '/#/config'
 import type { TableColumn } from './column'
+import type { PaginationProps } from './pagination'
 
 export interface TableSetting {
   redo?: boolean
@@ -43,6 +44,7 @@ export interface BasicTableActionType {
   setProps: (props: Partial<BasicTableProps>) => void
   setShowPagination: (show: boolean) => void
   getShowPagination: () => boolean
+  getPagination: () => Nullable<PaginationProps>
   getDataSource: <T = Recordable>() => T[]
   getSize: () => SizeType
   redoHeight: () => void

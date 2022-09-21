@@ -7,14 +7,14 @@ import { get, isFunction, merge } from 'lodash-es'
 import { FETCH_SETTING, DEFAULT_PAGE_SIZE } from '../const'
 
 interface ActionType {
-  getPaginationRef: ComputedRef<Nullable<PaginationProps>>
+  getPagination: () => Nullable<PaginationProps>
   setPagination: (info: Partial<PaginationProps>) => void
   setLoading: (loading: boolean) => void
 }
 
 export function useDataSource(
   getProps: ComputedRef<BasicTableProps>,
-  { setLoading, getPaginationRef, setPagination }: ActionType,
+  { setLoading, getPagination, setPagination }: ActionType,
   emit: EmitFn
 ) {
   const dataSourceRef = ref<Recordable[]>([])
@@ -58,10 +58,9 @@ export function useDataSource(
 
       const pageParams: Recordable = {}
       // set page params info
-      if (unref(getPaginationRef)) {
-        const { currentPage = 1, pageSize = DEFAULT_PAGE_SIZE } = unref(
-          getPaginationRef
-        ) as PaginationProps
+      const pagination = getPagination()
+      if (pagination) {
+        const { currentPage = 1, pageSize = DEFAULT_PAGE_SIZE } = pagination
 
         pageParams[pageField] = (opt && opt.page) || currentPage
         pageParams[sizeField] = pageSize

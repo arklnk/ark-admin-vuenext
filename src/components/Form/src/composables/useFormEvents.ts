@@ -49,7 +49,7 @@ export function useFormEvents({
 
     props.forEach((item: FormItemProp) => {
       // check
-      const fieldValue = get(values, item)
+      const fieldValue = cloneDeep(get(values, item))
       set(formModel, item, fieldValue)
     })
 
