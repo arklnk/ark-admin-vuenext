@@ -38,50 +38,28 @@
     ],
     "description": "define api request"
   },
-  "defformdlg": {
-    "scope": "vue",
-    "prefix": "defformdlg",
+  "defcol": {
+    "scope": "typescript",
+    "prefix": "defcol",
     "body": [
-      "<template>",
-      "  <BasicDialog @register=\"registerDialog\" @confirm=\"submit\" :title=\"'$1'\">",
-      "    <BasicForm",
-      "      :schemas=\"schemas\"",
-      "      :show-action-button-group=\"false\"",
-      "      @submit=\"handleSubmit\"",
-      "      @register=\"registerForm\"",
-      "    />",
-      "  </BasicDialog>",
-      "</template>",
+      "import type { TableColumn } from '/@/components/Table'",
       "",
-      "<script setup lang=\"ts\">",
+      "export function createColumns(): TableColumn[] {",
+      "  return [$1]",
+      "}"
+    ],
+    "description": "define table columns"
+  },
+  "defscm": {
+    "scope": "typescript",
+    "prefix": "defscm",
+    "body": [
       "import type { FormSchema } from '/@/components/Form'",
       "",
-      "import { BasicDialog, useDialogInner } from '/@/components/Dialog'",
-      "import { BasicForm, useForm } from '/@/components/Form'",
-      "import { ref } from 'vue'",
-      "",
-      "defineEmits(['register'])",
-      "",
-      "const [registerForm, { submit, setProps: setFormProps }] = useForm()",
-      "const [registerDialog, { setProps: setDialogProps, closeDialog }] = useDialogInner()",
-      "",
-      "async function handleSubmit(res: Recordable) {",
-      "  try {",
-      "    setDialogProps({ confirmBtnProps: { loading: true } })",
-      "    setFormProps({ disabled: true })",
-      "    console.log(res)$2",
-      "",
-      "    closeDialog()",
-      "  } finally {",
-      "    setDialogProps({ confirmBtnProps: { loading: false } })",
-      "    setFormProps({ disabled: false })",
-      "  }",
-      "}",
-      "",
-      "const schemas = ref<FormSchema[]>([])",
-      "</script>",
-      ""
+      "export function createSchemas(): FormSchema[] {",
+      "  return [$1]",
+      "}"
     ],
-    "description": "define form dialog template"
+    "description": "define form schemas"
   }
 }
