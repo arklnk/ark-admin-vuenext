@@ -7,6 +7,7 @@ import { getViewportOffset } from '/@/utils/dom'
 import { isBoolean } from 'lodash-es'
 import { useWindowSizeFn } from '/@/composables/event/useWindowSizeFn'
 import { numberUnit } from '/@/utils'
+import { useRootSetting } from '/@/composables/setting/useRootSetting'
 
 export function useTableHeight(
   getProps: ComputedRef<BasicTableProps>,
@@ -16,6 +17,8 @@ export function useTableHeight(
   wrapElRef: Ref<HTMLElement>
 ) {
   const tableHeightRef = ref<number>(120)
+
+  const { getFullContent } = useRootSetting()
 
   /**
    * 动态计算table高度，以方便固定表头进行数据滚动
@@ -103,7 +106,7 @@ export function useTableHeight(
   useWindowSizeFn(calcTableHeight, 280)
 
   watch(
-    () => [unref(getProps).adaptiveHeight, unref(getProps).pagination],
+    () => [unref(getProps).adaptiveHeight, unref(getProps).pagination, unref(getFullContent)],
     () => {
       redoHeight()
     },
