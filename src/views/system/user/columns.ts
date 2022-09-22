@@ -58,7 +58,7 @@ export function createUserColumns(): TableColumn[] {
         if (row.gender === 1) {
           return '女'
         } else if (row.gender === 2) {
-          return '难'
+          return '男'
         } else {
           return '保密'
         }
