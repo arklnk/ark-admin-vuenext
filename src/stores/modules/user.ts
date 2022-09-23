@@ -1,7 +1,7 @@
 import { merge } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { usePermissionStore } from './permission'
-import { getUserInfo, userLogout as logoutRequest } from '/@/api/user'
+import { getUserInfo, userLogout as logoutRequest } from '/@/api/basic'
 import { RoleEnum } from '/@/enums/roleEnum'
 import { resetRouter } from '/@/router'
 import { setToken as setLocalToken, removeToken } from '/@/utils/auth'

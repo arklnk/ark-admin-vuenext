@@ -58,7 +58,7 @@ export function createUserColumns(): TableColumn[] {
         if (row.gender === 1) {
           return '女'
         } else if (row.gender === 2) {
-          return '难'
+          return '男'
         } else {
           return '保密'
         }
@@ -90,6 +90,13 @@ export function createUserColumns(): TableColumn[] {
       formatter: (row: Recordable) => {
         return row.status === 0 ? '禁用' : '启用'
       },
+    },
+    {
+      align: 'center',
+      label: '备注',
+      prop: 'remark',
+      minWidth: 280,
+      showOverflowTooltip: true,
     },
     {
       label: '排序',
