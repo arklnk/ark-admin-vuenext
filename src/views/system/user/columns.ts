@@ -92,6 +92,13 @@ export function createUserColumns(): TableColumn[] {
       },
     },
     {
+      align: 'center',
+      label: '备注',
+      prop: 'remark',
+      minWidth: 280,
+      showOverflowTooltip: true,
+    },
+    {
       label: '排序',
       prop: 'orderNum',
       align: 'center',
