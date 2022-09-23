@@ -34,7 +34,7 @@ import type { FormSchema } from '/@/components/Form'
 
 import { BasicForm, useForm } from '/@/components/Form'
 import { onMounted, ref } from 'vue'
-import { getUserProfileInfo, updateUserProfile, generateAvatar } from '/@/api/user'
+import { getUserProfileInfo, updateUserProfile, generateAvatar } from '/@/api/basic'
 import { useUserStore } from '/@/stores/modules/user'
 
 const [registerForm, { setFormModel, submit, setProps }] = useForm()

@@ -2,7 +2,7 @@ import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 import type { Menu } from '/@/router/typing'
 
 import { defineStore } from 'pinia'
-import { getPermAndMenu } from '/@/api/user'
+import { getPermAndMenu } from '/@/api/basic'
 import { useAppStore } from './app'
 import projectSetting from '/@/settings/projectSetting'
 import { PermissionModeEnum } from '/@/enums/appEnum'

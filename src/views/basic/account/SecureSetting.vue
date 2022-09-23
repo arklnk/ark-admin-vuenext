@@ -18,7 +18,7 @@
 import type { FormSchema } from '/@/components/Form'
 
 import { BasicForm, useForm } from '/@/components/Form'
-import { updateUserPasswd } from '/@/api/user'
+import { updateUserPasswd } from '/@/api/basic'
 import { useMessage } from '/@/composables/web/useMessage'
 import { ref } from 'vue'
 
