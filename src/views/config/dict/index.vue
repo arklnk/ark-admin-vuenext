@@ -159,7 +159,7 @@ function openEditDictFormDialog(isData: boolean, update?: Recordable) {
     // dict id
     currentParentId.value = isData ? currentDictInfo.parentId! : 0
     getDialogAction()?.setProps({
-      title: currentDictInfo.parentId === 0 ? '编辑字典信息' : '编辑字典项信息',
+      title: currentParentId.value === 0 ? '编辑字典信息' : '编辑字典项信息',
     })
 
     getFormAction()?.updateSchema([
