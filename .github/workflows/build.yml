@@ -27,6 +27,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: arklnk/ark-admin:web:latest
+          tags: arklnk/ark-admin:web
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
