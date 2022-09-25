@@ -1,5 +1,5 @@
 <template>
-  <span :class="getWrapClass"><span class="i-icon-park-outline:indent-right"></span></span>
+  <span><span class="i-icon-park-outline:indent-right" :class="getWrapClass"></span></span>
 </template>
 
 <script setup lang="ts">
@@ -13,7 +13,7 @@ const props = defineProps({
   },
 })
 
-const { prefixCls } = useDesign('app-hamburger')
+const { prefixCls } = useDesign('app-menu-trigger')
 
 const getWrapClass = computed(() => {
   return [
@@ -29,7 +29,7 @@ const getWrapClass = computed(() => {
 @use '/@/styles/mixins.scss' as *;
 @use '/@/styles/var.scss';
 
-$prefixCls: #{var.$namespace}-app-hamburger;
+$prefixCls: #{var.$namespace}-app-menu-trigger;
 
 .#{$prefixCls} {
   transition: transform var.$transition-duration;

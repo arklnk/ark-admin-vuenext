@@ -29,10 +29,16 @@ export default {
     contentModeFull: '流式',
     contentModeFixed: '定宽',
 
+    // menu trigger
+    menuTriggerNone: '不显示',
+    menuTriggerBottom: '底部',
+    menuTriggerTop: '顶部',
+
     // interface function config name
     menuCollapse: '折叠菜单',
     menuAccordion: '侧边菜单手风琴模式',
     fixedHeader: '固定顶栏',
+    menuCollapseButton: '菜单折叠按钮',
     topMenuLayout: '顶部菜单布局',
     contentAreaWidth: '内容区域宽度',
 
