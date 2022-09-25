@@ -39,7 +39,7 @@ export function useMenuSetting() {
     return `calc(100vw - ${width}px)`
   })
 
-  const getMenuTrigger = computed(() => appStore.getMenuSetting.trigger)
+  const getMenuTrigger = computed(() => appStore.getMenuSetting.trigger || MenuTriggerEnum.TOP)
 
   const getShowHeaderTrigger = computed(() => {
     return (
