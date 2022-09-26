@@ -4,7 +4,7 @@ import type {
   RouterTransitionEnum,
   ThemeEnum,
 } from '/@/enums/appEnum'
-import type { MenuModeEnum } from '/@/enums/menuEnum'
+import type { MenuModeEnum, MenuTriggerEnum } from '/@/enums/menuEnum'
 
 export type TopMenuAlign = 'flex-start' | 'center' | 'flex-end'
 
@@ -39,15 +39,14 @@ export interface MenuSetting {
   // 菜单栏宽度
   menuWidth: number
 
-  /**
-   * 菜单模式
-   */
+  // 菜单模式
   menuMode: MenuModeEnum
 
-  /**
-   * 顶部菜单模式时放置位置
-   */
+  // 顶部菜单模式时放置位置
   topMenuAlign: TopMenuAlign
+
+  // 折叠菜单显示位置
+  trigger: MenuTriggerEnum
 }
 
 export interface HeaderSetting {

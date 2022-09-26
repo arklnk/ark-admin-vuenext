@@ -29,10 +29,16 @@ export default {
     contentModeFull: 'Full',
     contentModeFixed: 'Fixed',
 
+    // menu trigger
+    menuTriggerNone: 'Not Show',
+    menuTriggerBottom: 'Bottom',
+    menuTriggerTop: 'Top',
+
     // interface function
     menuCollapse: 'Collapse menu',
     menuAccordion: 'Sidebar accordion',
     fixedHeader: 'Fixed header',
+    menuCollapseButton: 'Menu collapse button',
     topMenuLayout: 'Top menu layout',
     contentAreaWidth: 'Contect area width',
 

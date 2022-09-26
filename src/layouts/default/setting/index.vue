@@ -58,6 +58,12 @@
           @change="handleHeaderFixedChange"
         />
         <SelectItem
+          :title="t('layout.setting.menuCollapseButton')"
+          :cursor="getMenuTrigger"
+          :options="menuCollapseButtonOptions"
+          @change="handleMenuCollapsedButtonChange"
+        />
+        <SelectItem
           :title="t('layout.setting.topMenuLayout')"
           :options="topMenuAlignOptions"
           :cursor="getTopMenuAlign"
@@ -147,7 +153,7 @@ import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updat
 import { useTransitionSetting } from '/@/composables/setting/useTransitionSetting'
 import SelectItem from './components/SelectItem.vue'
 import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum'
-import { MenuModeEnum } from '/@/enums/menuEnum'
+import { MenuModeEnum, MenuTriggerEnum } from '/@/enums/menuEnum'
 import { TopMenuAlign } from '/#/config'
 import { useAppInject } from '/@/composables/core/useAppInject'
 import { isDevMode } from '/@/utils/env'
@@ -213,6 +219,7 @@ const {
   getBgColor: getSideMenuBgColor,
   getMenuMode,
   getTopMenuAlign,
+  getMenuTrigger,
   setMenuSetting,
 } = useMenuSetting()
 const disableSidebarRelSetting = computed(() => getMenuMode.value === MenuModeEnum.TOP_MENU)
@@ -220,6 +227,11 @@ const topMenuAlignOptions: LabelValueOptions = [
   { label: t('layout.setting.topMenuTypeLeft'), value: 'flex-start' },
   { label: t('layout.setting.topMenuTypeCenter'), value: 'center' },
   { label: t('layout.setting.topMenuTypeRight'), value: 'flex-end' },
+]
+const menuCollapseButtonOptions: LabelValueOptions = [
+  { label: t('layout.setting.menuTriggerNone'), value: MenuTriggerEnum.NONE },
+  { label: t('layout.setting.menuTriggerBottom'), value: MenuTriggerEnum.BOTTOM },
+  { label: t('layout.setting.menuTriggerTop'), value: MenuTriggerEnum.TOP },
 ]
 function handleMenuCollapsedChange(collapsed: boolean) {
   setMenuSetting({ collapsed })
@@ -236,6 +248,9 @@ function handleMenuModeChange(menuMode: MenuModeEnum) {
 }
 function handleTopMenuAlignModeChange(topMenuAlign: TopMenuAlign) {
   setMenuSetting({ topMenuAlign })
+}
+function handleMenuCollapsedButtonChange(trigger: MenuTriggerEnum) {
+  setMenuSetting({ trigger })
 }
 
 const { getFixed, getBgColor: getHeaderBgColor, setHeaderSetting } = useHeaderSetting()

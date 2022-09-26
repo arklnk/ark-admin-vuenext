@@ -32,3 +32,23 @@ export enum MenuModeEnum {
    */
   TOP_MENU = 'top_menu',
 }
+
+/**
+ * 折叠菜单触发器位置
+ */
+export enum MenuTriggerEnum {
+  /**
+   * 不显示
+   */
+  NONE = 'none',
+
+  /**
+   * 底部
+   */
+  BOTTOM = 'bottom',
+
+  /**
+   * 顶部
+   */
+  TOP = 'top',
+}

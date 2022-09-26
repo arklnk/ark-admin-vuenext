@@ -3,7 +3,7 @@ import type { MenuSetting } from '/#/config'
 import { computed, unref } from 'vue'
 import { useAppStore } from '/@/stores/modules/app'
 import { useFullContent } from '../web/useFullContent'
-import { MenuModeEnum } from '/@/enums/menuEnum'
+import { MenuModeEnum, MenuTriggerEnum } from '/@/enums/menuEnum'
 import { SIDE_BAR_COLLAPSED_WIDTH } from '/@/enums/appEnum'
 
 export function useMenuSetting() {
@@ -39,7 +39,15 @@ export function useMenuSetting() {
     return `calc(100vw - ${width}px)`
   })
 
-  const getShowHeaderTrigger = computed(() => unref(getMenuMode) !== MenuModeEnum.TOP_MENU)
+  const getMenuTrigger = computed(() => appStore.getMenuSetting.trigger || MenuTriggerEnum.TOP)
+
+  const getShowHeaderTrigger = computed(() => {
+    return (
+      unref(getMenuMode) !== MenuModeEnum.TOP_MENU && unref(getMenuTrigger) === MenuTriggerEnum.TOP
+    )
+  })
+
+  const getShowSidebarTrigger = computed(() => unref(getMenuTrigger) === MenuTriggerEnum.BOTTOM)
 
   function setMenuSetting(menuSetting: Partial<MenuSetting>) {
     appStore.setProjectConfig({ menuSetting })
@@ -66,6 +74,8 @@ export function useMenuSetting() {
     getCalcHeaderWidth,
     getShowSideBar,
     getShowTopMenu,
+    getMenuTrigger,
+    getShowSidebarTrigger,
     getShowHeaderTrigger,
   }
 }

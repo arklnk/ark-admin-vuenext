@@ -9,7 +9,7 @@
         :theme="getHeaderTheme"
         :show-title="!getIsMobile"
       />
-      <Hamburger
+      <MenuTrigger
         class="item !px-3"
         v-if="getShowHeaderTrigger || getIsMobile"
         :collapsed="getCollapsed"
@@ -38,9 +38,10 @@ import type { CSSProperties } from 'vue'
 
 import { ref, onMounted, computed, unref } from 'vue'
 import { AppLogo } from '/@/components/Application'
-import { FullScreen, Hamburger, UserDropdown, Redo } from './components'
+import { FullScreen, UserDropdown, Redo } from './components'
 import ProjectConfig from '../setting/index.vue'
 import Menu from '../menu/index.vue'
+import MenuTrigger from '../menu/components/Trigger.vue'
 import { useLayoutHeight } from '../content/useLayoutHeight'
 import { useDesign } from '/@/composables/core/useDesign'
 import { useHeaderSetting } from '/@/composables/setting/useHeaderSetting'
