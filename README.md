@@ -16,8 +16,9 @@ vuenext pure template: [https://github.com/arklnk/ark-admin-vuenext-pure](https:
 
 demo: 
 
-- [go-zero version: http://arkadmin.si-yee.com](http://arkadmin.si-yee.com)
-- [nest version: http://nest.arkadmin.si-yee.com](http://nest.arkadmin.si-yee.com)
+[http://arkadmin.si-yee.com (go-zero)](http://arkadmin.si-yee.com)
+
+[http://nest.arkadmin.si-yee.com (nestjs)](http://nest.arkadmin.si-yee.com)
 
 | Account | Password | Remark |
 | ------- | -------- | ------ |

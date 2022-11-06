@@ -16,8 +16,9 @@ vuenext纯前端模板: [https://github.com/arklnk/ark-admin-vuenext-pure](https
 
 在线体验地址: 
 
-- [go-zero版: http://arkadmin.si-yee.com](http://arkadmin.si-yee.com)
-- [nest版: http://nest.arkadmin.si-yee.com](http://nest.arkadmin.si-yee.com)
+[http://arkadmin.si-yee.com (go-zero)](http://arkadmin.si-yee.com)
+
+[http://nest.arkadmin.si-yee.com (nestjs)](http://nest.arkadmin.si-yee.com)
 
 | 账号 | 密码   | 备注     |
 | ---- | ------ | -------- |
