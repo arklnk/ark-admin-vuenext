@@ -19,7 +19,7 @@ specifiers:
   crypto-js: ^4.1.1
   dayjs: ^1.11.5
   echarts: ^5.3.3
-  element-plus: ^2.2.17
+  element-plus: ^2.2.20
   eslint: ^8.6.0
   eslint-config-prettier: ^8.5.0
   eslint-define-config: ^1.2.2
@@ -50,7 +50,7 @@ dependencies:
   crypto-js: 4.1.1
   dayjs: 1.11.5
   echarts: 5.3.3
-  element-plus: 2.2.17_vue@3.2.39
+  element-plus: 2.2.20_vue@3.2.39
   lodash-es: 4.17.21
   mitt: 3.0.0
   nprogress: 0.2.0
@@ -1450,8 +1450,8 @@ packages:
     resolution: {integrity: sha512-ejwIKXTg1wqbmkcRJh9Ur3hFGHFDZDw1POzdsVrB2WZjgRuRMHIQQKNpe64N/qh3ZtH2otEoRoS+s6arAAuAAw==}
     dev: true
 
-  /element-plus/2.2.17_vue@3.2.39:
-    resolution: {integrity: sha512-MGwMIE/q+FFD3kgS23x8HIe5043tmD1cTRwjhIX9o6fim1avFnUkrsfYRvybbz4CkyqSb185EheZS5AUPpXh2g==}
+  /element-plus/2.2.20_vue@3.2.39:
+    resolution: {integrity: sha512-ludShd3f5kNRY4FLzeoNitLcwZ4qs2M/zwKeyeE7rUzZJAQ0BZtcT3SvZoEoBLmgxw9jHoonl4WIwon4UzhyRA==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
