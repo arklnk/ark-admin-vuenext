@@ -1,4 +1,5 @@
 import type { TableColumn } from '/@/components/Table'
+import { StatusTypeEnum } from '/@/enums/typeEnum'
 
 export function createColumns(): TableColumn[] {
   return [
@@ -18,8 +19,12 @@ export function createColumns(): TableColumn[] {
       align: 'center',
       label: '请求状态',
       prop: 'status',
-      formatter: (row: Recordable) => {
-        return row.status === 0 ? '失败' : '成功'
+      render: ({ row }) => {
+        return (
+          <el-tag type={row.status === StatusTypeEnum.Successful ? 'success' : 'danger'}>
+            {row.status === StatusTypeEnum.Successful ? '成功' : '失败'}
+          </el-tag>
+        )
       },
     },
     {
