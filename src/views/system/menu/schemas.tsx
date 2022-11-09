@@ -90,10 +90,6 @@ export function createSchemas(): FormSchema[] {
       label: '视图路径',
       defaultValue: '',
       prop: 'viewPath',
-      rules: {
-        required: true,
-        type: 'string',
-      },
       hidden: ({ model }) => {
         return model.type === 2 || model.type === 0
       },
