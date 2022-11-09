@@ -3,53 +3,9 @@ import type { FormSchema } from '/@/components/Form'
 
 import { IconPicker } from '/@/components/Icon'
 import { getDynamicImportViews } from '/@/router/helper/routeHelper'
-import { isProdMode } from '/@/utils/env'
 import { isUrl } from '/@/utils/is'
 
 export function createSchemas(): FormSchema[] {
-  const permSchema: FormSchema = {
-    label: '权限',
-    defaultValue: [],
-    prop: 'perms',
-    hidden: ({ model }) => {
-      return model.type === 1 || model.type === 0
-    },
-    rules: {
-      required: true,
-      type: 'array',
-      min: 1,
-      message: '请选择权限',
-    },
-  }
-
-  if (isProdMode()) {
-    // 生产环境下严格按照当前用户具有的权限进行分配
-    permSchema.component = 'ElCascader'
-    permSchema.componentProps = {
-      style: 'width: 100%;',
-      options: [],
-      clearable: true,
-      props: {
-        expandTrigger: 'click',
-        multiple: true,
-      },
-    }
-  } else {
-    // 开发环境下具有自定义性
-    permSchema.render = ({ model }) => {
-      function handleInput(e: string) {
-        model.perms = e.split(',').map((e) => e.trim())
-      }
-      return (
-        <el-input
-          modelValue={(model.perms || []).join(',')}
-          onInput={handleInput}
-          placeholder="请指定权限,多个权限使用逗号分隔"
-        />
-      )
-    }
-  }
-
   const allDynamicImportViews = getDynamicImportViews()
 
   return [
@@ -136,7 +92,7 @@ export function createSchemas(): FormSchema[] {
       prop: 'viewPath',
       rules: {
         required: true,
-        type: 'string'
+        type: 'string',
       },
       hidden: ({ model }) => {
         return model.type === 2 || model.type === 0
@@ -160,7 +116,36 @@ export function createSchemas(): FormSchema[] {
       },
       component: IconPicker,
     },
-    permSchema,
+    {
+      label: '权限',
+      defaultValue: [],
+      prop: 'perms',
+      hidden: ({ model }) => {
+        return model.type === 1 || model.type === 0
+      },
+      rules: {
+        required: true,
+        type: 'array',
+        min: 1,
+        message: '请选择权限',
+      },
+      render: ({ model, schema }) => {
+        return (
+          <el-select
+            v-model={model.perms}
+            style="width: 100%"
+            clearable
+            allow-create
+            filterable
+            multiple
+          >
+            {((schema.componentProps as Recordable)?.perms || []).map((item: string) => (
+              <el-option label={item} value={item} />
+            ))}
+          </el-select>
+        )
+      },
+    },
     {
       label: '状态',
       prop: 'isShow',
