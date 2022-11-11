@@ -1,6 +1,7 @@
 import type { TableColumn } from '/@/components/Table'
 
 import { DictValueTypes } from './DictValueType'
+import { StatusTypeEnum } from '/@/enums/typeEnum'
 
 export function createDictItemColumns(): TableColumn[] {
   return [
@@ -36,8 +37,12 @@ export function createDictItemColumns(): TableColumn[] {
       label: '状态',
       prop: 'status',
       width: 120,
-      formatter: (row: Recordable) => {
-        return row.status === 0 ? '禁用' : '启用'
+      render: ({ row }) => {
+        return (
+          <el-tag type={row.status === StatusTypeEnum.Enable ? 'success' : 'danger'}>
+            {row.status === StatusTypeEnum.Disable ? '禁用' : '启用'}
+          </el-tag>
+        )
       },
     },
     {

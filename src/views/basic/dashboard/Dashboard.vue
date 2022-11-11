@@ -12,9 +12,15 @@
         }}</ElLink>
       </div>
       <div class="text-gray-500 my-4 text-sm flex items-center">
-        后端仓库:
+        Go-Zero后端仓库:
         <ElLink class="ml-4" type="primary" :href="ZERO_REPO_GITHUB_URL">{{
           ZERO_REPO_GITHUB_URL
+        }}</ElLink>
+      </div>
+      <div class="text-gray-500 my-4 text-sm flex items-center">
+        Nestjs后端仓库:
+        <ElLink class="ml-4" type="primary" :href="ZERO_REPO_GITHUB_URL">{{
+          NEST_REPO_GITHUB_URL
         }}</ElLink>
       </div>
     </ElCard>
@@ -24,7 +30,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PageWrapper } from '/@/components/Page'
-import { DOC_SITE, VUE_REPO_GITHUB_URL, ZERO_REPO_GITHUB_URL } from '/@/settings/siteSetting'
+import { DOC_SITE, VUE_REPO_GITHUB_URL, ZERO_REPO_GITHUB_URL, NEST_REPO_GITHUB_URL } from '/@/settings/siteSetting'
 import { useUserStore } from '/@/stores/modules/user'
 
 const userStore = useUserStore()

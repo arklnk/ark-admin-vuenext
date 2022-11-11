@@ -1,5 +1,6 @@
 import type { UserResult } from '/@/api/system/user'
 import type { TableColumn } from '/@/components/Table'
+import { StatusTypeEnum } from '/@/enums/typeEnum'
 
 export function createUserColumns(): TableColumn[] {
   return [
@@ -87,8 +88,12 @@ export function createUserColumns(): TableColumn[] {
       width: 100,
       label: '状态',
       prop: 'status',
-      formatter: (row: Recordable) => {
-        return row.status === 0 ? '禁用' : '启用'
+      render: ({ row }) => {
+        return (
+          <el-tag type={row.status === StatusTypeEnum.Enable ? 'success' : 'danger'}>
+            {row.status === StatusTypeEnum.Disable ? '禁用' : '启用'}
+          </el-tag>
+        )
       },
     },
     {

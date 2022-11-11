@@ -74,8 +74,6 @@ import { createSchemas } from './schemas'
 import { createFormDialog } from '/@/components/Form'
 import { filter } from '/@/utils/helper/tree'
 import { ref } from 'vue'
-import { reverseValues, transformCascaderOptions, transformValues } from './cascaderUtil'
-import { isProdMode } from '/@/utils/env'
 
 const { hasPermission } = usePermission()
 
@@ -87,11 +85,6 @@ const fdInstance = createFormDialog({
   submit: async (res: Omit<MenuResult, 'id'>, { showLoading, hideLoading, close }) => {
     try {
       showLoading()
-
-      // 转换权限值
-      if (res.type === 2 && isProdMode()) {
-        res.perms = transformValues(res.perms as unknown as string[][])
-      }
 
       // 未实现，默认处理
       res.activeRouter = ''
@@ -142,17 +135,12 @@ function openEditMenuFormDialog(update?: Recordable) {
       },
     ]
 
-    if (isProdMode()) {
-      // 转换成ElCascader所需要的options格式
-      const options = transformCascaderOptions(tableData)
-
-      updateSchema.push({
-        prop: 'perms',
-        componentProps: {
-          options,
-        },
-      })
-    }
+    updateSchema.push({
+      prop: 'perms',
+      componentProps: {
+        perms: update?.perms || [],
+      },
+    })
 
     // update tree props data
     getFormAction()?.updateSchema(updateSchema)
@@ -161,10 +149,6 @@ function openEditMenuFormDialog(update?: Recordable) {
     if (update) {
       const values = {
         ...update,
-      }
-
-      if (isProdMode()) {
-        values.perms = reverseValues(update.perms)
       }
 
       getFormAction()?.setFormModel(values)

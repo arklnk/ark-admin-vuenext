@@ -51,7 +51,7 @@ export enum PermissionModeEnum {
   ROLE = 'ROLE',
 
   /**
-   * 后台动态模式，配合sf-admin后端
+   * 后台动态模式，配合后端
    * 是通过接口动态生成路由表，且遵循一定的数据结构返回。前端根据需要处理该数据为可识别的结构，
    * 再通过 router.addRoutes 添加到路由实例，实现权限的动态生成。
    */

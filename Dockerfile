@@ -1,14 +1,14 @@
 FROM node:lts-alpine as builder
 WORKDIR /build
-# RUN npm set registry https://registry.npm.taobao.org
 
-# setup pnpm
+# 安装pnpm
 RUN npm install -g pnpm
 
-COPY package.json /build/package.json
+# 安装开发期依赖
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm bootstrap
 
-# build
+# 构建项目
 COPY ./ /build
 RUN pnpm build
 

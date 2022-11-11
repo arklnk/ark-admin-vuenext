@@ -6,39 +6,22 @@ English | [简体中文](README-cn.md)
 
 Doc: [https://docs.arklnk.com](https://docs.arklnk.com)
 
-The back-end: [https://github.com/arklnk/ark-admin-vuenext](https://github.com/arklnk/ark-admin-vuenext)
+go-zero back-end：[https://github.com/arklnk/ark-admin-zero](https://github.com/arklnk/ark-admin-zero)
 
-The front end：[https://github.com/arklnk/ark-admin-zero](https://github.com/arklnk/ark-admin-zero)
+nestjs back-end: [https://github.com/arklnk/ark-admin-nest](https://github.com/arklnk/ark-admin-nest)
+
+vuenext pure template: [https://github.com/arklnk/ark-admin-vuenext-pure](https://github.com/arklnk/ark-admin-vuenext-pure)
 
 ## Online experience
 
-demo: [http://arkadmin.si-yee.com](http://arkadmin.si-yee.com)
+demo: 
+
+[http://arkadmin.si-yee.com (go-zero)](http://arkadmin.si-yee.com)
+
+[http://nest.arkadmin.si-yee.com (nestjs)](http://nest.arkadmin.si-yee.com)
 
 | Account | Password | Remark |
 | ------- | -------- | ------ |
-| demo    | 123456   | demo   |
-
-- For more complete project functionality, download the project yourself and run the experience or use **docker-compose**
-
-## docker-compose
-
-```sh
-git clone https://github.com/arklnk/ark-admin-zero.git
-```
-
-```sh
-cd ark-admin-zero
-```
-
-```
-docker-compose up -d
-```
-
-login：[http://127.0.0.1](http://127.0.0.1)
-
-| Account | Password | Remark |
-| ------- | -------- | ------ |
-| arklnk  | 123456   | root   |
 | demo    | 123456   | demo   |
 
 ![login](https://docs.arklnk.com/images/zero/login.png)
@@ -59,17 +42,5 @@ Modern browsers and Internet Explorer 10+.
 
 ## Thanks
 
-[https://go-zero.dev/cn](https://go-zero.dev/cn)
-
-[https://github.com/Mikaelemmmm/go-zero-looklook](https://github.com/Mikaelemmmm/go-zero-looklook)
-
-[https://github.com/jinzhu/copier](https://github.com/jinzhu/copier)
-
-[https://github.com/go-playground/validator](https://github.com/go-playground/validator)
-
-[https://github.com/fangpenlin/avataaars-generator](https://github.com/fangpenlin/avataaars-generator)
-
-[https://www.jetbrains.com/go](https://www.jetbrains.com/go)
-
-[https://github.com/cortesi/modd](https://github.com/cortesi/modd)
+[vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
 
