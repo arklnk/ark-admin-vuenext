@@ -91,10 +91,6 @@ export function createUserSchemas(): FormSchema[] {
           label: (data: Recordable): string => {
             return data.name
           },
-          disabled: (data: Recordable): boolean => {
-            // has为0，禁止删除
-            return data.has === 0
-          },
         },
       },
       rules: {
