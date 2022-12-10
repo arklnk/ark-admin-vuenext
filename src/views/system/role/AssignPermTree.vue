@@ -27,9 +27,6 @@ const treeProps: any = {
   label: (data: MenuResult): string => {
     return data.name
   },
-  disabled: (data: MenuResult): boolean => {
-    return data.has === 0
-  },
 }
 
 const treeRef = ref<InstanceType<typeof ElTree>>()

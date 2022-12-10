@@ -40,14 +40,14 @@
             {
               label: '编辑',
               onClick: openEditMenuFormDialog.bind(null, row),
-              disabled: row.has === 0 || !hasPermission(Api.update),
+              disabled: !hasPermission(Api.update),
             },
             {
               label: '删除',
               popconfirm: true,
               type: 'danger',
               onClick: handleDelete.bind(null, row),
-              disabled: row.has === 0 || !hasPermission(Api.delete),
+              disabled: !hasPermission(Api.delete),
             },
           ]"
         />
@@ -115,7 +115,7 @@ function openEditMenuFormDialog(update?: Recordable) {
     const tableData = getDataSource() || []
     const menus = filter(tableData, (item): boolean => {
       // 过滤权限节点，权限节点不能作为父级
-      return (item.type === 0 || item.type === 1) && item.has !== 0
+      return (item.type === 0 || item.type === 1)
     })
 
     const menuTree = [
