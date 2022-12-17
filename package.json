@@ -20,7 +20,7 @@
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.6",
     "echarts": "^5.4.0",
-    "element-plus": "^2.2.21",
+    "element-plus": "^2.2.27",
     "lodash-es": "^4.17.21",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
