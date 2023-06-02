@@ -37,9 +37,9 @@ export function createUserSchemas(): FormSchema[] {
       render: ({ model }) => {
         return (
           <el-select v-model={model.gender} style="width: 100%">
-            <el-option label="保密" value={0} />
-            <el-option label="女" value={1} />
-            <el-option label="男" value={2} />
+            <el-option label="保密" value={1} />
+            <el-option label="女" value={2} />
+            <el-option label="男" value={3} />
           </el-select>
         )
       },
@@ -199,7 +199,7 @@ export function createUserSchemas(): FormSchema[] {
         return (
           <el-radio-group v-model={model.status}>
             <el-radio label={1}>启用</el-radio>
-            <el-radio label={0}>禁用</el-radio>
+            <el-radio label={2}>禁用</el-radio>
           </el-radio-group>
         )
       },

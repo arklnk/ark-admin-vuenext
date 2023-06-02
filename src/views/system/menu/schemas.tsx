@@ -11,21 +11,21 @@ export function createSchemas(): FormSchema[] {
   return [
     {
       label: '类型',
-      defaultValue: 0,
+      defaultValue: 1,
       prop: 'type',
       render: ({ model }) => {
         return (
           <el-radio-group v-model={model.type}>
-            <el-radio label={0}>目录</el-radio>
-            <el-radio label={1}>菜单</el-radio>
-            <el-radio label={2}>权限</el-radio>
+            <el-radio label={1}>目录</el-radio>
+            <el-radio label={2}>菜单</el-radio>
+            <el-radio label={3}>权限</el-radio>
           </el-radio-group>
         )
       },
       rules: {
         required: true,
         min: 0,
-        max: 2,
+        max: 3,
         type: 'number',
       },
     },
@@ -153,7 +153,7 @@ export function createSchemas(): FormSchema[] {
         return (
           <el-radio-group v-model={model.is_show}>
             <el-radio label={1}>显示</el-radio>
-            <el-radio label={0}>隐藏</el-radio>
+            <el-radio label={2}>隐藏</el-radio>
           </el-radio-group>
         )
       },

@@ -88,7 +88,7 @@ export function createDictSchemas(): FormSchema[] {
         return (
           <el-radio-group v-model={model.status}>
             <el-radio label={1}>启用</el-radio>
-            <el-radio label={0}>禁用</el-radio>
+            <el-radio label={2}>禁用</el-radio>
           </el-radio-group>
         )
       },
