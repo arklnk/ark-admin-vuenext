@@ -13,7 +13,7 @@ export interface LoginLog {
   ip: string
   status: number
   uri: string
-  createTime: string
+  create_time: string
 }
 
 export async function getLoginLogPageRequest(

@@ -12,7 +12,7 @@ export const Api = {
 export interface ProfessionResult {
   id: number
   name: string
-  orderNum: number
+  order_num: number
   status: number
 }
 

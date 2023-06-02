@@ -105,7 +105,7 @@ export function createUserColumns(): TableColumn[] {
     },
     {
       label: '排序',
-      prop: 'orderNum',
+      prop: 'order_num',
       align: 'center',
       width: 120,
     },

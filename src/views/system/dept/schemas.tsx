@@ -20,7 +20,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '部门标识',
       defaultValue: '',
-      prop: 'uniqueKey',
+      prop: 'unique_key',
       component: 'ElInput',
       colProps: {
         span: 12,
@@ -34,7 +34,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '父级部门',
       defaultValue: 0,
-      prop: 'parentId',
+      prop: 'parent_id',
       component: 'ElTreeSelect',
       componentProps: {
         style: 'width: 100%;',
@@ -74,7 +74,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '部门全称',
       defaultValue: '',
-      prop: 'fullName',
+      prop: 'full_name',
       component: 'ElInput',
       colProps: {
         span: 12,
@@ -98,7 +98,7 @@ export function createSchemas(): FormSchema[] {
         return (
           <el-radio-group v-model={model.status}>
             <el-radio label={1}>启用</el-radio>
-            <el-radio label={0}>禁用</el-radio>
+            <el-radio label={2}>禁用</el-radio>
           </el-radio-group>
         )
       },
@@ -109,7 +109,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '排序',
       defaultValue: 0,
-      prop: 'orderNum',
+      prop: 'order_num',
       component: 'ElInputNumber',
       componentProps: {
         min: 0,

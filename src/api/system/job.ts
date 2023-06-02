@@ -12,7 +12,7 @@ export const Api = {
 export interface JobResult {
   id: number
   name: string
-  orderNum: number
+  order_num: number
   status: number
 }
 export async function getJobPageRequest(

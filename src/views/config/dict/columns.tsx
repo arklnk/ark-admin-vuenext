@@ -12,7 +12,7 @@ export function createDictItemColumns(): TableColumn[] {
     },
     {
       label: '字典项标识',
-      prop: 'uniqueKey',
+      prop: 'unique_key',
       width: 120,
       align: 'center',
     },
@@ -56,7 +56,7 @@ export function createDictItemColumns(): TableColumn[] {
       align: 'center',
       label: '排序',
       width: 100,
-      prop: 'orderNum',
+      prop: 'order_num',
     },
     {
       align: 'center',

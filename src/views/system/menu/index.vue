@@ -22,7 +22,7 @@
       <!-- column -->
       <template #name="{ row }">
         {{ row.name }}
-        <ElTag v-if="row.isShow === 0 && row.type !== 2" type="danger">隐藏</ElTag>
+        <ElTag v-if="row.is_show === 0 && row.type !== 2" type="danger">隐藏</ElTag>
       </template>
       <template #type="{ row }">
         <ElTag>{{ formatMenuType(row.type) }}</ElTag>
@@ -87,7 +87,7 @@ const fdInstance = createFormDialog({
       showLoading()
 
       // 未实现，默认处理
-      res.activeRouter = ''
+      res.active_router = ''
 
       if (updateMenuId.value === null) {
         await addMenuRequest(res)
@@ -128,7 +128,7 @@ function openEditMenuFormDialog(update?: Recordable) {
 
     const updateSchema: any[] = [
       {
-        prop: 'parentId',
+        prop: 'parent_id',
         componentProps: {
           data: menuTree,
         },

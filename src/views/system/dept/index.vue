@@ -65,7 +65,7 @@ const { hasPermission } = usePermission()
 
 const [registerTable, { getDataSource, reload }] = useTable()
 
-const updateDeptId = ref<number | null>(null)
+const updatedept_id = ref<number | null>(null)
 
 const fdInstance = createFormDialog({
   formProps: { labelWidth: '100px', schemas: createSchemas() },
@@ -74,12 +74,12 @@ const fdInstance = createFormDialog({
     try {
       showLoading()
 
-      if (updateDeptId.value === null) {
+      if (updatedept_id.value === null) {
         await addDeptRequest(res)
       } else {
         await updateDeptRequest({
           ...res,
-          id: updateDeptId.value,
+          id: updatedept_id.value,
         })
       }
 
@@ -103,7 +103,7 @@ function openEditDeptFormDialog(update?: DeptResult) {
     ]
 
     getFormAction()?.updateSchema({
-      prop: 'parentId',
+      prop: 'parent_id',
       componentProps: {
         data: deptTree,
       },
@@ -111,10 +111,10 @@ function openEditDeptFormDialog(update?: DeptResult) {
 
     // is update?
     if (update) {
-      updateDeptId.value = update.id
+      updatedept_id.value = update.id
       getFormAction()?.setFormModel(update)
     } else {
-      updateDeptId.value = null
+      updatedept_id.value = null
     }
   })
 }

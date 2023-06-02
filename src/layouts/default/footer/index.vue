@@ -1,5 +1,5 @@
 <template>
-  <footer v-if="getIsShowFooter" ref="footerRef" :class="prefixCls">
+  <footer v-if="getis_showFooter" ref="footerRef" :class="prefixCls">
     <div>Copyright © 2022-present arklnk. All rights reserved.</div>
   </footer>
 </template>
@@ -16,7 +16,7 @@ const footerRef = ref<HTMLDivElement>()
 const { setAppFooterHeight } = useLayoutHeight()
 const { getShowFooter } = useRootSetting()
 
-const getIsShowFooter = computed(() => {
+const getis_showFooter = computed(() => {
   if (unref(getShowFooter)) {
     setAppFooterHeight(unref(footerRef)?.offsetHeight || 0)
   } else {

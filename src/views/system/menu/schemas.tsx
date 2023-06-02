@@ -11,21 +11,21 @@ export function createSchemas(): FormSchema[] {
   return [
     {
       label: '类型',
-      defaultValue: 0,
+      defaultValue: 1,
       prop: 'type',
       render: ({ model }) => {
         return (
           <el-radio-group v-model={model.type}>
-            <el-radio label={0}>目录</el-radio>
-            <el-radio label={1}>菜单</el-radio>
-            <el-radio label={2}>权限</el-radio>
+            <el-radio label={1}>目录</el-radio>
+            <el-radio label={2}>菜单</el-radio>
+            <el-radio label={3}>权限</el-radio>
           </el-radio-group>
         )
       },
       rules: {
         required: true,
         min: 0,
-        max: 2,
+        max: 3,
         type: 'number',
       },
     },
@@ -43,7 +43,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '父级菜单',
       defaultValue: 0,
-      prop: 'parentId',
+      prop: 'parent_id',
       component: 'ElTreeSelect',
       componentProps: {
         style: 'width: 100%;',
@@ -89,13 +89,13 @@ export function createSchemas(): FormSchema[] {
     {
       label: '视图路径',
       defaultValue: '',
-      prop: 'viewPath',
+      prop: 'view_path',
       hidden: ({ model }) => {
         return model.type === 2 || model.type === 0
       },
       render: ({ model }) => {
         return (
-          <el-select v-model={model.viewPath} style="width: 100%" clearable allow-create filterable>
+          <el-select v-model={model.view_path} style="width: 100%" clearable allow-create filterable>
             {allDynamicImportViews.map((item) => (
               <el-option label={item} value={item} />
             ))}
@@ -144,16 +144,16 @@ export function createSchemas(): FormSchema[] {
     },
     {
       label: '状态',
-      prop: 'isShow',
+      prop: 'is_show',
       defaultValue: 1,
       hidden: ({ model }) => {
         return model.type === 2
       },
       render: ({ model }) => {
         return (
-          <el-radio-group v-model={model.isShow}>
+          <el-radio-group v-model={model.is_show}>
             <el-radio label={1}>显示</el-radio>
-            <el-radio label={0}>隐藏</el-radio>
+            <el-radio label={2}>隐藏</el-radio>
           </el-radio-group>
         )
       },
@@ -161,7 +161,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '排序',
       defaultValue: 0,
-      prop: 'orderNum',
+      prop: 'order_num',
       component: 'ElInputNumber',
       componentProps: {
         min: 0,

@@ -49,7 +49,7 @@
           <template #toolbar>
             <ElButton
               type="primary"
-              :disabled="currentDictInfo.parentId === null || !hasPermission(Api.add)"
+              :disabled="currentDictInfo.parent_id === null || !hasPermission(Api.add)"
               @click="openEditDictFormDialog(true)"
             >
               新增
@@ -113,7 +113,7 @@ const [registerItemTable, { reload }] = useTable()
 const fdInstance = createFormDialog({
   formProps: { labelWidth: '110px', schemas: createDictSchemas() },
   submit: async (
-    res: Omit<ParamConfigResult, 'id' | 'parentId'>,
+    res: Omit<ParamConfigResult, 'id' | 'parent_id'>,
     { showLoading, hideLoading, close }
   ) => {
     try {
@@ -122,19 +122,19 @@ const fdInstance = createFormDialog({
       if (currentUpdateId.value === null) {
         await addDictRequest({
           ...res,
-          parentId: currentParentId.value,
+          parent_id: currentparent_id.value,
         })
       } else {
         await updateDictRequest({
-          ...omit(res, 'uniqueKey'),
+          ...omit(res, 'unique_key'),
           id: currentUpdateId.value,
-          parentId: currentParentId.value,
+          parent_id: currentparent_id.value,
         })
       }
 
       close()
 
-      if (currentParentId.value === 0) {
+      if (currentparent_id.value === 0) {
         reloadDictTable()
       } else {
         reload({ page: 1 })
@@ -146,20 +146,20 @@ const fdInstance = createFormDialog({
 })
 
 const currentDictInfo = reactive({
-  parentId: null,
+  parent_id: null,
 })
 
 const currentUpdateId = ref<number | null>(null)
 // 0 为新增或者更新字典
-const currentParentId = ref<number>(0)
+const currentparent_id = ref<number>(0)
 
 // 是否为更新字典项
 function openEditDictFormDialog(isData: boolean, update?: Recordable) {
   fdInstance.open(({ getFormAction, getDialogAction }) => {
     // dict id
-    currentParentId.value = isData ? currentDictInfo.parentId! : 0
+    currentparent_id.value = isData ? currentDictInfo.parent_id! : 0
     getDialogAction()?.setProps({
-      title: currentParentId.value === 0 ? '编辑字典信息' : '编辑字典项信息',
+      title: currentparent_id.value === 0 ? '编辑字典信息' : '编辑字典项信息',
     })
 
     getFormAction()?.updateSchema([
@@ -176,7 +176,7 @@ function openEditDictFormDialog(isData: boolean, update?: Recordable) {
         hidden: !isData,
       },
       {
-        prop: 'uniqueKey',
+        prop: 'unique_key',
         disabled: !!update,
       },
     ])
@@ -193,7 +193,7 @@ function openEditDictFormDialog(isData: boolean, update?: Recordable) {
 }
 
 function resetCurrentDictId() {
-  currentDictInfo.parentId = null
+  currentDictInfo.parent_id = null
 }
 
 async function handleDeleteDict(row: Recordable) {
@@ -214,9 +214,9 @@ function handleFetchConfigSetSuccess() {
 
 function handleDictChange() {
   nextTick(() => {
-    const parentId = getCurrentRow()?.id
-    if (parentId) {
-      currentDictInfo.parentId = parentId
+    const parent_id = getCurrentRow()?.id
+    if (parent_id) {
+      currentDictInfo.parent_id = parent_id
       reload({ page: 1 })
     }
   })

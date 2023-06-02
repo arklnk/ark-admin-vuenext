@@ -26,7 +26,7 @@ export interface UserResult {
   job: IdNameRecord
   mobile: string
   nickname: string
-  orderNum: number
+  order_num: number
   profession: IdNameRecord
   remark: string
   roles: IdNameRecord[]
@@ -34,16 +34,16 @@ export interface UserResult {
   username: string
 }
 export async function getUserPageRequest(
-  params: PageRequestParams & { deptId: number }
+  params: PageRequestParams & { dept_id: number }
 ): Promise<PaginationResult<UserResult>> {
   return await defHttp.get({ url: Api.page, params })
 }
 
 export type UserRequestParams = Omit<UserResult, 'id' | 'job' | 'profession' | 'roles' | 'dept'> & {
-  professionId: number
-  roleIds: number[]
-  jobId: number
-  deptId: number
+  profession_id: number
+  role_ids: number[]
+  job_id: number
+  dept_id: number
   avatar: string
 }
 
@@ -66,7 +66,7 @@ interface RDPJInfoResult {
   dept: IdNameRecord[]
 }
 
-export async function getRDPJInfoRequest(params?: { userId: number }): Promise<RDPJInfoResult> {
+export async function getRDPJInfoRequest(params?: { user_id: number }): Promise<RDPJInfoResult> {
   return await defHttp.get({ url: Api.rdpj, params })
 }
 

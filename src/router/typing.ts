@@ -7,14 +7,14 @@ export type Component<T = any> =
 
 export interface Menu {
   id: number
-  parentId?: number
+  parent_id?: number
   name: string
   router: string
   type: number
   icon: string
-  orderNum?: number
-  viewPath?: string
-  isShow?: boolean
-  activeRouter?: string
+  order_num?: number
+  view_path?: string
+  is_show?: boolean
+  active_router?: string
   children?: Menu[]
 }

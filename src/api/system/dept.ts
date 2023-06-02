@@ -9,14 +9,14 @@ export const Api = {
 }
 
 export interface DeptResult {
-  fullName: string
+  full_name: string
   id: number
   name: string
-  orderNum: number
-  parentId: number
+  order_num: number
+  parent_id: number
   remark: string
   status: number
-  uniqueKey: string
+  unique_key: string
 }
 
 export async function getDeptListRequest(): Promise<(DeptResult & { children?: DeptResult[] })[]> {

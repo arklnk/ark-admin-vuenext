@@ -32,7 +32,7 @@ export function createColumns(): TableColumn[] {
     {
       align: 'center',
       label: '视图路径',
-      prop: 'viewPath',
+      prop: 'view_path',
       showOverflowTooltip: true,
       minWidth: 240,
     },
@@ -47,7 +47,7 @@ export function createColumns(): TableColumn[] {
       width: 80,
       align: 'center',
       label: '排序',
-      prop: 'orderNum',
+      prop: 'order_num',
     },
     {
       width: 140,

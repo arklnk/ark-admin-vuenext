@@ -12,13 +12,13 @@ export function createColumns(): TableColumn[] {
       align: 'center',
       width: 140,
       label: '部门标识',
-      prop: 'uniqueKey',
+      prop: 'unique_key',
     },
     {
       align: 'center',
       width: 300,
       label: '部门全称',
-      prop: 'fullName',
+      prop: 'full_name',
     },
     {
       align: 'center',
@@ -51,7 +51,7 @@ export function createColumns(): TableColumn[] {
       align: 'center',
       width: 80,
       label: '排序',
-      prop: 'orderNum',
+      prop: 'order_num',
     },
     {
       width: 140,

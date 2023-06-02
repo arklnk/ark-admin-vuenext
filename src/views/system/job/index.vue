@@ -67,12 +67,12 @@ const fdInstance = createFormDialog({
     try {
       showLoading()
 
-      if (updateJobId.value === null) {
+      if (updatejob_id.value === null) {
         await addJobRequest(res)
       } else {
         await updateJobRequest({
           ...res,
-          id: updateJobId.value,
+          id: updatejob_id.value,
         })
       }
 
@@ -85,15 +85,15 @@ const fdInstance = createFormDialog({
   },
 })
 
-const updateJobId = ref<number | null>(null)
+const updatejob_id = ref<number | null>(null)
 
 function openEditJobFormDialog(update?: JobResult) {
   fdInstance.open(({ getFormAction }) => {
     if (update) {
-      updateJobId.value = update.id
+      updatejob_id.value = update.id
       getFormAction()?.setFormModel(update)
     } else {
-      updateJobId.value = null
+      updatejob_id.value = null
     }
   })
 }
