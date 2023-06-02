@@ -13,11 +13,11 @@ export const Api = {
 export interface ParamConfigResult {
   id: number
   name: string
-  orderNum: number
-  parentId: number
+  order_num: number
+  parent_id: number
   remark: string
   status: number
-  uniqueKey: string
+  unique_key: string
   value: string
 }
 export async function getDictListRequest(): Promise<ParamConfigResult[]> {
@@ -35,7 +35,7 @@ export async function addDictRequest(data: Omit<ParamConfigResult, 'id'>) {
   return await defHttp.post({ url: Api.add, data })
 }
 
-export async function updateDictRequest(data: Omit<ParamConfigResult, 'uniqueKey'>) {
+export async function updateDictRequest(data: Omit<ParamConfigResult, 'unique_key'>) {
   return await defHttp.post({ url: Api.update, data })
 }
 

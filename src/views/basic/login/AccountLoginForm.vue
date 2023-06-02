@@ -66,8 +66,8 @@ import { useTransl } from '/@/composables/core/useTransl'
 const formData = reactive({
   account: '',
   password: '',
-  verifyCode: '',
-  captchaId: '',
+  verify_code: '',
+  captcha_id: '',
 })
 
 const { t } = useTransl()
@@ -116,11 +116,11 @@ const handleLogin = debounce(() => {
 const captchaData = ref('')
 const handleGetImageCaptcha = debounce(async () => {
   try {
-    const { captchaId, verifyCode } = await getImageCaptcha()
-    formData.captchaId = captchaId
-    captchaData.value = verifyCode
+    const { captcha_id, verify_code } = await getImageCaptcha()
+    formData.captchaId = captcha_id
+    captchaData.value = verify_code
     // 清空文本
-    formData.verifyCode = ''
+    formData.verify_code = ''
   } catch (err) {}
 }, 500)
 

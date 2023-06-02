@@ -20,7 +20,7 @@ export function createDictSchemas(): FormSchema[] {
     },
     {
       label: '标识',
-      prop: 'uniqueKey',
+      prop: 'unique_key',
       defaultValue: '',
       component: 'ElInput',
       rules: {
@@ -71,7 +71,7 @@ export function createDictSchemas(): FormSchema[] {
     {
       label: '排序',
       defaultValue: 0,
-      prop: 'orderNum',
+      prop: 'order_num',
       component: 'ElInputNumber',
       componentProps: {
         min: 0,

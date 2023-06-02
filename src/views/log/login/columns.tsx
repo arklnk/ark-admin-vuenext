@@ -35,7 +35,7 @@ export function createColumns(): TableColumn[] {
     {
       align: 'center',
       label: '登录时间',
-      prop: 'createTime',
+      prop: 'create_time',
     },
   ]
 }

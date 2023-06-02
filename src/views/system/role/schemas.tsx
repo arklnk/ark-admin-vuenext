@@ -21,7 +21,7 @@ export function createSchemas(): FormSchema[] {
     },
     {
       label: '角色标识',
-      prop: 'uniqueKey',
+      prop: 'unique_key',
       defaultValue: '',
       component: 'ElInput',
       rules: {
@@ -36,7 +36,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '父级角色',
       defaultValue: 0,
-      prop: 'parentId',
+      prop: 'parent_id',
       component: 'ElTreeSelect',
       componentProps: {
         style: 'width: 100%;',
@@ -59,7 +59,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '分配权限',
       defaultValue: [],
-      prop: 'permMenuIds',
+      prop: 'perm_menu_ids',
       component: AssignPermTree,
       componentProps: {
         data: [],
@@ -78,7 +78,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '排序',
       defaultValue: 0,
-      prop: 'orderNum',
+      prop: 'order_num',
       component: 'ElInputNumber',
       componentProps: {
         min: 0,

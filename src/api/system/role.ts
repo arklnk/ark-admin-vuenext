@@ -11,12 +11,12 @@ export const Api = {
 export interface RoleResult {
   id: number
   name: string
-  orderNum: number
-  parentId: number
+  order_num: number
+  parent_id: number
   remark: string
   status: number
-  uniqueKey: string
-  permMenuIds: number[]
+  unique_key: string
+  perm_menu_ids: number[]
 }
 
 export async function getRoleListRequest(): Promise<(RoleResult & { children?: RoleResult[] })[]> {

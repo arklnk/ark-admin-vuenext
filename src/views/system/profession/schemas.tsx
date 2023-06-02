@@ -32,7 +32,7 @@ export function createSchemas(): FormSchema[] {
     {
       label: '排序',
       defaultValue: 0,
-      prop: 'orderNum',
+      prop: 'order_num',
       component: 'ElInputNumber',
       componentProps: {
         min: 0,

@@ -61,7 +61,7 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
     const meta: RouteMeta = {
       title: menu.name,
       icon: menu.icon,
-      hidden: !menu.isShow,
+      hidden: !menu.is_show,
     }
 
     // 目录
@@ -107,11 +107,11 @@ export function transformMenuToRoute(menus: Menu[], isRoot = false): RouteRecord
     // 内嵌页面
     let component: Component
 
-    if (isUrl(menu.viewPath || '')) {
-      meta.iframeSrc = menu.viewPath
+    if (isUrl(menu.view_path || '')) {
+      meta.iframeSrc = menu.view_path
       component = IFrameLayout
     } else {
-      component = dynamicImport(menu.viewPath)
+      component = dynamicImport(menu.view_path)
     }
 
     if (isRoot) {

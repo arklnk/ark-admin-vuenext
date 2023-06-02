@@ -96,7 +96,7 @@ function openEditRoleFormDialog(update?: Recordable) {
       const permTree = await getMenuListRequest()
 
       getFormAction()?.updateSchema({
-        prop: 'permMenuIds',
+        prop: 'perm_menu_ids',
         componentProps: {
           data: permTree,
         },
@@ -116,7 +116,7 @@ function openEditRoleFormDialog(update?: Recordable) {
     ]
 
     getFormAction()?.updateSchema({
-      prop: 'parentId',
+      prop: 'parent_id',
       componentProps: {
         data: roleTree,
       },

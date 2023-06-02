@@ -10,7 +10,7 @@ export function createColumns(): TableColumn[] {
     },
     {
       label: '角色标识',
-      prop: 'uniqueKey',
+      prop: 'unique_key',
       width: 220,
       align: 'center',
     },
@@ -37,7 +37,7 @@ export function createColumns(): TableColumn[] {
       width: 100,
       align: 'center',
       label: '排序',
-      prop: 'orderNum',
+      prop: 'order_num',
     },
     {
       width: 140,

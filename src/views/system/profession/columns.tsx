@@ -24,7 +24,7 @@ export function createColumns(): TableColumn[] {
     {
       align: 'center',
       label: '排序',
-      prop: 'orderNum',
+      prop: 'order_num',
     },
     {
       align: 'center',

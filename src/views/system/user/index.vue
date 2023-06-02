@@ -142,30 +142,30 @@ function openEditUserFormDialog(update?: Recordable) {
     try {
       showLoading()
       const { role, dept, profession, job } = await getRDPJInfoRequest({
-        userId: update ? update.id : 0,
+        user_id: update ? update.id : 0,
       })
 
       const updateSchemas: FormSchema[] = [
         {
-          prop: 'deptId',
+          prop: 'dept_id',
           componentProps: {
             data: listToTree(dept),
           },
         },
         {
-          prop: 'roleIds',
+          prop: 'role_ids',
           componentProps: {
             data: listToTree(role),
           },
         },
         {
-          prop: 'jobId',
+          prop: 'job_id',
           componentProps: {
             data: job,
           },
         },
         {
-          prop: 'professionId',
+          prop: 'profession_id',
           componentProps: {
             data: profession,
           },
@@ -188,10 +188,10 @@ function openEditUserFormDialog(update?: Recordable) {
 
       getFormAction()?.setFormModel({
         ...item,
-        jobId: item.job.id,
-        professionId: item.profession.id,
-        deptId: item.dept.id,
-        roleIds: item.roles.map((e) => e.id),
+        job_id: item.job.id,
+        profession_id: item.profession.id,
+        dept_id: item.dept.id,
+        role_ids: item.roles.map((e) => e.id),
       } as UserRequestParams)
 
       updateUserId.value = item.id
@@ -205,7 +205,7 @@ function openEditUserFormDialog(update?: Recordable) {
 async function processUserListRequest(params: any) {
   return await getUserPageRequest({
     ...params,
-    deptId: getCurrentRow()?.id || 0,
+    dept_id: getCurrentRow()?.id || 0,
   })
 }
 

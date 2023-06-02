@@ -8,7 +8,7 @@ interface TreeHelperConfig {
 const DEFAULT_CONFIG: TreeHelperConfig = {
   id: 'id',
   children: 'children',
-  pid: 'parentId',
+  pid: 'parent_id',
 }
 
 const getConfig = (config: Partial<TreeHelperConfig>) => Object.assign({}, DEFAULT_CONFIG, config)
